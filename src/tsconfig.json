@@ -14,5 +14,10 @@
     "typeRoots": [
       "../node_modules/@types"
     ]
+  },
+  "formatCodeOptions": {
+    "indentSize": 2,
+    "tabSize": 2,
+    "convertTabsToSpaces": true
   }
 }
