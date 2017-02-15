@@ -1,20 +1,28 @@
 import { Injectable } from '@angular/core';
+import { Http, Headers } from '@angular/http';
 
 import { Hero } from './hero';
-import { HEROES } from './mocked-heroes';
+
+import 'rxjs/add/operator/toPromise';
+
+const HEROES_URL = 'rest/heroes';  // URL to web api
+const HEADERS = new Headers({ 'Content-Type': 'application/json' });
 
 @Injectable()
 export class HeroService {
 
+  constructor(private http: Http) { }
+
   getHeroes(): Promise<Hero[]> {
-    return Promise.resolve(HEROES);
+    return this.http.get(HEROES_URL)
+      .toPromise()
+      .then(response => response.json().results as Hero[])
+      .catch(this.handleError);
   }
 
-  getHeroesSlowly(): Promise<Hero[]> {
-    return new Promise(resolve => {
-      // Simulate server latency with 2 second delay
-      setTimeout(() => resolve(this.getHeroes()), 2000);
-    });
+  private handleError(error: any): Promise<any> {
+    console.error(`Error occurred while calling ${HEROES_URL}`, error);
+    return Promise.reject(error.message || error);
   }
 
   getHero(id: number): Promise<Hero> {
@@ -22,4 +30,28 @@ export class HeroService {
       .then(heroes => heroes.find(hero => hero.id === id));
   }
 
+  create(name: string): Promise<Hero> {
+    return this.http
+      .post(HEROES_URL, JSON.stringify({ name: name }), HEADERS)
+      .toPromise()
+      .then(res => res.json().data)
+      .catch(this.handleError);
+  }
+
+  update(hero: Hero): Promise<Hero> {
+    const url = `${HEROES_URL}/${hero.id}`;
+    return this.http
+      .put(url, JSON.stringify(hero), { headers: HEADERS })
+      .toPromise()
+      .then(() => hero)
+      .catch(this.handleError);
+  }
+
+  delete(id: number): Promise<void> {
+    const url = `${HEROES_URL}/${id}`;
+    return this.http.delete(url, { headers: HEADERS })
+      .toPromise()
+      .then(() => null)
+      .catch(this.handleError);
+  }
 }
