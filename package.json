@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "author": "Maps Spa",
-  "maintainers": [{
-    "name": "Fabio Strozzi",
-    "email": "fabio.strozzi@mapsgroup.it"
-  }],
+  "maintainers": [
+    {
+      "name": "Fabio Strozzi",
+      "email": "fabio.strozzi@mapsgroup.it"
+    }
+  ],
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon server.js",
     "lint": "jshint --reporter=node_modules/jshint-stylish *.js"
   },
   "dependencies": {
@@ -23,7 +25,8 @@
   },
   "devDependencies": {
     "jshint": "^2.9.4",
-    "jshint-stylish": "^2.2.1"
+    "jshint-stylish": "^2.2.1",
+    "nodemon": "^1.11.0"
   },
   "jshintConfig": {
     "node": true
