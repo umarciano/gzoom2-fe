@@ -11,7 +11,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "lint": "jshint *.js"
+    "lint": "jshint --reporter=node_modules/jshint-stylish *.js"
   },
   "dependencies": {
     "express": "~3.4.8",
@@ -24,7 +24,7 @@
     "winston": "~2.2.0"
   },
   "devDependencies": {
-    "jshint": "^2.9.3",
+    "jshint": "^2.9.4",
     "jshint-stylish": "^2.2.1"
   },
   "jshintConfig": {
