@@ -3,25 +3,25 @@
   "version": "1.0.0",
   "description": "",
   "author": "Maps Spa",
-  "license": "Commercial",
-  "maintainers": [{
-    "name": "Fabio Strozzi",
-    "email": "fabio.strozzi@mapsgroup.it"
-  }],
+  "maintainers": [
+    {
+      "name": "Fabio Strozzi",
+      "email": "fabio.strozzi@mapsgroup.it"
+    }
+  ],
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
     "lint": "jshint --reporter=node_modules/jshint-stylish *.js"
   },
   "dependencies": {
-    "express": "~3.4.8",
-    "express-http-proxy": "^0.10.0",
+    "express": "~3.21.1",
     "express-jwt": "^3.1.0",
-    "jsonwebtoken": "^5.0.5",
-    "lodash": "~4.15.0",
-    "moment": "~2.14.1",
-    "moment-timezone": "^0.5.5",
-    "winston": "~2.2.0"
+    "jsonwebtoken": "^7.3.0",
+    "lodash": "^4.15.0",
+    "moment": "^2.17.1",
+    "moment-timezone": "^0.5.11",
+    "winston": "^2.2.0"
   },
   "devDependencies": {
     "jshint": "^2.9.4",
