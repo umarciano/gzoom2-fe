@@ -3,12 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "author": "Maps Spa",
-  "maintainers": [
-    {
-      "name": "Fabio Strozzi",
-      "email": "fabio.strozzi@mapsgroup.it"
-    }
-  ],
+  "maintainers": [{
+    "name": "Fabio Strozzi",
+    "email": "fabio.strozzi@mapsgroup.it"
+  }],
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
