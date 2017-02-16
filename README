@@ -1,0 +1,12 @@
+In tsconfig.json bisogna indicare il target JS.
+Inizialmente era impostato ES6 ma non è ancora supportato da tutti i browser nonostante i polyfills.
+
+Le possibilità sono:
+* target es5
+    "module": "commonjs",
+    "lib": ["es2015", "dom"],
+
+* target es6
+    "module": "es6",
+    "lib": ["es6", "dom"],
+
