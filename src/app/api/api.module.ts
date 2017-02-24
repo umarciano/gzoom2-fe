@@ -4,6 +4,10 @@ import { HttpModule } from '@angular/http';
 
 import { LoginService } from './login.service';
 
+import { Headers } from '@angular/http';
+
+export const HTTP_HEADERS = new Headers({ 'Content-Type': 'application/json' });
+
 @NgModule({
   imports: [
     CommonModule,
