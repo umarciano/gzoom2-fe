@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { CommonsModule } from './commons/commons.module';
 import { AppRoutingModule } from './app-routing.module';
+import { ApiModule } from './api/api.module';
 
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -18,7 +20,9 @@ import { HeroService } from './hero.service';
     BrowserModule,
     FormsModule,
     HttpModule,
-    AppRoutingModule
+    CommonsModule,
+    AppRoutingModule,
+    ApiModule
   ],
   declarations: [
     AppComponent,
