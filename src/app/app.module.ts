@@ -24,8 +24,8 @@ import { HeroService } from './hero.service';
     HttpModule,
     // application modules
     // > libraries
-    CommonsModule,
-    ApiModule,
+    CommonsModule.forRoot(),
+    ApiModule.forRoot(),
     // > views
     LoginModule,
     // > routes

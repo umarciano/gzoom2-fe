@@ -1,19 +1,35 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
 
+// module config
+import { ApiConfig, DEF_API_CONFIG } from './api-config';
+
+// api services
 import { LoginService } from './login.service';
-
-import { Headers } from '@angular/http';
-
-export const HTTP_HEADERS = new Headers({ 'Content-Type': 'application/json' });
 
 @NgModule({
   imports: [
     CommonModule,
     HttpModule
   ],
-  declarations: [],
-  providers: [LoginService]
+  declarations: []
 })
-export class ApiModule { }
+export class ApiModule {
+
+  /**
+   * Configures the ApiModule.
+   *
+   * @param  {ApiConfig = DEF_API_CONFIG} config Module configuration
+   * @return {ModuleWithProviders}   The module with the providers
+   */
+  static forRoot(config: ApiConfig = DEF_API_CONFIG): ModuleWithProviders {
+    return {
+      ngModule: ApiModule,
+      providers: [
+        { provide: ApiConfig, useValue: config.rootPath || DEF_API_CONFIG.rootPath },
+        LoginService
+      ]
+    };
+  }
+}

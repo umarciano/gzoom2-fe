@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
-import { HTTP_HEADERS } from './api.module';
+import { HTTP_HEADERS, ApiConfig } from './api-config';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -10,12 +10,12 @@ const LOGOUT_ENDPOINT = 'logout';
 
 @Injectable()
 export class LoginService {
-  loginUrl: string;
-  logoutUrl: string;
+  private loginUrl: string;
+  private logoutUrl: string;
 
-  constructor(private http: Http) {
-    this.loginUrl = `../rest/${LOGIN_ENDPOINT}`;
-    this.logoutUrl = `../rest/${LOGOUT_ENDPOINT}`;
+  constructor(private http: Http, apiConfig: ApiConfig) {
+    this.loginUrl = `${apiConfig.rootPath}/${LOGIN_ENDPOINT}`;
+    this.logoutUrl = `${apiConfig.rootPath}/${LOGOUT_ENDPOINT}`;
   }
 
   login(username: string, password: string): Promise<string> {

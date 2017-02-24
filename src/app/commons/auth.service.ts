@@ -9,8 +9,11 @@ const PERMS_GET = function(userProfile) { return userProfile ? userProfile.permi
  * Configuration class for authentication service.
  */
 export class AuthServiceConfig {
-  constructor(public tokenKey = TOKEN_KEY, public permissionsGetter = PERMS_GET) { }
+  readonly tokenKey = TOKEN_KEY;
+  readonly permissionsGetter = PERMS_GET;
 }
+
+export const DEF_AUTH_SERVICE_CONFIG = new AuthServiceConfig();
 
 /**
  * The authentication service.

@@ -1,38 +1,32 @@
-import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { AuthService, AuthServiceConfig } from './auth.service';
-import { AuthGuard, AuthGuardConfig } from './auth.guard';
+import { AuthService, AuthServiceConfig, DEF_AUTH_SERVICE_CONFIG } from './auth.service';
+import { AuthGuard, AuthGuardConfig, DEF_AUTH_GUARD_CONFIG } from './auth.guard';
 
-export interface CommonsConfig {
-  authService?: AuthServiceConfig;
-  authGuard?: AuthGuardConfig;
+export class CommonsConfig {
+  authService: AuthServiceConfig = DEF_AUTH_SERVICE_CONFIG;
+  authGuard: AuthGuardConfig = DEF_AUTH_GUARD_CONFIG;
 }
+
+const DEF_CONFIG = new CommonsConfig();
 
 @NgModule({
   imports: [CommonModule],
-  declarations: [],
-  providers: [AuthService, AuthGuard]
+  declarations: []
 })
 export class CommonsModule {
 
-  // don't use it yet
-  static forRoot({authService, authGuard}: CommonsConfig): ModuleWithProviders {
+  static forRoot(config: CommonsConfig = DEF_CONFIG): ModuleWithProviders {
     return {
       ngModule: CommonsModule,
       providers: [
-        { provide: AuthService, useValue: authService },
-        { provide: AuthGuard, useValue: authGuard }
+        // { provide: AuthServiceConfig, useValue: config.authService || DEF_CONFIG.authService },
+        // { provide: AuthGuardConfig, useValue: config.authGuard || DEF_CONFIG.authGuard },
+        AuthService,
+        AuthGuard
       ]
     };
-  }
-
-  constructor( @Optional() @SkipSelf() parentModule: CommonsModule) {
-    // sanity check
-    if (parentModule) {
-      throw new Error(
-        'CommonsModule is already loaded. Import it in the AppModule only');
-    }
   }
 
 }
