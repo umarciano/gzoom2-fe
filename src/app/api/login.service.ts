@@ -18,9 +18,9 @@ export class LoginService {
     this.logoutUrl = `../rest/${LOGOUT_ENDPOINT}`;
   }
 
-  login(username: string, password: string) : Promise<string> {
-    const body = JSON.stringify({username: username, password: password});
-    const opts = {headers: HTTP_HEADERS};
+  login(username: string, password: string): Promise<string> {
+    const body = JSON.stringify({ username: username, password: password });
+    const opts = { headers: HTTP_HEADERS };
 
     return this.http
       .post(this.loginUrl, body, opts)
@@ -33,7 +33,7 @@ export class LoginService {
         console.log('No token returned from authentication :-(');
         return Promise.reject('No token :-(');
       })
-      .catch((error:any) => {
+      .catch((error: any) => {
         console.log(`Error while logging in: ${error}`);
         return Promise.reject(error.message || error);
       });
