@@ -27,7 +27,7 @@ export class ApiModule {
     return {
       ngModule: ApiModule,
       providers: [
-        { provide: ApiConfig, useValue: config.rootPath || DEF_API_CONFIG.rootPath },
+        { provide: ApiConfig, useValue: config },
         LoginService
       ]
     };

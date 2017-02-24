@@ -21,8 +21,8 @@ export class CommonsModule {
     return {
       ngModule: CommonsModule,
       providers: [
-        // { provide: AuthServiceConfig, useValue: config.authService || DEF_CONFIG.authService },
-        // { provide: AuthGuardConfig, useValue: config.authGuard || DEF_CONFIG.authGuard },
+        { provide: AuthServiceConfig, useValue: config.authService || DEF_CONFIG.authService },
+        { provide: AuthGuardConfig, useValue: config.authGuard || DEF_CONFIG.authGuard },
         AuthService,
         AuthGuard
       ]
