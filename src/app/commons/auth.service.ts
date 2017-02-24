@@ -9,8 +9,7 @@ const PERMS_GET = function(userProfile) { return userProfile ? userProfile.permi
  * Configuration class for authentication service.
  */
 export class AuthServiceConfig {
-  tokenKey = TOKEN_KEY;
-  permissionsGetter = PERMS_GET;
+  constructor(public tokenKey = TOKEN_KEY, public permissionsGetter = PERMS_GET) { }
 }
 
 /**
@@ -91,7 +90,7 @@ export class AuthService {
    *
    * @return {Object} The user profile contained in the authentication token or null if no token is present.
    */
-  userProfile() {
+  userProfile(): any {
     const token = this.token(),
       profile = token ? jwt_decode(token) : null;
     return profile;

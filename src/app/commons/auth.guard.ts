@@ -9,7 +9,7 @@ const LOGIN_ROUTE = '/login';
  * Configuration class for authentication guard.
  */
 export class AuthGuardConfig {
-  loginRoute = LOGIN_ROUTE;
+  constructor(public loginRoute = LOGIN_ROUTE) { }
 }
 
 /**

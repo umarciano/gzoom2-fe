@@ -4,6 +4,11 @@ import { CommonModule } from '@angular/common';
 import { AuthService, AuthServiceConfig } from './auth.service';
 import { AuthGuard, AuthGuardConfig } from './auth.guard';
 
+export interface CommonsConfig {
+  authService: AuthServiceConfig;
+  authGuard: AuthGuardConfig;
+}
+
 @NgModule({
   imports: [CommonModule],
   declarations: [],
@@ -11,12 +16,12 @@ import { AuthGuard, AuthGuardConfig } from './auth.guard';
 })
 export class CommonsModule {
 
-  static forRoot(asc: AuthServiceConfig, agc: AuthGuardConfig): ModuleWithProviders {
+  static forRoot(config: CommonsConfig): ModuleWithProviders {
     return {
       ngModule: CommonsModule,
       providers: [
-        { provide: AuthService, useValue: asc },
-        { provide: AuthGuard, useValue: agc }
+        { provide: AuthService, useValue: config.authService },
+        { provide: AuthGuard, useValue: config.authGuard }
       ]
     };
   }

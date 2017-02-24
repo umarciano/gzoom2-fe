@@ -4,8 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { CommonsModule } from './commons/commons.module';
-import { AppRoutingModule } from './app-routing.module';
 import { ApiModule } from './api/api.module';
+import { LoginModule } from './view/login/login.module';
+import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -17,12 +18,24 @@ import { HeroService } from './hero.service';
 
 @NgModule({
   imports: [
+    // angular modules
     BrowserModule,
     FormsModule,
     HttpModule,
+    // application modules
+    // > libraries
     CommonsModule,
-    AppRoutingModule,
-    ApiModule
+    /*
+    .forRoot({
+      authService: { tokenKey: 'xxx-auth-token', permissionsGetter: null },
+      authGuard: { loginRoute: 'xxx' }
+    })
+     */
+    ApiModule,
+    // > views
+    LoginModule,
+    // > routes
+    AppRoutingModule
   ],
   declarations: [
     AppComponent,

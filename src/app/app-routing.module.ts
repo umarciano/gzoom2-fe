@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CommonsModule } from './commons/commons.module';
-import { LoginModule } from './view/login/login.module';
 
 import { AuthGuard } from './commons/auth.guard';
 
@@ -20,8 +18,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    CommonsModule,
-    LoginModule,
     RouterModule.forRoot(routes)
   ],
   exports: [RouterModule]
