@@ -5,8 +5,8 @@ import { AuthService, AuthServiceConfig } from './auth.service';
 import { AuthGuard, AuthGuardConfig } from './auth.guard';
 
 export interface CommonsConfig {
-  authService: AuthServiceConfig;
-  authGuard: AuthGuardConfig;
+  authService?: AuthServiceConfig;
+  authGuard?: AuthGuardConfig;
 }
 
 @NgModule({
@@ -16,12 +16,13 @@ export interface CommonsConfig {
 })
 export class CommonsModule {
 
-  static forRoot(config: CommonsConfig): ModuleWithProviders {
+  // don't use it yet
+  static forRoot({authService, authGuard}: CommonsConfig): ModuleWithProviders {
     return {
       ngModule: CommonsModule,
       providers: [
-        { provide: AuthService, useValue: config.authService },
-        { provide: AuthGuard, useValue: config.authGuard }
+        { provide: AuthService, useValue: authService },
+        { provide: AuthGuard, useValue: authGuard }
       ]
     };
   }

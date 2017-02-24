@@ -25,12 +25,6 @@ import { HeroService } from './hero.service';
     // application modules
     // > libraries
     CommonsModule,
-    /*
-    .forRoot({
-      authService: { tokenKey: 'xxx-auth-token', permissionsGetter: null },
-      authGuard: { loginRoute: 'xxx' }
-    })
-     */
     ApiModule,
     // > views
     LoginModule,
