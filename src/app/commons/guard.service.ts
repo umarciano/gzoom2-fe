@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
   constructor(
     @Optional() config: AuthGuardConfig,
     private router: Router,
-    private auth: AuthService) {
+    private authService: AuthService) {
     if (config) {
       if (config.loginRoute) {
         this.loginRoute = config.loginRoute;
@@ -34,13 +34,18 @@ export class AuthGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (this.auth.isLoggedIn()) {
+    if (this.authService.isLoggedIn()) {
       return true;
     }
 
     // not logged in so redirect to login page with the return url
-    this.auth.lockout();
-    this.router.navigate([this.loginRoute], { queryParams: { returnUrl: state.url } });
+    this.exit(state.url);
     return false;
+  }
+
+  exit(url?: string) {
+    const extras = url ? { queryParams: { returnUrl: url } } : undefined;
+    this.authService.lockout();
+    this.router.navigate([this.loginRoute], extras);
   }
 }

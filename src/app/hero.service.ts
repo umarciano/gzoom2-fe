@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 
+
+import { ApiClientService } from './api/client.service';
 import { Hero } from './hero';
 
 import 'rxjs/add/operator/toPromise';
@@ -11,12 +13,12 @@ const HEADERS = new Headers({ 'Content-Type': 'application/json' });
 @Injectable()
 export class HeroService {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private client: ApiClientService) { }
 
   getHeroes(): Promise<Hero[]> {
-    return this.http.get(HEROES_URL)
+    return this.client.get(HEROES_URL)
       .toPromise()
-      .then(response => response.json().results as Hero[])
+      .then(json => json.results as Hero[])
       .catch(this.handleError);
   }
 

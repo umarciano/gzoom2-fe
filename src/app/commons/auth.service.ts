@@ -57,16 +57,6 @@ export class AuthService {
   }
 
   /**
-     * Creates the value for the Authorization header.
-     *
-     * @param token {String} The token
-     * @return {String} The Authorization header value
-     */
-  header(token) {
-    return 'Bearer ' + token;
-  }
-
-  /**
    * Removes any trace of tokens.
    */
   lockout() {

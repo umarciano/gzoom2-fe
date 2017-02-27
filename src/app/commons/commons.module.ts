@@ -2,7 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AuthService, AuthServiceConfig, DEF_AUTH_SERVICE_CONFIG } from './auth.service';
-import { AuthGuard, AuthGuardConfig, DEF_AUTH_GUARD_CONFIG } from './auth.guard';
+import { AuthGuard, AuthGuardConfig, DEF_AUTH_GUARD_CONFIG } from './guard.service';
 
 export class CommonsConfig {
   authService: AuthServiceConfig = DEF_AUTH_SERVICE_CONFIG;

@@ -8,4 +8,4 @@ export class ApiConfig {
   readonly rootPath: string = DEF_API_ROOT_PATH;
 }
 
-export const DEF_API_CONFIG : ApiConfig = new ApiConfig();
+export const DEF_API_CONFIG: ApiConfig = new ApiConfig();

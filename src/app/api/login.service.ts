@@ -13,7 +13,7 @@ export class LoginService {
   private readonly loginUrl: string;
   private readonly logoutUrl: string;
 
-  constructor(private http: Http, apiConfig: ApiConfig) {
+  constructor(private http: Http, private apiConfig: ApiConfig) {
     this.loginUrl = `${apiConfig.rootPath}/${LOGIN_ENDPOINT}`;
     this.logoutUrl = `${apiConfig.rootPath}/${LOGOUT_ENDPOINT}`;
   }

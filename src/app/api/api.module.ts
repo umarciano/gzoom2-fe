@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { ApiConfig, DEF_API_CONFIG } from './api-config';
 
 // api services
+import { ApiClientService } from './client.service';
 import { LoginService } from './login.service';
 
 @NgModule({
@@ -28,7 +29,8 @@ export class ApiModule {
       ngModule: ApiModule,
       providers: [
         { provide: ApiConfig, useValue: config },
-        LoginService
+        LoginService,
+        ApiClientService
       ]
     };
   }
