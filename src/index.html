@@ -1,14 +1,49 @@
 <!doctype html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>Test1</title>
   <base href="/">
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    .loading {
+      opacity: 0;
+      transition: opacity .8s ease-in-out;
+      position: fixed;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      background: #e1e7e9;
+      z-index: -1;
+    }
+
+    .loading .logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -75px;
+      margin-left: -75px;
+      width: 150px;
+      height: 150px;
+      background-repeat: no-repeat;
+      background-image: url(data:image/gif;base64,R0lGODlhlgCWAPYAAKXMXabMXKbMXaXMXqTMX57KaZvKb5zKbZjJc5TIepHIf6PLYKLLYqHLZKDLZX7En3zDonjDqG/Bt23AumrAv3LBsQCb2AGb2AKb2AKc2AOc2ASc2AWc2Aed2Qid2Qqd2Qqe2Q2e2Q+f2RGf2hKg2hah2hih2hqi2xyi2x6i2yCj2yGj2yOk2yWk3Cel3Cil3Cum3Cym3C2m3C6n3DCn3TGn3TKo3TOo3TSo3TWo3TWp3Tap3jeq3jiq3jir3jqs3zus3zut3z2t3z6u4F+90Vy91lq92Vq82li83Fi83Wa/xmO+y2G+zUCv4EGw4EKx4USy4Uaz4ke04ki04km140u240y3402340645E+55FW74lS741a84FC55FG65FG65VK65VO75VS75I/HgozHh4rGiofGkILFl4LFmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAGkAIf4RQ3JlYXRlZCB3aXRoIEdJTVAALAAAAACWAJYAAAf+gGmCg4SFhoeIiYqLjI2Oj5CRkpOUjRaVmJmam5yGFp+doaKjpJ+mpKipqo6mp6uvsKmtrbG1tpmzs7e7vIy5ub3BwoK/wMPHtcW/yMyqysXN0aHPytLWuNTQ19uQ2c/c4Ive1OHlhePZ5ubo3urh7O3u1/Dj8tL06PbM+Oz6x/z9/PUCCE/gLoL0DCZDmFDhKob8HDqDiE9iKYoRLXbCSFDjJo4IPWIDCVAkJZIMTUZCCVElK5YtXYqDGVPmIZoYbXrCmVMnMZ4cfaYBilHDCqFEIZrAgQNpUoAhbjBt6vMpvg8ypE51anWchhZTw3LtSg1F2LNjyc7SoIGE1rP+W6uq/fVhxo23cKnqnDtrw4u8edOqXQEYsGCrJfAWFivXqgYLIWosLnyYp18ciifH3ftUAwvNkyuzNAs6dGOcIySXNs2ZJtbVoEVDvAw79mmQKWqvlt1R925UeoeRHOS7dKrNwYISKm6bFNrkFA0x13wc7sCUh6azHmX4YMdE2hdX776w4qLwlIFvf2j+PPrA6qm/atjoPXznxtnXg2Tfevz8qOwXSX/P4VdbgORQQiBjBuo2SoIKLsjUeL6JUk0mEk74X3EbGaNJhsGJ8t5HtHQCIoXhjXRJKCduiF4loHCXIYojRtNigwQ2A2IAAeBYo44Z8iiAACLmKM2OPAb+QKSJ9m2DZJJDcvLjNU8mmeSH2pVTpZVCYjKdOltyyWMlzLkTpphKTlKhPGeiOSZ/sPnTppsC9OjIb3IG6eaeddbXXJ4S7ilomu6J59Ccg3YJXnoSIZqokktKd59Fjj6q6HL+eVSppYQSx6BIm3L6ZhrImRSqqGOGqNKpnAIAwBlh+MSqpQoYEcatsco066AHLIHrr7rqiaqYAjAgwa/I3rqqsMNC+cAWyUabq0a7ckkGEtJmO+2hzKKKABHahktpt48K4AAF4aarrEKhDqlkBGKoK++29pwqgBlczKsvvWCS62YCRewrsD6VFqCEwAiv22+gdBJQQcIQKxxOmwL+nAFtxBhryayrAYxxBMYg4wrOlgcwEfLJEh8ZJAABMDAByjCnzEyGNQQAAAQx5yzzMCCWkYTOQPMbjIRSxBu0zja+V0MNQ4Rh9NEwW2Nf009DfbKTuqkWFhZVWw3yyLrlkMNUU3gd88RZi/1E12ZHbI5vTN/KdtsDL6zZ0jn0gAXdIddbGtNU8N2334XVMDYOUAj+NaCF5dC04m4bNBkQXEOecKOA9UDF3JarO+5Ud+EgReeXU3vWE06Tvq+pUw2xt+r6usRUD1bAHruuZds+r0667y5UGr1r+3shwSM7/CHF73y8IL0vz4jqzj8CefSS0E09JWZfj8nR2m+Sc/cgoVwNviiLjz9K6eancnv6r6TLvi3Cv39LsvIHo7w/gQAAOw==);
+    }
+
+    app-root:empty+.loading {
+      opacity: 1;
+      z-index: 100;
+    }
+  </style>
 </head>
+
 <body>
-  <app-root>Loading...</app-root>
+  <app-root></app-root>
+  <div class="loading">
+    <div class="logo"></div>
+  </div>
 </body>
+
 </html>

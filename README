@@ -10,3 +10,7 @@ Le possibilità sono:
     "module": "es6",
     "lib": ["es6", "dom"],
 
+Per creare una immagine inline, fare upload qui e copiare il risultato in url():
+http://jpillora.com/base64-encoder/
+
+
