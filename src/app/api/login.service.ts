@@ -10,8 +10,8 @@ const LOGOUT_ENDPOINT = 'logout';
 
 @Injectable()
 export class LoginService {
-  private loginUrl: string;
-  private logoutUrl: string;
+  private readonly loginUrl: string;
+  private readonly logoutUrl: string;
 
   constructor(private http: Http, apiConfig: ApiConfig) {
     this.loginUrl = `${apiConfig.rootPath}/${LOGIN_ENDPOINT}`;
