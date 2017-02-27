@@ -188,5 +188,18 @@ app.put('/rest/account/password', function(req, res) {
   }, _.random(200, 1000));
 });
 
+app.get('/rest/heroes', function(req, res) {
+  var hh = data.heroes(),
+      unauth = trueOrFalse(1, 5);
+  log.debug('Looking up heroes', {unauthorized: unauth});
+  setTimeout(function() {
+    if (unauth) {
+      res.json(401, {message: 'Invalid username or password'});
+    } else {
+      res.json({ results: hh, total: 100 });
+    }
+  }, _.random(200, 1000));
+});
+
 app.listen(PORT);
 log.info("Server started: http://localhost:" + PORT);
