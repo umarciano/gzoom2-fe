@@ -55,7 +55,7 @@ export class I18NService {
     return matches ? matches[1] : text;
   }
 
-  constructor(private config: I18NConfig) {
+  constructor(private readonly config: I18NConfig) {
     this._t = config.localizations.translations;
     this._f = config.localizations.formats;
   }
@@ -63,33 +63,20 @@ export class I18NService {
   /**
    * Translates a label.
    *
-   * @param text {String} The input label, possibly including format placeholders and an
+   * @param {String} text The input label, possibly including format placeholders and an
    *                      optional suffix to better identify the context.
    *                      Placeholders have the following format:
    *                          {n} where n is a 0-based index of the value argument
    *                      Suffix has the following format:
    *                          __{letters} where letters are alpha-numeric characters
-   * @param * {Object} The remaining parameters are used in value substitution of placeholders
+   * @param {any} args The remaining parameters are used in value substitution of placeholders
    * @returns {string} The localized string, with placeholders substituted by input values eventually
    */
-  translate(text: string) {
+  translate(text: string, ...args: any[]) {
     const text2 = text.replace(NEW_LINES_RE, ' '); // sanity fix
     const trans = this._t[text2];
     const fmt = !isBlank(trans) ? trans : I18NService.removeSuffix(text2);
-    const args_len = arguments.length;
-    const args = [fmt];
-
-    // workaround for Chrome, don't use Array.prototype.slice.call(arguments,1)
-    // or it will give birth to memory leakages
-    // https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments
-    // http://www.reddit.com/r/javascript/comments/2eppid/fastest_way_to_slice_arguments_in_javascript/
-    if (args_len > 1) {
-      for (let i = 1; i < args_len; i++) {
-        args.push(arguments[i]);
-      }
-    }
-
-    return format.apply(null, args);
+    return format(fmt, ...args);
   }
 
   /**

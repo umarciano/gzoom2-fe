@@ -7,6 +7,8 @@ import { AuthService, AuthServiceConfig } from './auth.service';
 import { AuthGuard, AuthGuardConfig } from './guard.service';
 import { I18NService, I18NConfig, load } from './i18n.service';
 
+import { I18NPipe } from './i18n.pipe';
+
 export class CommonsConfig {
   readonly authService: AuthServiceConfig = new AuthServiceConfig();
   readonly authGuard: AuthGuardConfig = new AuthGuardConfig();
@@ -17,7 +19,8 @@ const DEF_CONFIG = new CommonsConfig();
 
 @NgModule({
   imports: [CommonModule],
-  declarations: []
+  declarations: [I18NPipe],
+  exports: [I18NPipe]
 })
 export class CommonsModule {
 

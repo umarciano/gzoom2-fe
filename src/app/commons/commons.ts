@@ -155,12 +155,12 @@ export function hasElements(a) {
  * Formats a string using the placeholders {n}.
  *
  * @param {string} fmt The format string
+ * @param {any} args Additional parameters
  * @returns {string} The formatted string
  */
-export function format(fmt: string): string {
-  const args = arguments;
+export function format(fmt: string, ...args: any[]): string {
   return fmt.replace(/\{(\d+)\}/g, function(match, capture) {
-    const val = args[parseInt(capture, 10) + 1];
+    const val = args[parseInt(capture, 10)];
     return val !== undefined ? val : match;
   });
 }
