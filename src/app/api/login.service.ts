@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
-import { HTTP_HEADERS, ApiConfig } from './api-config';
+import { ApiConfig } from './api-config';
 
 import 'rxjs/add/operator/toPromise';
 
 const LOGIN_ENDPOINT = 'login';
 const LOGOUT_ENDPOINT = 'logout';
+const HTTP_HEADERS = new Headers({ 'Content-Type': 'application/json' });
 
 @Injectable()
 export class LoginService {

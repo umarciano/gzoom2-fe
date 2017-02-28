@@ -12,9 +12,6 @@ export class AuthGuardConfig {
   readonly loginRoute = LOGIN_ROUTE;
 }
 
-export const DEF_AUTH_GUARD_CONFIG = new AuthGuardConfig();
-
-
 /**
  * Authentication guard.
  */

@@ -13,8 +13,6 @@ export class AuthServiceConfig {
   readonly permissionsGetter = PERMS_GET;
 }
 
-export const DEF_AUTH_SERVICE_CONFIG = new AuthServiceConfig();
-
 /**
  * The authentication service.
  */

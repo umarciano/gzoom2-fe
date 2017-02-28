@@ -53,8 +53,8 @@ export class ApiClientService {
       .catch(this.onAuthError(this));
   }
 
-  // put(url: string, body: any, options?: RequestOptionsArgs): Observable<Response> { }
-  // delete(url: string, options?: RequestOptionsArgs): Observable<Response> { }
+  // TODO put(url: string, body: any, options?: RequestOptionsArgs): Observable<Response> { }
+  // TODO delete(url: string, options?: RequestOptionsArgs): Observable<Response> { }
 
   private makeOptions(options?: RequestOptionsArgs, hasBody = false): RequestOptions {
     const opts = new RequestOptions(options || {});

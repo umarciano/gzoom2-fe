@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
 
 // module config
-import { ApiConfig, DEF_API_CONFIG } from './api-config';
+import { ApiConfig } from './api-config';
 
 // api services
 import { ApiClientService } from './client.service';
 import { LoginService } from './login.service';
+
+const DEF_API_CONFIG = new ApiConfig();
 
 @NgModule({
   imports: [
@@ -21,8 +23,8 @@ export class ApiModule {
   /**
    * Configures the ApiModule.
    *
-   * @param  {ApiConfig = DEF_API_CONFIG} config Module configuration
-   * @return {ModuleWithProviders}   The module with the providers
+   * @param  {ApiConfig} config Module configuration
+   * @return {ModuleWithProviders} The module with the providers
    */
   static forRoot(config: ApiConfig = DEF_API_CONFIG): ModuleWithProviders {
     return {
