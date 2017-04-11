@@ -9,13 +9,11 @@ import { I18NService, I18NConfig, load } from './i18n.service';
 
 import { I18NPipe } from './i18n.pipe';
 
-export class CommonsConfig {
-  readonly authService: AuthServiceConfig = new AuthServiceConfig();
-  readonly authGuard: AuthGuardConfig = new AuthGuardConfig();
-  readonly i18n: I18NConfig = new I18NConfig();
+export interface CommonsConfig {
+  authService?: AuthServiceConfig;
+  authGuard?: AuthGuardConfig;
+  i18n: I18NConfig; /* this is mandatory and must be configured */
 }
-
-const DEF_CONFIG = new CommonsConfig();
 
 @NgModule({
   imports: [CommonModule],
@@ -24,13 +22,19 @@ const DEF_CONFIG = new CommonsConfig();
 })
 export class CommonsModule {
 
-  static forRoot(config: CommonsConfig = DEF_CONFIG): ModuleWithProviders {
+  /**
+  * Configures the CommonsModule.
+  *
+  * @param  {CommonsConfig} config Module configuration
+  * @return {ModuleWithProviders} The module with the providers
+  */
+  static forRoot(config: CommonsConfig): ModuleWithProviders {
     return {
       ngModule: CommonsModule,
       providers: [
-        { provide: AuthServiceConfig, useValue: config.authService || DEF_CONFIG.authService },
-        { provide: AuthGuardConfig, useValue: config.authGuard || DEF_CONFIG.authGuard },
-        { provide: I18NConfig, useValue: config.i18n || DEF_CONFIG.i18n },
+        { provide: AuthServiceConfig, useValue: config.authService },
+        { provide: AuthGuardConfig, useValue: config.authGuard },
+        { provide: I18NConfig, useValue: config.i18n },
         { provide: APP_INITIALIZER, useFactory: load, deps: [Http, I18NConfig], multi: true },
         AuthService,
         AuthGuard,
@@ -38,5 +42,4 @@ export class CommonsModule {
       ]
     };
   }
-
 }

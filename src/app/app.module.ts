@@ -16,6 +16,8 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
 
 import { HeroService } from './hero.service';
 
+const ROOT_PATH = '../rest';
+
 @NgModule({
   imports: [
     // angular modules
@@ -24,8 +26,8 @@ import { HeroService } from './hero.service';
     HttpModule,
     // application modules
     // > libraries
-    CommonsModule.forRoot(),
-    ApiModule.forRoot(),
+    CommonsModule.forRoot({ i18n: { rootPath: ROOT_PATH } }),
+    ApiModule.forRoot({ rootPath: ROOT_PATH }),
     // > views
     LoginModule,
     // > routes

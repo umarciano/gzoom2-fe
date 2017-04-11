@@ -12,8 +12,8 @@ interface Localizations {
 }
 
 export class I18NConfig {
-  readonly rootPath = '../rest'; // FIXME this is a duplicate of api-config.ts
-  localizations: Localizations;
+  rootPath: string;
+  localizations?: Localizations;
 }
 
 /**
@@ -25,7 +25,7 @@ export class I18NConfig {
  * @param  {I18NConfig} config I18N (partial configuration)
  * @return {function} A function that loads the localization data
  */
-export function load(http: Http, config: I18NConfig) {
+export function load(http: Http, config: I18NConfig): () => Promise<boolean> {
   return () => http
     .get(`${config.rootPath}/profile/i18n`)
     .toPromise()

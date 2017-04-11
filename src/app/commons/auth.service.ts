@@ -9,8 +9,8 @@ const PERMS_GET = function(userProfile) { return userProfile ? userProfile.permi
  * Configuration class for authentication service.
  */
 export class AuthServiceConfig {
-  readonly tokenKey = TOKEN_KEY;
-  readonly permissionsGetter = PERMS_GET;
+  tokenKey?: string;
+  permissionsGetter?: (any) => number;
 }
 
 /**

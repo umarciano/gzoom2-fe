@@ -9,7 +9,7 @@ const LOGIN_ROUTE = '/login';
  * Configuration class for authentication guard.
  */
 export class AuthGuardConfig {
-  readonly loginRoute = LOGIN_ROUTE;
+  loginRoute?: string;
 }
 
 /**

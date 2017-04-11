@@ -9,8 +9,6 @@ import { ApiConfig } from './api-config';
 import { ApiClientService } from './client.service';
 import { LoginService } from './login.service';
 
-const DEF_API_CONFIG = new ApiConfig();
-
 @NgModule({
   imports: [
     CommonModule,
@@ -21,12 +19,12 @@ const DEF_API_CONFIG = new ApiConfig();
 export class ApiModule {
 
   /**
-   * Configures the ApiModule.
-   *
-   * @param  {ApiConfig} config Module configuration
-   * @return {ModuleWithProviders} The module with the providers
-   */
-  static forRoot(config: ApiConfig = DEF_API_CONFIG): ModuleWithProviders {
+  * Configures the ApiModule.
+  *
+  * @param  {ApiConfig} config Module configuration
+  * @return {ModuleWithProviders} The module with the providers
+  */
+  static forRoot(config: ApiConfig): ModuleWithProviders {
     return {
       ngModule: ApiModule,
       providers: [
