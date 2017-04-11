@@ -34,7 +34,8 @@ export function load(http: Http, config: I18NConfig): () => Promise<boolean> {
       return true;
     })
     .catch(err => {
-      console.log('No way to get the localization data', err);
+      console.error('No way to get the localization data', err);
+      config.localizations = { translations: {}, formats: {} };
       return true;
     });
 }
@@ -101,5 +102,5 @@ export class I18NService {
   dateShortFormat(defFmt) {
     const f: string = this._f['date-short'] as string;
     return !isBlank(f) ? f : defFmt;
-  }
+}
 }
