@@ -16,7 +16,7 @@ export class HeroService {
   constructor(private http: Http, private client: ApiClientService) { }
 
   getHeroes(): Promise<Hero[]> {
-    return this.client.get(HEROES_URL)
+    return this.client.get('heroes')
       .toPromise()
       .then(json => json.results as Hero[])
       .catch(this.handleError);

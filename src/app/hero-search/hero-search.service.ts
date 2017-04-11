@@ -17,7 +17,7 @@ export class HeroSearchService {
     params.append('name', term);
 
     return this.client
-      .get('rest/heroes', {search: params})
+      .get('heroes', {search: params})
       .map(json => json.results as Hero[]);
   }
 

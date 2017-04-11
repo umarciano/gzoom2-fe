@@ -394,3 +394,35 @@ export function noArgs(func: (...args: any[]) => any): () => any {
 export function weekDay(n) {
   return moment().day((n + 1) % 7).format('dddd');
 }
+
+/**
+ * Removes a character from the head of a string.
+ *
+ * @param  {string} str  The target string
+ * @param  {string} char The single character
+ * @return {string}      The beheaded string
+ */
+export function behead(str: string, char: string): string {
+  let s = str;
+  let i = -1;
+  while (s && s[0] === char) {
+    s = s.slice(1);
+  }
+  return s;
+}
+
+/**
+ * Removes a character from the tail of a string.
+ *
+ * @param  {string} str  The target string
+ * @param  {string} char The single character
+ * @return {string}      The modified string
+ */
+export function untail(str: string, char: string): string {
+  let s = str;
+  let i = -1;
+  while (s && s[s.length - 1] === char) {
+    s = s.substr(0, s.length - 1);
+  }
+  return s;
+}

@@ -13,6 +13,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
+import { ApiConfig } from './api-config';
+import { behead, untail } from '../commons/commons';
 import { AuthService } from '../commons/auth.service';
 import { AuthGuard } from '../commons/guard.service';
 
@@ -26,12 +28,18 @@ export class ApiClientService {
     private http: Http,
     private router: Router,
     private authService: AuthService,
-    private authGuard: AuthGuard) { }
+    private authGuard: AuthGuard,
+    private apiConfig: ApiConfig) { }
 
   /**
    * Performs an HTTP GET call.
+   *
+   * @param  {string}             path    The path relative to ApiConfig.rootPath
+   * @param  {RequestOptionsArgs} options Additional options
+   * @return {Observable<any>}            An Observable of the outcome
    */
-  get(url: string, options?: RequestOptionsArgs): Observable<any> {
+  get(path: string, options?: RequestOptionsArgs): Observable<any> {
+    const url = this.makeUrl(path);
     const opts = this.makeOptions(options);
 
     return this.http
@@ -42,8 +50,15 @@ export class ApiClientService {
 
   /**
    * Performs an HTTP POST call.
+   *
+   * @param  {string}             path    The path relative to ApiConfig.rootPath
+   * @param  {any}                body    Any value that will be converted to a JSON string and
+   *                                      sent as the HTTP message body.
+   * @param  {RequestOptionsArgs} options Additional options
+   * @return {Observable<any>}            An Observable of the outcome
    */
-  post(url: string, body: any, options?: RequestOptionsArgs): Observable<any> {
+  post(path: string, body: any, options?: RequestOptionsArgs): Observable<any> {
+    const url = this.makeUrl(path);
     const opts = this.makeOptions(options, true);
     const msg = (typeof body === 'string') ? body : JSON.stringify(body);
 
@@ -64,6 +79,12 @@ export class ApiClientService {
       this.addJsonHeader(opts.headers);
     }
     return opts;
+  }
+
+  private makeUrl(path: string): string {
+    const rootUrl = untail(this.apiConfig.rootPath, '/');
+    const relUrl = behead(path, '/');
+    return rootUrl + '/' + relUrl;
   }
 
   /**

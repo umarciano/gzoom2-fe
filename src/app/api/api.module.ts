@@ -2,6 +2,8 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
 
+import { CommonsModule } from '../commons/commons.module';
+
 // module config
 import { ApiConfig } from './api-config';
 
@@ -12,7 +14,8 @@ import { LoginService } from './login.service';
 @NgModule({
   imports: [
     CommonModule,
-    HttpModule
+    HttpModule,
+    CommonsModule
   ],
   declarations: []
 })
