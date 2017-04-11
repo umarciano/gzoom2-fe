@@ -16,3 +16,16 @@ http://jpillora.com/base64-encoder/
 RxJs lessons: https://egghead.io/lessons/rxjs-rxjs-observables-vs-promises
 
 Wrap a jquery plugin: http://www.radzen.com/blog/jquery-plugins-and-angular/
+
+Per usare i typings di altre librerie:
+  import * as _ from "lodash";
+  import * as $ from "jquery";
+Come documentato qui: http://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html
+
+Quando si integra un plugin di jquery bisogna ampliare l'interfaccia di jquery come descritto qui:
+https://medium.com/@NetanelBasal/typescript-integrate-jquery-plugin-in-your-project-e28c6887d8dc
+In pratica basta ri-dichiare in typings.d.ts la nuova interfaccia con il metodo aggiuntivo, ad
+esempio:
+    interface JQuery {
+     daterangepicker(options?: any, callback?: Function) : any;
+    }
