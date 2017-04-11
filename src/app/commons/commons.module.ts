@@ -1,7 +1,6 @@
 import { NgModule, ModuleWithProviders, APP_INITIALIZER } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { Http } from '@angular/http';
+import { HttpModule, Http } from '@angular/http';
 
 import { AuthService, AuthServiceConfig } from './auth.service';
 import { AuthGuard, AuthGuardConfig } from './guard.service';
@@ -16,7 +15,7 @@ export interface CommonsConfig {
 }
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [CommonModule, HttpModule],
   declarations: [I18NPipe],
   exports: [I18NPipe]
 })
