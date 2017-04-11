@@ -29,3 +29,9 @@ esempio:
     interface JQuery {
      daterangepicker(options?: any, callback?: Function) : any;
     }
+
+
+Problemi vari con AOT:
+  1. https://github.com/rangle/angular-2-aot-sandbox#aot-dos-and-donts
+  2. https://medium.com/@isaacplmann/making-your-angular-2-library-statically-analyzable-for-aot-e1c6f3ebedd5
+  3.
