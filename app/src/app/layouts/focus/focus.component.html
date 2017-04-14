@@ -1,0 +1,24 @@
+<div class="focuslayout focuslayout-header">
+  <div class="container" role="main">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+
+        <div class="focuslayout-container inverted-colors ng-cloak">
+          <!-- Content here -->
+          <router-outlet></router-outlet>
+
+          <!-- Footer -->
+          <div class="focuslayout-footer">
+            <div class="pull-left">
+              <strong>{{'Copyright'|i18n}}</strong> Maps Spa &copy; <span from-year="2017"></span>
+            </div>
+            <div class="pull-right">
+              <strong app-name></strong> v. <span app-version></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

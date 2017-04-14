@@ -1,0 +1,19 @@
+<nav id="topbar">
+  <a href="#" id="menu-button" (click)="toggleMenu($event)" [ngClass]="{'active':mobileMenuActive}">
+    <img alt="logo" src="showcase/resources/images/menuicon.svg" />
+  </a>
+
+  <a href="#" class="topbar-link">
+    <img alt="mockosx" src="showcase/resources/images/community.svg" />
+    <span>Forum</span>
+  </a>
+
+  <a href="#" class="topbar-link" [routerLink]="['/setup']">
+    <img alt="mockosx" src="showcase/resources/images/setup.svg" />
+    <span>Setup</span>
+  </a>
+
+  <div class="mobile-logo">
+    <img src="showcase/resources/images/primeng-sidebar.svg" />
+  </div>
+</nav>
