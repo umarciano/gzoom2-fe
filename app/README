@@ -1,0 +1,37 @@
+In tsconfig.json bisogna indicare il target JS.
+Inizialmente era impostato ES6 ma non è ancora supportato da tutti i browser nonostante i polyfills.
+
+Le possibilità sono:
+* target es5
+    "module": "commonjs",
+    "lib": ["es2015", "dom"],
+
+* target es6
+    "module": "es6",
+    "lib": ["es6", "dom"],
+
+Per creare una immagine inline, fare upload qui e copiare il risultato in url():
+http://jpillora.com/base64-encoder/
+
+RxJs lessons: https://egghead.io/lessons/rxjs-rxjs-observables-vs-promises
+
+Wrap a jquery plugin: http://www.radzen.com/blog/jquery-plugins-and-angular/
+
+Per usare i typings di altre librerie:
+  import * as _ from "lodash";
+  import * as $ from "jquery";
+Come documentato qui: http://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html
+
+Quando si integra un plugin di jquery bisogna ampliare l'interfaccia di jquery come descritto qui:
+https://medium.com/@NetanelBasal/typescript-integrate-jquery-plugin-in-your-project-e28c6887d8dc
+In pratica basta ri-dichiare in typings.d.ts la nuova interfaccia con il metodo aggiuntivo, ad
+esempio:
+    interface JQuery {
+     daterangepicker(options?: any, callback?: Function) : any;
+    }
+
+
+Problemi vari con AOT:
+  1. https://github.com/rangle/angular-2-aot-sandbox#aot-dos-and-donts
+  2. https://medium.com/@isaacplmann/making-your-angular-2-library-statically-analyzable-for-aot-e1c6f3ebedd5
+  3.
