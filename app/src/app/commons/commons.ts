@@ -404,7 +404,6 @@ export function weekDay(n) {
  */
 export function behead(str: string, char: string): string {
   let s = str;
-  let i = -1;
   while (s && s[0] === char) {
     s = s.slice(1);
   }
@@ -420,7 +419,6 @@ export function behead(str: string, char: string): string {
  */
 export function untail(str: string, char: string): string {
   let s = str;
-  let i = -1;
   while (s && s[s.length - 1] === char) {
     s = s.substr(0, s.length - 1);
   }
