@@ -8,7 +8,6 @@ import { HttpModule } from '@angular/http';
 // application modules
 import { CommonsModule } from './commons/commons.module';
 import { ApiModule } from './api/api.module';
-import { LoginModule } from './view/login/login.module';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
@@ -18,10 +17,6 @@ import { HeroDetailComponent } from './hero-detail.component';
 import { HeroSearchComponent } from './hero-search/hero-search.component';
 
 import { HeroService } from './hero.service';
-
-// layouts
-import { ContentComponent } from './layouts/content/content.component';
-import { FocusComponent } from './layouts/focus/focus.component';
 
 // generic components
 import { SidebarComponent } from './layouts/sidebar/sidebar.component';
@@ -40,8 +35,6 @@ const ROOT_PATH = '../rest';
     // > libraries
     CommonsModule.forRoot({ i18n: { rootPath: ROOT_PATH } }),
     ApiModule.forRoot({ rootPath: ROOT_PATH }),
-    // > views and child-routes
-    LoginModule,
     // > routes
     AppRoutingModule
   ],
@@ -50,12 +43,7 @@ const ROOT_PATH = '../rest';
     DashboardComponent,
     HeroesComponent,
     HeroDetailComponent,
-    HeroSearchComponent,
-    // layout and
-    ContentComponent,
-    FocusComponent,
-    SidebarComponent,
-    TopbarComponent
+    HeroSearchComponent
   ],
   providers: [HeroService],
   bootstrap: [AppComponent]

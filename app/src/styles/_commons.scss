@@ -1,0 +1,113 @@
+/*----------------------------------------------------------------------------*/
+/* Variables                                                                  */
+/*----------------------------------------------------------------------------*/
+$commons-sizes: (
+  xxs: 1px,
+  xs: 5px,
+  sm: 10px,
+  md: 20px,
+  lg: 30px,
+  xl: 40px,
+  xxl: 80px
+);
+
+$commons-colors: (
+  light: #E3E3E3
+);
+
+/*----------------------------------------------------------------------------*/
+/* Block positioning                                                          */
+/*----------------------------------------------------------------------------*/
+.block-center {
+  margin: auto;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Margins and paddings                                                       */
+/*----------------------------------------------------------------------------*/
+
+/* paddings */
+.no-p-r { padding-right: 0 !important; }
+.no-p-l { padding-left: 0 !important; }
+.no-p-t { padding-top: 0 !important; }
+.no-p-b { padding-bottom: 0 !important; }
+
+@each $key, $value in $commons-sizes {
+  .p-t-#{$key} { padding-top: $value };
+  .p-r-#{$key} { padding-right: $value };
+  .p-b-#{$key} { padding-bottom: $value };
+  .p-l-#{$key} { padding-left: $value };
+}
+
+/* margins */
+.no-m-r { margin-right: 0 !important; }
+.no-m-l { margin-left: 0 !important; }
+.no-m-t { margin-top: 0 !important; }
+.no-m-b { margin-bottom: 0 !important; }
+
+@each $key, $value in $commons-sizes {
+  .m-t-#{$key} { margin-top: $value };
+  .m-r-#{$key} { margin-right: $value };
+  .m-b-#{$key} { margin-bottom: $value };
+  .m-l-#{$key} { margin-left: $value };
+}
+
+/*----------------------------------------------------------------------------*/
+/* Positioning                                                                */
+/*----------------------------------------------------------------------------*/
+
+.rel { position: relative; }
+.z-5 { z-index: 5; }
+
+.pos-t-l,
+.pos-t-r,
+.pos-b-l,
+.pos-b-r,
+.pos-t-l-sm,
+.pos-t-r-sm,
+.pos-b-l-sm,
+.pos-b-r-sm,
+.pos-t-l-md,
+.pos-t-r-md,
+.pos-b-l-md,
+.pos-b-r-md,
+.pos-t-l-lg,
+.pos-t-r-lg,
+.pos-b-l-lg,
+.pos-b-r-lg {
+  position: absolute;
+}
+
+@each $key, $value in $commons-sizes {
+  .pos-t-l-#{$key}, .pos-t-r-#{$key} { top: $value; }
+  .pos-t-r-#{$key}, .pos-b-r-#{$key} { right: $value; }
+  .pos-b-l-#{$key}, .pos-b-r-#{$key} { bottom: $value; }
+  .pos-t-l-#{$key}, .pos-b-l-#{$key} { left: $value; }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Borders                                                                    */
+/*----------------------------------------------------------------------------*/
+
+.no-borders { border: none !important; }
+.no-b-r { border-right: none !important; }
+.no-b-l { border-left: none !important; }
+.no-b-t { border-top: none !important; }
+.no-b-b { border-bottom: none !important; }
+
+@each $c in (light) {
+  $v: map-get($commons-colors, $c);
+
+  .b-l-#{$c} { border-left: 1px solid $v; }
+  .b-r-#{$c} { border-right: 1px solid $v; }
+  .b-t-#{$c} { border-top: 1px solid $v; }
+  .b-b-#{$c} { border-bottom: 1px solid $v; }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Fonts                                                                      */
+/*----------------------------------------------------------------------------*/
+.fs-12 {
+  font-size: 12px;
+}
