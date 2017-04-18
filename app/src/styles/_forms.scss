@@ -1,0 +1,19 @@
+
+@import "colors";
+
+.form-group.has-error {
+
+  .input-group-addon {
+    border-color: map-get($app-colors, error);
+    background-color: map-get($app-colors, error);
+    color: white;
+  }
+
+  .form-control-label, .form-text {
+    color: map-get($app-colors, error);
+  }
+
+  input, input:focus {
+    border-color: map-get($app-colors, error) !important;
+  }
+}

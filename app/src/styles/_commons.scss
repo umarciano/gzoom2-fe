@@ -11,17 +11,6 @@ $commons-sizes: (
   xxl: 80px
 );
 
-$commons-colors: (
-  light: #E3E3E3
-);
-
-/*----------------------------------------------------------------------------*/
-/* Block positioning                                                          */
-/*----------------------------------------------------------------------------*/
-.block-center {
-  margin: auto;
-}
-
 /*----------------------------------------------------------------------------*/
 /* Margins and paddings                                                       */
 /*----------------------------------------------------------------------------*/
@@ -96,14 +85,13 @@ $commons-colors: (
 .no-b-b { border-bottom: none !important; }
 
 @each $c in (light) {
-  $v: map-get($commons-colors, $c);
+  $v: map-get($app-colors, $c);
 
   .b-l-#{$c} { border-left: 1px solid $v; }
   .b-r-#{$c} { border-right: 1px solid $v; }
   .b-t-#{$c} { border-top: 1px solid $v; }
   .b-b-#{$c} { border-bottom: 1px solid $v; }
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* Fonts                                                                      */
