@@ -15,14 +15,14 @@
     </div>
 
     <div class="form-group" [ngClass]="{ 'has-error': password.dirty &amp;&amp; !password.valid }">
-      <label for="password">{{'Password'|i18n}}</label>
+      <label class="form-control-label" for="password">{{'Password'|i18n}}</label>
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-key"></i></span>
         <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" required />
       </div>
-      <div *ngIf="password.dirty &amp;&amp; !password.valid" class="help-block">
+      <span *ngIf="password.dirty &amp;&amp; !password.valid" class="form-text">
         {{'Password is required'|i18n}}
-      </div>
+      </span>
     </div>
 
     <div class="form-group">

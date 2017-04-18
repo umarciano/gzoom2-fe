@@ -11,10 +11,15 @@
   width: 100%;
   height: 100%;
   z-index: 100;
-  padding-top: 200px;
+  // padding-top: 200px;
   background: transparent url("/assets/images/focuslayout-bg.jpg") no-repeat scroll center center / cover;
   background-size: cover;
   color: white;
+
+  > .container, > .container-fluid,
+  > .container > .row, > .container-fluid > .row {
+    height: 100%;
+  }
 
   .focuslayout-footer {
     color: map-get($app-colors, grey);
