@@ -17,3 +17,49 @@
     border-color: map-get($app-colors, error) !important;
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* Required triangle                                                          */
+/*----------------------------------------------------------------------------*/
+
+$addon-sizes: (
+  xxs: 10px,
+  xs: 20px,
+  sm: 30px,
+  md: 40px,
+  lg: 60px,
+  xl: 80px,
+  xxl: 100px
+);
+
+@mixin required-triangle($left, $color) {
+  display: inline-block;
+  content: "";
+  color: map-get($app-colors, $color);
+  position: absolute;
+  top: 1px;
+  left: $left;
+  z-index: 10;
+  width: 5px;
+  height: 5px;
+  border: 5px solid map-get($app-colors, $color);
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.input-group.required-triangle {
+  position: relative;
+}
+
+.input-group.required-triangle:before {
+  @include required-triangle(1px, error);
+}
+
+@each $key, $value in $addon-sizes {
+  .input-group > .input-group-addon.addon-#{$key} {
+    width: $value;
+  }
+  .input-group.required-triangle.addon-#{$key}:before {
+    @include required-triangle($value + 1px, error);
+  }
+}

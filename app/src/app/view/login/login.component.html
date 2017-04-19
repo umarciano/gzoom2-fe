@@ -5,8 +5,8 @@
 
     <div class="form-group" [ngClass]="{ 'has-error': username.dirty &amp;&amp; !username.valid }">
       <label class="form-control-label" for="username">{{'Username'|i18n}}</label>
-      <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+      <div class="input-group required-triangle addon-md">
+        <span class="input-group-addon addon-md"><i class="fa fa-user"></i></span>
         <input type="text" class="form-control" name="username" [(ngModel)]="model.username" #username="ngModel" required />
       </div>
       <span *ngIf="username.dirty &amp;&amp; !username.valid" class="form-text">
@@ -16,8 +16,8 @@
 
     <div class="form-group" [ngClass]="{ 'has-error': password.dirty &amp;&amp; !password.valid }">
       <label class="form-control-label" for="password">{{'Password'|i18n}}</label>
-      <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+      <div class="input-group required-triangle addon-md">
+        <span class="input-group-addon addon-md"><i class="fa fa-key"></i></span>
         <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" required />
       </div>
       <span *ngIf="password.dirty &amp;&amp; !password.valid" class="form-text">
