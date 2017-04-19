@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { CommonsModule } from '../../commons/commons.module';
 import { ApiModule } from '../../api/api.module';
+import { LayoutModule } from '../../layout/layout.module';
 import { LoginRoutingModule } from './login-routing.module';
 
-import { FocusComponent } from '../../layouts/focus/focus.component';
 import { LoginComponent } from './login.component';
 
 @NgModule({
@@ -15,10 +14,10 @@ import { LoginComponent } from './login.component';
     FormsModule,
     CommonsModule,
     ApiModule,
+    LayoutModule,
     LoginRoutingModule
   ],
   declarations: [
-    FocusComponent,
     LoginComponent
   ]
 })

@@ -18,10 +18,6 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
 
 import { HeroService } from './hero.service';
 
-// generic components
-import { SidebarComponent } from './layouts/sidebar/sidebar.component';
-import { TopbarComponent } from './layouts/topbar/topbar.component';
-
 const ROOT_PATH = '../rest';
 
 @NgModule({
