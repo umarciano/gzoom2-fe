@@ -1,65 +1,49 @@
-<nav id="layout-sidebar">
-    <span class="layout-logo">
-        <a href="#" class="sidebar-logo">
-            <i class="fa fa-bars"></i>
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
+    <ul class="list-group">
+        <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-dashboard"></i>&nbsp;Dashboard
         </a>
-        <a href="#" id="menu-button-mobile">
-            <i class="fa fa-bars"></i>
+        <a [routerLink]="['/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;Charts
         </a>
-    </span>
-
-    <a id="menu_input">
-        <i class="fa fa-bars"></i>
-        <span>Input</span>
-    </a>
-    <div>
-        <a>&#9679; AutoComplete</a>
-        <a>&#9679; Calendar</a>
-        <a>&#9679; Checkbox</a>
-        <a>&#9679; Chips</a>
-        <a>&#9679; Dropdown</a>
-        <a>&#9679; Editor</a>
-        <a>&#9679; InputSwitch</a>
-        <a>&#9679; InputText</a>
-        <a>&#9679; InputTextArea</a>
-        <a>&#9679; Listbox</a>
-        <a>&#9679; Mask</a>
-        <a>&#9679; MultiSelect</a>
-        <a>&#9679; Password</a>
-        <a>&#9679; RadioButton</a>
-        <a>&#9679; Rating</a>
-        <a>&#9679; Slider</a>
-        <a>&#9679; Spinner</a>
-        <a>&#9679; SelectButton</a>
-        <a>&#9679; ToggleButton</a>
-        <a>&#9679; TriStateCheckbox</a>
-    </div>
-
-    <a id="menu_input">
-        <i class="fa fa-bars"></i>
-        <span>Input</span>
-    </a>
-    <div>
-        <a>&#9679; AutoComplete</a>
-        <a>&#9679; Calendar</a>
-        <a>&#9679; Checkbox</a>
-        <a>&#9679; Chips</a>
-        <a>&#9679; Dropdown</a>
-        <a>&#9679; Editor</a>
-        <a>&#9679; InputSwitch</a>
-        <a>&#9679; InputText</a>
-        <a>&#9679; InputTextArea</a>
-        <a>&#9679; Listbox</a>
-        <a>&#9679; Mask</a>
-        <a>&#9679; MultiSelect</a>
-        <a>&#9679; Password</a>
-        <a>&#9679; RadioButton</a>
-        <a>&#9679; Rating</a>
-        <a>&#9679; Slider</a>
-        <a>&#9679; Spinner</a>
-        <a>&#9679; SelectButton</a>
-        <a>&#9679; ToggleButton</a>
-        <a>&#9679; TriStateCheckbox</a>
-    </div>
-
+        <a [routerLink]="['/tables']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-table"></i>&nbsp;Tables
+        </a>
+        <a [routerLink]="['/forms']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-edit"></i>&nbsp;Forms
+        </a>
+        <a [routerLink]="['/bs-element']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-desktop"></i>&nbsp;Bootstrap Elements
+        </a>
+        <a [routerLink]="['/grid']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-wrench"></i>&nbsp;Bootstrap Grid
+        </a>
+        <a [routerLink]="['/components']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-th-list"></i>&nbsp;Component
+        </a>
+        <div class="nested-menu">
+            <a class="list-group-item" (click)="addExpandClass('pages')">
+                <span><i class="fa fa-plus"></i> &nbsp; Menu</span>
+            </a>
+            <li class="nested" [class.expand]="showMenu === 'pages'">
+                <ul class="submenu">
+                    <li>
+                        <a href="javascript:void(0)"><span>Submenu</span></a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)"><span>Submenu</span></a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)"><span>Submenu</span></a>
+                    </li>
+                </ul>
+            </li>
+        </div>
+        <a [routerLink]="['/blank-page']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-file-o"></i>&nbsp;BlankPage
+        </a>
+        <!-- <a class="list-group-item more-themes" href="http://www.strapui.com/" >
+            More Themes
+        </a> -->
+    </ul>
 </nav>
