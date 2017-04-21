@@ -102,5 +102,5 @@ export class I18NService {
   dateShortFormat(defFmt) {
     const f: string = this._f['date-short'] as string;
     return !isBlank(f) ? f : defFmt;
-}
+  }
 }
