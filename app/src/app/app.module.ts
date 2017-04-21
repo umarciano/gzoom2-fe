@@ -29,7 +29,10 @@ const ROOT_PATH = '../rest';
     HttpModule,
     // application modules
     // > libraries
-    CommonsModule.forRoot({ i18n: { rootPath: ROOT_PATH } }),
+    CommonsModule.forRoot({
+      application: { name: 'GZoom', version: '2.0.0' },
+      i18n: { rootPath: ROOT_PATH }
+    }),
     ApiModule.forRoot({ rootPath: ROOT_PATH }),
     // > routes
     AppRoutingModule
