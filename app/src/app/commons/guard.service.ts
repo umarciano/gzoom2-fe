@@ -4,36 +4,21 @@ import {
   CanActivate,
   CanActivateChild,
   ActivatedRouteSnapshot,
-  RouterStateSnapshot } from '@angular/router';
+  RouterStateSnapshot
+} from '@angular/router';
 
 import { AuthService } from '../commons/auth.service';
-
-const LOGIN_ROUTE = '/login';
-
-/**
- * Configuration class for authentication guard.
- */
-export class AuthGuardConfig {
-  loginRoute?: string;
-}
+import { LockoutService } from '../commons/lockout.service';
 
 /**
  * Authentication guard.
  */
 @Injectable()
-export class AuthGuard implements CanActivate {
-  private loginRoute = LOGIN_ROUTE;
+export class AuthGuard implements CanActivate, CanActivateChild {
 
   constructor(
-    @Optional() config: AuthGuardConfig,
-    private router: Router,
-    private authService: AuthService) {
-    if (config) {
-      if (config.loginRoute) {
-        this.loginRoute = config.loginRoute;
-      }
-    }
-  }
+    private readonly authService: AuthService,
+    private readonly lockout: LockoutService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (this.authService.isLoggedIn()) {
@@ -50,8 +35,6 @@ export class AuthGuard implements CanActivate {
   }
 
   exit(url?: string) {
-    const extras = url ? { queryParams: { returnUrl: url } } : undefined;
-    this.authService.lockout();
-    this.router.navigate([this.loginRoute], extras);
+    this.lockout.lockout(url);
   }
 }

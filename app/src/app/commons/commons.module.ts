@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
 
 import { AuthService, AuthServiceConfig } from './auth.service';
-import { AuthGuard, AuthGuardConfig } from './guard.service';
+import { AuthGuard } from './guard.service';
+import { LockoutService, LockoutConfig } from './lockout.service';
 import { I18NService, I18NConfig, load } from './i18n.service';
 import { ApplicationConfig } from './config';
 import { I18NPipe } from './i18n.pipe';
@@ -16,7 +17,7 @@ export interface CommonsConfig {
   application: ApplicationConfig;
   /* optional attributes */
   authService?: AuthServiceConfig;
-  authGuard?: AuthGuardConfig;
+  lockout?: LockoutConfig;
 }
 
 @NgModule({
@@ -51,12 +52,13 @@ export class CommonsModule {
       ngModule: CommonsModule,
       providers: [
         { provide: AuthServiceConfig, useValue: config.authService },
-        { provide: AuthGuardConfig, useValue: config.authGuard },
+        { provide: LockoutConfig, useValue: config.lockout },
         { provide: I18NConfig, useValue: config.i18n },
         { provide: ApplicationConfig, useValue: config.application },
         /* next line loads the i18n configuration from server during bootstrap */
         { provide: APP_INITIALIZER, useFactory: load, deps: [Http, I18NConfig], multi: true },
         AuthService,
+        LockoutService,
         AuthGuard,
         I18NService
       ]

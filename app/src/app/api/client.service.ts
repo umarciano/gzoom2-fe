@@ -16,7 +16,7 @@ import 'rxjs/add/observable/throw';
 import { ApiConfig } from './api-config';
 import { behead, untail } from '../commons/commons';
 import { AuthService } from '../commons/auth.service';
-import { AuthGuard } from '../commons/guard.service';
+import { LockoutService } from '../commons/lockout.service';
 
 /**
  * A client that performs athenticated requests and exchanges JSON data.
@@ -28,7 +28,7 @@ export class ApiClientService {
     private http: Http,
     private router: Router,
     private authService: AuthService,
-    private authGuard: AuthGuard,
+    private lockout: LockoutService,
     private apiConfig: ApiConfig) { }
 
   /**
@@ -118,8 +118,8 @@ export class ApiClientService {
       // 403: forbidden (read not authorized to do that operation)
       if (res.status === 401) {
         // if not authenticated
-        console.log(`Unauthorized request to ${res.url}, locking user out!`);
-        self.authGuard.exit();
+        console.error(`Unauthorized request to ${res.url}, locking user out!`);
+        self.lockout.lockout();
       }
       return Observable.throw(res);
     };
