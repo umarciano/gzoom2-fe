@@ -53,14 +53,15 @@ export class ApiClientService {
    *
    * @param  {string}             path    The path relative to ApiConfig.rootPath
    * @param  {any}                body    Any value that will be converted to a JSON string and
-   *                                      sent as the HTTP message body.
+   *                                      sent as the HTTP message body. Optional, if nothing is
+   *                                      specified then no body is sent at all.
    * @param  {RequestOptionsArgs} options Additional options
    * @return {Observable<any>}            An Observable of the outcome
    */
-  post(path: string, body: any, options?: RequestOptionsArgs): Observable<any> {
+  post(path: string, body?: any, options?: RequestOptionsArgs): Observable<any> {
     const url = this.makeUrl(path);
     const opts = this.makeOptions(options, true);
-    const msg = (typeof body === 'string') ? body : JSON.stringify(body);
+    const msg = body ? (typeof body === 'string') ? body : JSON.stringify(body) : undefined;
 
     return this.http
       .post(url, msg, opts)

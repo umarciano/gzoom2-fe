@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../commons/auth.service';
 import { LockoutService } from '../../commons/lockout.service';
+import { LogoutService } from '../../api/logout.service';
 
 @Component({
   selector: 'app-header',
@@ -10,8 +11,10 @@ import { LockoutService } from '../../commons/lockout.service';
 export class HeaderComponent {
   user: any;
 
-  constructor(private readonly authService: AuthService, private readonly lockout: LockoutService) {
-    this.user = authService.userProfile();
+  constructor(private readonly authSrv: AuthService,
+              private readonly lockoutSrv: LockoutService,
+              private readonly logoutSrv: LogoutService) {
+    this.user = authSrv.userProfile();
   }
 
   toggleSidebar() {
@@ -20,6 +23,8 @@ export class HeaderComponent {
   }
 
   logout() {
-    this.lockout.lockout();
+    this.logoutSrv.logout().then(() => {
+      this.lockoutSrv.lockout();
+    })
   }
 }

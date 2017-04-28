@@ -6,19 +6,23 @@ import { ApiConfig } from './api-config';
 import 'rxjs/add/operator/toPromise';
 
 const LOGIN_ENDPOINT = 'login';
-const LOGOUT_ENDPOINT = 'logout';
 const HTTP_HEADERS = new Headers({ 'Content-Type': 'application/json' });
 
 @Injectable()
 export class LoginService {
   private readonly loginUrl: string;
-  private readonly logoutUrl: string;
 
   constructor(private http: Http, private apiConfig: ApiConfig) {
     this.loginUrl = `${apiConfig.rootPath}/${LOGIN_ENDPOINT}`;
-    this.logoutUrl = `${apiConfig.rootPath}/${LOGOUT_ENDPOINT}`;
   }
 
+  /**
+   * Logs user in.
+   *
+   * @param  {string}          username The user account
+   * @param  {string}          password The user password
+   * @return {Promise<string>}          A promise with the JWT
+   */
   login(username: string, password: string): Promise<string> {
     const body = JSON.stringify({ username: username, password: password });
     const opts = { headers: HTTP_HEADERS };
@@ -31,11 +35,11 @@ export class LoginService {
         if (token) {
           return token;
         }
-        console.log('No token returned from authentication :-(');
+        console.error('No token returned from authentication :-(');
         return Promise.reject('No token :-(');
       })
       .catch((error: any) => {
-        console.log(`Error while logging in: ${error}`);
+        console.error(`Error while logging in: ${error}`);
         return Promise.reject(error.message || error);
       });
   }
