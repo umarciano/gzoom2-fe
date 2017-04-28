@@ -154,9 +154,9 @@ app.post('/rest/login', function(req, res) {
  * @url /rest/logout
  */
 app.post('/rest/logout', function(req, res) {
-  log.debug('Logging out user', {email: req.user.email});
-  if (req.user && req.user.email)
-    data.revokeToken(req.user.email);
+  log.debug('Logging out user', {email: req.user.email, username: req.user.username});
+  if (req.user && req.user.username)
+    data.revokeToken(req.user.username);
   res.json({result: 0});
 });
 
