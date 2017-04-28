@@ -28,7 +28,9 @@
     <div class="form-group">
       <button [disabled]="loading || !f.form.valid" class="btn btn-primary">
           {{'Login'|i18n}}
-          <i *ngIf="loading" class="fa fa-spin fa-cog"></i>
+          <span *ngIf="loading">
+            &nbsp; <i class="ion ion-load-c fa-spin"></i>
+          </span>
         </button>
     </div>
 
