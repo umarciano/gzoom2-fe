@@ -1,7 +1,9 @@
-import { Directive, ElementRef, AfterContentInit } from '@angular/core';
+import { Directive, Input, ElementRef, AfterContentInit } from '@angular/core';
 import { ApplicationConfig } from './config';
 
 import * as $ from 'jquery';
+import * as _ from 'lodash';
+import * as moment from 'moment';
 
 /**
  * Prints the application version as text element.
@@ -35,6 +37,24 @@ export class ApplicationNameDirective implements AfterContentInit {
   ngAfterContentInit() {
     if (this.el.nativeElement && this.name) {
       $(this.el.nativeElement).text(this.name);
+    }
+  }
+}
+
+/**
+ * Prints a range of years.
+ */
+@Directive({ selector: '[appFromYear]' })
+export class FromYearDirective implements AfterContentInit {
+  @Input('appFromYear') year: number;
+
+  constructor(private readonly el: ElementRef) { }
+
+  ngAfterContentInit() {
+    if (this.el.nativeElement) {
+      const now = moment().year();
+      const text = this.year != now ? this.year + ' - ' + now : now;
+      $(this.el.nativeElement).text(text);
     }
   }
 }
