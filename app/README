@@ -34,7 +34,11 @@ esempio:
 Problemi vari con AOT:
   1. https://github.com/rangle/angular-2-aot-sandbox#aot-dos-and-donts
   2. https://medium.com/@isaacplmann/making-your-angular-2-library-statically-analyzable-for-aot-e1c6f3ebedd5
-  3.
 
+Tema:
+  https://github.com/start-angular/SB-Admin-BS4-Angular-4
 
-https://github.com/start-angular/SB-Admin-BS4-Angular-4
+Icone:
+  http://ionicons.com (versione 2.0.1, installata con ionicons-npm)
+  http://fontawesome.io
+  https://octicons.github.com
