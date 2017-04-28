@@ -2,6 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 import * as _ from 'lodash';
 
+/**
+ * Transforms a user-like object into the fullname string.
+ */
 @Pipe({ name: 'fullname' })
 export class FullnamePipe implements PipeTransform {
 
@@ -11,6 +14,9 @@ export class FullnamePipe implements PipeTransform {
 
 }
 
+/**
+ * Transforms any value into one that is suitable for HTML id attribute.
+ */
 @Pipe({ name: 'asId' })
 export class AsIdPipe implements PipeTransform {
 
@@ -22,6 +28,9 @@ export class AsIdPipe implements PipeTransform {
 
 }
 
+/**
+ * Transforms any value into one that is suitable for HTML class attribute.
+ */
 @Pipe({ name: 'asClass' })
 export class AsClassPipe implements PipeTransform {
 

@@ -7,8 +7,8 @@ import { AuthGuard, AuthGuardConfig } from './guard.service';
 import { I18NService, I18NConfig, load } from './i18n.service';
 import { ApplicationConfig } from './config';
 import { I18NPipe } from './i18n.pipe';
-import { VersionDirective } from './version.directive';
 import { FullnamePipe, AsIdPipe, AsClassPipe } from './commons.pipe';
+import { ApplicationVersionDirective, ApplicationNameDirective } from './commons.directive';
 
 export interface CommonsConfig {
   /* mandatory attributes */
@@ -26,14 +26,16 @@ export interface CommonsConfig {
     FullnamePipe,
     AsIdPipe,
     AsClassPipe,
-    VersionDirective
+    ApplicationVersionDirective,
+    ApplicationNameDirective
   ],
   exports: [
     I18NPipe,
     FullnamePipe,
     AsIdPipe,
     AsClassPipe,
-    VersionDirective
+    ApplicationVersionDirective,
+    ApplicationNameDirective
   ]
 })
 export class CommonsModule {
