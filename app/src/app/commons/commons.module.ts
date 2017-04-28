@@ -8,6 +8,7 @@ import { I18NService, I18NConfig, load } from './i18n.service';
 import { ApplicationConfig } from './config';
 import { I18NPipe } from './i18n.pipe';
 import { VersionDirective } from './version.directive';
+import { FullnamePipe, AsIdPipe, AsClassPipe } from './commons.pipe';
 
 export interface CommonsConfig {
   /* mandatory attributes */
@@ -20,8 +21,20 @@ export interface CommonsConfig {
 
 @NgModule({
   imports: [CommonModule, HttpModule],
-  declarations: [I18NPipe, VersionDirective],
-  exports: [I18NPipe, VersionDirective]
+  declarations: [
+    I18NPipe,
+    FullnamePipe,
+    AsIdPipe,
+    AsClassPipe,
+    VersionDirective
+  ],
+  exports: [
+    I18NPipe,
+    FullnamePipe,
+    AsIdPipe,
+    AsClassPipe,
+    VersionDirective
+  ]
 })
 export class CommonsModule {
 

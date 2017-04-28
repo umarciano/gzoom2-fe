@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../commons/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -6,10 +7,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
+  user: any;
 
-      toggleSidebar() {
-          const dom: any = document.querySelector('body');
-          dom.classList.toggle('push-right');
-      }
+  constructor(private readonly authService: AuthService) {
+    this.user = authService.userProfile();
+  }
+
+  toggleSidebar() {
+    const dom: any = document.querySelector('body');
+    dom.classList.toggle('push-right');
+  }
 
 }
