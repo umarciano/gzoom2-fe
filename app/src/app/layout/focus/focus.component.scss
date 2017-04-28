@@ -20,15 +20,8 @@
     height: 100%;
   }
 
-  .focuslayout-footer {
-    color: map-get($app-colors, grey);
-    position: absolute;
-    bottom: -20px;
-    left: 0;
-    width: 100%;
-  }
-
   .focuslayout-container {
+    position: relative;
     text-align: center;
     margin: 0;
     background-color: map-get($app-colors, overlay);
@@ -57,5 +50,13 @@
       color: #b3f5fa;
       text-decoration: underline;
     }
+  }
+
+  .focuslayout-footer {
+    color: map-get($app-colors, grey);
+    position: absolute;
+    bottom: -2rem;
+    left: 0;
+    width: 100%;
   }
 }
