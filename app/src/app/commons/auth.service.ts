@@ -3,14 +3,12 @@ import { Injectable, Optional } from '@angular/core';
 declare function jwt_decode(token: string): any;
 
 const TOKEN_KEY = 'auth-token';
-const PERMS_GET = function(userProfile) { return userProfile ? userProfile.permissions : 0; };
 
 /**
  * Configuration class for authentication service.
  */
 export class AuthServiceConfig {
   tokenKey?: string;
-  permissionsGetter?: (any) => number;
 }
 
 /**
@@ -19,15 +17,11 @@ export class AuthServiceConfig {
 @Injectable()
 export class AuthService {
   private tokenKey = TOKEN_KEY;
-  private permissionsGetter = PERMS_GET;
 
   constructor( @Optional() private config: AuthServiceConfig) {
     if (config) {
       if (config.tokenKey) {
         this.tokenKey = config.tokenKey;
-      }
-      if (config.permissionsGetter) {
-        this.permissionsGetter = config.permissionsGetter;
       }
     }
   }
@@ -85,16 +79,5 @@ export class AuthService {
     const token = this.token(),
       profile = token ? jwt_decode(token) : null;
     return profile;
-  }
-
-  /**
-   * Tests whether the user has a certain permission (one or multiple).
-   *
-   * @param permMask {int} The integer mask of the permission(s).
-   */
-  hasPermission(permMask) {
-    const profile = this.userProfile(),
-      permissions = profile ? this.permissionsGetter(profile) : 0; // no profile, no party
-    return permissions & permMask;
   }
 }
