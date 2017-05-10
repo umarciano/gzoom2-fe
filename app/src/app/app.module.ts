@@ -8,6 +8,7 @@ import { HttpModule } from '@angular/http';
 // application modules
 import { CommonsModule } from './commons/commons.module';
 import { ApiModule } from './api/api.module';
+import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
@@ -34,6 +35,7 @@ const ROOT_PATH = '../rest';
       i18n: { rootPath: ROOT_PATH }
     }),
     ApiModule.forRoot({ rootPath: ROOT_PATH }),
+    SharedModule.forRoot(),
     // > routes
     AppRoutingModule
   ],

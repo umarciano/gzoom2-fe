@@ -11,6 +11,7 @@ import { ApiConfig } from './api-config';
 import { ApiClientService } from './client.service';
 import { LoginService } from './login.service';
 import { LogoutService } from './logout.service';
+import { AccountService } from './account.service';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ export class ApiModule {
         { provide: ApiConfig, useValue: config },
         LoginService,
         ApiClientService,
-        LogoutService
+        LogoutService,
+        AccountService
       ]
     };
   }

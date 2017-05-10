@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
+import { SharedModule } from '../shared/shared.module';
 import { AuthGuard } from '../commons/guard.service';
-
+import { PermissionsResolver } from '../shared/permissions-resolver.service';
 import { FocusComponent } from '../layout/focus/focus.component';
 import { ContentComponent } from '../layout/content/content.component';
 
@@ -19,6 +19,9 @@ const routes: Routes = [
     component: ContentComponent,
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
+    resolve: {
+      permissions: PermissionsResolver
+    },
     children: [
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' }
     ]
@@ -26,7 +29,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [
+    RouterModule.forChild(routes),
+    SharedModule
+  ],
   exports: [RouterModule]
 })
 export class ViewRoutingModule { }

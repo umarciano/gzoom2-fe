@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate([this.returnUrl]);
       })
       .catch(() => {
+        this.authService.lockout(); // sanity check
         this.error = 'Username or password is incorrect';
         this.loading = false;
       });
