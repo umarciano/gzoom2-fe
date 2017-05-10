@@ -188,6 +188,14 @@ app.put('/rest/account/password', function(req, res) {
   }, _.random(200, 1000));
 });
 
+app.get('/rest/account/permissions', function(req, res) {
+  var user = req.user.username;
+  log.debug('Retrieving permissions for user', req.user.username);
+  setTimeout(function() {
+    res.json(data.permissions(user));
+  }, _.random(200, 1000));
+});
+
 app.get('/rest/heroes', function(req, res) {
   var hh = data.heroes(),
       unauth = trueOrFalse(1, 5);

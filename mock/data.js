@@ -12,52 +12,49 @@ var _ = require('lodash'),
     }()),
     TODAY = moment().startOf('day'),
     PERMISSIONS = {
-      admin: 1 << 0,
-      operator: 1 << 1
+      ADMIN: 'ADMIN',
+      VIEW: 'VIEW',
+      CREATE: 'CREATE',
+      UPDATE: 'UPDATE',
+      DELETE: 'DELETE'
     },
     PEOPLE = {
-    "gica": {
-      id: inc(),
-      username: "gica",
-      firstName: "Gianluca",
-      lastName: "Cattani",
-      email: "gianluca.cattani@mapsgroup.it",
-      permissions: PERMISSIONS.admin,
-      authenticationType: 'DB'
+      "gica": {
+        id: inc(),
+        username: "gica",
+        firstName: "Gianluca",
+        lastName: "Cattani",
+        email: "gianluca.cattani@mapsgroup.it"
+      },
+      "fast": {
+        id: inc(),
+        username: "fast",
+        firstName: "Fabio",
+        lastName: "Strozzi",
+        email: "fabio.strozzi@mapsgroup.it"
+      },
+      "anfo": {
+        id: inc(),
+        username: "anfo",
+        firstName: "Andrea",
+        lastName: "Fossi",
+        email: "andrea.fossi@mapsgroup.it"
+      }
     },
-    "fast": {
-      id: inc(),
-      username: "fast",
-      firstName: "Fabio",
-      lastName: "Strozzi",
-      email: "fabio.strozzi@mapsgroup.it",
-      permissions: PERMISSIONS.admin | PERMISSIONS.operator,
-      authenticationType: 'DB'
-    },
-    "anfo": {
-      id: inc(),
-      username: "anfo",
-      firstName: "Andrea",
-      lastName: "Fossi",
-      email: "andrea.fossi@mapsgroup.it",
-      permissions: PERMISSIONS.operator,
-      authenticationType: 'LDAP'
-    }
-  },
-  HEROES = [
-    { id: 11, name: 'Mr. Nice' },
-    { id: 12, name: 'Narco' },
-    { id: 13, name: 'Bombasto' },
-    { id: 14, name: 'Celeritas' },
-    { id: 15, name: 'Magneta' },
-    { id: 16, name: 'RubberMan' },
-    { id: 17, name: 'Dynama' },
-    { id: 18, name: 'Dr IQ' },
-    { id: 19, name: 'Magma' },
-    { id: 20, name: 'Tornado' }
-  ],
-  tokens = {},
-  secret = generateSecret();
+    HEROES = [
+      { id: 11, name: 'Mr. Nice' },
+      { id: 12, name: 'Narco' },
+      { id: 13, name: 'Bombasto' },
+      { id: 14, name: 'Celeritas' },
+      { id: 15, name: 'Magneta' },
+      { id: 16, name: 'RubberMan' },
+      { id: 17, name: 'Dynama' },
+      { id: 18, name: 'Dr IQ' },
+      { id: 19, name: 'Magma' },
+      { id: 20, name: 'Tornado' }
+    ],
+    tokens = {},
+    secret = generateSecret();
 
 function trueFilter() {
   return true;
@@ -115,5 +112,16 @@ module.exports = {
 
   heroes: function() {
     return HEROES;
+  },
+
+  permissions: function(username) {
+    return  {
+      permissions: {
+        'OFBTOOLS': [PERMISSIONS.ADMIN],
+        'CUSTOMEXT': [PERMISSIONS.VIEW, PERMISSIONS.CREATE, PERMISSIONS.UPDATE],
+        'WORKEFFORT': [PERMISSIONS.VIEW, PERMISSIONS.CREATE, PERMISSIONS.UPDATE, PERMISSIONS.DELETE]
+      },
+      authentication: trueOrFalse() ? 'DB': 'LDAP'
+    };
   }
 };
