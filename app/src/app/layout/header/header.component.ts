@@ -25,6 +25,6 @@ export class HeaderComponent {
   logout() {
     this.logoutSrv.logout().then(() => {
       this.lockoutSrv.lockout();
-    })
+    });
   }
 }

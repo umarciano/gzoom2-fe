@@ -46,14 +46,14 @@ export class ApplicationNameDirective implements AfterContentInit {
  */
 @Directive({ selector: '[appFromYear]' })
 export class FromYearDirective implements AfterContentInit {
-  @Input('appFromYear') year: number;
+  @Input() year: number;
 
   constructor(private readonly el: ElementRef) { }
 
   ngAfterContentInit() {
     if (this.el.nativeElement) {
       const now = moment().year();
-      const text = this.year != now ? this.year + ' - ' + now : now;
+      const text = this.year !== now ? this.year + ' - ' + now : now;
       $(this.el.nativeElement).text(text);
     }
   }
