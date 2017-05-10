@@ -1,5 +1,6 @@
 import { Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs/Subject';
 import { AuthService } from './auth.service';
 
 const LOGIN_ROUTE = '/login';
@@ -17,6 +18,7 @@ export class LockoutConfig {
 @Injectable()
 export class LockoutService {
   private loginRoute: string = LOGIN_ROUTE;
+  public readonly events = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -35,8 +37,8 @@ export class LockoutService {
    */
   lockout(url?: string) {
     const extras = url ? { queryParams: { returnUrl: url } } : undefined;
+    this.events.next();
     this.authService.lockout();
     this.router.navigate([this.loginRoute], extras);
   }
-
 }

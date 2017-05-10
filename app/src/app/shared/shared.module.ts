@@ -10,6 +10,7 @@ import { PermissionsResolver } from './permissions-resolver.service';
 @NgModule({
   imports: [
     CommonModule,
+    CommonsModule,
     ApiModule
   ],
   declarations: []

@@ -32,17 +32,33 @@ function convert(perms: {[x: string]: [string]}): {[x: string]: number} {
  */
 @Injectable()
 export class AuthorizationService {
-  private permissions: {[x: string]: number};
+  private permissions: {[x: string]: number} = null;
 
   constructor() { }
 
   /**
-   * Updates the set of permissions.
+   * Initializes the set of permissions.
    *
    * @param  {Permissions} perms The set of permissions
    */
-  setPermissions(perms: Permissions) {
+  init(perms: Permissions) {
     this.permissions = convert(perms.permissions);
+  }
+
+  /**
+   * Tells whether permissions have been initialized already.
+   *
+   * @return {boolean} True if permissions have been initialized.
+   */
+  isInitialized() {
+    return this.permissions !== null;
+  }
+
+  /**
+   * Resets the permissions.
+   */
+  clear() {
+    this.permissions = null;
   }
 
   /**
