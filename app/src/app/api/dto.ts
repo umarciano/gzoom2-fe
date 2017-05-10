@@ -12,5 +12,4 @@ export enum AuthenticationType {
  */
 export class Permissions {
   permissions: { [x: string]: [string]};
-  authentication: AuthenticationType;
 }

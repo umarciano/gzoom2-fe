@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Permissions, AuthenticationType } from '../api/dto';
+import { Permissions } from '../api/dto';
 import * as _ from 'lodash';
 
 /**
@@ -33,7 +33,6 @@ function convert(perms: {[x: string]: [string]}): {[x: string]: number} {
 @Injectable()
 export class AuthorizationService {
   private permissions: {[x: string]: number};
-  private authentication: AuthenticationType;
 
   constructor() { }
 
@@ -44,7 +43,6 @@ export class AuthorizationService {
    */
   setPermissions(perms: Permissions) {
     this.permissions = convert(perms.permissions);
-    this.authentication = perms.authentication;
   }
 
   /**

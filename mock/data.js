@@ -120,8 +120,7 @@ module.exports = {
         'OFBTOOLS': [PERMISSIONS.ADMIN],
         'CUSTOMEXT': [PERMISSIONS.VIEW, PERMISSIONS.CREATE, PERMISSIONS.UPDATE],
         'WORKEFFORT': [PERMISSIONS.VIEW, PERMISSIONS.CREATE, PERMISSIONS.UPDATE, PERMISSIONS.DELETE]
-      },
-      authentication: trueOrFalse() ? 'DB': 'LDAP'
+      }
     };
   }
 };
