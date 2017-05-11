@@ -5,6 +5,9 @@ import { Permissions } from './dto';
 
 const PERMISSIONS_ENDPOINT = 'account/permissions';
 
+/**
+ * API service that dials with accounts of logged in user.
+ */
 @Injectable()
 export class AccountService {
 

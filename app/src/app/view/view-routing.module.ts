@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { AuthGuard } from '../commons/guard.service';
 import { PermissionsResolver } from '../shared/permissions-resolver.service';
+import { MenuResolver } from '../shared/menu-resolver.service';
 import { FocusComponent } from '../layout/focus/focus.component';
 import { ContentComponent } from '../layout/content/content.component';
 
@@ -15,15 +16,17 @@ const routes: Routes = [
     ]
   },
   {
-    path: '',
+    path: 'c',
     component: ContentComponent,
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
     resolve: {
-      permissions: PermissionsResolver
+      permissions: PermissionsResolver,
+      menu: MenuResolver
     },
     children: [
-      { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' }
+      { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
+      { path: '', pathMatch: 'full', redirectTo: '/c/dashboard' }
     ]
   }
 ];

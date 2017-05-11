@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { CommonsModule } from '../commons/commons.module';
 import { ApiModule } from '../api/api.module';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { FocusComponent } from './focus/focus.component';
 import { ContentComponent } from './content/content.component';

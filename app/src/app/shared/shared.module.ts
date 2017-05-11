@@ -6,6 +6,7 @@ import { ApiModule } from '../api/api.module';
 
 import { AuthorizationService } from './authorization.service';
 import { PermissionsResolver } from './permissions-resolver.service';
+import { MenuResolver } from './menu-resolver.service';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ export class SharedModule {
       ngModule: SharedModule,
       providers: [
         AuthorizationService,
-        PermissionsResolver
+        PermissionsResolver,
+        MenuResolver
       ]
     };
   }

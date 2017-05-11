@@ -12,6 +12,7 @@ import { ApiClientService } from './client.service';
 import { LoginService } from './login.service';
 import { LogoutService } from './logout.service';
 import { AccountService } from './account.service';
+import { MenuService } from './menu.service';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ export class ApiModule {
         LoginService,
         ApiClientService,
         LogoutService,
-        AccountService
+        AccountService,
+        MenuService
       ]
     };
   }

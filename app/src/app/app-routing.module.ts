@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: '', loadChildren: './view/view.module#ViewModule' },
   { path: 'detail/:id', component: HeroDetailComponent, canActivate: [AuthGuard] },
   { path: 'heroes', component: HeroesComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '/dashboard' }
+  { path: '**', redirectTo: '/c/dashboard' }
 ];
 
 @NgModule({
