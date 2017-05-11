@@ -23,7 +23,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    const qru = this.route.snapshot.queryParams['returnUrl'];
+    this.returnUrl = qru && qru !== 'login' && qru !== '/login' ? qru : '/';
 
     // if already logged in then skip this state
     if (this.authService.isLoggedIn()) {
