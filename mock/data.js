@@ -24,21 +24,24 @@ var _ = require('lodash'),
         username: "gica",
         firstName: "Gianluca",
         lastName: "Cattani",
-        email: "gianluca.cattani@mapsgroup.it"
+        email: "gianluca.cattani@mapsgroup.it",
+        externalLoginKey: "adsdas010101010"
       },
       "fast": {
         id: inc(),
         username: "fast",
         firstName: "Fabio",
         lastName: "Strozzi",
-        email: "fabio.strozzi@mapsgroup.it"
+        email: "fabio.strozzi@mapsgroup.it",
+        externalLoginKey: "x0x0x0x0y1y1y1y1"
       },
       "anfo": {
         id: inc(),
         username: "anfo",
         firstName: "Andrea",
         lastName: "Fossi",
-        email: "andrea.fossi@mapsgroup.it"
+        email: "andrea.fossi@mapsgroup.it",
+        externalLoginKey: "0987654321abcdef"
       }
     },
     HEROES = [
@@ -122,5 +125,16 @@ module.exports = {
         'WORKEFFORT': [PERMISSIONS.VIEW, PERMISSIONS.CREATE, PERMISSIONS.UPDATE, PERMISSIONS.DELETE]
       }
     };
+  },
+
+  menu: function() {
+    return {
+      id: 'GP_MENU',
+      children: [
+        { id: 'GP_MENU_00001', label: 'Menu 1' },
+        { id: 'GP_MENU_00002', label: 'Menu 2' },
+        { id: 'GP_MENU_00003', label: 'Menu 3' }
+      ]
+    };
   }
-};
+}

@@ -209,5 +209,13 @@ app.get('/rest/heroes', function(req, res) {
   }, _.random(200, 1000));
 });
 
+app.get('/rest/menu', function(req, res) {
+  var user = req.user.username;
+  log.debug('Retrieving menus for user', req.user.username);
+  setTimeout(function() {
+    res.json(data.menu());
+  }, _.random(200, 1000));
+})
+
 app.listen(PORT);
 log.info("Server started: http://localhost:" + PORT);
