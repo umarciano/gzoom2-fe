@@ -30,7 +30,7 @@ export abstract class MenuItem {
  * A menu entry that has no children.
  */
 export class LeafMenu extends MenuItem {
-  params: { [name: string]: string };
+  params?: { [name: string]: any };
 }
 
 /**
