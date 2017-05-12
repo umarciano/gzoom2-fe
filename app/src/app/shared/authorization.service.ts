@@ -13,15 +13,15 @@ export enum ACTIONS {
   DELETE = 1 << 4
 };
 
-function numActions(acts: [string]): number {
+function numActions(acts: string[]): number {
   return _.reduce(acts, (mask, s) => {
     const n = ACTIONS[s] || 0;
     return mask | n;
   }, 0);
 }
 
-function convert(perms: {[x: string]: [string]}): {[x: string]: number} {
-  return _.reduce(perms, (res, val: [string], key: string) => {
+function convert(perms: {[x: string]: string[]}): {[x: string]: number} {
+  return _.reduce(perms, (res, val: string[], key: string) => {
     res[key] = numActions(val);
     return res;
   }, {});

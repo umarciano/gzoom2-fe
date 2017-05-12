@@ -14,7 +14,7 @@ export enum AuthenticationType {
  * The returned set of permissions.
  */
 export class Permissions {
-  permissions: { [x: string]: [string] };
+  permissions: { [x: string]: string[] };
 }
 
 /**
@@ -22,7 +22,7 @@ export class Permissions {
  */
 export abstract class MenuItem {
   id: string;
-  classes: [string];
+  classes: string[];
   label: string;
 }
 
