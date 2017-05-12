@@ -128,13 +128,15 @@ module.exports = {
   },
 
   menu: function() {
-    return {
+    const root = {
       id: 'GP_MENU',
       children: [
-        { id: 'GP_MENU_00001', label: 'Menu 1' },
-        { id: 'GP_MENU_00002', label: 'Menu 2' },
-        { id: 'GP_MENU_00003', label: 'Menu 3' }
+        { id: 'GP_MENU_00001', label: 'Performance Management', classes: ['ion ion-speedometer'] },
+        { id: 'GP_MENU_00002', label: 'Governance', classes: ['fa-balance-scale'] },
+        { id: 'GP_MENU_00003', label: 'Accountability', classes: ['fa-money'] },
+        { id: 'GP_MENU_00004', label: 'Basic Data', classes: ['fa-database'] }
       ]
     };
+    return root;
   }
 }
