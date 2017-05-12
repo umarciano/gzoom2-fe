@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/switchMap';
 
 import { RootMenu, FolderMenu, LeafMenu } from '../../api/dto';
 import { MenuConfig } from '../../shared/menu-config';
@@ -17,6 +21,7 @@ export class SidebarComponent implements OnInit {
   showMenu = '';
   //menu: ;
   root: RootMenu;
+  roots: Observable<FolderMenu[]>;
 
   constructor(private readonly route: ActivatedRoute) {
     this.menuConf = new MenuConfig();
@@ -24,10 +29,12 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.route.data
-      .filter(d => d instanceof RootMenu)
-      .subscribe((root: RootMenu) => {
-        this.root = root;
+      .subscribe((data: { menu: RootMenu }) => {
+        this.root = data.menu;
       });
+
+    this.roots = this.route.data
+      .map((data: { menu: RootMenu }) => data.menu.children);
   }
 
   eventCalled() {

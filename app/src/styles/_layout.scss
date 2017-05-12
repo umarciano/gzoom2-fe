@@ -3,6 +3,7 @@
 /*----------------------------------------------------------------------------*/
 @import "~styles/_colors";
 @import "~styles/_measures";
+
 /*----------------------------------------------------------------------------*/
 /* Sidebar                                                                    */
 /*----------------------------------------------------------------------------*/
@@ -13,20 +14,22 @@
   .nav-tabs .nav-link.active,
   .nav-tabs .nav-link.active:focus,
   .nav-tabs .nav-link.active:hover {
-    color: white;
-    background-color: #464646;
-    border-color: #696969 #696969 #464646;
+    color: map-get($sidebar-colors, tab-fg);
+    background-color: map-get($sidebar-colors, tab-sel-bg);
+    border-color: map-get($sidebar-colors, tab-border)
+                  map-get($sidebar-colors, tab-border)
+                  map-get($sidebar-colors, tab-sel-bg);
   }
 
   .nav-tabs .nav-link:focus,
   .nav-tabs .nav-link:hover {
-    color: #a5a5a5;
-    background-color: #313131;
-    border-color: #696969 #696969 #696969;
+    color: map-get($sidebar-colors, tab-fg);
+    background-color: map-get($sidebar-colors, tab-bg);
+    border-color: map-get($sidebar-colors, tab-border);
   }
 
   .nav-tabs {
-    border-bottom: 1px solid #696969;
+    border-bottom: 1px solid map-get($sidebar-colors, tab-border);
   }
 
   /* group of menu items */

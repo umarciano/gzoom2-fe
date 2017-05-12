@@ -1,20 +1,32 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
   <ngb-tabset justify="center">
-    <ngb-tab title="A">
+    <ngb-tab *ngFor="let r of roots | async">
+      <ng-template ngbTabTitle>
+        <span ngbTooltip="{{r.label|i18n}}" placement="right" container="body">
+          <i class="fa" [ngClass]="r.classes"></i>
+        </span>
+      </ng-template>
       <ng-template ngbTabContent>
         <p>
           Prova 1
         </p>
       </ng-template>
     </ngb-tab>
-    <ngb-tab>
+    <!-- <ngb-tab title="A">
+      <ng-template ngbTabContent>
+        <p>
+          Prova 1
+        </p>
+      </ng-template>
+    </ngb-tab> -->
+    <!-- <ngb-tab>
       <ng-template ngbTabTitle><i class="fa fa-user"></i> &nbsp; B</ng-template>
       <ng-template ngbTabContent>
         <p>
           Prova 2
         </p>
       </ng-template>
-    </ngb-tab>
+    </ngb-tab> -->
   </ngb-tabset>
 
   <ul class="list-group">
