@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { CommonsModule } from '../commons/commons.module';
 import { ApiModule } from '../api/api.module';
+import { SharedModule } from '../shared/shared.module';
 
 import { FocusComponent } from './focus/focus.component';
 import { ContentComponent } from './content/content.component';
@@ -18,7 +19,8 @@ import { HeaderComponent } from './header/header.component';
     RouterModule,
     CommonsModule,
     ApiModule,
-    NgbDropdownModule.forRoot()
+    SharedModule,
+    NgbModule
   ],
   declarations: [
     FocusComponent,

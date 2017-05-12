@@ -20,3 +20,10 @@ $app-colors: (
   navbar-bg: #222,
   overlay: rgba(0, 0, 0, 0.6)
 );
+
+$sidebar-colors: (
+  tab-bg: lighten(map-get($app-colors, navbar-bg), 10%),
+  tab-sel-bg: lighten(map-get($app-colors, navbar-bg), 20%),
+  tab-fg: lighten(map-get($app-colors, navbar-fg), 10%),
+  tab-border: #696969
+);

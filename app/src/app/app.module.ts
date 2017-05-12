@@ -5,6 +5,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+// ng-bootstrap modules
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 // application modules
 import { CommonsModule } from './commons/commons.module';
 import { ApiModule } from './api/api.module';
@@ -28,6 +31,8 @@ const ROOT_PATH = '../rest';
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
+    // ng-bootstrap
+    NgbModule.forRoot(),
     // application modules
     // > libraries
     CommonsModule.forRoot({

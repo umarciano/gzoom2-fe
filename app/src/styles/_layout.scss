@@ -1,0 +1,144 @@
+/*----------------------------------------------------------------------------*/
+/* Layout styles                                                              */
+/*----------------------------------------------------------------------------*/
+@import "~styles/_colors";
+@import "~styles/_measures";
+/*----------------------------------------------------------------------------*/
+/* Sidebar                                                                    */
+/*----------------------------------------------------------------------------*/
+.sidebar {
+
+  /* top tabs */
+  .nav-tabs .nav-item.show .nav-link,
+  .nav-tabs .nav-link.active,
+  .nav-tabs .nav-link.active:focus,
+  .nav-tabs .nav-link.active:hover {
+    color: white;
+    background-color: #464646;
+    border-color: #696969 #696969 #464646;
+  }
+
+  .nav-tabs .nav-link:focus,
+  .nav-tabs .nav-link:hover {
+    color: #a5a5a5;
+    background-color: #313131;
+    border-color: #696969 #696969 #696969;
+  }
+
+  .nav-tabs {
+    border-bottom: 1px solid #696969;
+  }
+
+  /* group of menu items */
+  .list-group {
+    a.list-group-item {
+      background: map-get($app-colors, navbar-bg);
+      border: 0;
+      border-radius: 0;
+      color: map-get($app-colors, navbar-fg);
+      text-decoration: none;
+    }
+
+    a:hover {
+      background: darken(map-get($app-colors, navbar-bg), 5%);
+      color: map-get($app-colors, navbar-hl);
+    }
+
+    a.router-link-active {
+      background: darken(map-get($app-colors, navbar-bg), 5%);
+      color: map-get($app-colors, navbar-hl);
+    }
+  }
+
+  /* sidebar dropdown */
+  .sidebar-dropdown {
+    *:focus {
+      border-radius: none;
+      border: none;
+    }
+
+    .panel-title {
+      font-size: 1rem;
+      height: 50px;
+      margin-bottom: 0;
+
+      a {
+        color: map-get($app-colors, navbar-fg);
+        text-decoration: none;
+        font-weight: 400;
+        background: map-get($app-colors, navbar-bg);
+
+        span {
+          position: relative;
+          display: block;
+          padding: 1rem 1.5rem 0.75rem;
+        }
+      }
+
+      a:focus,
+      a:hover {
+        color: map-get($app-colors, navbar-hl);
+        outline: none;
+        outline-offset: -2px;
+      }
+    }
+
+    .panel-title:hover {
+      background: darken(map-get($app-colors, navbar-bg), 5%);
+    }
+
+    .panel-collapse {
+      border-radious: 0;
+      border: none;
+
+      .panel-body {
+        .list-group-item {
+          border-radius: 0;
+          background-color: map-get($app-colors, navbar-bg);
+          border: 0 solid transparent;
+
+          a {
+            color: map-get($app-colors, navbar-fg);
+          }
+
+          a:hover {
+            color: map-get($app-colors, navbar-hl);
+          }
+        }
+
+        .list-group-item:hover {
+          background: darken(map-get($app-colors, navbar-bg), 5%);
+        }
+      }
+    }
+  }
+
+  /* nested menu */
+  .nested-menu {
+    .list-group-item {
+      cursor: pointer;
+    }
+    .nested {
+      list-style-type: none;
+    }
+    ul.submenu {
+      display: none;
+      height: 0;
+    }
+    & .expand {
+      ul.submenu {
+        display: block;
+        list-style-type: none;
+        height: auto;
+        li {
+          a {
+            color: map-get($app-colors, navbar-hl);
+            padding: 10px;
+            display: block;
+          }
+        }
+      }
+    }
+  }
+
+}
