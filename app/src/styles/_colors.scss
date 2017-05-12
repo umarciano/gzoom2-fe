@@ -23,7 +23,7 @@ $app-colors: (
 
 $sidebar-colors: (
   tab-fg: white,
-  tab-bg: lighten(map-get($app-colors, navbar-bg), 10%),
-  tab-sel-bg: lighten(map-get($app-colors, navbar-bg), 20%),
+  tab-bg: map-get($app-colors, navbar-bg),
+  tab-sel-bg: lighten(map-get($app-colors, navbar-bg), 5%),
   tab-border: lighten(map-get($app-colors, navbar-bg), 30%)
 );

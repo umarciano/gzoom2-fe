@@ -9,7 +9,21 @@
 /*----------------------------------------------------------------------------*/
 .sidebar {
 
+  // tab content
+  .tab-content {
+    background-color: map-get($sidebar-colors, tab-sel-bg);
+  }
+
   /* top tabs */
+  .nav-tabs {
+    background-color: map-get($app-colors, navbar-bg);
+    padding-top: 20px;
+  }
+
+  .nav-tabs a.nav-link {
+    color: darken(map-get($sidebar-colors, tab-fg), 20%);
+  }
+
   .nav-tabs .nav-item.show .nav-link,
   .nav-tabs .nav-link.active,
   .nav-tabs .nav-link.active:focus,
@@ -35,7 +49,7 @@
   /* group of menu items */
   .list-group {
     a.list-group-item {
-      background: map-get($app-colors, navbar-bg);
+      background-color: map-get($sidebar-colors, tab-sel-bg);
       border: 0;
       border-radius: 0;
       color: map-get($app-colors, navbar-fg);
@@ -43,12 +57,12 @@
     }
 
     a:hover {
-      background: darken(map-get($app-colors, navbar-bg), 5%);
+      background-color: darken(map-get($app-colors, navbar-bg), 5%);
       color: map-get($app-colors, navbar-hl);
     }
 
     a.router-link-active {
-      background: darken(map-get($app-colors, navbar-bg), 5%);
+      background-color: darken(map-get($app-colors, navbar-bg), 5%);
       color: map-get($app-colors, navbar-hl);
     }
   }
@@ -69,7 +83,7 @@
         color: map-get($app-colors, navbar-fg);
         text-decoration: none;
         font-weight: 400;
-        background: map-get($app-colors, navbar-bg);
+        background-color: map-get($app-colors, navbar-bg);
 
         span {
           position: relative;
@@ -87,7 +101,7 @@
     }
 
     .panel-title:hover {
-      background: darken(map-get($app-colors, navbar-bg), 5%);
+      background-color: darken(map-get($app-colors, navbar-bg), 5%);
     }
 
     .panel-collapse {
@@ -110,7 +124,7 @@
         }
 
         .list-group-item:hover {
-          background: darken(map-get($app-colors, navbar-bg), 5%);
+          background-color: darken(map-get($app-colors, navbar-bg), 5%);
         }
       }
     }

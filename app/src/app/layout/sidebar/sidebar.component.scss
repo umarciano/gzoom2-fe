@@ -17,11 +17,12 @@
   border: none;
   border-radius: 0;
   overflow-y: auto;
-  background-color: map-get($app-colors, navbar-bg);
+  // background-color: map-get($app-colors, navbar-bg);
+  background-color: map-get($sidebar-colors, tab-sel-bg);
   bottom: 0;
   overflow-x: hidden;
   padding-bottom: 40px;
-  padding-top: 20px;
+  // padding-top: 20px;
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
   -ms-transition: all 0.2s ease-in-out;
