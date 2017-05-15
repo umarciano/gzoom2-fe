@@ -215,7 +215,7 @@ app.get('/rest/menu', function(req, res) {
   setTimeout(function() {
     res.json(data.menu());
   }, _.random(200, 1000));
-})
+});
 
 app.listen(PORT);
 log.info("Server started: http://localhost:" + PORT);
