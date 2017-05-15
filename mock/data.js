@@ -137,6 +137,37 @@ module.exports = {
         { id: 'GP_MENU_00004', label: 'Basic Data', classes: ['fa-database'] }
       ]
     };
+
+    function _3rdLvlMenu(par) {
+      par.children = [
+        { id: par.id + '.1', label: par.label + '.1', classes: ['fa-envelope-o'], params: null},
+        { id: par.id + '.2', label: par.label + '.2', classes: ['fa-dashboard'], params: {}},
+        { id: par.id + '.3', label: par.label + '.3', classes: []},
+        { id: par.id + '.4', label: par.label + '.4', classes: []},
+        { id: par.id + '.5', label: par.label + '.5', classes: []},
+        { id: par.id + '.6', label: par.label + '.6'},
+        { id: par.id + '.7', label: par.label + '.7', classes: null}
+      ];
+    }
+
+    function _2ndLvlMenu(par) {
+      par.children = [
+        // folders
+        { id: par.id + '_1', label: 'Menu Folder 1', classes: [], children: [] },
+        { id: par.id + '_2', label: 'Menu Folder 2', children: [] },
+        { id: par.id + '_3', label: 'Menu Folder 3', classes: ['fa-bar-chart'], children: [] },
+        // leaves
+        { id: par.id + '_4', label: 'Menu Leaf 4', classes: ['fa-user-circle-o'], params: {} },
+        { id: par.id + '_5', label: 'Menu Leaf 5', params: {} },
+        { id: par.id + '_6', label: 'Menu Leaf 6', classes: ['fa-circle'] }
+      ];
+
+      par.children
+        .filter(c => c.children) // just get folders
+        .forEach(c => _3rdLvlMenu(c));
+    }
+
+    root.children.forEach(c => _2ndLvlMenu(c));
     return root;
   }
-}
+};
