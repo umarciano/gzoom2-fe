@@ -12,6 +12,8 @@ import { ContentComponent } from './content/content.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
+import { FolderMenuComponent } from './sidebar/folder-menu/folder-menu.component';
+import { LeafMenuComponent } from './sidebar/leaf-menu/leaf-menu.component';
 
 @NgModule({
   imports: [
@@ -27,7 +29,9 @@ import { HeaderComponent } from './header/header.component';
     ContentComponent,
     SidebarComponent,
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
+    FolderMenuComponent,
+    LeafMenuComponent
   ]
 })
 export class LayoutModule { }

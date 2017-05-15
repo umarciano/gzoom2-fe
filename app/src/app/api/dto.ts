@@ -37,7 +37,7 @@ export class LeafMenu extends MenuItem {
  * A menu entry that can contain both leaves and folders.
  */
 export class FolderMenu extends MenuItem {
-  children: [FolderMenu | MenuItem];
+  children: FolderMenu[] | MenuItem[];
 }
 
 /**
@@ -45,5 +45,5 @@ export class FolderMenu extends MenuItem {
  */
 export class RootMenu {
   id: string;
-  children: [FolderMenu];
+  children: FolderMenu[];
 }

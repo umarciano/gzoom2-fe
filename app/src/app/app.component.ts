@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
       .events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
-        //console.log('NavigationEnd', event);
+        // console.log('NavigationEnd', event);
         if (event.url === '/') {
           this.router.navigate(['/c/dashboard']);
         }

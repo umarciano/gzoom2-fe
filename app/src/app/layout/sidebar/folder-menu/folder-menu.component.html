@@ -1,0 +1,20 @@
+<div class="nested-menu">
+  <a class="list-group-item">
+    <span class="menu-icon">
+      <i class="fa" [ngClass]="classes"></i>
+    </span>
+    &nbsp;
+    {{menu.label|i18n}}
+  </a>
+  <li class="nested expand">
+    <ul class="submenu">
+      <div *ngFor="let c of menu.children">
+        <div [ngSwitch]="menuType(c)">
+          <app-leaf-menu *ngSwitchCase="'leaf'" [menu]="c"></app-leaf-menu>
+          <app-folder-menu *ngSwitchCase="'folder'" [menu]="c"></app-folder-menu>
+          <span *ngSwitchDefault></span>
+        </div>
+      </div>
+    </ul>
+  </li>
+</div>

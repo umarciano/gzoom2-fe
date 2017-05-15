@@ -8,7 +8,6 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/switchMap';
 
 import { RootMenu, FolderMenu, LeafMenu } from '../../api/dto';
-import { MenuConfig } from '../../shared/menu-config';
 
 @Component({
   selector: 'app-sidebar',
@@ -16,29 +15,14 @@ import { MenuConfig } from '../../shared/menu-config';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-  private readonly menuConf: MenuConfig;
-  isActive = false;
   showMenu = '';
-  //menu: ;
-  root: RootMenu;
   roots: Observable<FolderMenu[]>;
 
-  constructor(private readonly route: ActivatedRoute) {
-    this.menuConf = new MenuConfig();
-  }
+  constructor(private readonly route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.route.data
-      .subscribe((data: { menu: RootMenu }) => {
-        this.root = data.menu;
-      });
-
     this.roots = this.route.data
       .map((data: { menu: RootMenu }) => data.menu.children);
-  }
-
-  eventCalled() {
-    this.isActive = !this.isActive;
   }
 
   addExpandClass(element: any) {
@@ -49,4 +33,7 @@ export class SidebarComponent implements OnInit {
     }
   }
 
+  menuType(item: {children?: any[]}): string {
+    return item.children !== undefined && item.children !== null ? 'folder' : 'leaf';
+  }
 }

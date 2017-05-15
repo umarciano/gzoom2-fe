@@ -1,8 +1,11 @@
+import { Injectable } from '@angular/core';
+
 import * as _ from 'lodash';
 
 const REFURBISHED_PAGES = ['']; // TODO
 
-export class MenuConfig {
+@Injectable()
+export class MenuRefurbishService {
   private readonly refurbishedPages: string[];
 
   constructor() {
