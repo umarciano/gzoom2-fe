@@ -39,6 +39,11 @@ Tema:
   https://github.com/start-angular/SB-Admin-BS4-Angular-4
 
 Icone:
-  http://ionicons.com (versione 2.0.1, installata con ionicons-npm)
-  http://fontawesome.io
-  https://octicons.github.com
+  https://github.com/idleberg/atom-icon-fonts     LISTA DI RIFERIMENTO!
+  http://ionicons.com                             versione 2.0.1, installata con ionicons-npm
+  http://fontawesome.io                           4.7
+  https://octicons.github.com                     solo SVG... una scocciatura
+  http://www.androidicons.com                     tirare dentro a mano
+  https://saeedalipoor.github.io/icono/           forse inutili ma carine
+  http://zurb.com/playground/foundation-icons     inutili pure queste
+  http://vorillaz.github.io/devicons/#/dafont     belle, solo brand però
