@@ -5,9 +5,10 @@ import { CommonsModule } from '../commons/commons.module';
 import { ApiModule } from '../api/api.module';
 
 import { AuthorizationService } from './authorization.service';
-import { MenuRefurbishService } from './menu-refurbish.service';
+import { MenuService } from './menu.service';
 import { PermissionsResolver } from './permissions-resolver.service';
 import { MenuResolver } from './menu-resolver.service';
+import { SafeResPipe } from './safe-res.pipe';
 
 @NgModule({
   imports: [
@@ -15,7 +16,7 @@ import { MenuResolver } from './menu-resolver.service';
     CommonsModule,
     ApiModule
   ],
-  declarations: []
+  declarations: [SafeResPipe]
 })
 export class SharedModule {
 
@@ -29,7 +30,7 @@ export class SharedModule {
       ngModule: SharedModule,
       providers: [
         AuthorizationService,
-        MenuRefurbishService,
+        MenuService,
         PermissionsResolver,
         MenuResolver
       ]

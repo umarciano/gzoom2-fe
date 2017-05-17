@@ -61,7 +61,7 @@
       color: map-get($app-colors, navbar-hl);
     }
 
-    a.router-link-active {
+    a.active {
       background-color: darken(map-get($app-colors, navbar-bg), 5%);
       color: map-get($app-colors, navbar-hl);
     }

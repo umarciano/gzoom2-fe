@@ -1,12 +1,12 @@
 <div class="nested-menu">
-  <a class="list-group-item">
+  <a class="list-group-item" (click)="toggleExpanded()">
     <span class="menu-icon">
       <i class="fa" [ngClass]="classes"></i>
     </span>
     &nbsp;
     {{menu.label|i18n}}
   </a>
-  <li class="nested expand">
+  <li class="nested" [ngClass]="{'expand': expanded}">
     <ul class="submenu">
       <div *ngFor="let c of menu.children">
         <div [ngSwitch]="menuType(c)">

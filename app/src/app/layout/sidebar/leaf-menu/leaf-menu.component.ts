@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 import { LeafMenu } from '../../../api/dto';
-import { MenuRefurbishService } from '../../../shared/menu-refurbish.service';
+import { MenuService } from '../../../shared/menu.service';
 
 const DEF_ICON = 'fa-angle-right';
 
@@ -19,15 +19,21 @@ const DEF_ICON = 'fa-angle-right';
 export class LeafMenuComponent implements OnInit, OnChanges {
   @Input() menu: LeafMenu;
   classes: string[];
+  link: string[];
 
-  constructor(private readonly menuRefurbish: MenuRefurbishService) { }
+  constructor(private readonly menuService: MenuService) { }
 
   ngOnInit() {
-    this.classes = this.classesOf(this.menu);
+    this.init();
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.init();
+  }
+
+  private init() {
     this.classes = this.classesOf(this.menu);
+    this.link = this.menuService.stateFor(this.menu);
   }
 
   private classesOf(m) {

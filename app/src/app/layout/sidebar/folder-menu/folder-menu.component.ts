@@ -8,7 +8,6 @@ import {
 
 import { LeafMenu } from '../../../api/dto';
 import { FolderMenu } from '../../../api/dto';
-import { MenuRefurbishService } from '../../../shared/menu-refurbish.service';
 
 const OPEN_ICON = 'fa-folder-open-o';
 const CLOSE_ICON = 'fa-folder-o';
@@ -21,8 +20,9 @@ const CLOSE_ICON = 'fa-folder-o';
 export class FolderMenuComponent implements OnInit, OnChanges {
   @Input() menu: FolderMenu;
   classes: string[];
+  expanded = false;
 
-  constructor(private readonly menuRefurbish: MenuRefurbishService) { }
+  constructor() { }
 
   ngOnInit() {
     this.classes = this.classesOf(this.menu);
@@ -38,5 +38,9 @@ export class FolderMenuComponent implements OnInit, OnChanges {
 
   menuType(item: {children?: any[]}): string {
     return item.children !== undefined && item.children !== null ? 'folder' : 'leaf';
+  }
+
+  toggleExpanded() {
+    this.expanded = !this.expanded;
   }
 }

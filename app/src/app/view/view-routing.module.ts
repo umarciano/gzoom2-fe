@@ -26,6 +26,7 @@ const routes: Routes = [
     },
     children: [
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
+      { path: 'legacy/:id', loadChildren: './legacy/legacy.module#LegacyModule' },
       { path: '', pathMatch: 'full', redirectTo: '/c/dashboard' }
     ]
   }
