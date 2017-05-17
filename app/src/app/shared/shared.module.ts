@@ -9,6 +9,7 @@ import { MenuService } from './menu.service';
 import { PermissionsResolver } from './permissions-resolver.service';
 import { MenuResolver } from './menu-resolver.service';
 import { SafeResPipe } from './safe-res.pipe';
+import { SafeIdentifierGuard } from './safe-identifier.guard';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { SafeResPipe } from './safe-res.pipe';
     CommonsModule,
     ApiModule
   ],
-  declarations: [SafeResPipe]
+  declarations: [SafeResPipe],
+  exports: [SafeResPipe]
 })
 export class SharedModule {
 
@@ -32,7 +34,8 @@ export class SharedModule {
         AuthorizationService,
         MenuService,
         PermissionsResolver,
-        MenuResolver
+        MenuResolver,
+        SafeIdentifierGuard
       ]
     };
   }

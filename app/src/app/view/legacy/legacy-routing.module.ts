@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LegacyComponent } from './legacy.component';
+import { SafeIdentifierGuard } from '../../shared/safe-identifier.guard';
 
 const routes: Routes = [
-  { path: '', component: LegacyComponent }
+  { path: ':id', component: LegacyComponent, canActivate: [SafeIdentifierGuard] }
 ];
 
 @NgModule({
