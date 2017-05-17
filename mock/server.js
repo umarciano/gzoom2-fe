@@ -219,10 +219,12 @@ app.get('/rest/menu', function(req, res) {
 
 app.get('/legacy/:id', function(req, res) {
   const id = req.params.id;
+  const exid = req.query.externalLoginKey;
   log.debug('Retrieving legacy content with id: ' + id);
   res.render('index', {
     title: 'Legacy Content ' + id,
-    message: 'Menu ' + id
+    message: 'Menu ' + id,
+    info: 'Ext. Login Key: ' + exid
   });
 });
 
