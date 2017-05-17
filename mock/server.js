@@ -66,26 +66,26 @@ function isRevoked(req, payload, done) {
 }
 
 app.configure(function() {
+  // configures the view directory
+  app.set('views', path.join(__dirname, 'views'));
+  app.set('view engine', 'pug');
+
   // protects APIs with JWT
   app.use('/rest/', expressJwt({
     secret: SECRET,
     getToken: getToken,
     isRevoked: isRevoked
-  }).unless({path: ['/rest/login', '/rest/profile/i18n']}));
+  }).unless({path: ['/rest/login', '/rest/profile/i18n', '/legacy/*']}));
 
+  app.use(express.favicon());
   app.use(express.json());
   app.use(express.urlencoded());
   app.use(express.methodOverride());
   app.use(app.router);
 
-  // serves static content from app folder and from bower_components
-  if (process.env.OPT_ENV === 'dist') {
-    app.use(express.static(path.join(__dirname, 'dist')));
-    log.info("Serving static content from " + path.join(__dirname, 'dist'));
-  } else {
-    app.use(express.static(path.join(__dirname, 'app')));
-    app.use('/bower_components', express.static(path.join(__dirname, 'bower_components')));
-  }
+  // serves static content if necessary
+  app.use(express.static(path.join(__dirname, 'public')));
+  log.info("Serving static content from " + path.join(__dirname, 'public'));
 
   // manage authentication errors
   app.use(onAuthenticationError);
@@ -215,6 +215,15 @@ app.get('/rest/menu', function(req, res) {
   setTimeout(function() {
     res.json(data.menu());
   }, _.random(200, 1000));
+});
+
+app.get('/legacy/:id', function(req, res) {
+  const id = req.params.id;
+  log.debug('Retrieving legacy content with id: ' + id);
+  res.render('index', {
+    title: 'Legacy Content ' + id,
+    message: 'Menu ' + id
+  });
 });
 
 app.listen(PORT);
