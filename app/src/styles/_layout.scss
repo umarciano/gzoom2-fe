@@ -9,15 +9,21 @@
 /*----------------------------------------------------------------------------*/
 .sidebar {
 
-  // tab content
+  /* search bar (same color of navigation bar) */
+  .search {
+    background-color: map-get($app-colors, navbar-bg);
+  }
+
+  /* tab content (where menus are) */
   .tab-content {
     background-color: map-get($sidebar-colors, tab-sel-bg);
   }
 
-  /* top tabs */
+  /* top tabs (same color of navigation bar) */
   .nav-tabs {
     background-color: map-get($app-colors, navbar-bg);
     padding-top: 20px;
+    border-bottom: 1px solid map-get($sidebar-colors, tab-border);
   }
 
   .nav-tabs a.nav-link {
@@ -40,10 +46,6 @@
     color: map-get($sidebar-colors, tab-fg);
     background-color: map-get($sidebar-colors, tab-bg);
     border-color: map-get($sidebar-colors, tab-border);
-  }
-
-  .nav-tabs {
-    border-bottom: 1px solid map-get($sidebar-colors, tab-border);
   }
 
   /* group of menu items */
