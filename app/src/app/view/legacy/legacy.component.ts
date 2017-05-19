@@ -3,6 +3,8 @@ import { ActivatedRoute, Params } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/of';
 
 import * as $ from 'jquery';
@@ -30,10 +32,15 @@ export class LegacyComponent implements OnInit {
     // TODO what if component is reused and iframe url is simply changed? is this event going
     // to be sent again?
     const iframe: any = $(this.cont.nativeElement).find('iframe')[0];
-    $(iframe).on('load', () => this.onIframeLoaded(iframe));
+
+    // whenever the iframe is loaded or the window is resized, update the iframe height
+    Observable.merge(
+      Observable.fromEvent(window, 'resize'),
+      Observable.fromEvent(iframe, 'load')
+    ).subscribe(() => this.resizeIframe(iframe));
   }
 
-  onIframeLoaded(iframe) {
+  resizeIframe(iframe) {
     // TODO do IE browsers require a different way to address the document?
     const height = iframe.contentWindow.document.body.scrollHeight;
     $(iframe).height(height + 'px');
