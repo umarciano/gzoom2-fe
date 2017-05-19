@@ -23,7 +23,7 @@ export class MenuResolver implements Resolve<RootMenu> {
       .menu()
       .toPromise()
       .then(root => {
-        console.log('Menu successfully retrieved', root);
+        //console.log('Menu successfully retrieved', root);
         return root;
       })
       .catch(err => {
