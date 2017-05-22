@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 
 import * as _ from 'lodash';
 
-import { binarySearch } from '../commons/commons';
 import { LeafMenu } from '../api/dto';
 
 /**
