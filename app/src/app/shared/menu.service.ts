@@ -8,10 +8,10 @@ import { LeafMenu } from '../api/dto';
  * Maps of refurbished pages and their relative router states.
  */
 const REFURBISHED_PAGES = {
-  "GP_MENU_00001_A.1": ['example'],
-  "GP_MENU_00001_1": ['example'],
-  "GP_MENU_00001_2": ['dashboard'],
-  "GP_MENU_00001_3": ['example']
+  'GP_MENU_00001_A.1': ['example'],
+  'GP_MENU_00001_1': ['example'],
+  'GP_MENU_00001_2': ['dashboard'],
+  'GP_MENU_00001_3': ['example']
 };
 
 @Injectable()

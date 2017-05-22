@@ -435,27 +435,35 @@ export function untail(str: string, char: string): string {
  * @see https://oli.me.uk/2014/12/17/revisiting-searching-javascript-arrays-with-a-binary-search/
  */
 export function binarySearch(list: string[] | number[], item: string | number) {
-  var min = 0;
-  var max = list.length - 1;
-  var guess;
+  let min = 0;
+  let max = list.length - 1;
+  let guess;
+  const bitwise = max <= 2147483647;
 
-  var bitwise = (max <= 2147483647) ? true : false;
   if (bitwise) {
     while (min <= max) {
       guess = (min + max) >> 1;
-      if (list[guess] === item) { return guess; }
-      else {
-        if (list[guess] < item) { min = guess + 1; }
-        else { max = guess - 1; }
+      if (list[guess] === item) {
+        return guess;
+      } else {
+        if (list[guess] < item) {
+          min = guess + 1;
+        } else {
+          max = guess - 1;
+        }
       }
     }
   } else {
     while (min <= max) {
       guess = Math.floor((min + max) / 2);
-      if (list[guess] === item) { return guess; }
-      else {
-        if (list[guess] < item) { min = guess + 1; }
-        else { max = guess - 1; }
+      if (list[guess] === item) {
+        return guess;
+      } else {
+        if (list[guess] < item) {
+          min = guess + 1;
+        } else {
+          max = guess - 1;
+        }
       }
     }
   }

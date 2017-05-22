@@ -22,10 +22,7 @@ export class MenuResolver implements Resolve<RootMenu> {
     return this.menuService
       .menu()
       .toPromise()
-      .then(root => {
-        //console.log('Menu successfully retrieved', root);
-        return root;
-      })
+      .then(root => { return root; })
       .catch(err => {
         console.error('Cannot retrieve menu', err);
         this.lockoutService.lockout();
