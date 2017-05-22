@@ -5,6 +5,17 @@ declare function jwt_decode(token: string): any;
 const TOKEN_KEY = 'auth-token';
 
 /**
+ * User profile obtained from JWT token.
+ */
+export class UserProfile {
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  externalLoginKey: string;
+}
+
+/**
  * Configuration class for authentication service.
  */
 export class AuthServiceConfig {
@@ -73,11 +84,12 @@ export class AuthService {
   /**
    * Retrieves the user profile contained in the current authentication token.
    *
-   * @return {Object} The user profile contained in the authentication token or null if no token is present.
+   * @return {UserProfile} The user profile contained in the authentication token or null
+   *                       if no token is present.
    */
-  userProfile(): any {
-    const token = this.token(),
-      profile = token ? jwt_decode(token) : null;
+  userProfile(): UserProfile {
+    const token = this.token();
+    const profile: UserProfile = token ? jwt_decode(token) as UserProfile : null;
     return profile;
   }
 }

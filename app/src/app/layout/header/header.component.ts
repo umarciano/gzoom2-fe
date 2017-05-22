@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../commons/auth.service';
+import { AuthService, UserProfile } from '../../commons/auth.service';
 import { LockoutService } from '../../commons/lockout.service';
 import { LogoutService } from '../../api/logout.service';
 
@@ -9,7 +9,7 @@ import { LogoutService } from '../../api/logout.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  user: any;
+  user: UserProfile;
 
   constructor(private readonly authSrv: AuthService,
               private readonly lockoutSrv: LockoutService,
