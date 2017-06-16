@@ -42,7 +42,9 @@ function trueOrFalse(n, d) {
  */
 function getToken(req) {
   var auth = req.headers.authorization;
+
   if (auth && auth.split(' ')[0] === 'Bearer') {
+
     return auth.split(' ')[1];
   } else if (req.query && req.query.token) {
     return req.query.token;
@@ -217,8 +219,8 @@ app.get('/rest/menu', function(req, res) {
   }, _.random(200, 1000));
 });
 
-app.get('/legacy/:id', function(req, res) {
-  const id = req.params.id;
+app.get('/gzoom/control/box', function(req, res) {
+  const id = req.query.menuId;
   const exid = req.query.externalLoginKey;
   log.debug('Retrieving legacy content with id: ' + id);
   res.render('index', {
@@ -226,6 +228,19 @@ app.get('/legacy/:id', function(req, res) {
     message: 'Menu ' + id,
     info: 'Ext. Login Key: ' + exid
   });
+});
+
+/**
+/rest/uom
+/rest/uom/types
+/rest/uom/scales
+*/
+app.get('/rest/uom/types', function(req, res) {
+  var uomTypes = data.uomTypes();
+  log.debug('Looking up uomTypes');
+  setTimeout(function() {
+    res.json({ results: uomTypes, total: 5 });
+  }, _.random(200, 1000));
 });
 
 app.listen(PORT);

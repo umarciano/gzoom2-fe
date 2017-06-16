@@ -56,6 +56,13 @@ var _ = require('lodash'),
       { id: 19, name: 'Magma' },
       { id: 20, name: 'Tornado' }
     ],
+    UOM_TYPE = [
+      { uomTypeId: 'CURRENCY_MEASURE', description: 'Valuta' },
+      { uomTypeId: 'DATE_MEASURE', description: 'Data' },
+      { uomTypeId: 'OTHER_MEASURE', description: 'Altro' },
+      { uomTypeId: 'RATING_SCALE', description: 'Scale Valori' },
+      { uomTypeId: 'TIME_FREQ_MEASURE', description: 'Tempo/Frequenza' }
+    ],
     tokens = {},
     secret = generateSecret();
 
@@ -158,7 +165,8 @@ module.exports = {
         { id: par.id + '.4', label: 'Leaf Menu 4', classes: []},
         { id: par.id + '.5', label: 'Leaf Menu 5', classes: []},
         { id: par.id + '.6', label: 'Leaf Menu 6'},
-        { id: par.id + '.7', label: 'Leaf Menu 7', classes: null}
+        { id: par.id + '.7', label: 'Leaf Menu 7', classes: null},
+        { id: 'GP_MENU_00006',  label: 'GP_MENU_00006', classes: null}
       ];
 
       par.children
@@ -185,5 +193,9 @@ module.exports = {
 
     root.children.forEach(c => _2ndLvlMenu(c));
     return root;
+  },
+
+  uomTypes: function() {
+    return UOM_TYPE;
   }
 };

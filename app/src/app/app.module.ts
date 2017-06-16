@@ -23,7 +23,7 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
 import { HeroService } from './hero.service';
 
 const ROOT_PATH = '../rest';
-const LEGACY_PATH = '../legacy';
+const GZOOM_PATH = '/gzoom/control/box';
 
 @NgModule({
   imports: [
@@ -40,7 +40,7 @@ const LEGACY_PATH = '../legacy';
       application: { name: 'GZoom', version: '2.0.0' },
       i18n: { rootPath: ROOT_PATH }
     }),
-    ApiModule.forRoot({ rootPath: ROOT_PATH, legacyPath: LEGACY_PATH }),
+    ApiModule.forRoot({ rootPath: ROOT_PATH, gzoomPath: GZOOM_PATH }),
     SharedModule.forRoot(),
     // > routes
     AppRoutingModule

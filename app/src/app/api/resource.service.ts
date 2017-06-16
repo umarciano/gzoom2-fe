@@ -11,7 +11,7 @@ export class ResourceService {
 
   iframeUrl(menuId: string) {
     const usr = this.authService.userProfile();
-    // console.log(`iframe url:${this.apiConfig.legacyPath + '/' + menuId}`);
-    return `${this.apiConfig.legacyPath}/${menuId}?externalLoginKey=${usr.externalLoginKey}`;
+
+    return `${this.apiConfig.gzoomPath}?menuId=${menuId}&externalLoginKey=${usr.externalLoginKey}`;
   }
 }
