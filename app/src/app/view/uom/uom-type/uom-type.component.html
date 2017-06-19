@@ -1,18 +1,13 @@
 <p>
   uom-type works!
 </p>
-<table class="table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let uomType of uomTypes | async"
-    class="search-result" >
-      <th>{{uomType.uomTypeId}}</th>
-      <td>{{uomType.description}}</td>
-    </tr>
-  </tbody>
-</table>
+
+<h3 class="first">Basic</h3>
+<p-dataTable [value]="cars" scrollable="true" scrollHeight="50px" virtualScroll="virtualScroll"
+            [lazy]="true" [rows]="3"
+            sortMode="multiple"
+            [totalRecords]="totalRecords" (onLazyLoad)="loadCarsLazy($event)">
+    <p-header>List of UomType</p-header>
+    <p-column field="uomTypeId" header="Vin" [sortable]="true"></p-column>
+    <p-column field="description" header="Color" [sortable]="true"></p-column>
+</p-dataTable>

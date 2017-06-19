@@ -2,19 +2,28 @@ doctype html
 html
   head
     title=title
-  body(style={margin:0, padding: 0, 'background-color': '#c4e9e7'})
+  body(style={height: 'auto', overflow: 'auto', margin:0, padding: 0, 'background-color': '#c4e9e7', position: 'relative'})
     .main(style={padding: '1em'})
       .column(style={width: '60%', 'margin-left': '20%'})
         h1=message
         h2=info
         h3 Sit odio mattis
         p Vestibulum at laboriosam eu non magna. Adipiscing volutpat quam nulla non lorem. Convallis arcu est nulla rhoncus aliquam urna congue ut. Vestibulum rhoncus torquent leo nec nullam odio malesuada neque porta nisl ac ut eget nec. Leo integer sit nunc est ultrices. Amet neque rerum. Consectetuer ut a. Lacinia porta ad.
-        h3 Magnis nec donec nobis sapien morbi
-        p Consectetuer et enim. Erat ipsum dictumst. Convallis ut in ut molestie neque odio mauris amet. Blandit id sit. Id pede pretium. Eu rutrum adipiscing maecenas at vel. Ipsum natoque molestie. Lorem sapien mi. Auctor orci magna et diam sed felis aliquam mauris ultricies nisl sed urna sodales litora metus fringilla justo dignissim erat tortor.
-        p At in vehicula. Et pellentesque pellentesque. Maecenas lorem ligula. Duis sed odio. Mi eu non non euismod tellus. Quam curabitur consequat quis con eget faucibus ipsum faucibus. Ad nec laoreet. Orci aliquam nunc magna interdum sem. Nulla ut facilisis. Sit augue erat. Ornare dis lorem ornare integer maecenas. Tempus tempor lectus odio et aliquam. Amet a id ipsum pede et. Commodo vitae elit. Non aliquam pulvinar sociosqu tristique aliquet orci integer est vestibulum orci volutpat sociosqu aliquam luctus. Non cursus faucibus id massa interdum mollis tempor felis eu purus mi. Tortor cras consequat ac eu urna. Nullam ridiculus sociosqu lorem lectus mauris lorem aliquam ipsum. Sed sit sollicitudin. Turpis vestibulum elit eros vestibulum facilisi morbi rhoncus gravida nascetur adipiscing velit.
-        h3 Egestas interdum turpis
-        p Nibh pede sem. Leo lectus vitae. Dictumst sodales scelerisque. Aenean nisl sit distinctio ornare et mi nec nec et fermentum sem a euismod euismod tincidunt suscipit sociis. Pellentesque deserunt tristique. Lacus tempus ipsum. Dapibus vehicula in. Sodales tincidunt duis elit quisque tempus. Eleifend viverra vivamus amet nonummy consectetuer volutpat sit felis risus turpis risus fermentum cras tempor.
-        h3 Natoque dui sit
-        p Cursus mauris ultricies. Elit nullam class. Ullamcorper tortor nulla ornare eget neque. Non est amet. Vestibulum ac lectus ultrices rutrum urna. Arcu odio est id ut maecenas ipsum mauris adipiscing. Fringilla a tincidunt. Lorem nisl justo cras vel ipsum. Laoreet eros mauris mollis quis nulla. Consectetuer est vestibulum neque elementum nulla sem assumenda lorem. Viverra ac elit. Vel urna et in elit consectetuer netus mauris integer ipsum suscipit pellentesque. Vitae lobortis pellentesque risus libero eu. Ante arcu lectus semper praesent vel ultrices nulla sapien. Nec pharetra vel nibh nonummy in vel vestibulum diam. Orci id ultricies. Qui rutrum sodales. Vitae nec ut. Enim proin elit imperdiet magna nulla ut velit justo qui amet amet ipsum ut sociis.
-        h3 Augue orci lacus
-        p Lorem ligula facilisi ipsum mauris in pretium dis dui nullam ipsum magnis integer integer nec lacus sit laoreet. Vestibulum vivamus aliquam neque eleifend sit. Accumsan tellus pellentesque nullam rutrum sodales. Lacus tellus nunc. Vestibulum ridiculus quis wisi in non condimentum erat dolore. Pellentesque donec viverra. Non ut laborum. Lacus ut pede ac lacinia est. Proin luctus volutpat nulla volutpat mollis gravida cubilia aenean. Donec dapibus nunc. Et arcu suspendisse. Condimentum elementum eros. Neque est nulla aliquam commodo.
+        #content
+    iframe#pippo(style={position: 'absolute', top: 0, bottom: 0, left: 0, height: '100%', width: 0, border: 0, 'background-color': 'transparent'})
+    script.
+      function appendBox() {
+        document.getElementById('content').innerHTML += '<div style="padding: 20px; width: 300px; height: 500px; background-color: red;"></div>';
+      }
+      setTimeout(appendBox, 1000);
+      setTimeout(appendBox, 4000);
+      setTimeout(appendBox, 7000);
+      var n = 0;
+      var w = window.top;
+      document.getElementById('pippo').contentWindow.addEventListener('resize', function(ev) {
+        console.log('IFRAME RESIZED: ' + n++, ev);
+        console.log('IFRAME SIZE: ' + ev.target.document.body.clientHeight);
+        w.postMessage(ev.target.document.body.clientHeight, '*');
+      });
+      console.log('CONTENT LOADED');
+      

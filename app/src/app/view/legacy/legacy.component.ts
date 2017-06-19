@@ -29,20 +29,32 @@ export class LegacyComponent implements OnInit {
       .switchMap((params: Params) => Observable.of(params['id']))
       .subscribe((id: string) => this.url = this.resService.iframeUrl(id));
 
-    // TODO what if component is reused and iframe url is simply changed? is this event going
-    // to be sent again?
+    // Beware that component might be reused and iframe url is simply changed
+    // in that case, iframe 'load' event is not sent.
+    // Please refer to:
+    // - https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage
+    // - https://stackoverflow.com/questions/9153445/how-to-communicate-between-iframe-and-the-parent-site
     const iframe: any = $(this.cont.nativeElement).find('iframe')[0];
+
+    window.onmessage = s => {
+      console.log("INTERNAL IFRAME RESIZED: " + s.data);
+      this.resizeIframe(iframe);
+    };
 
     // whenever the iframe is loaded or the window is resized, update the iframe height
     Observable.merge(
       Observable.fromEvent(window, 'resize'),
+      Observable.fromEvent(iframe.contentWindow, 'resize'),
       Observable.fromEvent(iframe, 'load')
     ).subscribe(() => this.resizeIframe(iframe));
   }
 
   resizeIframe(iframe) {
     // TODO do IE browsers require a different way to address the document?
-    const height = iframe.contentWindow.document.body.scrollHeight;
-    $(iframe).height(height + 'px');
+    const height = iframe.contentWindow.document.body.clientHeight;
+
+    console.log("resizeIframe height " + height);
+    $(iframe).height(height3 + 'px');
   }
+
 }
