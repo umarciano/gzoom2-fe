@@ -54,7 +54,7 @@ export class LegacyComponent implements OnInit {
     const height = iframe.contentWindow.document.body.clientHeight;
 
     console.log("resizeIframe height " + height);
-    $(iframe).height(height3 + 'px');
+    $(iframe).height(height + 'px');
   }
 
 }
