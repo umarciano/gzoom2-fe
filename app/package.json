@@ -10,6 +10,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve -ec=true --proxy-config proxy.config.json",
+    "mock": "ng serve -ec=true --proxy-config proxy.config.mock.json",
     "build": "ng build --aot -prod",
     "test": "ng test",
     "lint": "ng lint",
@@ -29,6 +30,7 @@
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.25",
     "bootstrap": "^4.0.0-alpha.6",
     "core-js": "^2.4.1",
+    "primeng": "^4.0.0",
     "font-awesome": "^4.7.0",
     "fullcalendar": "^3.3.1",
     "ionicons-npm": "^2.0.1",

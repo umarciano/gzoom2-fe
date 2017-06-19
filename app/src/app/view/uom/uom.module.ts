@@ -8,6 +8,10 @@ import { UomRoutingModule } from './uom-routing.module';
 
 import { UomTypeComponent } from './uom-type/uom-type.component';
 
+import {AccordionModule} from 'primeng/primeng';     //accordion and accordion tab
+import {MenuItem} from 'primeng/primeng';
+import {DataTableModule, SharedModule} from 'primeng/primeng';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,7 +19,10 @@ import { UomTypeComponent } from './uom-type/uom-type.component';
     CommonsModule,
     ApiModule,
     LayoutModule,
-    UomRoutingModule
+    UomRoutingModule,
+    AccordionModule,
+    DataTableModule,
+    SharedModule
   ],
   declarations: [
     UomTypeComponent
