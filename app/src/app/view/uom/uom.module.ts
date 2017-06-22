@@ -13,6 +13,9 @@ import {MenuItem} from 'primeng/primeng';
 import {DataTableModule, SharedModule} from 'primeng/primeng';
 import {ButtonModule} from 'primeng/primeng';
 import { UomComponent } from './uom/uom.component';
+import { UomTypeResolver } from './uom-type/uom-type-resolver.service';
+import { UomService } from '../../api/uom.service';
+
 
 @NgModule({
   imports: [
@@ -30,6 +33,10 @@ import { UomComponent } from './uom/uom.component';
   declarations: [
     UomTypeComponent,
     UomComponent
+  ],
+  providers: [
+    UomService,
+    UomTypeResolver
   ]
 })
 export class UomModule { }

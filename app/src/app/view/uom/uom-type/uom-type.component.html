@@ -1,10 +1,10 @@
 <p>
   uom-type works!
-  Tabella semplice con solo ordinamento
+  Tabella semplice con solo ordinamento e recupero dati con router, cioe' prima che venga renderizzata la pagina
 </p>
 
 <h3 class="first">Basic</h3>
-<p-dataTable [value]="uomTypes2"
+<p-dataTable [value]="uomTypes"
             sortMode="multiple">
     <p-header>List of UomType</p-header>
     <p-column field="uomTypeId" header="UomTypeId" [sortable]="true"></p-column>
