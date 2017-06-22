@@ -11,6 +11,8 @@ import { UomTypeComponent } from './uom-type/uom-type.component';
 import {AccordionModule} from 'primeng/primeng';     //accordion and accordion tab
 import {MenuItem} from 'primeng/primeng';
 import {DataTableModule, SharedModule} from 'primeng/primeng';
+import {ButtonModule} from 'primeng/primeng';
+import { UomComponent } from './uom/uom.component';
 
 @NgModule({
   imports: [
@@ -22,10 +24,12 @@ import {DataTableModule, SharedModule} from 'primeng/primeng';
     UomRoutingModule,
     AccordionModule,
     DataTableModule,
-    SharedModule
+    SharedModule,
+    ButtonModule
   ],
   declarations: [
-    UomTypeComponent
+    UomTypeComponent,
+    UomComponent
   ]
 })
 export class UomModule { }

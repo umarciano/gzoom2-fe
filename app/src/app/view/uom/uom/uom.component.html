@@ -1,0 +1,46 @@
+<p>
+  uom works!
+  Lazy non funziona insieme al filter, <br/>
+  Se sono presenti Lazy e Filter, bisogna iplementare i filtri a mano dentro il metodo loadCarsLazy<br/>
+  per il lazy si usa:<br/>
+  [lazy]="true" [totalRecords]="totalRecords" (onLazyLoad)="loadCarsLazy($event)"<br/>
+
+  Mettere sempre il numero di righe<br/>
+  [rows]="5"<br/>
+  Per il paginatore si usa:<br/>
+  [paginator]="true"<br/>
+
+  Per lo scroll invece<br/>
+  scrollable="true" scrollHeight="200px" virtualScroll="virtualScroll", e va insieme al lazy<br/>
+</p>
+
+<h3 class="first">Basic</h3>
+<div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none">
+    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+    <input #gb type="text" pInputText size="50" placeholder="Global Filter">
+</div>
+<p-dataTable [value]="uom2"
+            [rows]="5"
+            scrollable="true" scrollHeight="200px" virtualScroll="virtualScroll"
+            [lazy]="true" [totalRecords]="totalRecords" (onLazyLoad)="loadCarsLazy($event)"
+            sortMode="multiple"
+            [globalFilter]="gb" #dt>
+    <p-header>List of Uom</p-header>
+    <p-column field="uomTypeId" header="uomTypeId"
+    [filter]="true" filterPlaceholder="Search"
+    [sortable]="true"></p-column>
+    <p-column field="uomId" header="uomId"
+    [filter]="true" filterMatchMode="contains"
+    [sortable]="true"></p-column>
+    <p-column field="description" header="description"
+    [filter]="true" filterMatchMode="contains"
+    [sortable]="true"></p-column>
+    <p-column styleClass="col-button">
+        <ng-template pTemplate="header">
+            <button type="button" pButton icon="fa-plus"></button>
+        </ng-template>
+        <ng-template let-car="rowData" pTemplate="body">
+            <button type="button" pButton (click)="selectUom(uom)" icon="fa-search"></button>
+        </ng-template>
+    </p-column>
+</p-dataTable>
