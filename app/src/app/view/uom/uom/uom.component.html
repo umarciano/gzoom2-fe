@@ -1,7 +1,7 @@
 <p>
   uom works!
-  Lazy non funziona insieme al filter, <br/>
-  Se sono presenti Lazy e Filter, bisogna iplementare i filtri a mano dentro il metodo loadCarsLazy<br/>
+  Lazy non funziona insieme al filter e al sortorder, <br/>
+  Se sono presenti Lazy e Filter, bisogna implementare i filtri a mano dentro il metodo loadCarsLazy<br/>
   per il lazy si usa:<br/>
   [lazy]="true" [totalRecords]="totalRecords" (onLazyLoad)="loadCarsLazy($event)"<br/>
 
@@ -19,28 +19,70 @@
     <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
     <input #gb type="text" pInputText size="50" placeholder="Global Filter">
 </div>
-<p-dataTable [value]="uom2"
+<p-dataTable [value]="uoms"
             [rows]="5"
-            scrollable="true" scrollHeight="200px" virtualScroll="virtualScroll"
-            [lazy]="true" [totalRecords]="totalRecords" (onLazyLoad)="loadCarsLazy($event)"
+            [paginator]="true"
+            scrollable="true"
             sortMode="multiple"
+            [responsive]="true"
             [globalFilter]="gb" #dt>
     <p-header>List of Uom</p-header>
     <p-column field="uomTypeId" header="uomTypeId"
-    [filter]="true" filterPlaceholder="Search"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"
     [sortable]="true"></p-column>
     <p-column field="uomId" header="uomId"
-    [filter]="true" filterMatchMode="contains"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"
     [sortable]="true"></p-column>
     <p-column field="description" header="description"
-    [filter]="true" filterMatchMode="contains"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"
     [sortable]="true"></p-column>
     <p-column styleClass="col-button">
         <ng-template pTemplate="header">
-            <button type="button" pButton icon="fa-plus"></button>
+            <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
         </ng-template>
-        <ng-template let-car="rowData" pTemplate="body">
-            <button type="button" pButton (click)="selectUom(uom)" icon="fa-search"></button>
+        <ng-template let-uom="rowData" pTemplate="body">
+            <button type="button" pButton icon="fa-search" (click)="selectUom(uom)"></button>
         </ng-template>
     </p-column>
 </p-dataTable>
+
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+
+<p-dialog header="Uom Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="uom">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="uomTypeId">UomTypeId</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="uomTypeId" [(ngModel)]="uom.uomTypeId" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="uomTypeId">UomId</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="uomId" [(ngModel)]="uom.uomId" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="description">Description</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="uom.description" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="abbreviation">Abbreviation</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="abbreviation" [(ngModel)]="uom.abbreviation" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="decimalScale">Decimal Scale</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="decimalScale" [(ngModel)]="uom.decimalScale" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="minValue">Min Value</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="minValue" [(ngModel)]="uom.minValue" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="maxValue">Max Value</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="maxValue" [(ngModel)]="uom.maxValue" /></div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa-close" (click)="confirm()" label="Delete"></button>
+            <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+        </div>
+    </p-footer>
+</p-dialog>
