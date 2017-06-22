@@ -5,6 +5,7 @@ import { UomService } from '../../../api/uom.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import {LazyLoadEvent} from '../../../commons/lazyloadevent';
 import {FilterMetadata} from '../../../commons/filtermetadata';
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 @Component({
   selector: 'app-uom-type',
@@ -20,7 +21,8 @@ export class UomTypeComponent implements OnInit {
   selectedUomType: UomType;
   newUomType: boolean;
 
-  constructor(private uomService: UomService, private readonly route: ActivatedRoute, private router: Router) { }
+  constructor(private uomService: UomService, private confirmationService: ConfirmationService,
+              private readonly route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.uomTypesObs = this.route.data
@@ -78,6 +80,19 @@ export class UomTypeComponent implements OnInit {
       uomType[prop] = u[prop];
     }
     return uomType;
+  }
+
+  confirm() {
+    this.confirmationService.confirm({
+        message: 'Are you sure that you want to perform this action?',
+        accept: () => {
+            this.delete()
+        },
+        reject: () => {
+          this.uomType = null;
+          this.displayDialog = false;
+        }
+    });
   }
 }
 
