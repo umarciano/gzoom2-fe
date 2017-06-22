@@ -1,13 +1,20 @@
 <p>
   uom-type works!
+  Tabella semplice con solo ordinamento
 </p>
 
 <h3 class="first">Basic</h3>
-<p-dataTable [value]="cars" scrollable="true" scrollHeight="50px" virtualScroll="virtualScroll"
-            [lazy]="true" [rows]="3"
-            sortMode="multiple"
-            [totalRecords]="totalRecords" (onLazyLoad)="loadCarsLazy($event)">
+<p-dataTable [value]="uomTypes2"
+            sortMode="multiple">
     <p-header>List of UomType</p-header>
-    <p-column field="uomTypeId" header="Vin" [sortable]="true"></p-column>
-    <p-column field="description" header="Color" [sortable]="true"></p-column>
+    <p-column field="uomTypeId" header="UomTypeId" [sortable]="true"></p-column>
+    <p-column field="description" header="Description" [sortable]="true"></p-column>
+    <p-column styleClass="col-button">
+        <ng-template pTemplate="header">
+            <button type="button" pButton icon="fa-plus"></button>
+        </ng-template>
+        <ng-template let-car="rowData" pTemplate="body">
+            <button type="button" pButton (click)="selectUomType(uomType)" icon="fa-search"></button>
+        </ng-template>
+    </p-column>
 </p-dataTable>

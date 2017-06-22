@@ -1,96 +1,96 @@
 {
   "/rest/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8081",
     "secure": false,
     "logLevel": "debug"
   },
   "/gzoom/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/accountingext/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/commondataext/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/corperf/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/custom/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/emplperf/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/humanresext/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/orgperf/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/partyext/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/procperf/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/productext/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/rendperf/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/stratperf/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/trasperf/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/workeffortext/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/theme_gplus/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/images/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/resources/": {
-    "target": "http://localhost:8000",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   }
