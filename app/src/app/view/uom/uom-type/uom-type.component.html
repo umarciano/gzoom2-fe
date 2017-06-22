@@ -5,16 +5,36 @@
 
 <h3 class="first">Basic</h3>
 <p-dataTable [value]="uomTypes"
-            sortMode="multiple">
+            sortMode="multiple"
+            [responsive]="true">
     <p-header>List of UomType</p-header>
     <p-column field="uomTypeId" header="UomTypeId" [sortable]="true"></p-column>
     <p-column field="description" header="Description" [sortable]="true"></p-column>
     <p-column styleClass="col-button">
         <ng-template pTemplate="header">
-            <button type="button" pButton icon="fa-plus"></button>
+            <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
         </ng-template>
-        <ng-template let-car="rowData" pTemplate="body">
-            <button type="button" pButton (click)="selectUomType(uomType)" icon="fa-search"></button>
+        <ng-template let-uomType="rowData" pTemplate="body">
+            <button type="button" pButton icon="fa-search" (click)="selectUomType(uomType)" ></button>
         </ng-template>
     </p-column>
 </p-dataTable>
+
+<p-dialog header="UomType Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="uomType">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="uomTypeId">UomTypeId</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="uomTypeId" [(ngModel)]="uomType.uomTypeId" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="description">Description</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="uomType.description" /></div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa-close" (click)="delete()" label="Delete"></button>
+            <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+        </div>
+    </p-footer>
+</p-dialog>

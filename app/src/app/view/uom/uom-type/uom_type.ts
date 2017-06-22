@@ -2,5 +2,5 @@
  * Model of a hero.
  */
 export class UomType {
-  constructor(public uom_type_id: string, public description: string) { }
+  constructor(public uomTypeId?: string, public description?: string) { }
 }
