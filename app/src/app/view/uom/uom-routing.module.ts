@@ -9,7 +9,7 @@ import { UomComponent } from './uom/uom.component';
 
 const routes: Routes = [
   { path: 'type', component: UomTypeComponent, resolve: { uomTypes: UomTypeResolver}},
-  { path: 'value', component: UomComponent, resolve: { uoms: UomResolver}}
+  { path: 'value', component: UomComponent, resolve: { uoms: UomResolver, uomTypes: UomTypeResolver}}
 ];
 
 @NgModule({

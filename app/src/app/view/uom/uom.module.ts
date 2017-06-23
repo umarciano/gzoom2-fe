@@ -6,9 +6,8 @@ import { ApiModule } from '../../api/api.module';
 import { LayoutModule } from '../../layout/layout.module';
 import { UomRoutingModule } from './uom-routing.module';
 
-import { UomTypeComponent } from './uom-type/uom-type.component';
-
 import {AccordionModule} from 'primeng/primeng';     //accordion and accordion tab
+import { DropdownModule } from 'primeng/primeng';
 import {MenuItem} from 'primeng/primeng';
 import { DialogModule } from 'primeng/primeng';
 import { DataTableModule, SharedModule } from 'primeng/primeng';
@@ -19,6 +18,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule }    from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { UomTypeComponent } from './uom-type/uom-type.component';
 import { UomComponent } from './uom/uom.component';
 import { UomTypeResolver } from './uom-type/uom-type-resolver.service';
 import { UomResolver } from './uom/uom-resolver.service';
@@ -38,7 +38,8 @@ import { UomService } from '../../api/uom.service';
     DialogModule,
     SharedModule,
     ButtonModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    DropdownModule
   ],
   declarations: [
     UomTypeComponent,

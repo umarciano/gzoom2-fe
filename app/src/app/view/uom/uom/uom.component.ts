@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Uom } from './uom';
+import { UomType } from '../uom-type/uom_type';
 import { UomService } from '../../../api/uom.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import {LazyLoadEvent} from '../../../commons/lazyloadevent';
 import {FilterMetadata} from '../../../commons/filtermetadata';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { SelectItem } from '../../../commons/selectitem';
 
 @Component({
   selector: 'app-uom',
@@ -14,42 +16,54 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 })
 export class UomComponent implements OnInit {
   uomsObs: Observable<Uom[]>;
+  uomTypesObs: Observable<UomType[]>;
   uoms: Uom[];
+  uomTypes: UomType[];
+
+  uomTypeSelectItem: SelectItem[] = [];
+  selectedUomTypeId: string;
 
   displayDialog: boolean;
   uom: Uom = new PrimeUom();
   selectedUom: Uom;
   newUom: boolean;
 
-  cols: any[]; // TODO serve?
-
   /*datasource: Uom[];
   uom3: Uom[];
   totalRecords: number;
-*/
+  */
   constructor(private uomService: UomService, private confirmationService: ConfirmationService,
               private readonly route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     console.log('ngOnInit');
+    this.uomTypesObs = this.route.data
+      .map((data: { uomTypes: UomType[] }) => data.uomTypes);
+
+    this.uomTypesObs
+      .map((value) => value)
+      .subscribe((data) => {
+        this.uomTypes = data;
+      });
+
+    //..get values from database into listItems array
+    this.uomTypes.forEach((item: UomType) => {
+      this.uomTypeSelectItem.push({label: item.description, value: item.uomTypeId});
+    });
+
     this.uomsObs = this.route.data
       .map((data: { uoms: Uom[] }) => data.uoms);
 
     // TODO va bene cosi?
-    this.uomsObs.map((values) => values)
-    .subscribe((data) => {
-      this.uoms = data;
-    });
-
-    this.cols = [
-        {field: 'uomTypeId', header: 'UomTypeId'},
-        {field: 'uomId', header: 'UomId'},
-        {field: 'description', header: 'Description'}
-    ];
+    this.uomsObs.map((value) => value)
+      .subscribe((data) => {
+        this.uoms = data;
+      });
   }
 
   showDialogToAdd() {
     console.log(" - showDialogToAdd ");
+    this.selectedUomTypeId = null;
     this.newUom = true;
     this.uom = new PrimeUom();
     this.displayDialog = true;
@@ -57,11 +71,15 @@ export class UomComponent implements OnInit {
 
   save() {
     let uoms = [...this.uoms];
+    console.log("this.uom ", this.uom);
+    console.log("this.selectedUomTypeId ", this.selectedUomTypeId);
+    // this.uom.uomTypeId = this.selectedUomTypeId; // TODO si fa cosi?
+    this.uom.uomType = this.uomTypes.find(item => item.uomTypeId == this.selectedUomTypeId); // TODO si fa cosi?
+    console.log("this.uom ", this.uom);
     if(this.newUom)
         uoms.push(this.uom);
     else
         uoms[this.findSelectedUomIndex()] = this.uom;
-
     this.uoms = uoms;
     this.uom = null;
     this.displayDialog = false;
@@ -83,13 +101,14 @@ export class UomComponent implements OnInit {
     this.selectedUom = data;
     this.newUom = false;
     this.uom = this.cloneUom(data);
+    this.selectedUomTypeId = data.uomType.uomTypeId;
+    console.log("this.selectedUomTypeId " + this.selectedUomTypeId );
     this.displayDialog = true;
   }
 
   cloneUom(u: Uom): Uom {
     let uom = new PrimeUom();
     for(let prop in uom) {
-      console.log("prop " + prop + " = " + u[prop]);
       uom[prop] = u[prop];
     }
     return uom;
@@ -142,6 +161,6 @@ export class UomComponent implements OnInit {
 }
 
 class PrimeUom implements Uom {
-  constructor(public uomId?: string, public uomTypeId?: string, public abbreviation?: string, public description?: string,
+  constructor(public uomId?: string, public uomTypeId?: string, public uomType?: UomType, public abbreviation?: string, public description?: string,
               public decimalScale?: number, public minValue?: number, public maxValue?: number) {}
 }

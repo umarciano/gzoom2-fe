@@ -12,6 +12,9 @@
 
   Per lo scroll invece<br/>
   scrollable="true" scrollHeight="200px" virtualScroll="virtualScroll", e va insieme al lazy<br/>
+
+  TODO selezione della riga e
+  TODO salvataggio senza campi obbligatori
 </p>
 
 <h3 class="first">Basic</h3>
@@ -29,7 +32,12 @@
     <p-header>List of Uom</p-header>
     <p-column field="uomTypeId" header="uomTypeId"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"
-    [sortable]="true"></p-column>
+    [sortable]="true"
+    [editable]="false">
+      <ng-template let-col let-uom="rowData" let-ri="rowIndex" pTemplate="body">
+          <span>{{uom.uomType.description}}</span>
+      </ng-template>
+    </p-column>
     <p-column field="uomId" header="uomId"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"
     [sortable]="true"></p-column>
@@ -52,19 +60,23 @@
     <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="uom">
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="uomTypeId">UomTypeId</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="uomTypeId" [(ngModel)]="uom.uomTypeId" /></div>
+            <div class="ui-grid-col-8">
+                <p-dropdown [options]="uomTypeSelectItem" [(ngModel)]="selectedUomTypeId"
+                 [autoWidth]="false" [style]="{'width':'100%'}" required="true">
+                </p-dropdown>
+            </div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="uomTypeId">UomId</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="uomId" [(ngModel)]="uom.uomId" /></div>
+            <div class="ui-grid-col-8"><input pInputText id="uomId" [(ngModel)]="uom.uomId" required="true"/></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="description">Description</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="uom.description" /></div>
+            <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="uom.description" required="true"/></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="abbreviation">Abbreviation</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="abbreviation" [(ngModel)]="uom.abbreviation" /></div>
+            <div class="ui-grid-col-8"><input pInputText id="abbreviation" [(ngModel)]="uom.abbreviation" required="true"/></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="decimalScale">Decimal Scale</label></div>
@@ -81,7 +93,7 @@
     </div>
     <p-footer>
         <div class="ui-dialog-buttonpane ui-helper-clearfix">
-            <button type="button" pButton icon="fa-close" (click)="confirm()" label="Delete"></button>
+            <button *ngIf="!newUom" type="button" pButton icon="fa-close" (click)="confirm()" label="Delete"></button>
             <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
         </div>
     </p-footer>
