@@ -5,7 +5,10 @@ import { UomService } from '../../../api/uom.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import {LazyLoadEvent} from '../../../commons/lazyloadevent';
 import {FilterMetadata} from '../../../commons/filtermetadata';
-import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+import { ConfirmDialogModule,ConfirmationService } from 'primeng/primeng';
+import {Message} from '../../../commons/message';
+
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-uom-type',
@@ -13,7 +16,9 @@ import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
   styleUrls: ['./uom-type.component.scss']
 })
 export class UomTypeComponent implements OnInit {
-  uomTypesObs: Observable<UomType[]>;
+  error = '';
+  msgs: Message[] = [];
+
   uomTypes: UomType[];
 
   displayDialog: boolean;
@@ -21,44 +26,68 @@ export class UomTypeComponent implements OnInit {
   selectedUomType: UomType;
   newUomType: boolean;
 
-  constructor(private uomService: UomService, private confirmationService: ConfirmationService,
-              private readonly route: ActivatedRoute, private router: Router) { }
+  constructor(private readonly uomService: UomService,
+              private readonly confirmationService: ConfirmationService,
+              private readonly route: ActivatedRoute,
+              private readonly router: Router) { }
 
   ngOnInit() {
-    this.uomTypesObs = this.route.data
-      .map((data: { uomTypes: UomType[] }) => data.uomTypes);
-
-    // TODO va bene cosi?
-    this.uomTypesObs.map((types) => types)
-    .subscribe((data) => {
-      this.uomTypes = data;
-    });
+    this.route.data
+      .map((data: { uomTypes: UomType[] }) => data.uomTypes)
+      .subscribe(d => this.uomTypes = d);
   }
 
   showDialogToAdd() {
     console.log(" - showDialogToAdd ");
+    this.error = '';
     this.newUomType = true;
     this.uomType = new PrimeUomType();
     this.displayDialog = true;
   }
 
-  save() {
-    let uomTypes = [...this.uomTypes];
-    if(this.newUomType)
-        uomTypes.push(this.uomType);
-    else
-        uomTypes[this.findSelectedUomTypeIndex()] = this.uomType;
-
-    this.uomTypes = uomTypes;
-    this.uomType = null;
-    this.displayDialog = false;
+  save(): void {
+    console.log(" - this.newUomType " + this.newUomType);
+    if (this.newUomType) {
+      this.uomService
+        .createUomType(this.uomType)
+        .then(() => {
+          this.uomType = null;
+          this.displayDialog = false;
+          this.router.navigate(['/uom/types']); // TODO
+        })
+        .catch((error) => {
+          console.log('error' , error.message);
+          this.error = error.message || error;
+        });
+    } else {
+      this.uomService
+        .updateUomType(this.selectedUomType.uomTypeId, this.uomType)
+        .then(data => {
+          this.uomType = null;
+          this.displayDialog = false;
+          this.router.navigate(['/c/uom/types']); // TODO
+        })
+        .catch((error) => {
+          console.log('error' , error.message);
+          this.error = error.message || error;
+        });
+    }
   }
 
   delete() {
-      let index = this.findSelectedUomTypeIndex();
-      this.uomTypes = this.uomTypes.filter((val,i) => i!=index);
+    let index = this.findSelectedUomTypeIndex();
+    console.log("index " + index);
+    this.uomService
+    .deleteUomType(this.selectedUomType.uomTypeId)
+    .then(data => {
       this.uomType = null;
       this.displayDialog = false;
+      this.router.navigate(['/c/uom/types']); // TODO
+    })
+    .catch((error) => {
+      console.log('error' , error.message);
+      this.error = error.message || error;
+    });
   }
 
   findSelectedUomTypeIndex(): number {
@@ -66,7 +95,7 @@ export class UomTypeComponent implements OnInit {
   }
 
   selectUomType(data: UomType) {
-    console.log("data " + data);
+    this.error = '';
     this.selectedUomType = data;
     this.newUomType = false;
     this.uomType = this.cloneUomType(data);
@@ -76,16 +105,19 @@ export class UomTypeComponent implements OnInit {
   cloneUomType(u: UomType): UomType {
     let uomType = new PrimeUomType();
     for(let prop in uomType) {
-      console.log("prop " + prop + " = " + u[prop]);
       uomType[prop] = u[prop];
     }
     return uomType;
   }
 
+
   confirm() {
     this.confirmationService.confirm({
-        message: 'Are you sure that you want to perform this action?',
+        message: 'Do you want to delete this record?',
+        header: 'Delete Confirmation',
+        icon: 'fa fa-trash',
         accept: () => {
+            this.msgs = [{severity:'info', summary:'Confirmed', detail:'Record deleted'}];
             this.delete()
         },
         reject: () => {

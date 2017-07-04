@@ -69,8 +69,26 @@ export class ApiClientService {
       .catch(this.onAuthError(this));
   }
 
-  // TODO put(url: string, body: any, options?: RequestOptionsArgs): Observable<Response> { }
-  // TODO delete(url: string, options?: RequestOptionsArgs): Observable<Response> { }
+  put(path: string, body?: any, options?: RequestOptionsArgs): Observable<any> {
+    const url = this.makeUrl(path);
+    const opts = this.makeOptions(options, true);
+    const msg = body ? (typeof body === 'string') ? body : JSON.stringify(body) : undefined;
+
+    return this.http
+      .put(url, msg, opts)
+      .map(res => res.json())
+      .catch(this.onAuthError(this));
+  }
+
+  delete(path: string, options?: RequestOptionsArgs): Observable<any> {
+    const url = this.makeUrl(path);
+    const opts = this.makeOptions(options, true);
+
+    return this.http
+      .delete(url, opts)
+      .map(res => res.json())
+      .catch(this.onAuthError(this));
+  }
 
   private makeOptions(options?: RequestOptionsArgs, hasBody = false): RequestOptions {
     const opts = new RequestOptions(options || {});

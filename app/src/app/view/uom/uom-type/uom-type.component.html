@@ -26,17 +26,19 @@
     <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="uomType">
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="uomTypeId">UomTypeId</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="uomTypeId" [(ngModel)]="uomType.uomTypeId" /></div>
+            <div class="ui-grid-col-8"><input pInputText id="uomTypeId" [(ngModel)]="uomType.uomTypeId" maxlength="20" required/></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="description">Description</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="uomType.description" /></div>
+            <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="uomType.description" maxlength="255" required/></div>
         </div>
     </div>
     <p-footer>
         <div class="ui-dialog-buttonpane ui-helper-clearfix">
-            <button type="button" pButton icon="fa-close" (click)="confirm()" label="Delete"></button>
+            <button *ngIf="!newUomType" type="button" pButton icon="fa-trash" (click)="confirm()" label="Delete"></button>
             <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
         </div>
     </p-footer>
+
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 </p-dialog>
