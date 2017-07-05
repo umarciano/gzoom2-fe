@@ -32,6 +32,7 @@ export class UomTypeComponent implements OnInit {
               private readonly router: Router) { }
 
   ngOnInit() {
+    console.log(" - ngOnInit ");
     this.route.data
       .map((data: { uomTypes: UomType[] }) => data.uomTypes)
       .subscribe(d => this.uomTypes = d);
@@ -53,7 +54,9 @@ export class UomTypeComponent implements OnInit {
         .then(() => {
           this.uomType = null;
           this.displayDialog = false;
-          this.router.navigate(['/uom/types']); // TODO
+          this.msgs = [{severity:'info', summary:'Created', detail:'Record created'}];
+          // TODO gestire reload della lista
+          this.router.navigate(['../type'], { relativeTo: this.route });
         })
         .catch((error) => {
           console.log('error' , error.message);
@@ -65,7 +68,9 @@ export class UomTypeComponent implements OnInit {
         .then(data => {
           this.uomType = null;
           this.displayDialog = false;
-          this.router.navigate(['/c/uom/types']); // TODO
+          this.msgs = [{severity:'info', summary:'Updated', detail:'Record updated'}];
+          // TODO gestire reload della lista
+          this.router.navigate(['../type', { id: this.selectedUomType.uomTypeId}], { relativeTo: this.route, skipLocationChange: true }); // TODO
         })
         .catch((error) => {
           console.log('error' , error.message);
@@ -82,7 +87,8 @@ export class UomTypeComponent implements OnInit {
     .then(data => {
       this.uomType = null;
       this.displayDialog = false;
-      this.router.navigate(['/c/uom/types']); // TODO
+      // TODO gestire reload della lista
+      this.router.navigate(['../type'], { relativeTo: this.route });
     })
     .catch((error) => {
       console.log('error' , error.message);

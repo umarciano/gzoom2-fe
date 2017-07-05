@@ -19,14 +19,14 @@ export class UomTypeResolver implements Resolve<UomType[]> {
     private readonly lockoutService: LockoutService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<UomType[]> {
-
+    console.log('resolve uomType');
     return this.uomService
       .uomType()
       .toPromise()
       .then(uomTypes => { return uomTypes; })
       .catch(err => { // TODO devo fare il lockout?
         console.error('Cannot retrieve uomType', err);
-        this.lockoutService.lockout();
+        this.lockoutService.lockout(); // TODO cos'e?
       });
   }
 }

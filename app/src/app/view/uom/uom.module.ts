@@ -13,6 +13,7 @@ import { DialogModule } from 'primeng/primeng';
 import { DataTableModule, SharedModule } from 'primeng/primeng';
 import {ButtonModule} from 'primeng/primeng';
 import { ConfirmDialogModule,ConfirmationService } from 'primeng/primeng';
+import { GrowlModule } from 'primeng/primeng';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule }    from '@angular/http';
@@ -39,6 +40,7 @@ import { UomService } from '../../api/uom.service';
     SharedModule,
     ButtonModule,
     ConfirmDialogModule,
+    GrowlModule,
     DropdownModule
   ],
   declarations: [
