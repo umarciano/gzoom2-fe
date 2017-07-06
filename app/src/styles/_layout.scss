@@ -170,7 +170,7 @@
 
 p-growl div.ui-growl {
     position: fixed;
-    top: 200px;
+    top: 100px;
     right: 20px;
     width: 20em;
 }
@@ -181,4 +181,8 @@ p-growl div.ui-growl {
 
 p-datatable td.col-button {
     text-align: center;
+}
+
+input, button, select, textarea {
+    line-height: initial;
 }
