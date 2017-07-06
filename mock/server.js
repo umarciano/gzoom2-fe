@@ -231,15 +231,106 @@ app.get('/gzoom/control/box', function(req, res) {
 });
 
 /**
-/rest/uom
-/rest/uom/types
-/rest/uom/scales
-*/
-app.get('/rest/uom/types', function(req, res) {
+/rest/uom/value
+/rest/uom/type
+/rest/uom/scales*/
+app.get('/rest/uom/type', function(req, res) {
   var uomTypes = data.uomTypes();
-  log.debug('Looking up uomTypes');
+  log.debug('Looking up uomTypes ' + uomTypes);
   setTimeout(function() {
-    res.json({ results: uomTypes, total: 5 });
+    res.json({ results: uomTypes, total: uomTypes.length });
+  }, _.random(200, 1000));
+});
+
+app.post('/rest/uom/type', function(req, res) {
+  let uomTypeId = req.body.uomTypeId;
+  let description = req.body.description;
+  let uomType = {uomTypeId: uomTypeId, description: description};
+  log.debug('Create uomType');
+  let index = data.createUomType(uomType);
+  setTimeout(function() {
+    res.json({ uomTypeId: uomTypeId });
+  }, _.random(200, 1000));
+});
+
+app.put('/rest/uom/type/:id', function(req, res) {
+  const id = req.param('id');
+  const uomTypeId = req.body.uomTypeId;
+  const description = req.body.description;
+  const uomType = {uomTypeId: uomTypeId, description: description};
+  log.debug('Update uomType ' + id);
+  const index = data.updateUomType(id, uomType);
+  setTimeout(function() {
+    res.json({ uomTypeId: uomTypeId });
+  }, _.random(200, 1000));
+});
+
+app.delete('/rest/uom/type/:id', function(req, res) {
+  const id = req.param('id');
+  log.debug('Delete uomType ' + id);
+  const index = data.deleteUomType(id);
+  setTimeout(function() {
+    res.json({ uomTypeId: id });
+  }, _.random(200, 1000));
+});
+
+app.get('/rest/uom/value', function(req, res) {
+  var uoms = data.uoms();
+  log.debug('Looking up uoms');
+  setTimeout(function() {
+    res.json({ results: uoms, total: uoms.length });
+  }, _.random(200, 1000));
+});
+
+app.post('/rest/uom/value', function(req, res) {
+  const uomTypeId = req.body.uomType.uomTypeId;
+  const obj = data.uomTypes().filter((val,i) => val.uomTypeId == uomTypeId);
+  const uomType = obj[0];
+  const uomId = req.body.uomId;
+  const description = req.body.description;
+  const abbreviation = req.body.abbreviation;
+  const decimalScale = req.body.decimalScale;
+  const minValue = req.body.minValue;
+  const maxValue = req.body.maxValue;
+  const uom = {uomType: uomType, uomId: uomId,
+               abbreviation: abbreviation, description: description,
+               minValue: minValue, maxValue: maxValue,
+               decimalScale: decimalScale};
+  log.debug('Create uom ', uom);
+  let index = data.createUom(uom);
+  setTimeout(function() {
+    res.json({ uomId: uomId });
+  }, _.random(200, 1000));
+});
+
+app.put('/rest/uom/value/:id', function(req, res) {
+  const id = req.param('id');
+  const uomTypeId = req.body.uomType.uomTypeId;
+  const obj = data.uomTypes().filter((val,i) => val.uomTypeId == uomTypeId);
+  const uomType = obj[0];
+  const uomId = req.body.uomId;
+  const description = req.body.description;
+  const abbreviation = req.body.abbreviation;
+  const decimalScale = req.body.decimalScale;
+  const minValue = req.body.minValue;
+  const maxValue = req.body.maxValue;
+  const uom = {uomType: uomType, uomId: uomId,
+               abbreviation: abbreviation, description: description,
+               minValue: minValue, maxValue: maxValue,
+               decimalScale: decimalScale};
+  log.debug('Update uom ' + id);
+  const index = data.updateUom(id, uom);
+  setTimeout(function() {
+    res.json({ uomId: uomId });
+  }, _.random(200, 1000));
+});
+
+app.delete('/rest/uom/value/:id', function(req, res) {
+  const id = req.param('id');
+  log.debug('Delete uom ' + id);
+  const index = data.deleteUom(id);
+  setTimeout(function() {
+    res.json({ uomId: id });
   }, _.random(200, 1000));
 });
 

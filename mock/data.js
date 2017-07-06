@@ -63,6 +63,21 @@ var _ = require('lodash'),
       { uomTypeId: 'RATING_SCALE', description: 'Scale Valori' },
       { uomTypeId: 'TIME_FREQ_MEASURE', description: 'Tempo/Frequenza' }
     ],
+    UOM = [
+      { uomId: 'EUR', uomType: {uomTypeId: 'CURRENCY_MEASURE', description: 'Valuta'}, abbreviation: 'EUR', description: 'Euro', decimalScale: 2},
+      { uomId: 'OTH_100', uomType: {uomTypeId: 'OTHER_MEASURE', description: 'Altro'}, abbreviation: 'Perc.', description: 'Percentuale', decimalScale: 2},
+      { uomId: 'OTH_NUM', uomType: {uomTypeId: 'OTHER_MEASURE', description: 'Altro'}, abbreviation: 'Num.', description: 'Numero', decimalScale: 2},
+      { uomId: 'OTH_SCO', uomType: {uomTypeId: 'OTHER_MEASURE', description: 'Altro'}, abbreviation: 'Punt.', description: 'Punteggio', decimalScale: 0},
+      { uomId: 'AA_UOMO', uomType: {uomTypeId: 'OTHER_MEASURE', description: 'Altro'}, abbreviation: 'AA/uomo', description: 'Anni/Uomo', decimalScale: 2},
+      { uomId: 'EVAL_IND', uomType: {uomTypeId: 'OTHER_MEASURE', description: 'Altro'}, abbreviation: 'Val.Ob.Ind.', description: 'Valutazione obiettivi individuali', decimalScale: 2, minValue: 0.000000, maxValue: 100.000000},
+      { uomId: 'RAT_615', uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, abbreviation: '6...15', description: 'Scala valutazione da 6 a 15', decimalScale: 0},
+      { uomId: 'RAT_620', uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, abbreviation: '6...20', description: 'Scala valutazione da 6 a 20', decimalScale: 0},
+      { uomId: 'RAT_625', uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, abbreviation: '6...25', description: 'Scala valutazione da 6 a 25', decimalScale: 0},
+      { uomId: 'RAT_APO', uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, abbreviation: '0...10', description: 'Scala valutazione comportamenti APO', decimalScale: 0},
+      { uomId: 'RAT_SN', uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, abbreviation: 'S/N', description: 'Si / No', decimalScale: 0},
+      { uomId: 'RAT_VAL', uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, abbreviation: '1...5', description: 'Scala valutazione comportamenti Dirigenti', decimalScale: 0},
+      { uomId: 'SN', uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, abbreviation: 'S/N', description: 'Presente S/N	', decimalScale: 0}
+    ],
     tokens = {},
     secret = generateSecret();
 
@@ -166,7 +181,9 @@ module.exports = {
         { id: par.id + '.5', label: 'Leaf Menu 5', classes: []},
         { id: par.id + '.6', label: 'Leaf Menu 6'},
         { id: par.id + '.7', label: 'Leaf Menu 7', classes: null},
-        { id: 'GP_MENU_00006',  label: 'GP_MENU_00006', classes: null}
+        { id: 'GP_MENU_00006',  label: 'GP_MENU_00006', classes: null},
+        { id: 'GP_MENU_00332',  label: 'GP_MENU_00332', classes: null},
+        { id: 'GP_MENU_00333',  label: 'GP_MENU_00333', classes: null}
       ];
 
       par.children
@@ -197,5 +214,58 @@ module.exports = {
 
   uomTypes: function() {
     return UOM_TYPE;
+  },
+
+  findSelectedUomTypeIndex(uomType) {
+    return UOM_TYPE.indexOf(uomType);
+  },
+
+  createUomType: function(uomType) {
+    const index = this.findSelectedUomTypeIndex(uomType);
+    if(index < 0)
+        UOM_TYPE.push(uomType);
+    return index;
+  },
+
+  updateUomType: function(id, uomType) {
+    const obj = UOM_TYPE.filter((val,i) => val.uomTypeId == id);
+    const index = this.findSelectedUomTypeIndex(obj[0]);
+    if(index >= 0)
+      UOM_TYPE[index] = uomType;
+    return index;
+  },
+
+  deleteUomType: function(id) {
+    UOM_TYPE = UOM_TYPE.filter((val,i) => val.uomTypeId != id);
+    return id;
+  },
+
+  uoms: function() {
+      return UOM;
+  },
+
+  findSelectedUomIndex(uom) {
+    return UOM.indexOf(uom);
+  },
+
+  createUom: function(uom) {
+    const index = this.findSelectedUomIndex(uom);
+    if(index < 0)
+        UOM.push(uom);
+    return index;
+  },
+
+  updateUom: function(id, uom) {
+    const obj = UOM.filter((val,i) => val.uomId == id);
+    const index = this.findSelectedUomIndex(obj[0]);
+    if(index >= 0)
+      UOM[index] = uom;
+    return index;
+  },
+
+  deleteUom: function(id) {
+    UOM = UOM.filter((val,i) => val.uomId != id);
+    return id;
   }
+
 };
