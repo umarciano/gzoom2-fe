@@ -6,7 +6,7 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 import {LazyLoadEvent} from '../../../commons/lazyloadevent';
 import {FilterMetadata} from '../../../commons/filtermetadata';
 import { ConfirmDialogModule,ConfirmationService } from 'primeng/primeng';
-import {Message} from '../../../commons/message';
+import { Message } from '../../../commons/message';
 
 import 'rxjs/add/operator/map';
 
@@ -38,6 +38,15 @@ export class UomTypeComponent implements OnInit {
       .subscribe(d => this.uomTypes = d);
   }
 
+  reload() {
+    this.uomService
+      .uomType()
+      .toPromise()
+      .then(uomTypes => { this.uomTypes = uomTypes; })
+      .catch(err => {
+        console.error('Cannot retrieve uomType', err);
+      });
+  }
   showDialogToAdd() {
     console.log(" - showDialogToAdd ");
     this.error = '';
@@ -56,7 +65,8 @@ export class UomTypeComponent implements OnInit {
           this.displayDialog = false;
           this.msgs = [{severity:'info', summary:'Created', detail:'Record created'}];
           // TODO gestire reload della lista
-          this.router.navigate(['../type'], { relativeTo: this.route });
+          // this.router.navigate(['../type'], { relativeTo: this.route });
+          this.reload();
         })
         .catch((error) => {
           console.log('error' , error.message);
@@ -70,7 +80,8 @@ export class UomTypeComponent implements OnInit {
           this.displayDialog = false;
           this.msgs = [{severity:'info', summary:'Updated', detail:'Record updated'}];
           // TODO gestire reload della lista
-          this.router.navigate(['../type', { id: this.selectedUomType.uomTypeId}], { relativeTo: this.route, skipLocationChange: true }); // TODO
+          // this.router.navigate(['../type', { id: this.selectedUomType.uomTypeId}], { relativeTo: this.route, skipLocationChange: true }); // TODO
+          this.reload();
         })
         .catch((error) => {
           console.log('error' , error.message);
@@ -86,9 +97,10 @@ export class UomTypeComponent implements OnInit {
     .deleteUomType(this.selectedUomType.uomTypeId)
     .then(data => {
       this.uomType = null;
-      this.displayDialog = false;
+      this.msgs = [{severity:'info', summary:'Confirmed', detail:'Record deleted'}];
       // TODO gestire reload della lista
-      this.router.navigate(['../type'], { relativeTo: this.route });
+      // this.router.navigate(['../type'], { relativeTo: this.route });
+      this.reload();
     })
     .catch((error) => {
       console.log('error' , error.message);
@@ -123,8 +135,8 @@ export class UomTypeComponent implements OnInit {
         header: 'Delete Confirmation',
         icon: 'fa fa-trash',
         accept: () => {
-            this.msgs = [{severity:'info', summary:'Confirmed', detail:'Record deleted'}];
-            this.delete()
+          this.displayDialog = false;
+          this.delete();
         },
         reject: () => {
           this.uomType = null;
