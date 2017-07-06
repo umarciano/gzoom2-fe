@@ -39,6 +39,7 @@ export class UomTypeComponent implements OnInit {
   }
 
   reload() {
+    console.log(" - reload ");
     this.uomService
       .uomType()
       .toPromise()
@@ -91,8 +92,6 @@ export class UomTypeComponent implements OnInit {
   }
 
   delete() {
-    let index = this.findSelectedUomTypeIndex();
-    console.log("index " + index);
     this.uomService
     .deleteUomType(this.selectedUomType.uomTypeId)
     .then(data => {
@@ -106,10 +105,6 @@ export class UomTypeComponent implements OnInit {
       console.log('error' , error.message);
       this.error = error.message || error;
     });
-  }
-
-  findSelectedUomTypeIndex(): number {
-        return this.uomTypes.indexOf(this.selectedUomType);
   }
 
   selectUomType(data: UomType) {

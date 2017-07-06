@@ -8,18 +8,26 @@ import {LazyLoadEvent} from '../../../commons/lazyloadevent';
 import {FilterMetadata} from '../../../commons/filtermetadata';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { SelectItem } from '../../../commons/selectitem';
+import { Message } from '../../../commons/message';
+
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-uom',
   templateUrl: './uom.component.html',
   styleUrls: ['./uom.component.css']
 })
+
 export class UomComponent implements OnInit {
+  error = '';
+  msgs: Message[] = [];
+
   uomsObs: Observable<Uom[]>;
   uomTypesObs: Observable<UomType[]>;
   uoms: Uom[];
   uomTypes: UomType[];
 
+  // uomType SelectItem
   uomTypeSelectItem: SelectItem[] = [];
   selectedUomTypeId: string;
 
@@ -28,81 +36,137 @@ export class UomComponent implements OnInit {
   selectedUom: Uom;
   newUom: boolean;
 
-  /*datasource: Uom[];
-  uom3: Uom[];
-  totalRecords: number;
-  */
-  constructor(private uomService: UomService, private confirmationService: ConfirmationService,
-              private readonly route: ActivatedRoute, private router: Router) { }
+  constructor(private readonly uomService: UomService,
+              private readonly confirmationService: ConfirmationService,
+              private readonly route: ActivatedRoute,
+              private readonly router: Router) { }
 
   ngOnInit() {
     console.log('ngOnInit');
-    this.uomTypesObs = this.route.data
-      .map((data: { uomTypes: UomType[] }) => data.uomTypes);
-
-    this.uomTypesObs
-      .map((value) => value)
+    this.route.data
+      .map((data: { uomTypes: UomType[] }) => data.uomTypes)
       .subscribe((data) => {
         this.uomTypes = data;
       });
 
-    //..get values from database into listItems array
+    //..get values from database into SelectItem array
     this.uomTypes.forEach((item: UomType) => {
       this.uomTypeSelectItem.push({label: item.description, value: item.uomTypeId});
     });
 
-    this.uomsObs = this.route.data
-      .map((data: { uoms: Uom[] }) => data.uoms);
-
-    // TODO va bene cosi?
-    this.uomsObs.map((value) => value)
+    this.route.data
+      .map((data: { uoms: Uom[] }) => data.uoms)
       .subscribe((data) => {
         this.uoms = data;
       });
   }
 
+  reload() {
+    console.log('reload');
+    this.uomService
+      .uomType()
+      .toPromise()
+      .then(uomTypes => { this.uomTypes = uomTypes; })
+      .catch(err => {
+        console.error('Cannot retrieve uomType', err);
+    });
+
+    /* TODO come fa a funzionare?
+	this.uomTypes.forEach((item: UomType) => {
+      this.uomTypeSelectItem.push({label: item.description, value: item.uomTypeId});
+    });*/
+
+    this.uomService
+      .uom()
+      .toPromise()
+      .then(uoms => { this.uoms = uoms; })
+      .catch(err => {
+        console.error('Cannot retrieve uom', err);
+    });
+  }
+
   showDialogToAdd() {
     console.log(" - showDialogToAdd ");
-    this.selectedUomTypeId = null;
+    this.error = '';
+    this.selectedUomTypeId = this.uomTypes[0].uomTypeId;
     this.newUom = true;
     this.uom = new PrimeUom();
     this.displayDialog = true;
   }
 
   save() {
-    let uoms = [...this.uoms];
-    console.log("this.uom ", this.uom);
     console.log("this.selectedUomTypeId ", this.selectedUomTypeId);
+
     // this.uom.uomTypeId = this.selectedUomTypeId; // TODO si fa cosi?
     this.uom.uomType = this.uomTypes.find(item => item.uomTypeId == this.selectedUomTypeId); // TODO si fa cosi?
     console.log("this.uom ", this.uom);
+    if (this.newUom) {
+      this.uomService
+        .createUom(this.uom)
+        .then(() => {
+          this.uom = null;
+          this.displayDialog = false;
+          this.msgs = [{severity:'info', summary:'Created', detail:'Record created'}];
+          // TODO gestire reload della lista
+          // this.router.navigate(['../value'], { relativeTo: this.route });
+          this.reload();
+        })
+        .catch((error) => {
+          console.log('error' , error.message);
+          this.error = error.message || error;
+        });
+    } else {
+      this.uomService
+        .updateUom(this.selectedUom.uomId, this.uom)
+        .then(data => {
+          this.uom = null;
+          this.displayDialog = false;
+          this.msgs = [{severity:'info', summary:'Updated', detail:'Record updated'}];
+          // TODO gestire reload della lista
+          // this.router.navigate(['../type', { id: this.selectedUomType.uomTypeId}], { relativeTo: this.route, skipLocationChange: true }); // TODO
+          this.reload();
+        })
+        .catch((error) => {
+          console.log('error' , error.message);
+          this.error = error.message || error;
+        });
+    }
+    /*let uoms = [...this.uoms];
+    console.log("this.uom ", this.uom);
+    console.log("this.selectedUomTypeId ", this.selectedUomTypeId);
     if(this.newUom)
         uoms.push(this.uom);
     else
         uoms[this.findSelectedUomIndex()] = this.uom;
     this.uoms = uoms;
     this.uom = null;
-    this.displayDialog = false;
+    this.displayDialog = false;*/
+
   }
 
   delete() {
-    let index = this.findSelectedUomIndex();
-    this.uoms = this.uoms.filter((val,i) => i!=index);
-    this.uom = null;
-    this.displayDialog = false;
-  }
-
-  findSelectedUomIndex(): number {
-    return this.uoms.indexOf(this.selectedUom);
+    this.uomService
+    .deleteUom(this.selectedUom.uomId)
+    .then(data => {
+      this.uom = null;
+      this.msgs = [{severity:'info', summary:'Confirmed', detail:'Record deleted'}];
+      // TODO gestire reload della lista
+      // this.router.navigate(['../type'], { relativeTo: this.route });
+      this.reload();
+    })
+    .catch((error) => {
+      console.log('error' , error.message);
+      this.error = error.message || error;
+    });
   }
 
   selectUom(data: Uom) {
     console.log("data " + data);
+    this.error = '';
     this.selectedUom = data;
     this.newUom = false;
     this.uom = this.cloneUom(data);
     this.selectedUomTypeId = data.uomType.uomTypeId;
-    console.log("this.selectedUomTypeId " + this.selectedUomTypeId );
     this.displayDialog = true;
   }
 
@@ -148,11 +212,14 @@ export class UomComponent implements OnInit {
   }*/
   confirm() {
     this.confirmationService.confirm({
-        message: 'Are you sure that you want to perform this action?',
-        accept: () => {
-            this.delete()
-        },
-        reject: () => {
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'fa fa-trash',
+      accept: () => {
+        this.displayDialog = false;
+        this.delete();
+      },
+      reject: () => {
           this.uom = null;
           this.displayDialog = false;
         }

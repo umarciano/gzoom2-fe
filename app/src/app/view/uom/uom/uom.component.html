@@ -18,6 +18,9 @@
 </p>
 
 <h3 class="first">Basic</h3>
+
+<p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
+
 <div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none">
     <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
     <input #gb type="text" pInputText size="50" placeholder="Global Filter">
@@ -30,7 +33,7 @@
             [responsive]="true"
             [globalFilter]="gb" #dt>
     <p-header>List of Uom</p-header>
-    <p-column field="uomTypeId" header="uomTypeId"
+    <p-column field="uomType.description" header="uomTypeId"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"
     [sortable]="true"
     [editable]="false">
@@ -68,15 +71,15 @@
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="uomTypeId">UomId</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="uomId" [(ngModel)]="uom.uomId" required="true"/></div>
+            <div class="ui-grid-col-8"><input pInputText id="uomId" [(ngModel)]="uom.uomId" maxlength="20" required="true"/></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="description">Description</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="uom.description" required="true"/></div>
+            <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="uom.description" maxlength="255" required="true"/></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="abbreviation">Abbreviation</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="abbreviation" [(ngModel)]="uom.abbreviation" required="true"/></div>
+            <div class="ui-grid-col-8"><input pInputText id="abbreviation" [(ngModel)]="uom.abbreviation" maxlength="60" required="true"/></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="decimalScale">Decimal Scale</label></div>
@@ -93,8 +96,10 @@
     </div>
     <p-footer>
         <div class="ui-dialog-buttonpane ui-helper-clearfix">
-            <button *ngIf="!newUom" type="button" pButton icon="fa-close" (click)="confirm()" label="Delete"></button>
+            <button *ngIf="!newUom" type="button" pButton icon="fa-trash" (click)="confirm()" label="Delete"></button>
             <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
         </div>
     </p-footer>
+
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 </p-dialog>

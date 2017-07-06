@@ -16,14 +16,14 @@ export class UomService {
   uomType(): Observable<UomType[]> {
     console.log('search uomType');
     return this.client
-      .get('uom/types')
+      .get('uom/type')
       .map(json => json.results as UomType[]);
   }
 
   createUomType(uomType: UomType):  Promise<UomType> {
     console.log('create UomType');
     return this.client
-      .post('uom/types', JSON.stringify(uomType))
+      .post('uom/type', JSON.stringify(uomType))
       .toPromise()
       .then(response => response)
       .catch(response => {
@@ -35,7 +35,7 @@ export class UomService {
   updateUomType(uomTypeId: string, uomType: UomType):  Promise<UomType> {
     console.log('update UomType');
     return this.client
-      .put(`uom/types/${uomTypeId}`, JSON.stringify(uomType))
+      .put(`uom/type/${uomTypeId}`, JSON.stringify(uomType))
       .toPromise()
       .then(response => response)
       .catch((response: any) => {
@@ -47,7 +47,7 @@ export class UomService {
   deleteUomType(uomTypeId: string):  Promise<UomType> {
     console.log('delete UomType with ' + uomTypeId);
     return this.client
-      .delete(`uom/types/${uomTypeId}`)
+      .delete(`uom/type/${uomTypeId}`)
       .toPromise()
       .then(response => response)
       .catch((response: any) => {
@@ -59,8 +59,44 @@ export class UomService {
   uom(): Observable<Uom[]> {
     console.log('search uom');
     return this.client
-      .get('uom/values')
+      .get('uom/value')
       .map(json => json.results as Uom[]);
+  }
+
+  createUom(uom: Uom):  Promise<Uom> {
+    console.log('create Uom');
+    return this.client
+      .post('uom/value', JSON.stringify(uom))
+      .toPromise()
+      .then(response => response)
+      .catch(response => {
+        console.error(`Error while creating in: ${response}`);
+        return Promise.reject(response.json() || response);
+      });
+  }
+
+  updateUom(uomId: string, uom: Uom):  Promise<Uom> {
+    console.log('update Uom');
+    return this.client
+      .put(`uom/value/${uomId}`, JSON.stringify(uom))
+      .toPromise()
+      .then(response => response)
+      .catch((response: any) => {
+        console.error(`Error while updating in: ${response}`);
+        return Promise.reject(response.json() || response);
+      });
+  }
+
+  deleteUom(uomId: string):  Promise<Uom> {
+    console.log('delete Uom with ' + uomId);
+    return this.client
+      .delete(`uom/value/${uomId}`)
+      .toPromise()
+      .then(response => response)
+      .catch((response: any) => {
+        console.error(`Error while deleting in: ${response}`);
+        return Promise.reject(response.json() || response);
+      });
   }
 
 }
