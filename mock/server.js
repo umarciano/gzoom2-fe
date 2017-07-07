@@ -283,7 +283,7 @@ app.get('/rest/uom/value', function(req, res) {
 });
 
 app.post('/rest/uom/value', function(req, res) {
-  const uomTypeId = req.body.uomType.uomTypeId;
+  const uomTypeId = req.body.uomTypeId;
   const obj = data.uomTypes().filter((val,i) => val.uomTypeId == uomTypeId);
   const uomType = obj[0];
   const uomId = req.body.uomId;
@@ -305,7 +305,7 @@ app.post('/rest/uom/value', function(req, res) {
 
 app.put('/rest/uom/value/:id', function(req, res) {
   const id = req.param('id');
-  const uomTypeId = req.body.uomType.uomTypeId;
+  const uomTypeId = req.body.uomTypeId;
   const obj = data.uomTypes().filter((val,i) => val.uomTypeId == uomTypeId);
   const uomType = obj[0];
   const uomId = req.body.uomId;

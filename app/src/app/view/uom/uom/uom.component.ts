@@ -96,9 +96,9 @@ export class UomComponent implements OnInit {
 
   save() {
     console.log("this.selectedUomTypeId ", this.selectedUomTypeId);
-
-    // this.uom.uomTypeId = this.selectedUomTypeId; // TODO si fa cosi?
-    this.uom.uomType = this.uomTypes.find(item => item.uomTypeId == this.selectedUomTypeId); // TODO si fa cosi?
+    // conviene in create e update
+    this.uom.uomTypeId = this.selectedUomTypeId; // TODO si fa cosi?
+    // this.uom.uomType = this.uomTypes.find(item => item.uomTypeId == this.selectedUomTypeId); // TODO si fa cosi?
     console.log("this.uom ", this.uom);
     if (this.newUom) {
       this.uomService
