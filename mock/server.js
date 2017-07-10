@@ -282,6 +282,15 @@ app.get('/rest/uom/value', function(req, res) {
   }, _.random(200, 1000));
 });
 
+app.get('/rest/uom/value/:id', function(req, res) {
+  const id = req.param('id');
+  log.debug('Looking up uom with ' + id);
+  var uom = data.uom(id);
+  setTimeout(function() {
+    res.json({ uom: uom });
+  }, _.random(200, 1000));
+});
+
 app.post('/rest/uom/value', function(req, res) {
   const uomTypeId = req.body.uomTypeId;
   const obj = data.uomTypes().filter((val,i) => val.uomTypeId == uomTypeId);
@@ -305,6 +314,11 @@ app.post('/rest/uom/value', function(req, res) {
 
 app.put('/rest/uom/value/:id', function(req, res) {
   const id = req.param('id');
+  log.debug('Update uom ' + id);
+  // uomTypeId si trova nel body
+  // usato per prendere uomType
+
+  // nell'uom passo uomType: uomType
   const uomTypeId = req.body.uomTypeId;
   const obj = data.uomTypes().filter((val,i) => val.uomTypeId == uomTypeId);
   const uomType = obj[0];
@@ -318,7 +332,6 @@ app.put('/rest/uom/value/:id', function(req, res) {
                abbreviation: abbreviation, description: description,
                minValue: minValue, maxValue: maxValue,
                decimalScale: decimalScale};
-  log.debug('Update uom ' + id);
   const index = data.updateUom(id, uom);
   setTimeout(function() {
     res.json({ uomId: uomId });
@@ -331,6 +344,68 @@ app.delete('/rest/uom/value/:id', function(req, res) {
   const index = data.deleteUom(id);
   setTimeout(function() {
     res.json({ uomId: id });
+  }, _.random(200, 1000));
+});
+
+
+app.get('/rest/uom/scale/:id', function(req, res) {
+  const id = req.param('id');
+  var uomRatingScales = data.uomRatingScales(id);
+  log.debug('Looking up uomRatingScales for ' + id);
+  setTimeout(function() {
+    res.json({ results: uomRatingScales, total: uomRatingScales.length });
+  }, _.random(200, 1000));
+});
+
+// uomId si trova nel body
+// usato per prendere uom
+app.post('/rest/uom/scale', function(req, res) {
+  const uomId = req.body.uomId;
+  const uomRatingValue = req.body.uomRatingValue;
+  log.debug('Create uomRatingScale ' + uomId + " " + uomRatingValue);
+  const obj = data.uoms().filter((val,i) => val.uomId == uomId);
+  const uom = obj[0];
+  const description = req.body.description;
+  const uomRatingScale = {uom: {uomId: uomId, description: uom.description},
+               description: description, uomRatingValue: uomRatingValue};
+  log.debug('Create uomRatingScale ', uomRatingScale);
+  let index = data.createUomRatingScale(uomRatingScale);
+  setTimeout(function() {
+    res.json({ uomId: uomId, uomRatingValue: uomRatingValue });
+  }, _.random(200, 1000));
+});
+
+app.put('/rest/uom/scale/:id/:value', function(req, res) {
+  const id = req.param('id');
+  const value = req.param('value');
+  log.debug('Update uomRatingScale ' + id + " " + value );
+
+  // uomId si trova nel body ed anche nella request
+  // usato per prendere uom
+
+  // nell'uomRatingScale passo uom: uom
+  const obj = data.uoms().filter((val,i) => val.uomId == id);
+  const uom = obj[0];
+  const uomId = uom.uomId;
+  const description = req.body.description;
+  const uomRatingValue = req.body.uomRatingValue;
+  const uomRatingScale = {uom: {uomId: uomId, description: uom.description},
+               uomRatingValue: uomRatingValue, description: description};
+  log.debug('Update uomRatingScale ', uomRatingScale);
+  const index = data.updateUomRatingScale(id, value, uomRatingScale);
+  setTimeout(function() {
+    res.json({ uomId: uomId, uomRatingValue: uomRatingValue });
+  }, _.random(200, 1000));
+});
+
+app.delete('/rest/uom/scale/:id/:value', function(req, res) {
+  const id = req.param('id');
+  const value = req.param('value');
+  log.debug('Delete uom ' + id + " " + value);
+  const index = data.deleteUomRatingScale(id, value);
+  log.debug('Delete index ' + index);
+  setTimeout(function() {
+    res.json({ uomId: id, uomRatingValue: value });
   }, _.random(200, 1000));
 });
 

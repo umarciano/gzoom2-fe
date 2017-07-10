@@ -78,6 +78,12 @@ var _ = require('lodash'),
       { uomId: 'RAT_VAL', uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, abbreviation: '1...5', description: 'Scala valutazione comportamenti Dirigenti', decimalScale: 0},
       { uomId: 'SN', uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, abbreviation: 'S/N', description: 'Presente S/N	', decimalScale: 0}
     ],
+    UOM_RATING_SCALE = [
+      { uom: {uomId: 'RAT_VAL', description: 'Scala valutazione comportamenti Dirigenti'}, uomRatingValue:0.000000, description:'X'},
+      { uom: {uomId: 'RAT_VAL', description: 'Scala valutazione comportamenti Dirigenti'}, uomRatingValue:100.000000, description:''},
+      { uom: {uomId: 'SN', description: 'Presente S/N	'}, uomRatingValue:0.000000, description:'No'},
+      { uom: {uomId: 'SN', description: 'Presente S/N	'}, uomRatingValue:100.000000, description:'Sì'}
+    ],
     tokens = {},
     secret = generateSecret();
 
@@ -244,6 +250,10 @@ module.exports = {
       return UOM;
   },
 
+  uom: function(id) {
+      return UOM.filter((val,i) => val.uomId == id)[0];
+  },
+
   findSelectedUomIndex(uom) {
     return UOM.indexOf(uom);
   },
@@ -255,6 +265,7 @@ module.exports = {
     return index;
   },
 
+  // a partire dalle chiavi recupero oggetto uom
   updateUom: function(id, uom) {
     const obj = UOM.filter((val,i) => val.uomId == id);
     const index = this.findSelectedUomIndex(obj[0]);
@@ -265,6 +276,35 @@ module.exports = {
 
   deleteUom: function(id) {
     UOM = UOM.filter((val,i) => val.uomId != id);
+    return id;
+  },
+
+  uomRatingScales: function(uomId) {
+    return UOM_RATING_SCALE.filter((val,i) => val.uom.uomId == uomId);
+  },
+
+  findSelectedUomRatingScaleIndex(uomRatingScale) {
+    return UOM_RATING_SCALE.indexOf(uomRatingScale);
+  },
+
+  createUomRatingScale: function(uomRatingScale) {
+    const index = this.findSelectedUomRatingScaleIndex(uomRatingScale);
+    if(index < 0)
+        UOM_RATING_SCALE.push(uomRatingScale);
+    return index;
+  },
+
+  // a partire dalle chiavi recupero oggetto uom
+  updateUomRatingScale: function(id, value, uomRatingScale) {
+    const obj = UOM_RATING_SCALE.filter((val,i) => val.uom.uomId == id && val.uomRatingValue == Number(value));
+    const index = this.findSelectedUomRatingScaleIndex(obj[0]);
+    if(index >= 0)
+      UOM_RATING_SCALE[index] = uomRatingScale;
+    return index;
+  },
+
+  deleteUomRatingScale: function(id, value) {
+    UOM_RATING_SCALE = UOM_RATING_SCALE.filter((val,i) => val.uom.uomId != id || val.uomRatingValue != Number(value));
     return id;
   }
 
