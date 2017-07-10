@@ -92,9 +92,7 @@ export class UomTypeComponent implements OnInit {
     .deleteUomType(this.selectedUomType.uomTypeId)
     .then(data => {
       this.uomType = null;
-      this.msgs = [{severity:'info', summary:'Confirmed', detail:'Record deleted'}];
-      // TODO gestire reload della lista
-      // this.router.navigate(['../type'], { relativeTo: this.route });
+      this.msgs = [{severity:'info', summary: 'Confirmed', detail:'Record deleted'}];
       this.reload();
     })
     .catch((error) => {
@@ -121,7 +119,7 @@ export class UomTypeComponent implements OnInit {
 
 
   confirm() {
-    this.confirmationService.confirm({
+    this.confirmationService.confirm({ // TODO translate
         message: 'Do you want to delete this record?',
         header: 'Delete Confirmation',
         icon: 'fa fa-trash',

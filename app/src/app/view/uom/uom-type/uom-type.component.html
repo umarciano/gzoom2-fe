@@ -10,36 +10,35 @@
 <p-dataTable [value]="uomTypes"
             sortMode="multiple"
             [responsive]="true">
-    <p-header>List of UomType</p-header>
-    <p-column field="uomTypeId" header="UomTypeId" [sortable]="true"></p-column>
-    <p-column field="description" header="Description" [sortable]="true"></p-column>
+    <p-column field="uomTypeId" header="{{'UomTypeId'|i18n}}" [sortable]="true"></p-column>
+    <p-column field="description" header="{{'Description'|i18n}}" [sortable]="true"></p-column>
     <p-column styleClass="col-button">
         <ng-template pTemplate="header">
             <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
         </ng-template>
         <ng-template let-uomType="rowData" pTemplate="body">
-            <button type="button" pButton icon="fa-search" (click)="selectUomType(uomType)" ></button>
+            <button type="button" pButton icon="fa-search" (click)="selectUomType(uomType)"></button>
         </ng-template>
     </p-column>
 </p-dataTable>
 
-<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+<p-confirmDialog header="{{'UomTypeId'|i18n}}" icon="fa fa-question-circle" width="425"></p-confirmDialog>
 
 <p-dialog header="UomType Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
     <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="uomType">
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="uomTypeId">UomTypeId</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="uomTypeId" [(ngModel)]="uomType.uomTypeId" maxlength="20" required/></div>
+            <div class="ui-grid-col-4"><label for="uomTypeId">{{'UomTypeId'|i18n}}*</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="uomTypeId" [(ngModel)]="uomType.uomTypeId" maxlength="20"/></div>
         </div>
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="description">Description</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="uomType.description" maxlength="255" required/></div>
+            <div class="ui-grid-col-4"><label for="description">{{'Description'|i18n}}*</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="uomType.description" maxlength="255"/></div>
         </div>
     </div>
     <p-footer>
         <div class="ui-dialog-buttonpane ui-helper-clearfix">
-            <button *ngIf="!newUomType" type="button" pButton icon="fa-trash" (click)="confirm()" label="Delete"></button>
-            <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+            <button *ngIf="!newUomType" type="button" pButton icon="fa-trash" (click)="confirm()" label="{{'Delete'|i18n}}"></button>
+            <button type="button" [disabled]="uomType &amp;&amp; (!uomType.uomTypeId || !uomType.description)" pButton icon="fa-check" (click)="save()" label="{{'Save'|i18n}}"></button>
         </div>
     </p-footer>
 

@@ -68,7 +68,7 @@ export class UomService {
     console.log('search uom with ' + uomId);
     return this.client
       .get(`uom/value/${uomId}`)
-      .map(json => json.uom as Uom);
+      .map(json => json as Uom);
   }
 
   createUom(uom: Uom):  Promise<Uom> {
