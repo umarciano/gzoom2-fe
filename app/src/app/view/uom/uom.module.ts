@@ -21,8 +21,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { UomTypeComponent } from './uom-type/uom-type.component';
 import { UomComponent } from './uom/uom.component';
+import { UomRatingScaleComponent } from './scale/uom-rating-scale.component';
 import { UomTypeResolver } from './uom-type/uom-type-resolver.service';
 import { UomResolver } from './uom/uom-resolver.service';
+import { UomRatingScaleResolver } from './scale/uom-rating-scale-resolver.service';
 import { UomService } from '../../api/uom.service';
 
 
@@ -45,12 +47,14 @@ import { UomService } from '../../api/uom.service';
   ],
   declarations: [
     UomTypeComponent,
-    UomComponent
+    UomComponent,
+    UomRatingScaleComponent
   ],
   providers: [
     UomService,
     ConfirmationService,
     UomTypeResolver,
+    UomRatingScaleResolver,
     UomResolver
   ]
 })

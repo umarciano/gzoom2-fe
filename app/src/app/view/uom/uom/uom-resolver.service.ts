@@ -19,9 +19,10 @@ export class UomResolver implements Resolve<Uom[]> {
     private readonly lockoutService: LockoutService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Uom[]> {
+    console.log('resolve uom');
 
     return this.uomService
-      .uom()
+      .uoms()
       .toPromise()
       .then(uoms => { return uoms; })
       .catch(err => { // TODO devo fare il lockout?

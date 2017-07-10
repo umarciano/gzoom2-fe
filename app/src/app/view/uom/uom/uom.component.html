@@ -31,7 +31,8 @@
             scrollable="true"
             sortMode="multiple"
             [responsive]="true"
-            [globalFilter]="gb" #dt>
+            [globalFilter]="gb" #dt
+            selectionMode="single" [(selection)]="selectedRowUom" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" dataKey="uomId">
     <p-header>List of Uom</p-header>
     <p-column field="uomType.description" header="uomTypeId"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"
@@ -103,3 +104,5 @@
 
     <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 </p-dialog>
+
+<router-outlet></router-outlet>

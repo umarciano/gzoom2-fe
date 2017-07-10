@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Uom } from './uom';
+import { UomRatingScale } from '../scale/uom_rating_scale';
 import { UomType } from '../uom-type/uom_type';
 import { UomService } from '../../../api/uom.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import {LazyLoadEvent} from '../../../commons/lazyloadevent';
-import {FilterMetadata} from '../../../commons/filtermetadata';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { SelectItem } from '../../../commons/selectitem';
 import { Message } from '../../../commons/message';
@@ -22,10 +21,9 @@ export class UomComponent implements OnInit {
   error = '';
   msgs: Message[] = [];
 
-  uomsObs: Observable<Uom[]>;
-  uomTypesObs: Observable<UomType[]>;
   uoms: Uom[];
   uomTypes: UomType[];
+  // TODO rimuovere uomRatingScales: UomRatingScale[];
 
   // uomType SelectItem
   uomTypeSelectItem: SelectItem[] = [];
@@ -36,13 +34,14 @@ export class UomComponent implements OnInit {
   selectedUom: Uom;
   newUom: boolean;
 
+  // TODO rimuovere displayRangeScale: boolean;
+
   constructor(private readonly uomService: UomService,
               private readonly confirmationService: ConfirmationService,
               private readonly route: ActivatedRoute,
               private readonly router: Router) { }
 
   ngOnInit() {
-    console.log('ngOnInit');
     this.route.data
       .map((data: { uomTypes: UomType[] }) => data.uomTypes)
       .subscribe((data) => {
@@ -64,7 +63,7 @@ export class UomComponent implements OnInit {
   reload() {
     console.log('reload');
     this.uomService
-      .uomType()
+      .uomTypes()
       .toPromise()
       .then(uomTypes => { this.uomTypes = uomTypes; })
       .catch(err => {
@@ -77,7 +76,7 @@ export class UomComponent implements OnInit {
     });*/
 
     this.uomService
-      .uom()
+      .uoms()
       .toPromise()
       .then(uoms => { this.uoms = uoms; })
       .catch(err => {
@@ -131,17 +130,6 @@ export class UomComponent implements OnInit {
           this.error = error.message || error;
         });
     }
-    /*let uoms = [...this.uoms];
-    console.log("this.uom ", this.uom);
-    console.log("this.selectedUomTypeId ", this.selectedUomTypeId);
-    if(this.newUom)
-        uoms.push(this.uom);
-    else
-        uoms[this.findSelectedUomIndex()] = this.uom;
-    this.uoms = uoms;
-    this.uom = null;
-    this.displayDialog = false;*/
-
   }
 
   delete() {
@@ -177,39 +165,7 @@ export class UomComponent implements OnInit {
     }
     return uom;
   }
-    /*this.uomService.uom()
-    .toPromise()
-    .then(uoms => {
-      // this.uom2 = uoms;
-      this.datasource = uoms;
-      this.totalRecords = this.datasource.length;
-      this.uom2 = this.datasource.slice(0, 5);
-    })
-    .catch(error => {
-        // TODO: add real error handling
-        console.log(error);
-        return Observable.of<Uom[]>([]);
-      });
-*/
 
-
-  /*loadCarsLazy(event: LazyLoadEvent) {
-        //in a real application, make a remote request to load data using state metadata from event
-        //event.first = First row offset
-        //event.rows = Number of rows per page
-        //event.sortField = Field name to sort with
-        //event.sortOrder = Sort order as number, 1 for asc and -1 for dec
-        //filters: FilterMetadata object having field as key and filter value, filter matchMode as value
-        console.log(" - loadCarsLazy " + event.filters);
-
-        //imitate db connection over a network
-        setTimeout(() => {
-            if(this.datasource) {
-                this.uom2 = this.datasource.slice(event.first, (event.first + event.rows));
-                this.uom2.filter(v => v.description.indexOf(event.filters.global.value) !== -1)
-            }
-    }, 250);
-  }*/
   confirm() {
     this.confirmationService.confirm({
       message: 'Do you want to delete this record?',
@@ -224,6 +180,18 @@ export class UomComponent implements OnInit {
           this.displayDialog = false;
         }
     });
+  }
+
+  onRowSelect(event) {
+    this.router.navigate([event.data.uomId], { relativeTo: this.route });
+
+    this.msgs = [];
+    this.msgs.push({severity: 'info', summary: 'Uom Selected', detail: event.data.uomId + ' - ' + event.data.description});
+  }
+
+  onRowUnselect(event) {
+    this.msgs = [];
+    this.msgs.push({severity: 'info', summary: 'Uom Unselected', detail: event.data.uomId + ' - ' + event.data.description});
   }
 }
 

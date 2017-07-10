@@ -6,27 +6,28 @@ import 'rxjs/add/operator/toPromise';
 
 import { LockoutService } from '../../../commons/lockout.service';
 import { UomService } from '../../../api/uom.service';
-import { UomType } from './uom_type';
+import { UomRatingScale } from './uom_rating_scale';
 
 /**
  * Retrieves the menus to be shown or locks the user out if something wrong happens.
  */
 @Injectable()
-export class UomTypeResolver implements Resolve<UomType[]> {
+export class UomRatingScaleResolver implements Resolve<UomRatingScale[]> {
 
   constructor(
     private readonly uomService: UomService,
     private readonly lockoutService: LockoutService) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<UomType[]> {
-    console.log('resolve uomType');
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<UomRatingScale[]> {
+    var id = route.paramMap.get('id');
+    console.log('resolve uomRatingScale ' + id);
     return this.uomService
-      .uomTypes()
+      .uomRatingScales(id)
       .toPromise()
-      .then(uomTypes => { return uomTypes; })
+      .then(uomRatingScales => { return uomRatingScales; })
       .catch(err => { // TODO devo fare il lockout?
-        console.error('Cannot retrieve uomType', err);
-        this.lockoutService.lockout(); // TODO cos'e?
+        console.error('Cannot retrieve uomRatingScales ', err);
+        this.lockoutService.lockout();
       });
   }
 }

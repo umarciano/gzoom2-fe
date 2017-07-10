@@ -41,7 +41,7 @@ export class UomTypeComponent implements OnInit {
   reload() {
     console.log(" - reload ");
     this.uomService
-      .uomType()
+      .uomTypes()
       .toPromise()
       .then(uomTypes => { this.uomTypes = uomTypes; })
       .catch(err => {
@@ -65,8 +65,6 @@ export class UomTypeComponent implements OnInit {
           this.uomType = null;
           this.displayDialog = false;
           this.msgs = [{severity:'info', summary:'Created', detail:'Record created'}];
-          // TODO gestire reload della lista
-          // this.router.navigate(['../type'], { relativeTo: this.route });
           this.reload();
         })
         .catch((error) => {
@@ -80,8 +78,6 @@ export class UomTypeComponent implements OnInit {
           this.uomType = null;
           this.displayDialog = false;
           this.msgs = [{severity:'info', summary:'Updated', detail:'Record updated'}];
-          // TODO gestire reload della lista
-          // this.router.navigate(['../type', { id: this.selectedUomType.uomTypeId}], { relativeTo: this.route, skipLocationChange: true }); // TODO
           this.reload();
         })
         .catch((error) => {
