@@ -1,9 +1,4 @@
-<p>
-  uom-type works!
-  Tabella semplice con solo ordinamento e recupero dati con router, cioe' prima che venga renderizzata la pagina
-</p>
-
-<h3 class="first">Basic</h3>
+<h3 class="first">Tipi Unità di Misura</h3>
 
 <p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
 
@@ -17,7 +12,7 @@
             <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
         </ng-template>
         <ng-template let-uomType="rowData" pTemplate="body">
-            <button type="button" pButton icon="fa-search" (click)="selectUomType(uomType)"></button>
+            <button type="button" pButton icon="fa-pencil" (click)="selectUomType(uomType)"></button>
         </ng-template>
     </p-column>
 </p-dataTable>

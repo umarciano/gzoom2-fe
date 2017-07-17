@@ -25,7 +25,7 @@ export class UomRatingScaleResolver implements Resolve<UomRatingScale[]> {
       .uomRatingScales(id)
       .toPromise()
       .then(uomRatingScales => { return uomRatingScales; })
-      .catch(err => { // TODO devo fare il lockout?
+      .catch(err => { // TODO serve il lockout?
         console.error('Cannot retrieve uomRatingScales ', err);
         this.lockoutService.lockout();
       });

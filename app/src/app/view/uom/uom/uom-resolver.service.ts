@@ -25,7 +25,7 @@ export class UomResolver implements Resolve<Uom[]> {
       .uoms()
       .toPromise()
       .then(uoms => { return uoms; })
-      .catch(err => { // TODO devo fare il lockout?
+      .catch(err => { // TODO serve il lockout?
         console.error('Cannot retrieve uom', err);
         this.lockoutService.lockout();
       });

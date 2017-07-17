@@ -1,52 +1,44 @@
-<p>
-  uom works!
-  Lazy non funziona insieme al filter e al sortorder, <br/>
-  Se sono presenti Lazy e Filter, bisogna implementare i filtri a mano dentro il metodo loadCarsLazy<br/>
-  per il lazy si usa:<br/>
-  [lazy]="true" [totalRecords]="totalRecords" (onLazyLoad)="loadCarsLazy($event)"<br/>
-
-  Mettere sempre il numero di righe<br/>
-  [rows]="5"<br/>
-  Per il paginatore si usa:<br/>
-  [paginator]="true"<br/>
-
-  Per lo scroll invece<br/>
-  scrollable="true" scrollHeight="200px" virtualScroll="virtualScroll", e va insieme al lazy<br/>
-
-  TODO selezione della riga e
-  TODO salvataggio senza campi obbligatori
-</p>
-
-<h3 class="first">Basic</h3>
+<h3 class="first">Unità di Misura</h3>
 
 <p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
 
 <div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none">
     <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-    <input #gb type="text" pInputText size="50" placeholder="Global Filter">
+    <input #gb type="text" pInputText size="50" placeholder="{{'Global Filter'|i18n}}">
 </div>
 <p-dataTable [value]="uoms"
             [rows]="5"
-            [paginator]="true"
             scrollable="true"
+            scrollHeight="260px"
             sortMode="multiple"
             [responsive]="true"
             [globalFilter]="gb" #dt
             selectionMode="single" [(selection)]="selectedRowUom" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" dataKey="uomId">
-    <p-header>List of Uom</p-header>
-    <p-column field="uomType.description" header="uomTypeId"
-    [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"
+    <p-column field="uomType.description" header="{{'UomTypeId'|i18n}}"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
     [sortable]="true"
     [editable]="false">
       <ng-template let-col let-uom="rowData" let-ri="rowIndex" pTemplate="body">
           <span>{{uom.uomType.description}}</span>
       </ng-template>
     </p-column>
-    <p-column field="uomId" header="uomId"
-    [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"
+    <p-column field="uomId" header="{{'UomId'|i18n}}"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
     [sortable]="true"></p-column>
-    <p-column field="description" header="description"
-    [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"
+    <p-column field="description" header="{{'Description'|i18n}}"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
+    [sortable]="true"></p-column>
+    <p-column field="abbreviation" header="{{'Abbreviation'|i18n}}"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
+    [sortable]="true"></p-column>
+    <p-column field="decimalScale" header="{{'DecimalScale'|i18n}}"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
+    [sortable]="true"></p-column>
+    <p-column field="minValue" header="{{'MinValue'|i18n}}"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
+    [sortable]="true"></p-column>
+    <p-column field="maxValue" header="{{'MaxValue'|i18n}}"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
     [sortable]="true"></p-column>
     <p-column styleClass="col-button">
         <ng-template pTemplate="header">
@@ -58,12 +50,12 @@
     </p-column>
 </p-dataTable>
 
-<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+<p-confirmDialog header="{{'Confirmation'|i18n}}" icon="fa fa-question-circle" width="425"></p-confirmDialog>
 
-<p-dialog header="Uom Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+<p-dialog header="{{'Uom Details'|i18n}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
     <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="uom">
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="uomTypeId">UomTypeId</label></div>
+            <div class="ui-grid-col-4"><label for="uomTypeId">{{'UomTypeId'|i18n}}*</label></div>
             <div class="ui-grid-col-8">
                 <p-dropdown [options]="uomTypeSelectItem" [(ngModel)]="selectedUomTypeId"
                  [autoWidth]="false" [style]="{'width':'100%'}" required="true">
@@ -71,34 +63,34 @@
             </div>
         </div>
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="uomTypeId">UomId</label></div>
+            <div class="ui-grid-col-4"><label for="uomTypeId">{{'UomId'|i18n}}*</label></div>
             <div class="ui-grid-col-8"><input pInputText id="uomId" [(ngModel)]="uom.uomId" maxlength="20" required="true"/></div>
         </div>
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="description">Description</label></div>
+            <div class="ui-grid-col-4"><label for="description">{{'Description'|i18n}}*</label></div>
             <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="uom.description" maxlength="255" required="true"/></div>
         </div>
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="abbreviation">Abbreviation</label></div>
+            <div class="ui-grid-col-4"><label for="abbreviation">{{'Abbreviation'|i18n}}*</label></div>
             <div class="ui-grid-col-8"><input pInputText id="abbreviation" [(ngModel)]="uom.abbreviation" maxlength="60" required="true"/></div>
         </div>
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="decimalScale">Decimal Scale</label></div>
+            <div class="ui-grid-col-4"><label for="decimalScale">{{'Decimal Scale'|i18n}}*</label></div>
             <div class="ui-grid-col-8"><input pInputText id="decimalScale" [(ngModel)]="uom.decimalScale" /></div>
         </div>
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="minValue">Min Value</label></div>
+            <div class="ui-grid-col-4"><label for="minValue">{{'Min Value'|i18n}}</label></div>
             <div class="ui-grid-col-8"><input pInputText id="minValue" [(ngModel)]="uom.minValue" /></div>
         </div>
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="maxValue">Max Value</label></div>
+            <div class="ui-grid-col-4"><label for="maxValue">{{'Max Value'|i18n}}</label></div>
             <div class="ui-grid-col-8"><input pInputText id="maxValue" [(ngModel)]="uom.maxValue" /></div>
         </div>
     </div>
     <p-footer>
         <div class="ui-dialog-buttonpane ui-helper-clearfix">
-            <button *ngIf="!newUom" type="button" pButton icon="fa-trash" (click)="confirm()" label="Delete"></button>
-            <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+            <button *ngIf="!newUom" type="button" pButton icon="fa-trash" (click)="confirm()" label="{{'Delete'|i18n}}"></button>
+            <button type="button" pButton icon="fa-check" (click)="save()" label="{{'Save'|i18n}}"></button>
         </div>
     </p-footer>
 

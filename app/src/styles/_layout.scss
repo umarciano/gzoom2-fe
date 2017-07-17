@@ -181,6 +181,11 @@ p-growl div.ui-growl {
 
 p-datatable td.col-button {
     text-align: center;
+    width: 50px;
+}
+
+p-datatable th.col-button {
+    width: 50px;
 }
 
 input, button, select, textarea {

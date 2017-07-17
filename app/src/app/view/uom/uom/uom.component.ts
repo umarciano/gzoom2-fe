@@ -8,6 +8,7 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { SelectItem } from '../../../commons/selectitem';
 import { Message } from '../../../commons/message';
+import { isDefined as _isDefined } from '../../../commons/commons';
 
 import 'rxjs/add/operator/map';
 
@@ -23,18 +24,15 @@ export class UomComponent implements OnInit {
 
   uoms: Uom[];
   uomTypes: UomType[];
-  // TODO rimuovere uomRatingScales: UomRatingScale[];
 
-  // uomType SelectItem
   uomTypeSelectItem: SelectItem[] = [];
   selectedUomTypeId: string;
+  selectedRowUom: any;
 
   displayDialog: boolean;
   uom: Uom = new PrimeUom();
   selectedUom: Uom;
   newUom: boolean;
-
-  // TODO rimuovere displayRangeScale: boolean;
 
   constructor(private readonly uomService: UomService,
               private readonly confirmationService: ConfirmationService,
@@ -63,7 +61,7 @@ export class UomComponent implements OnInit {
   reload() {
     console.log('reload');
     this.uomService
-      .uomTypes()
+      .uomTypes() // subscribe invece di toPromise....
       .toPromise()
       .then(uomTypes => { this.uomTypes = uomTypes; })
       .catch(err => {
@@ -97,7 +95,6 @@ export class UomComponent implements OnInit {
     console.log("this.selectedUomTypeId ", this.selectedUomTypeId);
     // conviene in create e update
     this.uom.uomTypeId = this.selectedUomTypeId; // TODO si fa cosi?
-    // this.uom.uomType = this.uomTypes.find(item => item.uomTypeId == this.selectedUomTypeId); // TODO si fa cosi?
     console.log("this.uom ", this.uom);
     if (this.newUom) {
       this.uomService
@@ -106,8 +103,6 @@ export class UomComponent implements OnInit {
           this.uom = null;
           this.displayDialog = false;
           this.msgs = [{severity:'info', summary:'Created', detail:'Record created'}];
-          // TODO gestire reload della lista
-          // this.router.navigate(['../value'], { relativeTo: this.route });
           this.reload();
         })
         .catch((error) => {
@@ -121,8 +116,6 @@ export class UomComponent implements OnInit {
           this.uom = null;
           this.displayDialog = false;
           this.msgs = [{severity:'info', summary:'Updated', detail:'Record updated'}];
-          // TODO gestire reload della lista
-          // this.router.navigate(['../type', { id: this.selectedUomType.uomTypeId}], { relativeTo: this.route, skipLocationChange: true }); // TODO
           this.reload();
         })
         .catch((error) => {
@@ -138,8 +131,6 @@ export class UomComponent implements OnInit {
     .then(data => {
       this.uom = null;
       this.msgs = [{severity:'info', summary:'Confirmed', detail:'Record deleted'}];
-      // TODO gestire reload della lista
-      // this.router.navigate(['../type'], { relativeTo: this.route });
       this.reload();
     })
     .catch((error) => {
@@ -189,9 +180,17 @@ export class UomComponent implements OnInit {
     this.msgs.push({severity: 'info', summary: 'Uom Selected', detail: event.data.uomId + ' - ' + event.data.description});
   }
 
+  // TODO quando viene invocata?
   onRowUnselect(event) {
+    console.log(" - onRowUnselect ");
     this.msgs = [];
     this.msgs.push({severity: 'info', summary: 'Uom Unselected', detail: event.data.uomId + ' - ' + event.data.description});
+  }
+
+
+  // TODO come si usa?
+  isDefined(val: any){
+    return _isDefined(val);
   }
 }
 

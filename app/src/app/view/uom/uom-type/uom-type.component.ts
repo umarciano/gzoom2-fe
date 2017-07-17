@@ -48,8 +48,8 @@ export class UomTypeComponent implements OnInit {
         console.error('Cannot retrieve uomType', err);
       });
   }
+
   showDialogToAdd() {
-    console.log(" - showDialogToAdd ");
     this.error = '';
     this.newUomType = true;
     this.uomType = new PrimeUomType();
@@ -65,7 +65,8 @@ export class UomTypeComponent implements OnInit {
           this.uomType = null;
           this.displayDialog = false;
           this.msgs = [{severity:'info', summary:'Created', detail:'Record created'}];
-          this.reload();
+          this.router.navigate(['../type'], { relativeTo: this.route });
+          // this.reload();
         })
         .catch((error) => {
           console.log('error' , error.message);
@@ -78,7 +79,8 @@ export class UomTypeComponent implements OnInit {
           this.uomType = null;
           this.displayDialog = false;
           this.msgs = [{severity:'info', summary:'Updated', detail:'Record updated'}];
-          this.reload();
+          // this.reload();
+          this.router.navigate(['./'], { relativeTo: this.route });
         })
         .catch((error) => {
           console.log('error' , error.message);

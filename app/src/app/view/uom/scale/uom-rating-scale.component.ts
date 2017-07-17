@@ -7,6 +7,10 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { SelectItem } from '../../../commons/selectitem';
 import { Message } from '../../../commons/message';
+import { isDefined as _isDefined } from '../../../commons/commons';
+import { isBlank } from '../../../commons/commons';
+
+const RATING_SCALE = 'RATING_SCALE';
 
 @Component({
   selector: 'app-scale',
@@ -16,10 +20,12 @@ import { Message } from '../../../commons/message';
 
 export class UomRatingScaleComponent implements OnInit {
 
+
   error = '';
   msgs: Message[] = [];
 
   uom: Uom;
+  isRatingScale: boolean;
   uomRatingScales: UomRatingScale[];
 
   selectedUomId: string;
@@ -48,6 +54,7 @@ export class UomRatingScaleComponent implements OnInit {
       })
       .subscribe((data) => {
         this.uom = data;
+        this.isRatingScale = (RATING_SCALE == data.uomTypeId);
       });
 
     this.route.data
@@ -69,7 +76,15 @@ export class UomRatingScaleComponent implements OnInit {
     this.uomService
       .uomRatingScales(this.selectedUomId)
       .toPromise()
-      .then(uomRatingScales => { this.uomRatingScales = uomRatingScales; })
+      .then(uomRatingScales => {
+        if (uomRatingScales && uomRatingScales.length > 0) {
+          this.uomRatingScales = uomRatingScales;
+          this.displayRangeScale = true;
+        } else {
+          this.uomRatingScales = [];
+          this.displayRangeScale = false;
+        }
+      })
       .catch(err => {
         console.error('Cannot retrieve uomRatingScale', err);
         // TODO serve?
@@ -78,6 +93,7 @@ export class UomRatingScaleComponent implements OnInit {
   }
 
   showDialogToAdd() {
+    console.log(" - this.uom " + this.uom);
     this.error = '';
     this.newUomRatingScale = true;
     this.uomRatingScale = new PrimeUomRatingScale();
@@ -86,6 +102,7 @@ export class UomRatingScaleComponent implements OnInit {
   }
 
   save() {
+    console.log(" - selectedUomId " + this.selectedUomId);
     // conviene in create e update
     this.uomRatingScale.uomId = this.selectedUomId;
     if (this.newUomRatingScale) {
@@ -132,6 +149,7 @@ export class UomRatingScaleComponent implements OnInit {
   }
 
   selectUomRatingScale(data: UomRatingScale) {
+    console.log(" - this.uom " + this.uom);
     this.error = '';
     this.selectedUomRatingScale = data;
     this.newUomRatingScale = false;
@@ -153,16 +171,21 @@ export class UomRatingScaleComponent implements OnInit {
       header: 'Delete Confirmation',
       icon: 'fa fa-trash',
       accept: () => {
-        this.displayDialog = false;
         this.delete();
-        return;
+        this.displayDialog = false;
+        // return;
       },
       reject: () => {
           this.uomRatingScale = null;
           this.displayDialog = false;
-          return;
+          // return;
         }
     });
+  }
+
+  // TODO come si usa?
+  isDefined(val: any) {
+    return _isDefined(val);
   }
 
 }
