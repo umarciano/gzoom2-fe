@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Uom } from '../uom/uom';
 import { UomRatingScale } from './uom_rating_scale';
 import { UomService } from '../../../api/uom.service';
@@ -37,15 +38,21 @@ export class UomRatingScaleComponent implements OnInit {
 
   displayRangeScale: boolean;
 
+  _reload: Subject<void>;
+
 
   constructor(private readonly uomService: UomService,
               private readonly confirmationService: ConfirmationService,
               private readonly route: ActivatedRoute,
-              private readonly router: Router) { }
+              private readonly router: Router) {
+    this._reload = new Subject<void>();
+  }
 
 
   ngOnInit() {
-    console.log('ngOnInit UomRatingScale');
+    console.log('ngOnInit UomRatingScale ' + this.selectedUomId);
+    let reloadedUomRatingScales = this._reload
+      .switchMap(() => this.uomService.uomRatingScales(this.selectedUomId));;
 
     this.route.paramMap
       .switchMap((params) => {
@@ -54,11 +61,13 @@ export class UomRatingScaleComponent implements OnInit {
       })
       .subscribe((data) => {
         this.uom = data;
-        this.isRatingScale = (RATING_SCALE == data.uomTypeId);
+        this.isRatingScale = (RATING_SCALE == data.uomType.uomTypeId);
+        this._reload.next();
       });
 
     this.route.data
       .map((data: { uomRatingScales: UomRatingScale[] }) => data.uomRatingScales)
+      .merge(reloadedUomRatingScales)
       .subscribe((data) => {
         if (data && data.length > 0) {
           this.uomRatingScales = data;
@@ -70,30 +79,9 @@ export class UomRatingScaleComponent implements OnInit {
       });
   }
 
-  reload() {
-    console.log('reload ' +  this.selectedUomId);
-
-    this.uomService
-      .uomRatingScales(this.selectedUomId)
-      .toPromise()
-      .then(uomRatingScales => {
-        if (uomRatingScales && uomRatingScales.length > 0) {
-          this.uomRatingScales = uomRatingScales;
-          this.displayRangeScale = true;
-        } else {
-          this.uomRatingScales = [];
-          this.displayRangeScale = false;
-        }
-      })
-      .catch(err => {
-        console.error('Cannot retrieve uomRatingScale', err);
-        // TODO serve?
-        // this.router.navigate(['../', { id: crisisId, foo: 'foo' }], { relativeTo: this.route });
-    });
-  }
-
   showDialogToAdd() {
-    console.log(" - this.uom " + this.uom);
+    // conviene in create e update
+    // this.uomRatingScale.uomId = this.selectedUomId;
     this.error = '';
     this.newUomRatingScale = true;
     this.uomRatingScale = new PrimeUomRatingScale();
@@ -112,7 +100,7 @@ export class UomRatingScaleComponent implements OnInit {
           this.uomRatingScale = null;
           this.displayDialog = false;
           this.msgs = [{severity:'info', summary:'Created', detail:'Record created'}];
-          this.reload();
+          this._reload.next();
         })
         .catch((error) => {
           console.log('error' , error.message);
@@ -125,7 +113,7 @@ export class UomRatingScaleComponent implements OnInit {
           this.uomRatingScale = null;
           this.displayDialog = false;
           this.msgs = [{severity:'info', summary:'Updated', detail:'Record updated'}];
-          this.reload();
+          this._reload.next();
         })
         .catch((error) => {
           console.log('error' , error.message);
@@ -140,7 +128,7 @@ export class UomRatingScaleComponent implements OnInit {
     .then(data => {
       this.uomRatingScale = null;
       this.msgs = [{severity:'info', summary:'Confirmed', detail:'Record deleted'}];
-      this.reload();
+      this._reload.next();
     })
     .catch((error) => {
       console.log('error' , error.message);

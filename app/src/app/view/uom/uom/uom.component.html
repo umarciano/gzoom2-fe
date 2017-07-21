@@ -12,13 +12,18 @@
             scrollHeight="260px"
             sortMode="multiple"
             [responsive]="true"
-            [globalFilter]="gb" #dt
-            selectionMode="single" [(selection)]="selectedRowUom" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" dataKey="uomId">
+            [globalFilter]="gb" #dt>
+    <p-column styleClass="col-button">
+        <ng-template let-uom="rowData" let-ri="rowIndex" pTemplate="body">
+          <button *ngIf="ri == selectedIndex" type="button" pButton icon="fa fa-chevron-down"></button>
+          <button *ngIf="ri != selectedIndex" type="button" pButton (click)="onRowSelect(uom, ri)" icon="fa fa-chevron-right"></button>
+        </ng-template>
+    </p-column>
     <p-column field="uomType.description" header="{{'UomTypeId'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
     [sortable]="true"
     [editable]="false">
-      <ng-template let-col let-uom="rowData" let-ri="rowIndex" pTemplate="body">
+      <ng-template let-uom="rowData" pTemplate="body">
           <span>{{uom.uomType.description}}</span>
       </ng-template>
     </p-column>
@@ -45,14 +50,13 @@
             <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
         </ng-template>
         <ng-template let-uom="rowData" pTemplate="body">
-            <button type="button" pButton icon="fa-search" (click)="selectUom(uom)"></button>
+            <button type="button" pButton icon="fa-pencil" (click)="selectUom(uom)"></button>
         </ng-template>
     </p-column>
 </p-dataTable>
 
-<p-confirmDialog header="{{'Confirmation'|i18n}}" icon="fa fa-question-circle" width="425"></p-confirmDialog>
-
-<p-dialog header="{{'Uom Details'|i18n}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+<p-confirmDialog header="{{'Confirmation'|i18n}}" icon="fa fa-question-circle" width="425" acceptLabel="{{'Yes'|i18n}}"></p-confirmDialog>
+  <p-dialog header="{{'Uom Details'|i18n}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
     <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="uom">
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="uomTypeId">{{'UomTypeId'|i18n}}*</label></div>
@@ -76,15 +80,17 @@
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="decimalScale">{{'Decimal Scale'|i18n}}*</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="decimalScale" [(ngModel)]="uom.decimalScale" /></div>
+            <div class="ui-grid-col-8">
+              <input type="text" id="decimalScale" [(ngModel)]="uom.decimalScale" pattern="[0-9]*" />
+            </div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="minValue">{{'Min Value'|i18n}}</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="minValue" [(ngModel)]="uom.minValue" /></div>
+            <div class="ui-grid-col-8"><input pInputText id="minValue" [(ngModel)]="uom.minValue" ng-pattern="[0-9]"/></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="maxValue">{{'Max Value'|i18n}}</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="maxValue" [(ngModel)]="uom.maxValue" /></div>
+            <div class="ui-grid-col-8"><input pInputText id="maxValue" [(ngModel)]="uom.maxValue" pattern="[0-9]"/></div>
         </div>
     </div>
     <p-footer>
@@ -95,6 +101,6 @@
     </p-footer>
 
     <div *ngIf="error" class="alert alert-danger">{{error}}</div>
-</p-dialog>
 
+  </p-dialog>
 <router-outlet></router-outlet>

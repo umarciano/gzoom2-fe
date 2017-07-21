@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { UomType } from './uom_type';
 import { UomService } from '../../../api/uom.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
@@ -25,28 +26,23 @@ export class UomTypeComponent implements OnInit {
   uomType: UomType = new PrimeUomType();
   selectedUomType: UomType;
   newUomType: boolean;
+  _reload: Subject<void>;
 
   constructor(private readonly uomService: UomService,
               private readonly confirmationService: ConfirmationService,
               private readonly route: ActivatedRoute,
-              private readonly router: Router) { }
+              private readonly router: Router) {
+    this._reload = new Subject<void>();
+  }
 
   ngOnInit() {
+    const reloadedUomTypes = this._reload.switchMap(() => this.uomService.uomTypes());
+
     console.log(" - ngOnInit ");
     this.route.data
       .map((data: { uomTypes: UomType[] }) => data.uomTypes)
-      .subscribe(d => this.uomTypes = d);
-  }
-
-  reload() {
-    console.log(" - reload ");
-    this.uomService
-      .uomTypes()
-      .toPromise()
-      .then(uomTypes => { this.uomTypes = uomTypes; })
-      .catch(err => {
-        console.error('Cannot retrieve uomType', err);
-      });
+      .merge(reloadedUomTypes)
+      .subscribe(data => this.uomTypes = data);
   }
 
   showDialogToAdd() {
@@ -65,8 +61,7 @@ export class UomTypeComponent implements OnInit {
           this.uomType = null;
           this.displayDialog = false;
           this.msgs = [{severity:'info', summary:'Created', detail:'Record created'}];
-          this.router.navigate(['../type'], { relativeTo: this.route });
-          // this.reload();
+          this._reload.next();
         })
         .catch((error) => {
           console.log('error' , error.message);
@@ -79,8 +74,7 @@ export class UomTypeComponent implements OnInit {
           this.uomType = null;
           this.displayDialog = false;
           this.msgs = [{severity:'info', summary:'Updated', detail:'Record updated'}];
-          // this.reload();
-          this.router.navigate(['./'], { relativeTo: this.route });
+          this._reload.next();
         })
         .catch((error) => {
           console.log('error' , error.message);
@@ -95,7 +89,7 @@ export class UomTypeComponent implements OnInit {
     .then(data => {
       this.uomType = null;
       this.msgs = [{severity:'info', summary: 'Confirmed', detail:'Record deleted'}];
-      this.reload();
+      this._reload.next();
     })
     .catch((error) => {
       console.log('error' , error.message);

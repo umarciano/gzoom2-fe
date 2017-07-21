@@ -23,7 +23,7 @@
                 <button [disabled]="!displayRangeScale &amp;&amp; !isRatingScale" type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
             </ng-template>
             <ng-template let-uomRatingScale="rowData" pTemplate="body">
-                <button [disabled]="!displayRangeScale" type="button" pButton icon="fa-search" (click)="selectUomRatingScale(uomRatingScale)"></button>
+                <button [disabled]="!displayRangeScale" type="button" pButton icon="fa-pencil" (click)="selectUomRatingScale(uomRatingScale)"></button>
             </ng-template>
         </p-column>
     </p-dataTable>
