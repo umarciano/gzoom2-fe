@@ -191,3 +191,28 @@ p-datatable th.col-button {
 input, button, select, textarea {
     line-height: initial;
 }
+
+input.ng-valid[required], input.ng-valid.required {
+  border-left: 5px solid #42A948; /* green */
+}
+
+p-dropdown.ng-valid[required] > .ui-dropdown, p-dropdown.ng-valid.required > .ui-dropdown {
+  border-left: 5px solid #42A948; /* green */
+}
+
+p-spinner.ng-valid[required] > .ui-spinner > .ui-inputtext, p-spinner.ng-valid.required > .ui-spinner > .ui-inputtext {
+  border-left: 5px solid #42A948; /* green */
+}
+
+input.ng-invalid {
+  border-left: 5px solid #a94442; /* red */
+}
+
+p-dropdown.ng-dirty.ng-invalid > .ui-dropdown {
+  border-left: 5px solid #a94442; /* red */
+  border-bottom: 1px solid rgb(214, 214, 214);
+}
+
+p-spinner.ng-invalid > .ui-spinner > .ui-inputtext {
+  border-left: 5px solid #a94442; /* red */
+}

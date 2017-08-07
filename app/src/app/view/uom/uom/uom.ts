@@ -5,5 +5,5 @@ import { UomType } from '../uom-type/uom_type';
  */
 export class Uom {
   constructor(public uomId?: string, public uomTypeId?: string, public uomType?: UomType, public abbreviation?: string, public description?: string,
-              public decimalScale?: number, public minValue?: number, public maxValue?: number, public icon: string = 'fa-circle-o') { }
+              public decimalScale?: number, public minValue?: number, public maxValue?: number) { }
 }

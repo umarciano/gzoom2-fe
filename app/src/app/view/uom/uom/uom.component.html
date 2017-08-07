@@ -1,4 +1,4 @@
-<h3 class="first">"{{'GP_MENU_00332'|i18n}}"</h3>
+<h3 class="first">{{'GP_MENU_00332'|i18n}}</h3>
 
 <p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
 
@@ -16,15 +16,15 @@
     <p-column styleClass="col-button" [style]="{'width':'6%'}">
         <ng-template let-uom="rowData" let-ri="rowIndex" pTemplate="body">
           <button *ngIf="ri == selectedIndex" type="button" pButton icon="fa fa-chevron-down"></button>
-          <button *ngIf="ri != selectedIndex" type="button" pButton (click)="onRowSelect(uom, ri)" icon="fa fa-chevron-right"></button>
+          <button *ngIf="ri != selectedIndex" type="button" pButton (click)="onRowSelect([uom], ri)" icon="fa fa-chevron-right"></button>
         </ng-template>
     </p-column>
-    <p-column [style]="{'width':'20%'}" field="uomType.description" header="{{'Uom Type Id'|i18n}}"
+    <p-column [style]="{'width':'20%'}" field="uomTypeId" header="{{'Uom Type Id'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
     [sortable]="true"
     [editable]="false">
         <ng-template pTemplate="filter" let-col>
-            <p-dropdown appendTo="body" [autoWidth]="false" [options]="uomTypeSelectItem" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+            <p-dropdown appendTo="body" [autoWidth]="false" [options]="uomTypeSelectItem" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode); onRowSelect(dt.dataToRender, 0)" styleClass="ui-column-filter"></p-dropdown>
         </ng-template>
         <ng-template let-uom="rowData" pTemplate="body">
             <span>{{uom.uomType.description}}</span>
@@ -84,7 +84,7 @@
           <label for="uomId">{{'Uom Id'|i18n}}*:</label>
         </div>
         <div class="ui-grid-col-4">
-          <input pInputText class="form-control" id="uomId" formControlName="uomId" required [(ngModel)]="uom.uomId" placeholder="{{'Required'|i18n}}"/>
+          <input pInputText class="form-control" formControlName="uomId" required [(ngModel)]="uom.uomId" placeholder="{{'Required'|i18n}}"/>
         </div>
         <div class="ui-grid-col-5">
           <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['uomId'].valid&amp;&amp;form.controls['uomId'].dirty">
@@ -99,7 +99,7 @@
           <label for="description">{{'Description'|i18n}}*:</label>
         </div>
         <div class="ui-grid-col-4">
-          <input pInputText class="form-control" id="description" formControlName="description" required [(ngModel)]="uom.description" placeholder="{{'Required'|i18n}}"/>
+          <input pInputText class="form-control" formControlName="description" required [(ngModel)]="uom.description" placeholder="{{'Required'|i18n}}"/>
         </div>
         <div class="ui-grid-col-5">
           <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['description'].valid&amp;&amp;form.controls['description'].dirty">
@@ -114,7 +114,7 @@
           <label for="abbreviation">{{'Abbreviation'|i18n}}*:</label>
         </div>
         <div class="ui-grid-col-4">
-          <input pInputText class="form-control" id="abbreviation" formControlName="abbreviation" required [(ngModel)]="uom.abbreviation" placeholder="{{'Required'|i18n}}"/>
+          <input pInputText class="form-control" formControlName="abbreviation" required [(ngModel)]="uom.abbreviation" placeholder="{{'Required'|i18n}}"/>
         </div>
         <div class="ui-grid-col-5">
           <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['abbreviation'].valid&amp;&amp;form.controls['abbreviation'].dirty">
@@ -135,36 +135,27 @@
             <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['decimalScale'].valid&amp;&amp;form.controls['decimalScale'].dirty">
                 <i class="fa fa-close"></i>
                 <span *ngIf="form.controls['decimalScale'].errors['required']">{{'Decimal Scale is required'|i18n}}</span>
-                <span *ngIf="form.controls['decimalScale'].errors['pattern']">{{'Decimal Scale must be integer'|i18n}}</span>
             </div>
         </div>
       </div>
       <div class="ui-grid-row">
         <div class="ui-grid-col-3">
-          <label for="minValue">{{'Min Value'|i18n}}:</label>
+          <label for="minValue">{{'Minimum Value'|i18n}}:</label>
         </div>
         <div class="ui-grid-col-4">
-          <p-spinner formControlName="minValue" [(ngModel)]="uom.minValue" size="30" [step]="0.25" decimalSeparator="{{'decimal-separator'|i18nNum}}" thousandSeparator="{{'thousand-separator'|i18nNum}}"></p-spinner>
+          <p-spinner formControlName="minValue" [(ngModel)]="uom.minValue" size="30" [step]="0.01" decimalSeparator="{{'decimal-separator'|i18nNum}}" thousandSeparator="{{'thousand-separator'|i18nNum}}"></p-spinner>
         </div>
         <div class="ui-grid-col-5">
-            <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['minValue'].valid&amp;&amp;form.controls['minValue'].dirty">
-                <i class="fa fa-close"></i>
-                <span *ngIf="form.controls['minValue'].errors['pattern']">{{'Min Value must be numeric'|i18n}}</span>
-            </div>
         </div>
       </div>
       <div class="ui-grid-row">
         <div class="ui-grid-col-3">
-          <label for="maxValue">{{'Max Value'|i18n}}:</label>
+          <label for="maxValue">{{'Maximum Value'|i18n}}:</label>
         </div>
         <div class="ui-grid-col-4">
-          <p-spinner formControlName="maxValue" [(ngModel)]="uom.maxValue" size="30" [step]="0.25" decimalSeparator="{{'decimal-separator'|i18nNum}}" thousandSeparator="{{'thousand-separator'|i18nNum}}"></p-spinner>
+          <p-spinner formControlName="maxValue" [(ngModel)]="uom.maxValue" size="30" [step]="0.01" decimalSeparator="{{'decimal-separator'|i18nNum}}" thousandSeparator="{{'thousand-separator'|i18nNum}}"></p-spinner>
         </div>
         <div class="ui-grid-col-5">
-            <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['maxValue'].valid&amp;&amp;form.controls['maxValue'].dirty">
-                <i class="fa fa-close"></i>
-                <span *ngIf="form.controls['maxValue'].errors['pattern']">{{'Max Value must be numeric'|i18n}}</span>
-            </div>
         </div>
       </div>
     </div>

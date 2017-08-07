@@ -20,7 +20,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/switchMap';
 
-
+/** Convert from UomType[] to SelectItem[] */
 function uomTypes2SelectItems(types: UomType[]): SelectItem[] {
     return types.map((ut:UomType) => {
       return {label: ut.description, value: ut.uomTypeId};
@@ -32,18 +32,18 @@ function uomTypes2SelectItems(types: UomType[]): SelectItem[] {
   templateUrl: './uom.component.html',
   styleUrls: ['./uom.component.css']
 })
+
 export class UomComponent implements OnInit {
+  /** Error message from be*/
   error = '';
+  /** Info message*/
   msgs: Message[] = [];
 
   uoms: Uom[];
 
   defaultUomType: UomType;
   uomTypeSelectItem: SelectItem[] = [];
-  uomTypeSelectItemFilter: SelectItem[] = [];
   selectedUomTypeId: string;
-
-  selectedRowUom: any;
 
   displayDialog: boolean;
   uom: Uom = new PrimeUom();
@@ -54,8 +54,7 @@ export class UomComponent implements OnInit {
   userform: FormGroup;
   form: FormGroup;
 
-public icon = 'fa-circle-o';
-public selectedIndex = -1;
+  selectedIndex = -1;
 
   constructor(private readonly uomService: UomService,
               private readonly confirmationService: ConfirmationService,
@@ -67,18 +66,18 @@ public selectedIndex = -1;
   }
 
   ngOnInit() {
-    console.log("ngOnInit " + this.selectedRowUom);
-
+    // Form Validator
     this.form = this.fb.group({
             'uomTypeId': new FormControl('', Validators.required),
             'uomId': new FormControl('', Validators.compose([Validators.required, Validators.maxLength(20)])),
             'description': new FormControl('', Validators.compose([Validators.required, Validators.maxLength(255)])),
             'abbreviation': new FormControl('', Validators.compose([Validators.required, Validators.maxLength(60)])),
-            'decimalScale': new FormControl('', Validators.compose([Validators.required, Validators.pattern('[0-9]*')])),
-            'maxValue': new FormControl('', Validators.pattern('[+-]?[0-9]*(\\.[0-9]{0,6})?')),
-            'minValue': new FormControl('', Validators.pattern('[+-]?[0-9]*(\\.[0-9]{0,6})?'))
+            'decimalScale': new FormControl('', Validators.required),
+            'maxValue': new FormControl(''),
+            'minValue': new FormControl('')
         });
 
+    // Manage Reload
     const reloadedUomTypes = this._reload.switchMap(() => this.uomService.uomTypes());
     const reloadedUoms = this._reload.switchMap(() => this.uomService.uoms());
 
@@ -92,19 +91,85 @@ public selectedIndex = -1;
       .map(uomTypes2SelectItems)
       .subscribe((data) => {
         this.uomTypeSelectItem = data;
-        this.uomTypeSelectItemFilter = data;
-        this.uomTypeSelectItemFilter.push({label: this.i18nService.translate('Select UomType'), value:null});
+        this.uomTypeSelectItem.push({label: this.i18nService.translate('Select Uom Type'), value:null});
       });
 
     const uomsObs = this.route.data
       .map((data: { uoms: Uom[] }) => data.uoms)
       .merge(reloadedUoms);
 
-      uomsObs.first().subscribe(uoms => this.onRowSelect(uoms[0], 0));
+      uomsObs.first().subscribe(uoms => this.onRowSelect(uoms, 0));
 
       uomsObs.subscribe((data) => {
         this.uoms = data;
       });
+  }
+
+  confirm() {
+    this.confirmationService.confirm({
+      message: this.i18nService.translate('Do you want to delete this record?'),
+      header: this.i18nService.translate('Delete Confirmation'),
+      icon: 'fa fa-trash',
+      accept: () => {
+        this.displayDialog = false;
+        this._delete();
+      },
+      reject: () => {
+          this.uom = null;
+          this.displayDialog = false;
+        }
+    });
+  }
+
+  onRowSelect(uoms: Uom[], ri: number) {
+    const uom = uoms && uoms.length ? uoms[0] : null;
+    if (uom) {
+      this.selectedIndex = ri;
+      this.router.navigate([uom.uomId], { relativeTo: this.route });
+    } else {
+      this.selectedIndex = -1;
+    }
+  }
+
+  save() {
+    // In create and update service uomTypeId = uom.uomTypeId
+    this.uom.uomTypeId = this.selectedUomTypeId;
+    if (this.newUom) {
+      this.uomService
+        .createUom(this.uom)
+        .then(() => {
+          this.uom = null;
+          this.displayDialog = false;
+          this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Created'), detail:this.i18nService.translate('Record created')}];
+          this._reload.next();
+        })
+        .catch((error) => {
+          console.log('error' , error.message);
+          this.error = this.i18nService.translate(error.message) || error;
+        });
+    } else {
+      this.uomService
+        .updateUom(this.selectedUom.uomId, this.uom)
+        .then(data => {
+          this.uom = null;
+          this.displayDialog = false;
+          this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Updated'), detail:this.i18nService.translate('Record updated')}];
+          this._reload.next();
+        })
+        .catch((error) => {
+          console.log('error' , error.message);
+          this.error = this.i18nService.translate(error.message) || error;
+        });
+    }
+  }
+
+  selectUom(data: Uom) {
+    this.error = '';
+    this.selectedUom = data;
+    this.newUom = false;
+    this.uom = this._cloneUom(data);
+    this.selectedUomTypeId = data.uomType.uomTypeId;
+    this.displayDialog = true;
   }
 
   showDialogToAdd() {
@@ -115,62 +180,7 @@ public selectedIndex = -1;
     this.displayDialog = true;
   }
 
-  save() {
-    // conviene in create e update
-    this.uom.uomTypeId = this.selectedUomTypeId;
-    if (this.newUom) {
-      this.uomService
-        .createUom(this.uom)
-        .then(() => {
-          this.uom = null;
-          this.displayDialog = false;
-          this.msgs = [{severity:'info', summary:'Created', detail:'Record created'}];
-          this._reload.next();
-        })
-        .catch((error) => {
-          console.log('error' , error.message);
-          this.error = error.message || error;
-        });
-    } else {
-      this.uomService
-        .updateUom(this.selectedUom.uomId, this.uom)
-        .then(data => {
-          this.uom = null;
-          this.displayDialog = false;
-          this.msgs = [{severity:'info', summary:'Updated', detail:'Record updated'}];
-          this._reload.next();
-        })
-        .catch((error) => {
-          console.log('error' , error.message);
-          this.error = error.message || error;
-        });
-    }
-  }
-
-  delete() {
-    this.uomService
-    .deleteUom(this.selectedUom.uomId)
-    .then(data => {
-      this.uom = null;
-      this.msgs = [{severity:'info', summary:'Confirmed', detail:'Record deleted'}];
-      this._reload.next();
-    })
-    .catch((error) => {
-      console.log('error' , error.message);
-      this.error = error.message || error;
-    });
-  }
-
-  selectUom(data: Uom) {
-    this.error = '';
-    this.selectedUom = data;
-    this.newUom = false;
-    this.uom = this.cloneUom(data);
-    this.selectedUomTypeId = data.uomType.uomTypeId;
-    this.displayDialog = true;
-  }
-
-  cloneUom(u: Uom): Uom {
+  _cloneUom(u: Uom): Uom {
     let uom = new PrimeUom();
     for(let prop in uom) {
       uom[prop] = u[prop];
@@ -178,29 +188,21 @@ public selectedIndex = -1;
     return uom;
   }
 
-  confirm() {
-    this.confirmationService.confirm({
-      message: this.i18nService.translate('Do you want to delete this record?'),
-      header: 'Delete Confirmation',
-      icon: 'fa fa-trash',
-      accept: () => {
-        this.displayDialog = false;
-        this.delete();
-      },
-      reject: () => {
-          this.uom = null;
-          this.displayDialog = false;
-        }
+  _delete() {
+    this.uomService
+    .deleteUom(this.selectedUom.uomId)
+    .then(data => {
+      this.uom = null;
+      this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Confirmed'), detail:this.i18nService.translate('Record deleted')}];
+      this._reload.next();
+    })
+    .catch((error) => {
+      console.log('error' , error.message);
+      this.error = this.i18nService.translate(error.message) || error;
     });
   }
 
-  onRowSelect(uom: Uom, ri: number) {
-    this.selectedIndex = ri;
-    this.router.navigate([uom.uomId], { relativeTo: this.route });
-    this.selectedRowUom = uom;
-    this.msgs = [];
-    this.msgs.push({severity: 'info', summary: 'Uom Selected', detail: uom.uomId + ' - ' + uom.description});
-  }
+
 }
 
 class PrimeUom implements Uom {
