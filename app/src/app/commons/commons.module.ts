@@ -8,6 +8,7 @@ import { LockoutService, LockoutConfig } from './lockout.service';
 import { I18NService, I18NConfig, load } from './i18n.service';
 import { ApplicationConfig } from './config';
 import { I18NPipe } from './i18n.pipe';
+import { I18NNumPipe } from './i18nNum.pipe';
 import { FullnamePipe, AsIdPipe, AsClassPipe } from './commons.pipe';
 import {
   ApplicationVersionDirective,
@@ -28,6 +29,7 @@ export interface CommonsConfig {
   imports: [CommonModule, HttpModule],
   declarations: [
     I18NPipe,
+    I18NNumPipe,
     FullnamePipe,
     AsIdPipe,
     AsClassPipe,
@@ -37,6 +39,7 @@ export interface CommonsConfig {
   ],
   exports: [
     I18NPipe,
+    I18NNumPipe,
     FullnamePipe,
     AsIdPipe,
     AsClassPipe,

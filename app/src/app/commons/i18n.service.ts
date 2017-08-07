@@ -103,4 +103,17 @@ export class I18NService {
     const f: string = this._f['date-short'] as string;
     return !isBlank(f) ? f : defFmt;
   }
+
+  /**
+   * Retrieves the decimal-separator, thousand-separator , ecc... supplied with the localization data or the default one if none
+   * was specified.
+   *
+   * @param {String} text The input format, possibly
+   * @param {any} args The remaining parameters are used in value substitution of placeholders
+   * @returns {string} The localized format, with placeholders substituted by input values eventually
+   */
+  getFormat(text: string, ...args: any[]) {
+    const f: string = this._f[text] as string;
+    return !isBlank(f) ? f : args[text];
+  }
 }
