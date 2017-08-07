@@ -3,13 +3,11 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import {Validators,FormControl,FormGroup,FormBuilder} from '@angular/forms';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Validators,FormControl,FormGroup,FormBuilder } from '@angular/forms';
 
-import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { ConfirmDialogModule, ConfirmationService, SpinnerModule } from 'primeng/primeng';
 import { SelectItem } from '../../../commons/selectitem';
 import { Message } from '../../../commons/message';
-import { isDefined as _isDefined } from '../../../commons/commons';
 import { I18NService } from '../../../commons/i18n.service';
 
 import { Uom } from './uom';
@@ -42,6 +40,7 @@ export class UomComponent implements OnInit {
 
   defaultUomType: UomType;
   uomTypeSelectItem: SelectItem[] = [];
+  uomTypeSelectItemFilter: SelectItem[] = [];
   selectedUomTypeId: string;
 
   selectedRowUom: any;
@@ -53,6 +52,7 @@ export class UomComponent implements OnInit {
   _reload: Subject<void>;
 
   userform: FormGroup;
+  form: FormGroup;
 
 public icon = 'fa-circle-o';
 public selectedIndex = -1;
@@ -68,9 +68,15 @@ public selectedIndex = -1;
 
   ngOnInit() {
     console.log("ngOnInit " + this.selectedRowUom);
-    this.userform = this.fb.group({
-            'abbreviation': new FormControl('', Validators.required),
-            'description': new FormControl('')
+
+    this.form = this.fb.group({
+            'uomTypeId': new FormControl('', Validators.required),
+            'uomId': new FormControl('', Validators.compose([Validators.required, Validators.maxLength(20)])),
+            'description': new FormControl('', Validators.compose([Validators.required, Validators.maxLength(255)])),
+            'abbreviation': new FormControl('', Validators.compose([Validators.required, Validators.maxLength(60)])),
+            'decimalScale': new FormControl('', Validators.compose([Validators.required, Validators.pattern('[0-9]*')])),
+            'maxValue': new FormControl('', Validators.pattern('[+-]?[0-9]*(\\.[0-9]{0,6})?')),
+            'minValue': new FormControl('', Validators.pattern('[+-]?[0-9]*(\\.[0-9]{0,6})?'))
         });
 
     const reloadedUomTypes = this._reload.switchMap(() => this.uomService.uomTypes());
@@ -86,6 +92,8 @@ public selectedIndex = -1;
       .map(uomTypes2SelectItems)
       .subscribe((data) => {
         this.uomTypeSelectItem = data;
+        this.uomTypeSelectItemFilter = data;
+        this.uomTypeSelectItemFilter.push({label: this.i18nService.translate('Select UomType'), value:null});
       });
 
     const uomsObs = this.route.data
@@ -188,20 +196,14 @@ public selectedIndex = -1;
 
   onRowSelect(uom: Uom, ri: number) {
     this.selectedIndex = ri;
-    console.log(" - onRowSelect2 " + uom.icon);
     this.router.navigate([uom.uomId], { relativeTo: this.route });
     this.selectedRowUom = uom;
     this.msgs = [];
     this.msgs.push({severity: 'info', summary: 'Uom Selected', detail: uom.uomId + ' - ' + uom.description});
   }
-
-  // TODO come si usa?
-  isDefined(val: any){
-    return _isDefined(val);
-  }
 }
 
 class PrimeUom implements Uom {
   constructor(public uomId?: string, public uomTypeId?: string, public uomType?: UomType, public abbreviation?: string, public description?: string,
-              public decimalScale?: number, public minValue?: number, public maxValue?: number, public icon: string = 'fa-circle-o') {}
+              public decimalScale?: number, public minValue?: number, public maxValue?: number) {}
 }
