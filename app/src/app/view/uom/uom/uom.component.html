@@ -1,4 +1,4 @@
-<h3 class="first">Unità di Misura</h3>
+<h3 class="first">"{{'GP_MENU_00332'|i18n}}"</h3>
 
 <p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
 
@@ -13,39 +13,42 @@
             sortMode="multiple"
             [responsive]="true"
             [globalFilter]="gb" #dt>
-    <p-column styleClass="col-button">
+    <p-column styleClass="col-button" [style]="{'width':'6%'}">
         <ng-template let-uom="rowData" let-ri="rowIndex" pTemplate="body">
           <button *ngIf="ri == selectedIndex" type="button" pButton icon="fa fa-chevron-down"></button>
           <button *ngIf="ri != selectedIndex" type="button" pButton (click)="onRowSelect(uom, ri)" icon="fa fa-chevron-right"></button>
         </ng-template>
     </p-column>
-    <p-column field="uomType.description" header="{{'UomTypeId'|i18n}}"
+    <p-column [style]="{'width':'20%'}" field="uomType.description" header="{{'Uom Type Id'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
     [sortable]="true"
     [editable]="false">
-      <ng-template let-uom="rowData" pTemplate="body">
-          <span>{{uom.uomType.description}}</span>
+        <ng-template pTemplate="filter" let-col>
+            <p-dropdown appendTo="body" [autoWidth]="false" [options]="uomTypeSelectItem" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+        </ng-template>
+        <ng-template let-uom="rowData" pTemplate="body">
+            <span>{{uom.uomType.description}}</span>
       </ng-template>
     </p-column>
-    <p-column field="uomId" header="{{'UomId'|i18n}}"
+    <p-column [style]="{'width':'20%'}" field="uomId" header="{{'Uom Id'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
     [sortable]="true"></p-column>
-    <p-column field="description" header="{{'Description'|i18n}}"
+    <p-column [style]="{'width':'18%'}" field="description" header="{{'Description'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
     [sortable]="true"></p-column>
-    <p-column field="abbreviation" header="{{'Abbreviation'|i18n}}"
+    <p-column [style]="{'width':'9%'}" field="abbreviation" header="{{'Abbr.'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
     [sortable]="true"></p-column>
-    <p-column field="decimalScale" header="{{'DecimalScale'|i18n}}"
+    <p-column [style]="{'width':'7%'}" field="decimalScale" header="{{'Dec.'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
     [sortable]="true"></p-column>
-    <p-column field="minValue" header="{{'MinValue'|i18n}}"
+    <p-column [style]="{'width':'7%'}" field="minValue" header="{{'Min'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
     [sortable]="true"></p-column>
-    <p-column field="maxValue" header="{{'MaxValue'|i18n}}"
+    <p-column [style]="{'width':'7%'}" field="maxValue" header="{{'Max'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
     [sortable]="true"></p-column>
-    <p-column styleClass="col-button">
+    <p-column [style]="{'width':'6%'}" styleClass="col-button">
         <ng-template pTemplate="header">
             <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
         </ng-template>
@@ -55,52 +58,125 @@
     </p-column>
 </p-dataTable>
 
-<p-confirmDialog header="{{'Confirmation'|i18n}}" icon="fa fa-question-circle" width="425" acceptLabel="{{'Yes'|i18n}}"></p-confirmDialog>
-  <p-dialog header="{{'Uom Details'|i18n}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
-    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="uom">
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="uomTypeId">{{'UomTypeId'|i18n}}*</label></div>
-            <div class="ui-grid-col-8">
-                <p-dropdown [options]="uomTypeSelectItem" [(ngModel)]="selectedUomTypeId"
-                 [autoWidth]="false" [style]="{'width':'100%'}" required="true">
-                </p-dropdown>
+<p-confirmDialog header="{{'Confirmation'|i18n}}" icon="fa fa-question-circle" acceptLabel="{{'Yes'|i18n}}" rejectLabel="{{'No'|i18n}}"></p-confirmDialog>
+
+<p-dialog header="{{'Uom Detail'|i18n}}" [(visible)]="displayDialog" width=900 [responsive]="true" showEffect="fade" [modal]="true" [contentStyle]="{'overflow':'visible'}">
+  <form [formGroup]="form" novalidate (ngSubmit)="save()">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px" *ngIf="uom">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-3">
+          <label for="uomTypeId">{{'Uom Type Id'|i18n}}*:</label>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-dropdown [options]="uomTypeSelectItem" formControlName="uomTypeId" required [(ngModel)]="selectedUomTypeId"
+           [autoWidth]="false" [style]="{'width':'100%'}">
+          </p-dropdown>
+        </div>
+        <div class="ui-grid-col-5">
+          <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['uomTypeId'].valid&amp;&amp;form.controls['uomTypeId'].dirty">
+            <i class="fa fa-close"></i>
+            {{'Uom Type Id is required'|i18n}}
+          </div>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-3">
+          <label for="uomId">{{'Uom Id'|i18n}}*:</label>
+        </div>
+        <div class="ui-grid-col-4">
+          <input pInputText class="form-control" id="uomId" formControlName="uomId" required [(ngModel)]="uom.uomId" placeholder="{{'Required'|i18n}}"/>
+        </div>
+        <div class="ui-grid-col-5">
+          <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['uomId'].valid&amp;&amp;form.controls['uomId'].dirty">
+            <i class="fa fa-close"></i>
+            <span *ngIf="form.controls['uomId'].errors['required']">{{'Uom Id is required'|i18n}}</span>
+            <span *ngIf="form.controls['uomId'].errors['maxLenght']">{{'Uom Id must be not longer than 20'|i18n}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-3">
+          <label for="description">{{'Description'|i18n}}*:</label>
+        </div>
+        <div class="ui-grid-col-4">
+          <input pInputText class="form-control" id="description" formControlName="description" required [(ngModel)]="uom.description" placeholder="{{'Required'|i18n}}"/>
+        </div>
+        <div class="ui-grid-col-5">
+          <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['description'].valid&amp;&amp;form.controls['description'].dirty">
+            <i class="fa fa-close"></i>
+            <span *ngIf="form.controls['description'].errors['required']">{{'Description is required'|i18n}}</span>
+            <span *ngIf="form.controls['description'].errors['maxLenght']">{{'Description must be not longer than 255'|i18n}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-3">
+          <label for="abbreviation">{{'Abbreviation'|i18n}}*:</label>
+        </div>
+        <div class="ui-grid-col-4">
+          <input pInputText class="form-control" id="abbreviation" formControlName="abbreviation" required [(ngModel)]="uom.abbreviation" placeholder="{{'Required'|i18n}}"/>
+        </div>
+        <div class="ui-grid-col-5">
+          <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['abbreviation'].valid&amp;&amp;form.controls['abbreviation'].dirty">
+            <i class="fa fa-close"></i>
+            <span *ngIf="form.controls['abbreviation'].errors['required']">{{'Abbreviation is required'|i18n}}</span>
+            <span *ngIf="form.controls['abbreviation'].errors['maxLenght']">{{'Abbreviation must be not longer than 60'|i18n}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-3">
+          <label for="decimalScale">{{'Decimal Scale'|i18n}}*:</label>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-spinner formControlName="decimalScale" required [(ngModel)]="uom.decimalScale" placeholder="{{'Required'|i18n}}" size="30"></p-spinner>
+        </div>
+        <div class="ui-grid-col-5">
+            <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['decimalScale'].valid&amp;&amp;form.controls['decimalScale'].dirty">
+                <i class="fa fa-close"></i>
+                <span *ngIf="form.controls['decimalScale'].errors['required']">{{'Decimal Scale is required'|i18n}}</span>
+                <span *ngIf="form.controls['decimalScale'].errors['pattern']">{{'Decimal Scale must be integer'|i18n}}</span>
             </div>
         </div>
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="uomTypeId">{{'UomId'|i18n}}*</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="uomId" [(ngModel)]="uom.uomId" maxlength="20" required="true"/></div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-3">
+          <label for="minValue">{{'Min Value'|i18n}}:</label>
         </div>
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="description">{{'Description'|i18n}}*</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="uom.description" maxlength="255" required="true"/></div>
+        <div class="ui-grid-col-4">
+          <p-spinner formControlName="minValue" [(ngModel)]="uom.minValue" size="30" [step]="0.25" decimalSeparator="{{'decimal-separator'|i18nNum}}" thousandSeparator="{{'thousand-separator'|i18nNum}}"></p-spinner>
         </div>
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="abbreviation">{{'Abbreviation'|i18n}}*</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="abbreviation" [(ngModel)]="uom.abbreviation" maxlength="60" required="true"/></div>
-        </div>
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="decimalScale">{{'Decimal Scale'|i18n}}*</label></div>
-            <div class="ui-grid-col-8">
-              <input type="text" id="decimalScale" [(ngModel)]="uom.decimalScale" pattern="[0-9]*" />
+        <div class="ui-grid-col-5">
+            <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['minValue'].valid&amp;&amp;form.controls['minValue'].dirty">
+                <i class="fa fa-close"></i>
+                <span *ngIf="form.controls['minValue'].errors['pattern']">{{'Min Value must be numeric'|i18n}}</span>
             </div>
         </div>
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="minValue">{{'Min Value'|i18n}}</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="minValue" [(ngModel)]="uom.minValue" ng-pattern="[0-9]"/></div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-3">
+          <label for="maxValue">{{'Max Value'|i18n}}:</label>
         </div>
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="maxValue">{{'Max Value'|i18n}}</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="maxValue" [(ngModel)]="uom.maxValue" pattern="[0-9]"/></div>
+        <div class="ui-grid-col-4">
+          <p-spinner formControlName="maxValue" [(ngModel)]="uom.maxValue" size="30" [step]="0.25" decimalSeparator="{{'decimal-separator'|i18nNum}}" thousandSeparator="{{'thousand-separator'|i18nNum}}"></p-spinner>
         </div>
+        <div class="ui-grid-col-5">
+            <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['maxValue'].valid&amp;&amp;form.controls['maxValue'].dirty">
+                <i class="fa fa-close"></i>
+                <span *ngIf="form.controls['maxValue'].errors['pattern']">{{'Max Value must be numeric'|i18n}}</span>
+            </div>
+        </div>
+      </div>
     </div>
     <p-footer>
-        <div class="ui-dialog-buttonpane ui-helper-clearfix">
-            <button *ngIf="!newUom" type="button" pButton icon="fa-trash" (click)="confirm()" label="{{'Delete'|i18n}}"></button>
-            <button type="button" pButton icon="fa-check" (click)="save()" label="{{'Save'|i18n}}"></button>
-        </div>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button *ngIf="!newUom" type="button" pButton icon="fa-trash" (click)="confirm()" label="{{'Delete'|i18n}}"></button>
+        <button type="submit" pButton icon="fa-check" label="{{'Save'|i18n}}" [disabled]="!form.valid"></button>
+      </div>
     </p-footer>
+  </form>
 
-    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 
-  </p-dialog>
+</p-dialog>
 <router-outlet></router-outlet>
