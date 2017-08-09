@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { Validators,FormControl,FormGroup,FormBuilder } from '@angular/forms';
+import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
 import { ConfirmDialogModule, ConfirmationService, SpinnerModule } from 'primeng/primeng';
 import { SelectItem } from '../../../commons/selectitem';
@@ -34,27 +34,29 @@ function uomTypes2SelectItems(types: UomType[]): SelectItem[] {
 })
 
 export class UomComponent implements OnInit {
+  _reload: Subject<void>;
+  /** Default uomTypeId in Select*/
+  defaultUomType: UomType;
+  displayDialog: boolean;
   /** Error message from be*/
   error = '';
-  /** Info message*/
-  msgs: Message[] = [];
-
-  uoms: Uom[];
-
-  defaultUomType: UomType;
-  uomTypeSelectItem: SelectItem[] = [];
-  selectedUomTypeId: string;
-
-  displayDialog: boolean;
-  uom: Uom = new PrimeUom();
-  selectedUom: Uom;
-  newUom: boolean;
-  _reload: Subject<void>;
-
-  userform: FormGroup;
   form: FormGroup;
-
+  /** Info message in Toast*/
+  msgs: Message[] = [];
+  /** whether create or update */
+  newUom: boolean;
+  /** Row index selected for uomRatingScale*/
   selectedIndex = -1;
+  /** Selected uom in Dialog*/
+  selectedUom: Uom;
+  /** Selected uomTypeId in Select*/
+  selectedUomTypeId: string;
+  /** Uom to save*/
+  uom: Uom = new PrimeUom();
+  /** List of Uom */
+  uoms: Uom[];
+  /** List of UomType in Select */
+  uomTypeSelectItem: SelectItem[] = [];
 
   constructor(private readonly uomService: UomService,
               private readonly confirmationService: ConfirmationService,
