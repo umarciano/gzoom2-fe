@@ -1,15 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, Params } from '@angular/router';
+import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/switchMap';
+
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+
+import { I18NService } from '../../../commons/i18n.service';
+import { Message } from '../../../commons/message';
+import { SelectItem } from '../../../commons/selectitem';
 import { Uom } from '../uom/uom';
 import { UomRatingScale } from './uom_rating_scale';
 import { UomService } from '../../../api/uom.service';
-import { ActivatedRoute, Router, Params } from '@angular/router';
-import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
-import { SelectItem } from '../../../commons/selectitem';
-import { Message } from '../../../commons/message';
-import { isDefined as _isDefined } from '../../../commons/commons';
-import { isBlank } from '../../../commons/commons';
+
 
 const RATING_SCALE = 'RATING_SCALE';
 
@@ -20,9 +27,9 @@ const RATING_SCALE = 'RATING_SCALE';
 })
 
 export class UomRatingScaleComponent implements OnInit {
-
-
+  /** Error message from be*/
   error = '';
+  /** Info message*/
   msgs: Message[] = [];
 
   uom: Uom;
@@ -40,16 +47,26 @@ export class UomRatingScaleComponent implements OnInit {
 
   _reload: Subject<void>;
 
+  form: FormGroup;
 
   constructor(private readonly uomService: UomService,
               private readonly confirmationService: ConfirmationService,
               private readonly route: ActivatedRoute,
-              private readonly router: Router) {
+              private readonly router: Router,
+              private readonly i18nService: I18NService,
+              private fb: FormBuilder) {
     this._reload = new Subject<void>();
   }
 
 
   ngOnInit() {
+    // Form Validator
+    this.form = this.fb.group({
+            'uomId': new FormControl(''),
+            'description': new FormControl('', Validators.compose([Validators.required, Validators.maxLength(255)])),
+            'uomRatingValue': new FormControl('', Validators.compose([Validators.required, Validators.maxLength(18)]))
+        });
+
     console.log('ngOnInit UomRatingScale ' + this.selectedUomId);
     let reloadedUomRatingScales = this._reload
       .switchMap(() => this.uomService.uomRatingScales(this.selectedUomId));;
@@ -99,12 +116,12 @@ export class UomRatingScaleComponent implements OnInit {
         .then(() => {
           this.uomRatingScale = null;
           this.displayDialog = false;
-          this.msgs = [{severity:'info', summary:'Created', detail:'Record created'}];
+          this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Created'), detail:this.i18nService.translate('Record created')}];
           this._reload.next();
         })
         .catch((error) => {
           console.log('error' , error.message);
-          this.error = error.message || error;
+          this.error = this.i18nService.translate(error.message) || error;
         });
     } else {
       this.uomService
@@ -112,12 +129,12 @@ export class UomRatingScaleComponent implements OnInit {
         .then(data => {
           this.uomRatingScale = null;
           this.displayDialog = false;
-          this.msgs = [{severity:'info', summary:'Updated', detail:'Record updated'}];
+          this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Updated'), detail:this.i18nService.translate('Record updated')}];
           this._reload.next();
         })
         .catch((error) => {
           console.log('error' , error.message);
-          this.error = error.message || error;
+          this.error = this.i18nService.translate(error.message) || error;
         });
     }
   }
@@ -127,17 +144,16 @@ export class UomRatingScaleComponent implements OnInit {
     .deleteUomRatingScale(this.selectedUomRatingScale.uom.uomId, this.selectedUomRatingScale.uomRatingValue)
     .then(data => {
       this.uomRatingScale = null;
-      this.msgs = [{severity:'info', summary:'Confirmed', detail:'Record deleted'}];
+      this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Confirmed'), detail:this.i18nService.translate('Record deleted')}];
       this._reload.next();
     })
     .catch((error) => {
       console.log('error' , error.message);
-      this.error = error.message || error;
+      this.error = this.i18nService.translate(error.message) || error;
     });
   }
 
   selectUomRatingScale(data: UomRatingScale) {
-    console.log(" - this.uom " + this.uom);
     this.error = '';
     this.selectedUomRatingScale = data;
     this.newUomRatingScale = false;
@@ -155,8 +171,8 @@ export class UomRatingScaleComponent implements OnInit {
 
   confirm() {
     this.confirmationService.confirm({
-      message: 'Do you want to delete this record?',
-      header: 'Delete Confirmation',
+      message: this.i18nService.translate('Do you want to delete this record?'),
+      header: this.i18nService.translate('Delete Confirmation'),
       icon: 'fa fa-trash',
       accept: () => {
         this.delete();
@@ -170,12 +186,6 @@ export class UomRatingScaleComponent implements OnInit {
         }
     });
   }
-
-  // TODO come si usa?
-  isDefined(val: any) {
-    return _isDefined(val);
-  }
-
 }
 
 class PrimeUomRatingScale implements UomRatingScale {

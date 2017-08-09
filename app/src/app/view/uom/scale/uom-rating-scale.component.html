@@ -2,59 +2,84 @@
   <p-accordionTab header=" " [disabled]="!displayRangeScale" [selected]="true">
     <p-dataTable [value]="uomRatingScales"
                 scrollable="true"
+                resizableColumns="true"
                 sortMode="multiple"
                 [responsive]="true"
                 showEffect="fade">
-        <p-column field="uom.description" header="{{'UomId'|i18n}}"
-        [filter]="displayRangeScale" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
-        [sortable]="displayRangeScale">
-          <ng-template let-col let-scale="rowData" let-ri="rowIndex" pTemplate="body">
-              <span>{{scale.uom.description}}</span>
-          </ng-template>
-        </p-column>
-        <p-column field="uomRatingValue" header="{{'UomRatingValue'|i18n}}"
-        [filter]="displayRangeScale" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
-        [sortable]="displayRangeScale"></p-column>
-        <p-column field="description" header="{{'Description'|i18n}}"
+      <p-column [style]="{'width':'35%'}" field="uom.description" header="{{'Uom Id'|i18n}}"
+          [filter]="displayRangeScale" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
+          [sortable]="displayRangeScale">
+        <ng-template let-col let-scale="rowData" let-ri="rowIndex" pTemplate="body">
+          <span>{{scale.uom.description}}</span>
+        </ng-template>
+      </p-column>
+      <p-column [style]="{'width':'20%'}" field="uomRatingValue" header="{{'Uom Rating Value'|i18n}}"
         [filter]="displayRangeScale" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
         [sortable]="displayRangeScale"></p-column>
-        <p-column styleClass="col-button">
-            <ng-template pTemplate="header">
-                <button [disabled]="!displayRangeScale &amp;&amp; !isRatingScale" type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
-            </ng-template>
-            <ng-template let-uomRatingScale="rowData" pTemplate="body">
-                <button [disabled]="!displayRangeScale" type="button" pButton icon="fa-pencil" (click)="selectUomRatingScale(uomRatingScale)"></button>
-            </ng-template>
-        </p-column>
+      <p-column [style]="{'width':'35%'}" field="description" header="{{'Description'|i18n}}"
+        [filter]="displayRangeScale" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
+        [sortable]="displayRangeScale"></p-column>
+      <p-column [style]="{'width':'10%'}" styleClass="col-button">
+        <ng-template pTemplate="header">
+          <button [disabled]="!displayRangeScale &amp;&amp; !isRatingScale" type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
+        </ng-template>
+        <ng-template let-uomRatingScale="rowData" pTemplate="body">
+          <button [disabled]="!displayRangeScale" type="button" pButton icon="fa-pencil" (click)="selectUomRatingScale(uomRatingScale)"></button>
+        </ng-template>
+      </p-column>
     </p-dataTable>
 
-    <p-confirmDialog key="uomRatingScale" header="{{'Confirmation'|i18n}}" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+    <p-confirmDialog key="uomRatingScale" header="{{'Confirmation'|i18n}}" icon="fa fa-question-circle" acceptLabel="{{'Yes'|i18n}}" rejectLabel="{{'No'|i18n}}"></p-confirmDialog>
 
-    <p-dialog header="{{'Uom Rating Scale Details'|i18n}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
-        <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="uomRatingScale">
-            <div class="ui-grid-row" >
-                <div class="ui-grid-col-4"><label for="uomId">{{'UomId'|i18n}}*</label></div>
-                <div class="ui-grid-col-8" *ngIf="uom">
-                    <span>{{uom.description}}</span>
+    <p-dialog header="{{'Uom Rating Scale Detail'|i18n}}" width="900" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+      <form [formGroup]="form" novalidate (ngSubmit)="save()">
+          <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="uomRatingScale">
+          <div class="ui-grid-row" >
+            <div class="ui-grid-col-3"><label for="uomId">{{'Uom Id'|i18n}}*:</label></div>
+              <div class="ui-grid-col-4" *ngIf="uom">
+                <span>{{uom.description}}</span>
+              </div>
+            </div>
+            <div class="ui-grid-row">
+              <div class="ui-grid-col-3">
+                <label for="description">{{'Description'|i18n}}*</label>
+              </div>
+              <div class="ui-grid-col-4">
+                <input class="form-control" formControlName="description" required [(ngModel)]="uomRatingScale.description"/>
+              </div>
+              <div class="ui-grid-col-5">
+                <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['description'].valid&amp;&amp;form.controls['description'].dirty">
+                  <i class="fa fa-close"></i>
+                  <span *ngIf="form.controls['description'].errors['required']">{{'Description is required'|i18n}}</span>
+                  <span *ngIf="form.controls['description'].errors['maxLenght']">{{'Description must be not longer than 255'|i18n}}</span>
                 </div>
+              </div>
             </div>
             <div class="ui-grid-row">
-                <div class="ui-grid-col-4"><label for="description">{{'Description'|i18n}}*</label></div>
-                <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="uomRatingScale.description" maxlength="255" required="true"/></div>
+              <div class="ui-grid-col-3">
+                <label for="uomRatingValue">{{'Uom Rating Value'|i18n}}*</label>
+              </div>
+              <div class="ui-grid-col-4">
+                <input pInputText class="form-control" formControlName="uomRatingValue" required [(ngModel)]="uomRatingScale.uomRatingValue"/>
+              </div>
+              <div class="ui-grid-col-5">
+                <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['uomRatingValue'].valid&amp;&amp;form.controls['uomRatingValue'].dirty">
+                  <i class="fa fa-close"></i>
+                  <span *ngIf="form.controls['uomRatingValue'].errors['required']">{{'Uom Rating Value is required'|i18n}}</span>
+                  <span *ngIf="form.controls['uomRatingValue'].errors['maxLenght']">{{'Uom Rating Value must be not longer than 18'|i18n}}</span>
+                </div>
+              </div>
             </div>
-            <div class="ui-grid-row">
-                <div class="ui-grid-col-4"><label for="uomRatingValue">{{'UomRatingValue'|i18n}}*</label></div>
-                <div class="ui-grid-col-8"><input pInputText id="uomRatingValue" [(ngModel)]="uomRatingScale.uomRatingValue" maxlength="18" required="true"/></div>
-            </div>
-        </div>
-        <p-footer>
+          </div>
+          <p-footer>
             <div class="ui-dialog-buttonpane ui-helper-clearfix">
-                <button *ngIf="!newUom" type="button" pButton icon="fa-trash" (click)="confirm()" label="{{'Delete'|i18n}}"></button>
-                <button type="button" pButton icon="fa-check" (click)="save()" label="{{'Save'|i18n}}"></button>
+              <button *ngIf="!newUom" type="button" pButton icon="fa-trash" (click)="confirm()" label="{{'Delete'|i18n}}"></button>
+              <button type="button" pButton icon="fa-check" (click)="save()" label="{{'Save'|i18n}}"></button>
             </div>
-        </p-footer>
+          </p-footer>
+        </form>
 
-        <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
     </p-dialog>
 
   </p-accordionTab>
