@@ -5,7 +5,7 @@ import { Subject } from 'rxjs/Subject';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
-import { ConfirmDialogModule, ConfirmationService, SpinnerModule } from 'primeng/primeng';
+import { ConfirmDialogModule, ConfirmationService, SpinnerModule, TooltipModule } from 'primeng/primeng';
 import { SelectItem } from '../../../commons/selectitem';
 import { Message } from '../../../commons/message';
 import { I18NService } from '../../../commons/i18n.service';

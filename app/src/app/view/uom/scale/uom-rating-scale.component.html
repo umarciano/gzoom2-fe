@@ -16,7 +16,7 @@
           [filter]="displayRangeScale" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
           [sortable]="displayRangeScale">
         <ng-template let-col let-scale="rowData" let-ri="rowIndex" pTemplate="body">
-          <span>{{scale.uom.description}}</span>
+          <span pTooltip="{{scale.uom.description}}">{{scale.uom.description}}</span>
         </ng-template>
       </p-column>
       <p-column [style]="{'width':'20%'}" field="uomRatingValue" header="{{'Uom Rating Value'|i18n}}"

@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/switchMap';
 
-import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { ConfirmDialogModule, ConfirmationService, TooltipModule } from 'primeng/primeng';
 
 import { I18NService } from '../../../commons/i18n.service';
 import { Message } from '../../../commons/message';
@@ -107,7 +107,6 @@ export class UomRatingScaleComponent implements OnInit {
   }
 
   save() {
-    console.log(" - selectedUomId " + this.selectedUomId);
     // conviene in create e update
     this.uomRatingScale.uomId = this.selectedUomId;
     if (this.newUomRatingScale) {

@@ -10,6 +10,7 @@ import { DataTableModule, SharedModule } from 'primeng/primeng';
 import { ButtonModule } from 'primeng/primeng';
 import { ConfirmDialogModule, ConfirmationService, SpinnerModule } from 'primeng/primeng';
 import { GrowlModule } from 'primeng/primeng';
+import { TooltipModule } from 'primeng/primeng';
 
 import { CommonsModule } from '../../commons/commons.module';
 import { ApiModule } from '../../api/api.module';
@@ -42,7 +43,8 @@ import { UomRatingScaleComponent } from './scale/uom-rating-scale.component';
     ConfirmDialogModule,
     SpinnerModule,
     GrowlModule,
-    DropdownModule
+    DropdownModule,
+    TooltipModule
   ],
   declarations: [
     UomTypeComponent,

@@ -13,7 +13,10 @@
             sortMode="multiple"
             [responsive]="true"
             [globalFilter]="gb" #dt
-            exportFilename="uoms">
+            exportFilename="uoms"
+            resizableColumns="true"
+            columnResizeMode="expand"
+            dataKey="uomId">
     <p-header>
       <div class="ui-helper-clearfix">
         <button type="button" pButton icon="fa-file-o" iconPos="left" label="{{'CSV'|i18n}}" (click)="dt.exportCSV()" style="float:left"></button>
@@ -29,22 +32,25 @@
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}"
     [sortable]="true"
     [editable]="false">
-        <ng-template pTemplate="filter" let-col>
-            <p-dropdown appendTo="body" [autoWidth]="false" [options]="uomTypeSelectItem" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode); onRowSelect(dt.dataToRender, 0)" styleClass="ui-column-filter"></p-dropdown>
-        </ng-template>
-        <ng-template let-uom="rowData" pTemplate="body">
-            <span>{{uom.uomType.description}}</span>
+      <ng-template pTemplate="filter" let-col>
+        <p-dropdown appendTo="body" [autoWidth]="false" [options]="uomTypeSelectItem" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode); onRowSelect(dt.dataToRender, 0)" styleClass="ui-column-filter"></p-dropdown>
+      </ng-template>
+      <ng-template let-uom="rowData" pTemplate="body">
+        <span pTooltip="{{uom.uomType.description}}">{{uom.uomType.description}}</span>
       </ng-template>
     </p-column>
     <p-column [style]="{'width':'20%'}" field="uomId" header="{{'Uom Id'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}"
-    [sortable]="true"></p-column>
+    [sortable]="true">
+    </p-column>
     <p-column [style]="{'width':'18%'}" field="description" header="{{'Description'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}"
-    [sortable]="true"></p-column>
+    [sortable]="true">
+    </p-column>
     <p-column [style]="{'width':'9%'}" field="abbreviation" header="{{'Abbr.'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'...'|i18n}}"
-    [sortable]="true"></p-column>
+    [sortable]="true">
+    </p-column>
     <p-column [style]="{'width':'7%'}" field="decimalScale" header="{{'Dec.'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'...'|i18n}}"
     [sortable]="true"></p-column>
@@ -105,7 +111,7 @@
           <label for="description">{{'Description'|i18n}}*:</label>
         </div>
         <div class="ui-grid-col-4">
-          <input pInputText class="form-control" formControlName="description" required [(ngModel)]="uom.description" placeholder="{{'Required'|i18n}}"/>
+          <input pTooltip="{{uom.description}}" pInputText class="form-control" formControlName="description" required [(ngModel)]="uom.description" placeholder="{{'Required'|i18n}}"/>
         </div>
         <div class="ui-grid-col-5">
           <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['description'].valid&amp;&amp;form.controls['description'].dirty">
@@ -135,7 +141,7 @@
           <label for="decimalScale">{{'Decimal Scale'|i18n}}*:</label>
         </div>
         <div class="ui-grid-col-4">
-          <p-spinner formControlName="decimalScale" required [(ngModel)]="uom.decimalScale" placeholder="{{'Required'|i18n}}" size="30"></p-spinner>
+          <p-spinner [min]="0" formControlName="decimalScale" required [(ngModel)]="uom.decimalScale" placeholder="{{'Required'|i18n}}" size="30"></p-spinner>
         </div>
         <div class="ui-grid-col-5">
             <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['decimalScale'].valid&amp;&amp;form.controls['decimalScale'].dirty">
