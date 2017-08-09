@@ -5,7 +5,13 @@
                 resizableColumns="true"
                 sortMode="multiple"
                 [responsive]="true"
-                showEffect="fade">
+                showEffect="fade"
+                #dts exportFilename="uomRatingScales">
+      <p-header>
+        <div class="ui-helper-clearfix">
+          <button type="button" pButton icon="fa-file-o" iconPos="left" label="{{'CSV'|i18n}}" (click)="dts.exportCSV()" style="float:left"></button>
+        </div>
+      </p-header>
       <p-column [style]="{'width':'35%'}" field="uom.description" header="{{'Uom Id'|i18n}}"
           [filter]="displayRangeScale" filterMatchMode="contains" filterPlaceholder="{{'Search'|i18n}}"
           [sortable]="displayRangeScale">
@@ -33,26 +39,11 @@
 
     <p-dialog header="{{'Uom Rating Scale Detail'|i18n}}" width="900" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
       <form [formGroup]="form" novalidate (ngSubmit)="save()">
-          <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="uomRatingScale">
+          <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" *ngIf="uomRatingScale">
           <div class="ui-grid-row" >
             <div class="ui-grid-col-3"><label for="uomId">{{'Uom Id'|i18n}}*:</label></div>
               <div class="ui-grid-col-4" *ngIf="uom">
                 <span>{{uom.description}}</span>
-              </div>
-            </div>
-            <div class="ui-grid-row">
-              <div class="ui-grid-col-3">
-                <label for="description">{{'Description'|i18n}}*</label>
-              </div>
-              <div class="ui-grid-col-4">
-                <input class="form-control" formControlName="description" required [(ngModel)]="uomRatingScale.description"/>
-              </div>
-              <div class="ui-grid-col-5">
-                <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['description'].valid&amp;&amp;form.controls['description'].dirty">
-                  <i class="fa fa-close"></i>
-                  <span *ngIf="form.controls['description'].errors['required']">{{'Description is required'|i18n}}</span>
-                  <span *ngIf="form.controls['description'].errors['maxLenght']">{{'Description must be not longer than 255'|i18n}}</span>
-                </div>
               </div>
             </div>
             <div class="ui-grid-row">
@@ -67,6 +58,21 @@
                   <i class="fa fa-close"></i>
                   <span *ngIf="form.controls['uomRatingValue'].errors['required']">{{'Uom Rating Value is required'|i18n}}</span>
                   <span *ngIf="form.controls['uomRatingValue'].errors['maxLenght']">{{'Uom Rating Value must be not longer than 18'|i18n}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="ui-grid-row">
+              <div class="ui-grid-col-3">
+                <label for="description">{{'Description'|i18n}}*</label>
+              </div>
+              <div class="ui-grid-col-4">
+                <input class="form-control" formControlName="description" required [(ngModel)]="uomRatingScale.description"/>
+              </div>
+              <div class="ui-grid-col-5">
+                <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['description'].valid&amp;&amp;form.controls['description'].dirty">
+                  <i class="fa fa-close"></i>
+                  <span *ngIf="form.controls['description'].errors['required']">{{'Description is required'|i18n}}</span>
+                  <span *ngIf="form.controls['description'].errors['maxLenght']">{{'Description must be not longer than 255'|i18n}}</span>
                 </div>
               </div>
             </div>

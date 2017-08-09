@@ -12,7 +12,13 @@
             scrollHeight="260px"
             sortMode="multiple"
             [responsive]="true"
-            [globalFilter]="gb" #dt>
+            [globalFilter]="gb" #dt
+            exportFilename="uoms">
+    <p-header>
+      <div class="ui-helper-clearfix">
+        <button type="button" pButton icon="fa-file-o" iconPos="left" label="{{'CSV'|i18n}}" (click)="dt.exportCSV()" style="float:left"></button>
+      </div>
+    </p-header>
     <p-column styleClass="col-button" [style]="{'width':'6%'}">
         <ng-template let-uom="rowData" let-ri="rowIndex" pTemplate="body">
           <button *ngIf="ri == selectedIndex" type="button" pButton icon="fa fa-chevron-down"></button>
