@@ -10,9 +10,11 @@ var express = require("express"),
     util = require('util'),
     app = express(),
     itLocale = require('./locales/it_IT.json'),
+    deLocale = require('./locales/de.json'),
     log = require('./logger'),
     data = require('./data'),
     LOCALES = {
+      'de': deLocale,
       'it': itLocale
     },
     EXPIRATION_MINS = (process.env.OPT_EXP_MINS ? parseInt(process.env.OPT_EXP_MINS, 10) : 60 * 4),
@@ -118,7 +120,9 @@ app.get('/rest/profile/i18n', function(req, res) {
     res.json({
       language: lang,
       translations: locale.translations,
-      formats: locale.formats
+      formats: locale.formats,
+      type: 'BILING',
+      available: ['de', 'it']
     });
   } else {
     res.json({language: 'default', translations: {}, formats: {}});
@@ -287,7 +291,7 @@ app.get('/rest/uom/value/:id', function(req, res) {
   log.debug('Looking up uom with ' + id);
   var uom = data.uom(id);
   setTimeout(function() {
-    res.json({ uom: uom });
+    res.json(uom);
   }, _.random(200, 1000));
 });
 

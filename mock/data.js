@@ -79,10 +79,10 @@ var _ = require('lodash'),
       { uomId: 'SN', uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, abbreviation: 'S/N', description: 'Presente S/N	', decimalScale: 0}
     ],
     UOM_RATING_SCALE = [
-      { uom: {uomId: 'RAT_VAL', description: 'Scala valutazione comportamenti Dirigenti'}, uomRatingValue:0.000000, description:'X'},
-      { uom: {uomId: 'RAT_VAL', description: 'Scala valutazione comportamenti Dirigenti'}, uomRatingValue:100.000000, description:''},
-      { uom: {uomId: 'SN', description: 'Presente S/N	'}, uomRatingValue:0.000000, description:'No'},
-      { uom: {uomId: 'SN', description: 'Presente S/N	'}, uomRatingValue:100.000000, description:'Sì'}
+      { uom: {uomId: 'RAT_VAL', description: 'Scala valutazione comportamenti Dirigenti'}, uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, uomRatingValue:0.000000, description:'X'},
+      { uom: {uomId: 'RAT_VAL', description: 'Scala valutazione comportamenti Dirigenti'}, uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, uomRatingValue:100.000000, description:''},
+      { uom: {uomId: 'SN', description: 'Presente S/N	'}, uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, uomRatingValue:0.000000, description:'No'},
+      { uom: {uomId: 'SN', description: 'Presente S/N	'}, uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, uomRatingValue:100.000000, description:'Sì'}
     ],
     tokens = {},
     secret = generateSecret();
