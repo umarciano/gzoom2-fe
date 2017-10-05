@@ -189,7 +189,8 @@ module.exports = {
         { id: par.id + '.7', label: 'Leaf Menu 7', classes: null},
         { id: 'GP_MENU_00006',  label: 'GP_MENU_00006', classes: null},
         { id: 'GP_MENU_00332',  label: 'GP_MENU_00332', classes: null},
-        { id: 'GP_MENU_00333',  label: 'GP_MENU_00333', classes: null}
+        { id: 'GP_MENU_00333',  label: 'GP_MENU_00333', classes: null},
+        { id: 'GP_MENU_00334',  label: 'GP_MENU_00334', classes: null}
       ];
 
       par.children

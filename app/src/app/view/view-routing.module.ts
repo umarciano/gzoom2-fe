@@ -28,6 +28,7 @@ const routes: Routes = [
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
       { path: 'legacy', loadChildren: './legacy/legacy.module#LegacyModule' },
       { path: 'uom', loadChildren: './uom/uom.module#UomModule' },
+      { path: 'timesheet', loadChildren: './timesheet/timesheet.module#TimesheetModule' },
       { path: '', pathMatch: 'full', redirectTo: '/c/dashboard' }
     ]
   }

@@ -1,0 +1,18 @@
+<p>
+  party-period works!
+</p>
+
+<p-dataTable [value]="partyPeriods"
+            sortMode="multiple"
+            resizableColumns="true"
+            [responsive]="true"
+            #dt exportFilename="partyPeriods">
+    <p-header>
+      <div class="ui-helper-clearfix">
+        <button type="button" pButton icon="fa-file-o" iconPos="left" label="{{'CSV'|i18n}}" (click)="dt.exportCSV()" style="float:left"></button>
+      </div>
+    </p-header>
+    <p-column [style]="{'width':'30%'}" field="partyPeriodId" header="{{'Uom Type Id'|i18n}}" [sortable]="true"></p-column>
+    <p-column [style]="{'width':'60%'}" field="description" header="{{'Description'|i18n}}" [sortable]="true"></p-column>
+
+</p-dataTable>
