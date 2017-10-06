@@ -20,6 +20,7 @@ import { PartyPeriodService } from '../../api/party-period.service';
 import { PartyPeriod } from './party-period/party_period';
 import { PartyPeriodResolver } from './party-period/party-period-resolver.service';
 import { PartyPeriodComponent } from './party-period/party-period.component';
+import { TimesheetRoutingModule } from './timesheet-routing.module';
 
 
 
@@ -40,12 +41,15 @@ import { PartyPeriodComponent } from './party-period/party-period.component';
     SpinnerModule,
     GrowlModule,
     DropdownModule,
-    TooltipModule
+    TooltipModule,
+    TimesheetRoutingModule
   ],
   declarations: [
+    PartyPeriodComponent
   ],
   providers: [
     PartyPeriodService,
+    PartyPeriodResolver,
     ConfirmationService
   ]
 })
