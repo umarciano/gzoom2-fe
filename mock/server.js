@@ -413,5 +413,15 @@ app.delete('/rest/uom/scale/:id/:value', function(req, res) {
   }, _.random(200, 1000));
 });
 
+
+//timesheet/party-period
+app.get('/rest/timesheet/party-period', function(req, res) {
+  var partyPeriods = data.partyPeriods();
+  log.debug('Looking up partyPeriods ' + partyPeriods);
+  setTimeout(function() {
+    res.json({ results: partyPeriods, total: partyPeriods.length });
+  }, _.random(200, 1000));
+});
+
 app.listen(PORT);
 log.info("Server started: http://localhost:" + PORT);

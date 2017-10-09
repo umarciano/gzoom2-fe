@@ -15,7 +15,7 @@ export class PartyPeriodService {
   partyPeriods(): Observable<PartyPeriod[]> {
     console.log('search partyPeriod');
     return this.client
-      .get('uom/type')
+      .get('timesheet/party-period')
       .map(json => json.results as PartyPeriod[]);
   }
 
