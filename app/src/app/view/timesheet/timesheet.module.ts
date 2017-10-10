@@ -16,12 +16,11 @@ import { CommonsModule } from '../../commons/commons.module';
 import { ApiModule } from '../../api/api.module';
 import { LayoutModule } from '../../layout/layout.module';
 
-import { PartyPeriodService } from '../../api/party-period.service';
-import { PartyPeriod } from './party-period/party_period';
-import { PartyPeriodResolver } from './party-period/party-period-resolver.service';
-import { PartyPeriodComponent } from './party-period/party-period.component';
 import { TimesheetRoutingModule } from './timesheet-routing.module';
-
+import { TimesheetComponent } from './timesheet/timesheet.component';
+import { TimesheetService } from '../../api/timesheet.service';
+import { Timesheet } from './timesheet/timesheet';
+import { TimesheetResolver } from './timesheet/timesheet-resolver.service';
 
 
 @NgModule({
@@ -45,11 +44,11 @@ import { TimesheetRoutingModule } from './timesheet-routing.module';
     TimesheetRoutingModule
   ],
   declarations: [
-    PartyPeriodComponent
+    TimesheetComponent
   ],
   providers: [
-    PartyPeriodService,
-    PartyPeriodResolver,
+    TimesheetService,
+    TimesheetResolver,
     ConfirmationService
   ]
 })

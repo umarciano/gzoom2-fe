@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { FocusComponent } from '../../layout/focus/focus.component';
-import { PartyPeriodComponent } from './party-period/party-period.component';
-import { PartyPeriodResolver } from './party-period/party-period-resolver.service';
+
+import { TimesheetResolver } from './timesheet/timesheet-resolver.service';
+import { TimesheetComponent } from './timesheet/timesheet.component';
 
 const routes: Routes = [
-{ path: 'party-period', component: PartyPeriodComponent, resolve: { partyPeriods: PartyPeriodResolver}}
+{ path: '', component: TimesheetComponent, resolve: { timesheets: TimesheetResolver}}
 
 ];
 

@@ -415,11 +415,11 @@ app.delete('/rest/uom/scale/:id/:value', function(req, res) {
 
 
 //timesheet/party-period
-app.get('/rest/timesheet/party-period', function(req, res) {
-  var partyPeriods = data.partyPeriods();
-  log.debug('Looking up partyPeriods ' + partyPeriods);
+app.get('/rest/timesheet/entries', function(req, res) {
+  var timesheets = data.timesheets();
+  log.debug('Looking up timesheets ' + timesheets);
   setTimeout(function() {
-    res.json({ results: partyPeriods, total: partyPeriods.length });
+    res.json({ results: timesheets, total: timesheets.length });
   }, _.random(200, 1000));
 });
 

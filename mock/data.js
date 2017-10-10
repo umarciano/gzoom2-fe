@@ -84,12 +84,12 @@ var _ = require('lodash'),
       { uom: {uomId: 'SN', description: 'Presente S/N	'}, uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, uomRatingValue:0.000000, description:'No'},
       { uom: {uomId: 'SN', description: 'Presente S/N	'}, uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, uomRatingValue:100.000000, description:'Sì'}
     ],
-    PARTY_PERIOD = [
-      { partyId: '1', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
-      { partyId: '2', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
-      { partyId: '3', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
-      { partyId: '4', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
-      { partyId: '5', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' }
+    TIMESHEET = [
+      { timesheetId: '1', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
+      { timesheetId: '2', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
+      { timesheetId: '3', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
+      { timesheetId: '4', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
+      { timesheetId: '5', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' }
     ],
     tokens = {},
     secret = generateSecret();
@@ -316,9 +316,9 @@ module.exports = {
     return id;
   },
 
-  //timesheet/party-period
-  partyPeriods: function() {
-    return PARTY_PERIOD;
+  //timesheet
+  timesheets: function() {
+    return TIMESHEET;
   }
 
 };
