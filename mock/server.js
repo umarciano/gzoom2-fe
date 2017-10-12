@@ -415,7 +415,7 @@ app.delete('/rest/uom/scale/:id/:value', function(req, res) {
 
 
 //timesheet/party-period
-app.get('/rest/timesheet/entries', function(req, res) {
+app.get('/rest/timesheet/timesheet', function(req, res) {
   var timesheets = data.timesheets();
   log.debug('Looking up timesheets ' + timesheets);
   setTimeout(function() {

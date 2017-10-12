@@ -12,6 +12,7 @@
         <button type="button" pButton icon="fa-file-o" iconPos="left" label="{{'CSV'|i18n}}" (click)="dt.exportCSV()" style="float:left"></button>
       </div>
     </p-header>
+    <p-column [style]="{'width':'20%'}" field="partyId" header="{{'Party Id'}}" [sortable]="true"></p-column>
     <p-column [style]="{'width':'20%'}" field="timesheetId" header="{{'Timesheet Id'}}" [sortable]="true"></p-column>
     <p-column [style]="{'width':'20%'}" field="fromDate" header="{{'From Date'|i18n}}" [sortable]="true"></p-column>
     <p-column [style]="{'width':'20%'}" field="thruDate" header="{{'Thru Date'|i18n}}" [sortable]="true"></p-column>

@@ -85,11 +85,11 @@ var _ = require('lodash'),
       { uom: {uomId: 'SN', description: 'Presente S/N	'}, uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, uomRatingValue:100.000000, description:'Sì'}
     ],
     TIMESHEET = [
-      { timesheetId: '1', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
-      { timesheetId: '2', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
-      { timesheetId: '3', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
-      { timesheetId: '4', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
-      { timesheetId: '5', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' }
+      {partyId: '1', timesheetId: '1', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
+      {partyId: '2', timesheetId: '2', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
+      {partyId: '3', timesheetId: '3', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
+      {partyId: '4', timesheetId: '4', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
+      {partyId: '5', timesheetId: '5', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' }
     ],
     tokens = {},
     secret = generateSecret();
@@ -197,7 +197,8 @@ module.exports = {
         { id: 'GP_MENU_00006',  label: 'GP_MENU_00006', classes: null},
         { id: 'GP_MENU_00332',  label: 'GP_MENU_00332', classes: null},
         { id: 'GP_MENU_00333',  label: 'GP_MENU_00333', classes: null},
-        { id: 'GP_MENU_00334',  label: 'GP_MENU_00334', classes: null}
+        { id: 'GP_MENU_00334',  label: 'GP_MENU_00334', classes: null},
+        { id: 'GP_MENU_00335',  label: 'GP_MENU_00335', classes: null}
       ];
 
       par.children

@@ -5,9 +5,13 @@ import { FocusComponent } from '../../layout/focus/focus.component';
 
 import { TimesheetResolver } from './timesheet/timesheet-resolver.service';
 import { TimesheetComponent } from './timesheet/timesheet.component';
+import { TimeEntryResolver } from './time-entry/time-entry-resolver.service';
+import { TimeEntryComponent } from './time-entry/time-entry.component';
 
 const routes: Routes = [
-{ path: '', component: TimesheetComponent, resolve: { timesheets: TimesheetResolver}}
+{ path: '', component: TimesheetComponent, resolve: { timesheets: TimesheetResolver}},
+{ path: 'time-entry', component: TimeEntryComponent, resolve: { timesheets: TimeEntryResolver}}
+
 
 ];
 
