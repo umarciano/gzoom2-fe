@@ -2,5 +2,5 @@
  * Model of a hero.
  */
 export class Timesheet {
-  constructor(public timesheetId?: string, public description?: string) { }
+  constructor(public timesheetId?: string, public partyId?: string) { }
 }

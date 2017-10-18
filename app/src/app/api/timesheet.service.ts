@@ -20,6 +20,20 @@ export class TimesheetService {
       .map(json => json.results as Timesheet[]);
   }
 
+  createTimesheet(timesheet: Timesheet):  Promise<Timesheet> {
+    console.log('create Timesheet');
+    return this.client
+      .post('timesheet/timesheet', JSON.stringify(timesheet))
+      .toPromise()
+      .then(response => response)
+      .catch(response => {
+        console.error(`Error while creating in: ${response}`);
+        return Promise.reject(response.json() || response);
+      });
+  }
+
+
+  //TODO new GN
   timeEntries(): Observable<TimeEntry[]> {
     console.log('search timeEntries');
     return this.client

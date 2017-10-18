@@ -8,7 +8,7 @@ import { MenuItem } from 'primeng/primeng';
 import { DialogModule } from 'primeng/primeng';
 import { DataTableModule, SharedModule } from 'primeng/primeng';
 import { ButtonModule } from 'primeng/primeng';
-import { ConfirmDialogModule, ConfirmationService, SpinnerModule } from 'primeng/primeng';
+import { ConfirmDialogModule, ConfirmationService, SpinnerModule, CalendarModule } from 'primeng/primeng';
 import { GrowlModule } from 'primeng/primeng';
 import { TooltipModule } from 'primeng/primeng';
 
@@ -42,6 +42,7 @@ import { TimeEntryResolver } from './time-entry/time-entry-resolver.service';
     ButtonModule,
     ConfirmDialogModule,
     SpinnerModule,
+    CalendarModule,
     GrowlModule,
     DropdownModule,
     TooltipModule,
