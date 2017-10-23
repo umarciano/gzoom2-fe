@@ -32,13 +32,12 @@
   <form [formGroup]="form" novalidate (ngSubmit)="save()">
     <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px" *ngIf="timesheet">
 
-      <!-- TODO dropdown not working -->
       <div class="ui-grid-row">
         <div class="ui-grid-col-3">
           <label for="partyId">{{'Party Id'|i18n}}*:</label>
         </div>
         <div class="ui-grid-col-4">
-          <p-dropdown [options]="partySelectItem" formControlName="partyId" [(ngModel)]="selectedPartyId"
+          <p-dropdown [options]="partySelectItem" formControlName="partyId" required [(ngModel)]="selectedPartyId"
            [autoWidth]="false" [style]="{'width':'100%'}">
           </p-dropdown>
         </div>

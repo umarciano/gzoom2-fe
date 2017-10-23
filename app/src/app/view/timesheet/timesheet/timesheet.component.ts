@@ -19,11 +19,11 @@ import {Party} from '../../party/party/party';
 import {PartyService} from '../../../api/party.service';
 
 /** Convert from Party[] to SelectItem[] */
-// function party2SelectItems(party: Party[]): SelectItem[] {
-//     return party.map((p:Party) => {
-//       return {label: p.description, value: p.partyId};
-//     });
-// }
+function party2SelectItems(party: Party[]): SelectItem[] {
+    return party.map((p:Party) => {
+      return {label: p.description, value: p.partyId};
+    });
+}
 
 @Component({
   selector: 'app-timesheet',
@@ -78,19 +78,16 @@ export class TimesheetComponent implements OnInit {
       .subscribe(data => this.timesheets = data);
 
     const reloadedParty = this._reload.switchMap(() => this.partyService.partys());
+    const reloadedTimesheets = this._reload.switchMap(() => this.timesheetService.timesheets());
 
     const partyObs = this.route.data
       .map((data: { partys: Party[] }) => data.partys)
-      .merge(reloadedParty);
-
-    //partyObs.first().subscribe(partys => this.defaultParty = partys[0]);
-
-    // partyObs
-    //   .map(party2SelectItems)
-    //   .subscribe((data) => {
-    //     this.partySelectItem = data;
-    //     this.partySelectItem.push({label: this.i18nService.translate('Select Party'), value:null});
-    //   });
+      .merge(reloadedParty)
+      .map(party2SelectItems)
+      .subscribe((data) => {
+        this.partySelectItem = data;
+        this.partySelectItem.push({label: this.i18nService.translate('Select Party'), value:null});
+      });
 
   }
 
@@ -131,7 +128,7 @@ export class TimesheetComponent implements OnInit {
     this.newTimesheet = true;
     this.timesheet = new PrimeTimesheet();
     this.displayDialog = true;
-    //this.selectedPartyId = this.defaultParty.partyId;
+    this.selectedPartyId = this.defaultParty.partyId;
   }
 
   selectTimesheet(data: Timesheet) {

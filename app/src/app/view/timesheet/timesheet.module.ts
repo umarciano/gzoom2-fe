@@ -25,7 +25,9 @@ import { TimeEntryComponent } from './time-entry/time-entry.component';
 import { TimeEntry } from './time-entry/time_entry';
 import { TimeEntryResolver } from './time-entry/time-entry-resolver.service';
 
+import {Party} from '../party/party/party';
 import { PartyService } from '../../api/party.service';
+import { PartyResolver } from '../party/party/party-resolver.service';
 
 
 
@@ -58,6 +60,7 @@ import { PartyService } from '../../api/party.service';
     TimesheetService,
     PartyService,
     TimesheetResolver,
+    PartyResolver,
     ConfirmationService
   ]
 })

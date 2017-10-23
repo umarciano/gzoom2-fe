@@ -8,8 +8,10 @@ import { TimesheetComponent } from './timesheet/timesheet.component';
 import { TimeEntryResolver } from './time-entry/time-entry-resolver.service';
 import { TimeEntryComponent } from './time-entry/time-entry.component';
 
+import { PartyResolver } from '../party/party/party-resolver.service';
+
 const routes: Routes = [
-{ path: '', component: TimesheetComponent, resolve: { timesheets: TimesheetResolver}},
+{ path: '', component: TimesheetComponent, resolve: { timesheets: TimesheetResolver, partys: PartyResolver}},
 { path: 'time-entry', component: TimeEntryComponent, resolve: { timesheets: TimeEntryResolver}}
 
 
