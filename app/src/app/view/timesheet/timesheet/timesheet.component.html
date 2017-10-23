@@ -63,7 +63,7 @@
           <label for="fromDate">{{'From Date'|i18n}}:</label>
         </div>
         <div class="ui-grid-col-4">
-          <p-calendar formControlName="fromDate" [(ngModel)]="timesheet.fromDate" required [showIcon]="true"></p-calendar> <span style="margin-left:35px">{{fromDate|date}}</span>
+          <p-calendar formControlName="fromDate" [(ngModel)]="timesheet.fromDate" dateFormat="dd/mm/yy" required [showIcon]="true" type=Date></p-calendar>
         </div>
       </div>
       <!-- Thru date -->
@@ -72,7 +72,7 @@
           <label for="thruDate">{{'Thru Date'|i18n}}:</label>
         </div>
         <div class="ui-grid-col-4">
-          <p-calendar formControlName="thruDate" [(ngModel)]="timesheet.thruDate" required [showIcon]="true"></p-calendar> <span style="margin-left:35px">{{thruDate|date}}</span>
+          <p-calendar formControlName="thruDate" [(ngModel)]="timesheet.thruDate" dateFormat="dd/mm/yy" required [showIcon]="true" type=Date></p-calendar>
         </div>
       </div>
       <!-- contractHours -->
