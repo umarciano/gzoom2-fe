@@ -13,9 +13,9 @@ export class PartyService {
   constructor(private client: ApiClientService) { }
 
   partys(): Observable<Party[]> {
-    console.log('search party');
+    console.log('search party persons');
     return this.client
-      .get('party/party')
+      .get('party/person')
       .map(json => json.results as Party[]);
   }
 

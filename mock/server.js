@@ -423,10 +423,29 @@ app.get('/rest/timesheet/timesheet', function(req, res) {
   }, _.random(200, 1000));
 });
 
+app.post('/rest/timesheet/timesheet', function(req, res) {
+  const partyId = req.body.partyid;
+  //const obj = data.uomTypes().filter((val,i) => val.uomTypeId == uomTypeId);
+  //const uomType = obj[0];
+  const timesheetId = req.body.timesheetId;
+  const fromDate = req.body.fromDate;
+  const thruDate = req.body.thruDate;
+  const contractHours = req.body.contractHours;
+  const actualHours = req.body.actualHours;
+  const timesheet = {timesheetId: timesheetId,
+               fromDate: fromDate, thruDate: thruDate,
+               contractHours: contractHours, actualHours: actualHours};
+  log.debug('Create timesheet ', timesheet);
+  let index = data.createTimesheet(timesheet);
+  setTimeout(function() {
+    res.json({ timesheetId: timesheetId });
+  }, _.random(200, 1000));
+});
+
 //party/party
-app.get('/rest/party/party', function(req, res) {
+app.get('/rest/party/person', function(req, res) {
   var partys = data.partys();
-  log.debug('Looking up partys ' + partys);
+  log.debug('Looking up party persons ' + partys);
   setTimeout(function() {
     res.json({ results: partys, total: partys.length });
   }, _.random(200, 1000));

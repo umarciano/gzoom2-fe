@@ -9,6 +9,7 @@ import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/switchMap';
 
+import { ConfirmDialogModule, ConfirmationService, SpinnerModule, TooltipModule } from 'primeng/primeng';
 import { SelectItem } from '../../../commons/selectitem';
 import { I18NService } from '../../../commons/i18n.service';
 import { Message } from '../../../commons/message';
@@ -19,9 +20,9 @@ import {Party} from '../../party/party/party';
 import {PartyService} from '../../../api/party.service';
 
 /** Convert from Party[] to SelectItem[] */
-function party2SelectItems(party: Party[]): SelectItem[] {
-    return party.map((p:Party) => {
-      return {label: p.description, value: p.partyId};
+function party2SelectItems(person: Party[]): SelectItem[] {
+    return person.map((p:Party) => {
+      return {label: p.firstName+" "+p.lastName, value: p.partyId};
     });
 }
 
@@ -55,6 +56,7 @@ export class TimesheetComponent implements OnInit {
   constructor(
     private readonly timesheetService: TimesheetService,
     private readonly partyService: PartyService,
+    private readonly confirmationService: ConfirmationService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly i18nService: I18NService,
@@ -65,10 +67,9 @@ export class TimesheetComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-            // 'partyId': new FormControl('', Validators.compose([Validators.required, Validators.maxLength(20)])),
-            'partyId': new FormControl(''),
-            'fromDate': new FormControl(''),
-            'thruDate': new FormControl(''),
+            'partyId': new FormControl('', Validators.required),
+            'fromDate': new FormControl('', Validators.required),
+            'thruDate': new FormControl('', Validators.required),
             'contractHours': new FormControl(''),
             'actualHours': new FormControl('')
 
@@ -82,7 +83,11 @@ export class TimesheetComponent implements OnInit {
 
     const partyObs = this.route.data
       .map((data: { partys: Party[] }) => data.partys)
-      .merge(reloadedParty)
+      .merge(reloadedParty);
+
+    //partyObs.first().subscribe(partys => this.defaultParty = partys[0]);
+
+    partyObs
       .map(party2SelectItems)
       .subscribe((data) => {
         this.partySelectItem = data;
@@ -91,7 +96,24 @@ export class TimesheetComponent implements OnInit {
 
   }
 
-  save(): void {
+  confirm() {
+    this.confirmationService.confirm({
+      message: this.i18nService.translate('Do you want to delete this record?'),
+      header: this.i18nService.translate('Delete Confirmation'),
+      icon: 'fa fa-trash',
+      accept: () => {
+        this.displayDialog = false;
+        this._delete();
+      },
+      reject: () => {
+          this.timesheet = null;
+          this.displayDialog = false;
+        }
+    });
+  }
+
+  save() {
+    this.timesheet.partyId = this.selectedPartyId;
     if (this.newTimesheet) {
       this.timesheetService
         .createTimesheet(this.timesheet)
@@ -105,13 +127,11 @@ export class TimesheetComponent implements OnInit {
           console.log('error' , error.message);
           this.error = this.i18nService.translate(error.message) || error;
         });
-    }
-/*
-     else {
-      this.uomService
-        .updateUomType(this.selectedUomType.uomTypeId, this.uomType)
+    } else {
+      this.timesheetService
+        .updateTimesheet(this.selectedTimesheet.timesheetId, this.timesheet)
         .then(data => {
-          this.uomType = null;
+          this.timesheet = null;
           this.displayDialog = false;
           this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Updated'), detail:this.i18nService.translate('Record updated')}];
           this._reload.next();
@@ -120,7 +140,7 @@ export class TimesheetComponent implements OnInit {
           console.log('error' , error.message);
           this.error = this.i18nService.translate(error.message) || error;
         });
-    } */
+    }
   }
 
   showDialogToAdd() {
@@ -128,18 +148,20 @@ export class TimesheetComponent implements OnInit {
     this.newTimesheet = true;
     this.timesheet = new PrimeTimesheet();
     this.displayDialog = true;
-    this.selectedPartyId = this.defaultParty.partyId;
+    //this.selectedPartyId = this.defaultParty.partyId;
   }
 
   selectTimesheet(data: Timesheet) {
     this.error = '';
     this.selectedTimesheet = data;
     this.newTimesheet = false;
-    this.timesheet = this.cloneTimesheet(data);
+    this.timesheet = this._cloneTimesheet(data);
+    this.selectedPartyId = data.partyId;
     this.displayDialog = true;
+
   }
 
-  cloneTimesheet(t: Timesheet): Timesheet {
+  _cloneTimesheet(t: Timesheet): Timesheet {
     let timesheet = new PrimeTimesheet();
     for(let prop in timesheet) {
       timesheet[prop] = t[prop];
@@ -147,8 +169,23 @@ export class TimesheetComponent implements OnInit {
     return timesheet;
   }
 
+  _delete() {
+    this.timesheetService
+    .deleteTimesheet(this.selectedTimesheet.timesheetId)
+    .then(data => {
+      this.timesheet = null;
+      this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Confirmed'), detail:this.i18nService.translate('Record deleted')}];
+      this._reload.next();
+    })
+    .catch((error) => {
+      console.log('error' , error.message);
+      this.error = this.i18nService.translate(error.message) || error;
+    });
+  }
+
 }
 
 class PrimeTimesheet implements Timesheet {
-  constructor(public timesheetId?: string, public partyId?: string) {}
+  constructor(public partyId?: string, public timesheetId?: string, public fromDate?: Date , public thruDate?: Date,
+              public contractHours?: number, public actualHours?: number) {}
 }

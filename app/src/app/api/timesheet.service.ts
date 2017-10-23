@@ -32,6 +32,30 @@ export class TimesheetService {
       });
   }
 
+  updateTimesheet(timesheetId: string, timesheet: Timesheet):  Promise<Timesheet> {
+    console.log('update Timesheet');
+    return this.client
+      .put(`timesheet/timesheet/${timesheetId}`, JSON.stringify(timesheet))
+      .toPromise()
+      .then(response => response)
+      .catch((response: any) => {
+        console.error(`Error while updating in: ${response}`);
+        return Promise.reject(response.json() || response);
+      });
+  }
+
+  deleteTimesheet(timesheetId: string):  Promise<Timesheet> {
+    console.log('delete Timesheet with ' + timesheetId);
+    return this.client
+      .delete(`timesheet/timesheet/${timesheetId}`)
+      .toPromise()
+      .then(response => response)
+      .catch((response: any) => {
+        console.error(`Error while deleting in: ${response}`);
+        return Promise.reject(response.json() || response);
+      });
+  }
+
 
   //TODO new GN
   timeEntries(): Observable<TimeEntry[]> {
