@@ -30,69 +30,62 @@
 
 <p-dialog header="{{'Timesheet Detail'|i18n}}" width="900" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
   <form [formGroup]="form" novalidate (ngSubmit)="save()">
-    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="timesheet">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px" *ngIf="timesheet">
 
-      <!-- TODO timesheetId deve essere incrementale-->
+      <!-- TODO dropdown not working -->
       <div class="ui-grid-row">
         <div class="ui-grid-col-3">
-          <label for="timeshhetId">{{'Timesheet id'|i18n}}*:</label>
+          <label for="partyId">{{'Party Id'|i18n}}*:</label>
         </div>
         <div class="ui-grid-col-4">
-          <input pInputText class="form-control" formControlName="timesheetId" required [(ngModel)]="timesheet.timesheetId" maxlength="20"/>
-        </div>
-        <div class="ui-grid-col-5">
-          <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['timesheetId'].valid&amp;&amp;form.controls['timesheetId'].dirty">
-            <i class="fa fa-close"></i>
-            <span *ngIf="form.controls['timesheetId'].errors['required']">{{'Uom Type Id is required'|i18n}}</span>
-          </div>
-        </div>
-      </div>
-      <!-- TODO partyId deve essere fk della tabella party. Dropdown di selezione? -->
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-3">
-          <label for="partyId">{{'Party id'|i18n}}*:</label>
-        </div>
-        <div class="ui-grid-col-4">
-          <input pInputText class="form-control" formControlName="partyId" required [(ngModel)]="timesheet.partyId" maxlength="20"/>
+          <p-dropdown [options]="partySelectItem" formControlName="partyId" [(ngModel)]="selectedPartyId"
+           [autoWidth]="false" [style]="{'width':'100%'}">
+          </p-dropdown>
         </div>
         <div class="ui-grid-col-5">
           <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['partyId'].valid&amp;&amp;form.controls['partyId'].dirty">
             <i class="fa fa-close"></i>
-            <span *ngIf="form.controls['partyId'].errors['required']">{{'Party Id is required'|i18n}}</span>
+            {{'Party Id is required'|i18n}}
           </div>
         </div>
       </div>
+      <!-- From date -->
       <div class="ui-grid-row">
         <div class="ui-grid-col-3">
           <label for="fromDate">{{'From Date'|i18n}}:</label>
         </div>
         <div class="ui-grid-col-4">
-          <p-calendar formControlName="fromDate" [showIcon]="true"></p-calendar> <span style="margin-left:35px">{{fromDate|date}}</span>
+          <p-calendar formControlName="fromDate" required [showIcon]="true"></p-calendar> <span style="margin-left:35px">{{fromDate|date}}</span>
         </div>
       </div>
-    </div>
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-3">
-        <label for="thruDate">{{'Thru Date'|i18n}}:</label>
+      <!-- Thru date -->
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-3">
+          <label for="thruDate">{{'Thru Date'|i18n}}:</label>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-calendar formControlName="thruDate" required [showIcon]="true"></p-calendar> <span style="margin-left:35px">{{thruDate|date}}</span>
+        </div>
       </div>
-      <div class="ui-grid-col-4">
-        <p-calendar formControlName="thruDate" [showIcon]="true"></p-calendar> <span style="margin-left:35px">{{thruDate|date}}</span>
+      <!-- contractHours -->
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-3">
+          <label for="contractHours">{{'Contract Hours'|i18n}}:</label>
+        </div>
+        <div class="ui-grid-col-4">
+            <p-spinner formControlName="contractHours" [(ngModel)]="timesheet.contractHours"></p-spinner>
+        </div>
       </div>
-    </div>
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-3">
-        <label for="contractHours">{{'Contract Hours'|i18n}}:</label>
+      <!-- actualHours -->
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-3">
+          <label for="actualHours">{{'Actual hours'|i18n}}:</label>
+        </div>
+        <div class="ui-grid-col-4">
+            <p-spinner formControlName="actualHours" [(ngModel)]="timesheet.actualHours"></p-spinner>
+        </div>
       </div>
-      <div class="ui-grid-col-4">
-      </div>
-    </div>
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-3">
-        <label for="actualHours">{{'Actual hours'|i18n}}:</label>
-      </div>
-      <div class="ui-grid-col-4">
-      </div>
-    </div>
+  </div>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
         <button *ngIf="!newTimesheet" type="button" pButton icon="fa-trash" (click)="confirm()" label="{{'Delete'|i18n}}"></button>

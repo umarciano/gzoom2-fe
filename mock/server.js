@@ -414,12 +414,21 @@ app.delete('/rest/uom/scale/:id/:value', function(req, res) {
 });
 
 
-//timesheet/party-period
+//timesheet/timesheet
 app.get('/rest/timesheet/timesheet', function(req, res) {
   var timesheets = data.timesheets();
   log.debug('Looking up timesheets ' + timesheets);
   setTimeout(function() {
     res.json({ results: timesheets, total: timesheets.length });
+  }, _.random(200, 1000));
+});
+
+//party/party
+app.get('/rest/party/party', function(req, res) {
+  var partys = data.partys();
+  log.debug('Looking up partys ' + partys);
+  setTimeout(function() {
+    res.json({ results: partys, total: partys.length });
   }, _.random(200, 1000));
 });
 

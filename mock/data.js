@@ -91,6 +91,11 @@ var _ = require('lodash'),
       {partyId: '4', timesheetId: '4', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
       {partyId: '5', timesheetId: '5', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' }
     ],
+    PARTY = [
+      { partyId: '1', description: 'pippo' },
+      { partyId: '2', description: 'pluto' },
+      { partyId: '3', description: 'paperino' }
+    ],
     tokens = {},
     secret = generateSecret();
 
@@ -320,6 +325,10 @@ module.exports = {
   //timesheet
   timesheets: function() {
     return TIMESHEET;
+  },
+
+  partys: function () {
+    return PARTY;
   }
 
 };
