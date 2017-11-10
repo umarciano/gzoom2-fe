@@ -68,8 +68,8 @@ export class TimesheetComponent implements OnInit {
   ngOnInit() {
     this.form = this.fb.group({
             'partyId': new FormControl('', Validators.required),
-            'fromDate': new FormControl('', Validators.required),
-            'thruDate': new FormControl('', Validators.required),
+            'fromDate': new FormControl(''),
+            'thruDate': new FormControl(''),
             'contractHours': new FormControl(''),
             'actualHours': new FormControl('')
 
@@ -94,6 +94,13 @@ export class TimesheetComponent implements OnInit {
         this.partySelectItem.push({label: this.i18nService.translate('Select Party'), value:null});
       });
 
+      const timesheetsObs = this.route.data
+      .map((data: { timesheets: Timesheet[] }) => data.timesheets)
+      .merge(reloadedTimesheets);
+
+      timesheetsObs.subscribe((data) => {
+        this.timesheets = data;
+      });
   }
 
   confirm() {

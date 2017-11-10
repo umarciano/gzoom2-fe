@@ -8,6 +8,7 @@ import { LockoutService } from '../../../commons/lockout.service';
 import { TimesheetService } from '../../../api/timesheet.service';
 import { Timesheet } from './timesheet';
 
+import { DatePipe } from '@angular/common';
 /**
  * Retrieves the menus to be shown or locks the user out if something wrong happens.
  */
@@ -24,9 +25,9 @@ export class TimesheetResolver implements Resolve<Timesheet[]> {
       .timesheets()
       .toPromise()
       .then(timesheets => { return timesheets; })
-      .catch(err => { // TODO devo fare il lockout?
+      .catch(err => {
         console.error('Cannot retrieve timesheet', err);
-        this.lockoutService.lockout(); // TODO cos'e?
+        this.lockoutService.lockout();
       });
   }
 }
