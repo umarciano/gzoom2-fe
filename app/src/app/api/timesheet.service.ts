@@ -8,6 +8,8 @@ import { ApiClientService } from './client.service';
 import { Timesheet } from '../view/timesheet/timesheet/timesheet';
 import { TimeEntry } from '../view/timesheet/time-entry/time_entry';
 
+import * as moment from 'moment';
+
 @Injectable()
 export class TimesheetService {
 
@@ -23,7 +25,7 @@ export class TimesheetService {
   createTimesheet(timesheet: Timesheet):  Promise<Timesheet> {
     console.log('create Timesheet');
     return this.client
-      .post('timesheet/timesheet', JSON.stringify(timesheet))
+      .post('timesheet/timesheet', this.saveTimesheetBodifier(timesheet))
       .toPromise()
       .then(response => response)
       .catch(response => {
@@ -35,7 +37,7 @@ export class TimesheetService {
   updateTimesheet(timesheetId: string, timesheet: Timesheet):  Promise<Timesheet> {
     console.log('update Timesheet');
     return this.client
-      .put(`timesheet/timesheet/${timesheetId}`, JSON.stringify(timesheet))
+      .put(`timesheet/timesheet/${timesheetId}`, this.saveTimesheetBodifier(timesheet))
       .toPromise()
       .then(response => response)
       .catch((response: any) => {
@@ -65,5 +67,20 @@ export class TimesheetService {
       .map(json => json.results as Timesheet[]);
   }
 
+  //Bodifier methods
+  saveTimesheetBodifier(timesheet) {
+      return {
+        fromDate: this.getDate(timesheet.fromDate),
+        thruDate: this.getDate(timesheet.thruDate),
+        partyId: {id: (timesheet) ? timesheet.partyId : null},
+        timesheetId: {id: (timesheet) ? timesheet.timesheetId : null}
+      };
+    }
+
+
+    getDate(date) {
+      if (date) return moment(date).format("YYYY-MM-DD");
+      else return null;
+    }
 
 }
