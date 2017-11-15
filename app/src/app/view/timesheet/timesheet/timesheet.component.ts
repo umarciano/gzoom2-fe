@@ -19,6 +19,8 @@ import { TimesheetService } from '../../../api/timesheet.service';
 import {Party} from '../../party/party/party';
 import {PartyService} from '../../../api/party.service';
 
+import * as moment from 'moment';
+
 /** Convert from Party[] to SelectItem[] */
 function party2SelectItems(person: Party[]): SelectItem[] {
     return person.map((p:Party) => {
@@ -161,6 +163,8 @@ export class TimesheetComponent implements OnInit {
   selectTimesheet(data: Timesheet) {
     this.error = '';
     this.selectedTimesheet = data;
+    if(this.selectedTimesheet.fromDate)this.selectedTimesheet.fromDate=moment(this.selectedTimesheet.fromDate).toDate();
+    if(this.selectedTimesheet.thruDate)this.selectedTimesheet.thruDate=moment(this.selectedTimesheet.thruDate).toDate();
     this.newTimesheet = false;
     this.timesheet = this._cloneTimesheet(data);
     this.selectedPartyId = data.partyId;
