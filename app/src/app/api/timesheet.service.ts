@@ -72,6 +72,8 @@ export class TimesheetService {
       return {
         fromDate: this.getDate(timesheet.fromDate),
         thruDate: this.getDate(timesheet.thruDate),
+        actualHours: (timesheet) ? timesheet.actualHours : null,
+        contractHours: (timesheet) ? timesheet.contractHours : null,
         partyId: (timesheet) ? timesheet.partyId : null,
         timesheetId: (timesheet) ? timesheet.timesheetId : null
       };
