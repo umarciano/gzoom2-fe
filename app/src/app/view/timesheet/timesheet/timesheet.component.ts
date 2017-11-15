@@ -70,8 +70,8 @@ export class TimesheetComponent implements OnInit {
   ngOnInit() {
     this.form = this.fb.group({
             'partyId': new FormControl('', Validators.required),
-            'fromDate': new FormControl(''),
-            'thruDate': new FormControl(''),
+            'fromDate': new FormControl('', Validators.required),
+            'thruDate': new FormControl('', Validators.required),
             'contractHours': new FormControl(''),
             'actualHours': new FormControl('')
 
