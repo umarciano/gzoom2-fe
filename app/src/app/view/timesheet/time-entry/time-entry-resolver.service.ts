@@ -7,26 +7,29 @@ import 'rxjs/add/operator/toPromise';
 import { LockoutService } from '../../../commons/lockout.service';
 import { TimesheetService } from '../../../api/timesheet.service';
 import { TimeEntry } from './time_entry';
+import { Timesheet } from '../timesheet/timesheet';
 
 /**
  * Retrieves the menus to be shown or locks the user out if something wrong happens.
  */
 @Injectable()
-export class TimeEntryResolver implements Resolve<TimeEntry[]> {
+export class TimeEntryResolver implements Resolve<Timesheet[]> {
 
   constructor(
     private readonly timesheetService: TimesheetService,
     private readonly lockoutService: LockoutService) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<TimeEntry[]> {
-    console.log('resolve timesheet');
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Timesheet[]> {
+    console.log('resolve timeEntries');
     return this.timesheetService
-      .timesheets()
-      .toPromise()
-      .then(timesheets => { return timesheets; })
-      .catch(err => { // TODO devo fare il lockout?
-        console.error('Cannot retrieve timesheet', err);
-        this.lockoutService.lockout(); // TODO cos'e?
-      });
+    .timeEntries()
+    .toPromise()
+    .then(timeEntries => { return timeEntries; })
+    .catch(err => {
+      console.error('Cannot retrieve timeEntries', err);
+      this.lockoutService.lockout();
+    });
   }
 }
+
+

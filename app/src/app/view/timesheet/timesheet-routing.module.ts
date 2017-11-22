@@ -12,7 +12,7 @@ import { PartyResolver } from '../party/party/party-resolver.service';
 
 const routes: Routes = [
 { path: '', component: TimesheetComponent, resolve: { timesheets: TimesheetResolver, partys: PartyResolver}},
-{ path: 'time-entry', component: TimeEntryComponent, resolve: { timesheets: TimeEntryResolver}}
+{ path: 'time-entry', component: TimeEntryComponent, resolve: { timeEntries: TimeEntryResolver}}
 
 
 ];

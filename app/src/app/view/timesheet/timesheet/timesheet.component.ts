@@ -87,7 +87,6 @@ export class TimesheetComponent implements OnInit {
       .map((data: { partys: Party[] }) => data.partys)
       .merge(reloadedParty);
 
-    //partyObs.first().subscribe(partys => this.defaultParty = partys[0]);
 
     partyObs
       .map(party2SelectItems)
@@ -163,8 +162,8 @@ export class TimesheetComponent implements OnInit {
   selectTimesheet(data: Timesheet) {
     this.error = '';
     this.selectedTimesheet = data;
-    if(this.selectedTimesheet.fromDate)this.selectedTimesheet.fromDate=moment(this.selectedTimesheet.fromDate).toDate();
-    if(this.selectedTimesheet.thruDate)this.selectedTimesheet.thruDate=moment(this.selectedTimesheet.thruDate).toDate();
+    if(this.selectedTimesheet.fromDate)this.selectedTimesheet.fromDate;//=moment(this.selectedTimesheet.fromDate).toDate();
+    if(this.selectedTimesheet.thruDate)this.selectedTimesheet.thruDate;//=moment(this.selectedTimesheet.thruDate).toDate();
     this.newTimesheet = false;
     this.timesheet = this._cloneTimesheet(data);
     this.selectedPartyId = data.partyId;
@@ -197,6 +196,7 @@ export class TimesheetComponent implements OnInit {
 }
 
 class PrimeTimesheet implements Timesheet {
-  constructor(public partyId?: string, public timesheetId?: string, public fromDate?: Date , public thruDate?: Date,
+  constructor(public partyId?: string, public partyName?: string, public timesheetId?: string, public fromDate?: Date ,
+              public thruDate?: Date, public fromDateAsString?: string, public thruDateAsString?: string, 
               public contractHours?: number, public actualHours?: number) {}
 }

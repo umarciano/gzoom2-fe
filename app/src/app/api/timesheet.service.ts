@@ -58,12 +58,10 @@ export class TimesheetService {
       });
   }
 
-
-  //TODO new GN
-  timeEntries(): Observable<TimeEntry[]> {
+  timeEntries(): Observable<Timesheet[]> {
     console.log('search timeEntries');
     return this.client
-      .get('timesheet/time-entries')
+      .get('timesheet/time-entry')
       .map(json => json.results as Timesheet[]);
   }
 

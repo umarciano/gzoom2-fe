@@ -60,6 +60,7 @@ import { PartyResolver } from '../party/party/party-resolver.service';
     TimesheetService,
     PartyService,
     TimesheetResolver,
+    TimeEntryResolver,
     PartyResolver,
     ConfirmationService
   ]
