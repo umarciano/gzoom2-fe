@@ -10,6 +10,7 @@ import { ApplicationConfig } from './config';
 import { I18NPipe } from './i18n.pipe';
 import { I18NNumPipe } from './i18nNum.pipe';
 import { FullnamePipe, AsIdPipe, AsClassPipe } from './commons.pipe';
+import { i18NDatePipe } from './i18nDate.pipe';
 import {
   ApplicationVersionDirective,
   ApplicationNameDirective,
@@ -33,6 +34,7 @@ export interface CommonsConfig {
     FullnamePipe,
     AsIdPipe,
     AsClassPipe,
+    i18NDatePipe,
     ApplicationVersionDirective,
     ApplicationNameDirective,
     FromYearDirective
@@ -43,6 +45,7 @@ export interface CommonsConfig {
     FullnamePipe,
     AsIdPipe,
     AsClassPipe,
+    i18NDatePipe,
     ApplicationVersionDirective,
     ApplicationNameDirective,
     FromYearDirective

@@ -19,6 +19,8 @@ import { TimesheetService } from '../../../api/timesheet.service';
 import {Party} from '../../party/party/party';
 import {PartyService} from '../../../api/party.service';
 
+import { DatePipe } from '@angular/common';
+import { i18NDatePipe } from '../../../commons/i18nDate.pipe';
 import * as moment from 'moment';
 
 /** Convert from Party[] to SelectItem[] */
@@ -162,13 +164,13 @@ export class TimesheetComponent implements OnInit {
   selectTimesheet(data: Timesheet) {
     this.error = '';
     this.selectedTimesheet = data;
-    if(this.selectedTimesheet.fromDate)this.selectedTimesheet.fromDate;//=moment(this.selectedTimesheet.fromDate).toDate();
-    if(this.selectedTimesheet.thruDate)this.selectedTimesheet.thruDate;//=moment(this.selectedTimesheet.thruDate).toDate();
+    if(this.selectedTimesheet.fromDate)this.selectedTimesheet.fromDate=moment(this.selectedTimesheet.fromDate).toDate();
+    if(this.selectedTimesheet.thruDate)this.selectedTimesheet.thruDate=moment(this.selectedTimesheet.thruDate).toDate();
+
     this.newTimesheet = false;
     this.timesheet = this._cloneTimesheet(data);
     this.selectedPartyId = data.partyId;
     this.displayDialog = true;
-
   }
 
   _cloneTimesheet(t: Timesheet): Timesheet {
@@ -197,6 +199,5 @@ export class TimesheetComponent implements OnInit {
 
 class PrimeTimesheet implements Timesheet {
   constructor(public partyId?: string, public partyName?: string, public timesheetId?: string, public fromDate?: Date ,
-              public thruDate?: Date, public fromDateAsString?: string, public thruDateAsString?: string, 
-              public contractHours?: number, public actualHours?: number) {}
+              public thruDate?: Date, public contractHours?: number, public actualHours?: number) {}
 }
