@@ -58,11 +58,11 @@ export class TimesheetService {
       });
   }
 
-  timeEntries(): Observable<Timesheet[]> {
-    console.log('search timeEntries');
+  timeEntries(timesheetId: String): Observable<TimeEntry[]> {
+    console.log('search timeEntries for timesheetId: ' + timesheetId);
     return this.client
       .get('timesheet/time-entry')
-      .map(json => json.results as Timesheet[]);
+      .map(json => json.results as TimeEntry[]);
   }
 
   //Bodifier methods

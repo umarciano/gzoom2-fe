@@ -15,80 +15,39 @@
             dataKey="timesheetId"
             #dt exportFilename="timesheets">
 
-    <p-column [style]="{'width':'20%'}" field="partyId" header="{{'Party Id'}}" [sortable]="true"></p-column>
-    <p-column [style]="{'width':'20%'}" field="timesheetId" header="{{'Timesheet Id'}}" [sortable]="true"></p-column>
+    <p-column [style]="{'width':'20%'}" field="partyName" header="{{'Party'|i18n}}" [sortable]="true"></p-column>
     <p-column [style]="{'width':'20%'}" field="fromDate" header="{{'From Date'|i18n}}" [sortable]="true"></p-column>
     <p-column [style]="{'width':'20%'}" field="thruDate" header="{{'Thru Date'|i18n}}" [sortable]="true"></p-column>
     <p-column [style]="{'width':'20%'}" field="contractHours" header="{{'Contract Hours'|i18n}}" [sortable]="true"></p-column>
     <p-column [style]="{'width':'20%'}" field="actualHours" header="{{'Actual Hours'|i18n}}" [sortable]="true"></p-column>
     <p-column [style]="{'width':'10%'}" styleClass="col-button">
-        <ng-template pTemplate="header">
-            <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
-        </ng-template>
         <ng-template let-timesheet="rowData" pTemplate="body">
-            <button type="button" pButton icon="fa-pencil" (click)="selectTimesheet(timesheet)"></button>
+            <button type="button" pButton icon="fa-eye" (click)="selectTimesheet(timesheet)"></button>
         </ng-template>
     </p-column>
 </p-dataTable>
 
-<p-dialog header="{{'Timesheet Detail'|i18n}}" width="900" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
-  <form>
-    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px" *ngIf="timesheet">
-
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-3">
-          <label for="partyId">{{'Party Id'|i18n}}*:</label>
-        </div>
-        <div class="ui-grid-col-4">
-          <p-dropdown [options]="partySelectItem" formControlName="partyId" required [(ngModel)]="selectedPartyId"
-           [autoWidth]="false" [style]="{'width':'100%'}">
-          </p-dropdown>
-        </div>
-        <div class="ui-grid-col-5">
-          <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['partyId'].valid&amp;&amp;form.controls['partyId'].dirty">
-            <i class="fa fa-close"></i>
-            {{'Party Id is required'|i18n}}
-          </div>
-        </div>
-      </div>
-      <!-- From date -->
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-3">
-          <label for="fromDate">{{'From Date'|i18n}}:</label>
-        </div>
-        <div class="ui-grid-col-4">
-          <p-calendar formControlName="fromDate" [(ngModel)]="timesheet.fromDate" name="fromDate" dateFormat="dd/mm/yy" required [showIcon]="true" type='Date'></p-calendar>
-        </div>
-      </div>
-      <!-- Thru date -->
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-3">
-          <label for="thruDate">{{'Thru Date'|i18n}}:</label>
-        </div>
-        <div class="ui-grid-col-4">
-          <p-calendar formControlName="thruDate" [(ngModel)]="timesheet.thruDate" name="thruDate" dateFormat="dd/mm/yy" required [showIcon]="true" type='Date'></p-calendar>
-        </div>
-      </div>
-      <!-- contractHours -->
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-3">
-          <label for="contractHours">{{'Contract Hours'|i18n}}:</label>
-        </div>
-        <div class="ui-grid-col-4">
-            <p-spinner formControlName="contractHours" [(ngModel)]="timesheet.contractHours"></p-spinner>
-        </div>
-      </div>
-      <!-- actualHours -->
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-3">
-          <label for="actualHours">{{'Actual hours'|i18n}}:</label>
-        </div>
-        <div class="ui-grid-col-4">
-            <p-spinner formControlName="actualHours" [(ngModel)]="timesheet.actualHours"></p-spinner>
-        </div>
-      </div>
-  </div>
-  </form>
+<p-dialog header="{{'Time Entry List'|i18n}}" width="900" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+  
+  <p-dataTable [value]="timesheets" [rows]="5" scrollable="true" scrollHeight="260px" sortMode="multiple" [responsive]="true"
+    [globalFilter]="gb" resizableColumns="true" [responsive]="true" columnResizeMode="expand" dataKey="timesheetId" #dt exportFilename="timesheets">
+  
+    <p-column [style]="{'width':'20%'}" field="workEffortId" header="{{'Work Effort'|i18n}}" [sortable]="true">
+        <p-dropdown [options]="partySelectItem" [(ngModel)]="selectedPartyId" [autoWidth]="false"
+          [style]="{'width':'100%'}">
+        </p-dropdown>
+    </p-column>
+    <p-column [style]="{'width':'20%'}" field="percentage" header="{{'Percentage'|i18n}}" [sortable]="true" [editable]="true">
+      <ng-template pTemplate let-col let-row="rowData">
+          <input type="number" [(ngModel)]="row[col.field]" />
+      </ng-template>
+    </p-column>
+    <p-column [style]="{'width':'10%'}" styleClass="col-button">
+      <ng-template pTemplate="header">
+        <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
+      </ng-template>
+    </p-column>
+  </p-dataTable>
 
   <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 </p-dialog>

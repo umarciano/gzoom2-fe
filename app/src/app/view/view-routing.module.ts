@@ -29,7 +29,7 @@ const routes: Routes = [
       { path: 'legacy', loadChildren: './legacy/legacy.module#LegacyModule' },
       { path: 'uom', loadChildren: './uom/uom.module#UomModule' },
       { path: 'timesheet', loadChildren: './timesheet/timesheet.module#TimesheetModule' },
-      { path: 'time-entry', loadChildren: './timesheet/timesheet.module#TimesheetModule' },
+      //{ path: 'time-entry', loadChildren: './timesheet/timesheet.module#TimesheetModule' },
       { path: '', pathMatch: 'full', redirectTo: '/c/dashboard' }
     ]
   }

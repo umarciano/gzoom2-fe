@@ -20,9 +20,9 @@ export class TimeEntryResolver implements Resolve<Timesheet[]> {
     private readonly lockoutService: LockoutService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Timesheet[]> {
-    console.log('resolve timeEntries');
+    console.log('resolve timesheets');
     return this.timesheetService
-    .timeEntries()
+    .timesheets()
     .toPromise()
     .then(timeEntries => { return timeEntries; })
     .catch(err => {
