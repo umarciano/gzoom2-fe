@@ -65,6 +65,13 @@ export class TimesheetService {
       .map(json => json.results as TimeEntry[]);
   }
 
+  workEfforts(): Observable<TimeEntry[]> {
+    console.log('search workEffort activities');
+    return this.client
+      .get('timesheet/time-entry-workefforts')
+      .map(json => json.results as TimeEntry[]);
+  }
+
   //Bodifier methods
   saveTimesheetBodifier(timesheet) {
       return {

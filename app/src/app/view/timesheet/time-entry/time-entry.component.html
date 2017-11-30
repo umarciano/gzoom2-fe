@@ -29,17 +29,17 @@
 
 <p-dialog header="{{'Time Entry List'|i18n}}" width="900" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
   
-  <p-dataTable [value]="timesheets" [rows]="5" scrollable="true" scrollHeight="260px" sortMode="multiple" [responsive]="true"
+  <p-dataTable [value]="timeEntries" [rows]="5" scrollable="true" scrollHeight="260px" sortMode="multiple" [responsive]="true"
     [globalFilter]="gb" resizableColumns="true" [responsive]="true" columnResizeMode="expand" dataKey="timesheetId" #dt exportFilename="timesheets">
   
     <p-column [style]="{'width':'20%'}" field="workEffortId" header="{{'Work Effort'|i18n}}" [sortable]="true">
-        <p-dropdown [options]="partySelectItem" [(ngModel)]="selectedPartyId" [autoWidth]="false"
+        <p-dropdown [options]="workEffortSelectItem" [(ngModel)]="selectedWorkEffortId" [autoWidth]="false"
           [style]="{'width':'100%'}">
         </p-dropdown>
     </p-column>
     <p-column [style]="{'width':'20%'}" field="percentage" header="{{'Percentage'|i18n}}" [sortable]="true" [editable]="true">
       <ng-template pTemplate let-col let-row="rowData">
-          <input type="number" [(ngModel)]="row[col.field]" />
+          <input type="number" [(ngModel)]="row[col.field]"/>
       </ng-template>
     </p-column>
     <p-column [style]="{'width':'10%'}" styleClass="col-button">

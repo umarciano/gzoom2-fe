@@ -43,6 +43,9 @@ export class TimeEntryComponent implements OnInit {
   timesheetId: String;
   selectedTimeEntry: TimeEntry;
 
+  selectedWorkEffortId: string;
+  workEffortSelectItem: SelectItem[] = [];
+
   constructor(
     private readonly timesheetService: TimesheetService,
     private readonly confirmationService: ConfirmationService,
@@ -62,13 +65,13 @@ export class TimeEntryComponent implements OnInit {
       'thruDate': new FormControl('', Validators.required),
       'contractHours': new FormControl(''),
       'actualHours': new FormControl('')
-
     });
 
     this.route.data
       .map((data: { timesheets: Timesheet[] }) => data.timesheets)
       .subscribe(data => this.timesheets = data);
 
+    const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts());
     const reloadedTimesheets = this._reload.switchMap(() => this.timesheetService.timesheets());
 
     const timesheetsObs = this.route.data
@@ -78,22 +81,35 @@ export class TimeEntryComponent implements OnInit {
     timesheetsObs.subscribe((data) => {
       this.timesheets = data;
     });
-  }
 
-  selectTimesheet(data: Timesheet) {
-    this.timesheetId = data.timesheetId;
-    this.displayDialog = true;
-    this.timesheetService
-      .timeEntries(this.timesheetId)
-      
-      /*.toPromise()
-      .then(data => {
-        this._reload.next();
-      });*/
-  }
+    const workEffortObs = this.route.data
+    .map((data: { workEfforts: TimeEntry[] }) => data.workEfforts)
+    .merge(reloadedWorkEffort);
 
+
+    workEffortObs
+      .map(workEFforts2SelectItems)
+      .subscribe((data) => {
+        this.workEffortSelectItem = data;
+        this.workEffortSelectItem.push({label: this.i18nService.translate('Select WorkEffort'), value:null});
+      });
+    }
+
+    selectTimesheet(data: Timesheet) {
+      this.timesheetId = data.timesheetId;
+      this.displayDialog = true;
+      this.timesheetService
+        .timeEntries(this.timesheetId)
+    }
 }
 
 class PrimeTimeEntry implements TimeEntry {
-  constructor(public timeEntryId?: string, public description?: string) { }
+  constructor(public timeEntryId?: string, public workEffortId?: string,
+              public description?: string) { }
+}
+
+function workEFforts2SelectItems(workEffort: TimeEntry[]): SelectItem[] {
+  return workEffort.map((t:TimeEntry) => {
+    return {label: t.workEffortId, value: t.workEffortId};
+  });
 }
