@@ -67,12 +67,20 @@ export class TimeEntryComponent implements OnInit {
       'actualHours': new FormControl('')
     });
 
+    const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts());
+    const reloadedTimesheets = this._reload.switchMap(() => this.timesheetService.timesheets());
+    const reloadedTimeEntries = this._reload.switchMap(() => this.timesheetService.timeEntries(this.timesheetId));
+
     this.route.data
       .map((data: { timesheets: Timesheet[] }) => data.timesheets)
       .subscribe(data => this.timesheets = data);
 
-    const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts());
-    const reloadedTimesheets = this._reload.switchMap(() => this.timesheetService.timesheets());
+    this.route.data
+      .map((data: { timeEntries: TimeEntry[] }) => data.timeEntries)
+      .merge(reloadedTimeEntries)
+      .subscribe((data) => {
+        this.timeEntries = data;
+      });
 
     const timesheetsObs = this.route.data
     .map((data: { timesheets: Timesheet[] }) => data.timesheets)

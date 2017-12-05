@@ -30,7 +30,7 @@
 <p-dialog header="{{'Time Entry List'|i18n}}" width="900" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
   
   <p-dataTable [value]="timeEntries" [rows]="5" scrollable="true" scrollHeight="260px" sortMode="multiple" [responsive]="true"
-    [globalFilter]="gb" resizableColumns="true" [responsive]="true" columnResizeMode="expand" dataKey="timesheetId" #dt exportFilename="timesheets">
+    [globalFilter]="gb" resizableColumns="true" [responsive]="true" columnResizeMode="expand" dataKey="timeEntryId" #dt exportFilename="timeEntries">
   
     <p-column [style]="{'width':'20%'}" field="workEffortId" header="{{'Work Effort'|i18n}}" [sortable]="true">
         <p-dropdown [options]="workEffortSelectItem" [(ngModel)]="selectedWorkEffortId" [autoWidth]="false"
