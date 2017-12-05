@@ -40,7 +40,7 @@ export class TimeEntryComponent implements OnInit {
   /** Timesheet to save*/
   timeEntry: TimeEntry = new PrimeTimeEntry();
   /** Selected timesheet in Dialog*/
-  timesheetId: String;
+  timesheetId: string;
   selectedTimeEntry: TimeEntry;
 
   selectedWorkEffortId: string;
@@ -98,7 +98,7 @@ export class TimeEntryComponent implements OnInit {
     selectTimesheet(data: Timesheet) {
       this.timesheetId = data.timesheetId;
       this.displayDialog = true;
-      this.timesheetService
+      return this.timesheetService
         .timeEntries(this.timesheetId)
     }
 }

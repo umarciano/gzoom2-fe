@@ -13,7 +13,10 @@ import { PartyResolver } from '../party/party/party-resolver.service';
 const routes: Routes = [
 { path: '', component: TimesheetComponent, resolve: { timesheets: TimesheetResolver, partys: PartyResolver}},
 { path: 'time-entry', component: TimeEntryComponent, resolve: { timesheets: TimesheetResolver,
-                                                                timeEntries: TimeEntryResolver, workEfforts: TimeEntryResolver}}
+                                                                timeEntries: TimeEntryResolver, workEfforts: TimeEntryResolver},
+    children: [
+      { path: ':id', component: TimeEntryComponent, resolve: { timeEntries: TimeEntryResolver}}
+    ]},
 ];
 
 @NgModule({

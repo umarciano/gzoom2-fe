@@ -58,10 +58,10 @@ export class TimesheetService {
       });
   }
 
-  timeEntries(timesheetId: String): Observable<TimeEntry[]> {
+  timeEntries(timesheetId: string): Observable<TimeEntry[]> {
     console.log('search timeEntries for timesheetId: ' + timesheetId);
     return this.client
-      .get('timesheet/time-entry')
+      .get(`timesheet/time-entry/${timesheetId}`)
       .map(json => json.results as TimeEntry[]);
   }
 
