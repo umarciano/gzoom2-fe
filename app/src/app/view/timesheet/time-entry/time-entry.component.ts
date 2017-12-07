@@ -42,7 +42,7 @@ export class TimeEntryComponent implements OnInit {
   /** Selected timesheet in Dialog*/
   timesheetId: string;
   selectedTimeEntry: TimeEntry;
-
+  selectedTimesheetId: string;
   selectedWorkEffortId: string;
   workEffortSelectItem: SelectItem[] = [];
 
@@ -82,6 +82,17 @@ export class TimeEntryComponent implements OnInit {
         this.timeEntries = data;
       });
 
+    this.route.paramMap
+      .switchMap((params) => {
+        this.selectedTimesheetId = params.get('id');
+        //return this.timesheetService.timeEntries(this.selectedTimesheetId);
+        return this.timesheetService.timeEntries('10020');
+      })
+      .subscribe((data) => {
+        this.timeEntries = data;
+        this._reload.next();
+    });
+
     const timesheetsObs = this.route.data
     .map((data: { timesheets: Timesheet[] }) => data.timesheets)
     .merge(reloadedTimesheets);
@@ -103,11 +114,12 @@ export class TimeEntryComponent implements OnInit {
       });
     }
 
-    selectTimesheet(data: Timesheet) {
+    onRowSelect(data: Timesheet) {
       this.timesheetId = data.timesheetId;
       this.displayDialog = true;
-      return this.timesheetService
-        .timeEntries(this.timesheetId)
+      /*return this.timesheetService
+        .timeEntries(this.timesheetId);*/
+      this.router.navigate([this.timesheetId], { relativeTo: this.route });
     }
 }
 
