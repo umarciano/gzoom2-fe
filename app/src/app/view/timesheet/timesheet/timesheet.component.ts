@@ -122,6 +122,10 @@ export class TimesheetComponent implements OnInit {
     });
   }
 
+  onRowSelect(data: Timesheet) {
+    this.router.navigate([data.timesheetId], { relativeTo: this.route });
+  }
+
   save() {
     this.timesheet.partyId = this.selectedPartyId;
     if (this.newTimesheet) {

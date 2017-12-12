@@ -2,6 +2,8 @@
 
 <p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
 
+<router-outlet></router-outlet>
+
 <p-dataTable [value]="timesheets"
             [rows]="5"
             scrollable="true"
@@ -36,7 +38,8 @@
         <ng-template pTemplate="header">
             <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
         </ng-template>
-        <ng-template let-timesheet="rowData" pTemplate="body">
+          <ng-template let-timesheet="rowData" pTemplate="body">
+              <button type="button" pButton icon="fa-eye" (click)="onRowSelect(timesheet)"></button>
             <button type="button" pButton icon="fa-pencil" (click)="selectTimesheet(timesheet)"></button>
         </ng-template>
     </p-column>
