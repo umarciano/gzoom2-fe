@@ -1,0 +1,111 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, Params } from '@angular/router';
+import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+
+import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/first';
+import 'rxjs/add/operator/switchMap';
+
+import {TimeEntry} from './time_entry';
+import {Timesheet} from '../timesheet/timesheet';
+import {WorkEffort} from './work_effort';
+
+import { ConfirmDialogModule, ConfirmationService, SpinnerModule, TooltipModule } from 'primeng/primeng';
+import { SelectItem } from '../../../commons/selectitem';
+import { Message } from '../../../commons/message';
+import { I18NService } from '../../../commons/i18n.service';
+import { TimesheetService } from '../../../api/timesheet.service';
+import { templateJitUrl } from '@angular/compiler';
+
+import {InputTextModule} from 'primeng/primeng';
+
+@Component({
+  selector: 'app-time-entry-detail',
+  templateUrl: './time-entry-detail.component.html',
+  styleUrls: ['./time-entry.component.scss']
+})
+export class TimeEntryDetailComponent implements OnInit {
+
+  timeEntries: TimeEntry[];
+  _reload: Subject<void>;
+  error = '';
+  msgs: Message[] = [];
+  /** whether create or update */
+  newTimeEntry: boolean;
+  /** Timesheet to save*/
+  timeEntry: TimeEntry = new PrimeTimeEntry();
+  selectedTimesheetId: string;
+  selectedWorkEffortId: string;
+  workEffortSelectItem: SelectItem[] = [];
+
+  constructor(
+    private readonly timesheetService: TimesheetService,
+    private readonly confirmationService: ConfirmationService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly i18nService: I18NService) {
+
+      this._reload = new Subject<void>();
+  }
+
+  ngOnInit() {
+    console.log(" - ngOnInit ");
+    const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts());
+    // const reloadedTimeEntries = this._reload.switchMap(() => this.timesheetService.timeEntries(this.timesheetId));
+
+    this.route.paramMap
+      .switchMap((params) => {
+        this.selectedTimesheetId = params.get('id');
+        console.log(" - this.selectedTimesheetId " + this.selectedTimesheetId);
+        return this.timesheetService.timeEntries(this.selectedTimesheetId);
+      })
+      /*.subscribe((data) => {
+        this.timeEntries = data;
+    })*/;
+
+    this.route.data
+    .map((data: { timeEntries: TimeEntry[] }) => data.timeEntries)
+    // .merge(reloadedTimeEntries)
+    .subscribe((data) => {
+      console.log(" - data " + data);
+      if (data && data.length > 0) {
+        this.timeEntries = data;
+      } else {
+        let timeEntries1 = new PrimeTimeEntry();
+        timeEntries1.timesheetId = this.selectedTimesheetId;
+        
+        this.timeEntries = [timeEntries1];
+        console.log(" - this.timeEntries " + this.timeEntries);
+      }
+    });
+
+    const workEffortObs = this.route.data
+    .map((data: { workEfforts: WorkEffort[] }) => data.workEfforts)
+    .merge(reloadedWorkEffort);
+
+
+    workEffortObs
+      .map(workEFforts2SelectItems)
+      .subscribe((data) => {
+        this.workEffortSelectItem = data;
+        this.workEffortSelectItem.push({label: this.i18nService.translate('Select WorkEffort'), value:null});
+      });
+  }
+  
+}
+
+function workEFforts2SelectItems(workEffort: WorkEffort[]): SelectItem[] {
+  return workEffort.map((t:WorkEffort) => {
+    return {label: t.IdLiv3, value: t.IdLiv3};
+  });
+}
+
+class PrimeTimeEntry implements TimeEntry {
+  constructor(public timeEntryId?: string, public timesheetId?: string, public workEffortId?: string,
+              public description?: string) { }
+}
+
+

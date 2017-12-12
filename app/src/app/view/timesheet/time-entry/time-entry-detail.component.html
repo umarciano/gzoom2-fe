@@ -1,0 +1,21 @@
+<h3 class="first">{{'GP_MENU_00335'|i18n}}</h3>
+
+<p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
+
+  <p-dataTable [(value)]="timeEntries" [rows]="5" scrollable="true" scrollHeight="260px" sortMode="multiple" [responsive]="true"
+    [globalFilter]="gb" resizableColumns="true" [responsive]="true" columnResizeMode="expand" dataKey="timeEntryId" #dt exportFilename="timeEntries">
+  
+    <p-column field="workEffortId" header="{{'Work Effort'|i18n}}" [sortable]="true">
+        <p-dropdown [options]="workEffortSelectItem" [(ngModel)]="selectedWorkEffortId" [autoWidth]="false"
+          [style]="{'width':'100%'}">
+        </p-dropdown>
+    </p-column>
+    <p-column field="percentage" header="{{'Percentage'|i18n}}" [sortable]="true" [editable]="true">
+      <ng-template pTemplate let-col let-row="rowData">
+          <input type="number" [(ngModel)]="row[col.field]"/>
+      </ng-template>
+    </p-column>
+    
+  </p-dataTable>
+
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
