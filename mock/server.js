@@ -452,12 +452,22 @@ app.get('/rest/party/person', function(req, res) {
 });
 
 //timesheet/time-entry
-app.get('/rest/timesheet/time-entry', function(req, res) {
+app.get('/rest/timesheet/time-entry/:id', function(req, res) {
   const id = req.param('id');
   var timeEntries = data.timeEntries(id);
   log.debug('Looking up timeEntries ' + timeEntries);
   setTimeout(function() {
     res.json({ results: timeEntries, total: timeEntries.length });
+  }, _.random(200, 1000));
+});
+
+//timesheet/work-effort
+app.get('/rest/timesheet/time-entry-work-efforts', function(req, res) {
+  // const id = req.param('id');
+  var workEfforts = data.workEfforts();
+  log.debug('Looking up workEfforts ' + workEfforts);
+  setTimeout(function() {
+    res.json({ results: workEfforts, total: workEfforts.length });
   }, _.random(200, 1000));
 });
 
