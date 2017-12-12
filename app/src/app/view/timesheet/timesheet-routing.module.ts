@@ -6,17 +6,17 @@ import { FocusComponent } from '../../layout/focus/focus.component';
 import { TimesheetResolver } from './timesheet/timesheet-resolver.service';
 import { TimesheetComponent } from './timesheet/timesheet.component';
 import { TimeEntryResolver } from './time-entry/time-entry-resolver.service';
+import { WorkEffortResolver } from './time-entry/work-effort-resolver.service';
 import { TimeEntryComponent } from './time-entry/time-entry.component';
+import { TimeEntryDetailComponent } from './time-entry/time-entry-detail.component';
 
 import { PartyResolver } from '../party/party/party-resolver.service';
 
 const routes: Routes = [
+// {path: 'time-entry', component: TimeEntryComponent, resolve: { timesheets: TimesheetResolver}},
 { path: '', component: TimesheetComponent, resolve: { timesheets: TimesheetResolver, partys: PartyResolver}},
-{ path: 'time-entry', component: TimeEntryComponent, resolve: { timesheets: TimesheetResolver,
-                                                                timeEntries: TimeEntryResolver, workEfforts: TimeEntryResolver},
-    children: [
-      { path: ':id', component: TimeEntryComponent, resolve: { timeEntries: TimeEntryResolver}}
-    ]},
+{ path: ':id', component: TimeEntryDetailComponent, resolve: { timeEntries: TimeEntryResolver,
+                                                            workEfforts: WorkEffortResolver}}
 ];
 
 @NgModule({

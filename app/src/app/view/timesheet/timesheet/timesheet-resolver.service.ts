@@ -20,13 +20,13 @@ export class TimesheetResolver implements Resolve<Timesheet[]> {
     private readonly lockoutService: LockoutService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Timesheet[]> {
-    console.log('resolve timesheet');
+    console.log('resolve timesheets');
     return this.timesheetService
       .timesheets()
       .toPromise()
       .then(timesheets => { return timesheets; })
       .catch(err => {
-        console.error('Cannot retrieve timesheet', err);
+        console.error('Cannot retrieve timesheets', err);
         this.lockoutService.lockout();
       });
   }

@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import { ApiClientService } from './client.service';
 import { Timesheet } from '../view/timesheet/timesheet/timesheet';
 import { TimeEntry } from '../view/timesheet/time-entry/time_entry';
+import { WorkEffort } from '../view/timesheet/time-entry/work_effort';
 
 import * as moment from 'moment';
 
@@ -65,10 +66,10 @@ export class TimesheetService {
       .map(json => json.results as TimeEntry[]);
   }
 
-  workEfforts(): Observable<TimeEntry[]> {
+  workEfforts(): Observable<WorkEffort[]> {
     console.log('search workEffort activities');
     return this.client
-      .get('timesheet/time-entry-workefforts')
+      .get('timesheet/time-entry-work-efforts')
       .map(json => json.results as TimeEntry[]);
   }
 

@@ -21,7 +21,9 @@ import { TimesheetComponent } from './timesheet/timesheet.component';
 import { TimesheetService } from '../../api/timesheet.service';
 import { Timesheet } from './timesheet/timesheet';
 import { TimesheetResolver } from './timesheet/timesheet-resolver.service';
+import { WorkEffortResolver } from './time-entry/work-effort-resolver.service';
 import { TimeEntryComponent } from './time-entry/time-entry.component';
+import { TimeEntryDetailComponent } from './time-entry/time-entry-detail.component';
 import { TimeEntry } from './time-entry/time_entry';
 import { TimeEntryResolver } from './time-entry/time-entry-resolver.service';
 
@@ -54,7 +56,8 @@ import { PartyResolver } from '../party/party/party-resolver.service';
   ],
   declarations: [
     TimesheetComponent,
-    TimeEntryComponent
+    TimeEntryComponent,
+    TimeEntryDetailComponent
   ],
   providers: [
     TimesheetService,
@@ -62,6 +65,7 @@ import { PartyResolver } from '../party/party/party-resolver.service';
     TimesheetResolver,
     TimeEntryResolver,
     PartyResolver,
+    WorkEffortResolver,
     ConfirmationService
   ]
 })

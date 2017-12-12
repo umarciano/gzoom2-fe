@@ -13,17 +13,17 @@ import { Timesheet } from '../timesheet/timesheet';
  * Retrieves the menus to be shown or locks the user out if something wrong happens.
  */
 @Injectable()
-export class TimeEntryResolver implements Resolve<Timesheet[]> {
+export class TimeEntryResolver implements Resolve<TimeEntry[]> {
 
   constructor(
     private readonly timesheetService: TimesheetService,
     private readonly lockoutService: LockoutService) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Timesheet[]> {
-    //var id = route.paramMap.get('id');
-    console.log('resolve timesheets');
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<TimeEntry[]> {
+    var id = route.paramMap.get('id');
+    console.log('resolve timeEntries for timesheetId = ' + id);
     return this.timesheetService
-    .timesheets()
+    .timeEntries(id)
     .toPromise()
     .then(timesheets => { return timesheets; })
     .catch(err => {
