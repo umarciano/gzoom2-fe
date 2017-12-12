@@ -70,7 +70,7 @@ export class TimesheetService {
     console.log('search workEffort activities');
     return this.client
       .get('timesheet/time-entry-work-efforts')
-      .map(json => json.results as TimeEntry[]);
+      .map(json => json.results as WorkEffort[]);
   }
 
   //Bodifier methods
