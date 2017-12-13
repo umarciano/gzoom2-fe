@@ -15,6 +15,11 @@
           <input type="number" [(ngModel)]="row[col.field]"/>
       </ng-template>
     </p-column>
+    <p-column [style]="{'width':'10%'}" styleClass="col-button">
+      <ng-template pTemplate="header">
+        <button type="button" pButton icon="fa-plus" (click)="addRow()"></button>
+      </ng-template>
+    </p-column>
     
   </p-dataTable>
 

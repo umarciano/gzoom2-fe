@@ -14,9 +14,9 @@ import { PartyResolver } from '../party/party/party-resolver.service';
 
 const routes: Routes = [
 // {path: 'time-entry', component: TimeEntryComponent, resolve: { timesheets: TimesheetResolver}},
-{ path: '', component: TimesheetComponent, resolve: { timesheets: TimesheetResolver, partys: PartyResolver}},
 { path: ':id', component: TimeEntryDetailComponent, resolve: { timeEntries: TimeEntryResolver,
-                                                            workEfforts: WorkEffortResolver}}
+                                                            workEfforts: WorkEffortResolver}},
+{ path: '', component: TimesheetComponent, resolve: { timesheets: TimesheetResolver, partys: PartyResolver}}                                                          
 ];
 
 @NgModule({

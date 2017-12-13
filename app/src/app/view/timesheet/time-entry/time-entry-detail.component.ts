@@ -36,7 +36,7 @@ export class TimeEntryDetailComponent implements OnInit {
   /** whether create or update */
   newTimeEntry: boolean;
   /** Timesheet to save*/
-  timeEntry: TimeEntry = new PrimeTimeEntry();
+ // timeEntry: TimeEntry = new PrimeTimeEntry(false);
   selectedTimesheetId: string;
   selectedWorkEffortId: string;
   workEffortSelectItem: SelectItem[] = [];
@@ -73,13 +73,13 @@ export class TimeEntryDetailComponent implements OnInit {
       console.log(" - data " + data);
       if (data && data.length > 0) {
         this.timeEntries = data;
-      } else {
-        let timeEntries1 = new PrimeTimeEntry();
-        timeEntries1.timesheetId = this.selectedTimesheetId;
-        
-        this.timeEntries = [timeEntries1];
-        console.log(" - this.timeEntries " + this.timeEntries);
       }
+      // addRow();
+      let timeEntries1 = new PrimeTimeEntry(false);
+      timeEntries1.timesheetId = this.selectedTimesheetId;
+      
+      this.timeEntries.push(timeEntries1);
+      console.log(" - this.timeEntries " + this.timeEntries);
     });
 
     const workEffortObs = this.route.data
@@ -94,8 +94,17 @@ export class TimeEntryDetailComponent implements OnInit {
         this.workEffortSelectItem.push({label: this.i18nService.translate('Select WorkEffort'), value:null});
       });
   }
+
+  addRow() {
+    let timeEntries1 = new PrimeTimeEntry(false);
+    timeEntries1.timesheetId = this.selectedTimesheetId;
+    
+    this.timeEntries.push(timeEntries1);
+  }
   
 }
+
+
 
 function workEFforts2SelectItems(workEffort: WorkEffort[]): SelectItem[] {
   return workEffort.map((t:WorkEffort) => {
@@ -104,7 +113,7 @@ function workEFforts2SelectItems(workEffort: WorkEffort[]): SelectItem[] {
 }
 
 class PrimeTimeEntry implements TimeEntry {
-  constructor(public timeEntryId?: string, public timesheetId?: string, public workEffortId?: string,
+  constructor(public doirty:boolean, public timeEntryId?: string, public timesheetId?: string, public workEffortId?: string,
               public description?: string) { }
 }
 
