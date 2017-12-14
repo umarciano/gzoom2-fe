@@ -2,25 +2,32 @@
 
 <p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
 
-  <p-dataTable [(value)]="timeEntries" [rows]="5" scrollable="true" scrollHeight="260px" sortMode="multiple" [responsive]="true"
+<div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none">
+  <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+  <input #gb type="text" pInputText size="50" placeholder="{{'Global Filter'|i18n}}">
+</div>
+  <p-dataTable [editable]="true" [(value)]="timeEntries" scrollable="true" sortMode="multiple" [responsive]="true"
     [globalFilter]="gb" resizableColumns="true" [responsive]="true" columnResizeMode="expand" dataKey="timeEntryId" #dt exportFilename="timeEntries">
-  
-    <p-column field="workEffortId" header="{{'Work Effort'|i18n}}" [sortable]="true">
-        <p-dropdown [options]="workEffortSelectItem" [(ngModel)]="selectedWorkEffortId" [autoWidth]="false"
-          [style]="{'width':'100%'}">
-        </p-dropdown>
-    </p-column>
-    <p-column field="percentage" header="{{'Percentage'|i18n}}" [sortable]="true" [editable]="true">
-      <ng-template pTemplate let-col let-row="rowData">
-          <input type="number" [(ngModel)]="row[col.field]"/>
-      </ng-template>
-    </p-column>
-    <p-column [style]="{'width':'10%'}" styleClass="col-button">
-      <ng-template pTemplate="header">
-        <button type="button" pButton icon="fa-plus" (click)="addRow()"></button>
-      </ng-template>
-    </p-column>
-    
+      
+      <p-column field="workEffortId" header="{{'Work Effort'|i18n}}" [sortable]="true" [editable]="true"
+      [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}">
+        <ng-template pTemplate="filter" let-col>
+          <p-dropdown appendTo="body" [autoWidth]="false" [options]="workEffortSelectItem" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode);" styleClass="ui-column-filter"></p-dropdown>
+        </ng-template>
+        <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="body">
+            <p-dropdown appendTo="body" [(ngModel)]="row[col.field]" [options]="workEffortSelectItem" [autoWidth]="false" [style]="{'width':'100%'}" required="true"></p-dropdown>
+        </ng-template>
+      </p-column>
+      <p-column field="percentage" header="{{'Percentage'|i18n}}" [sortable]="true" [editable]="true">
+        <ng-template pTemplate let-ri="rowIndex" let-col let-row="rowData">
+            <input type="number" [(ngModel)]="row[col.field]"/>
+        </ng-template>
+      </p-column>
+      <p-column [style]="{'width':'10%'}" styleClass="col-button">
+        <ng-template pTemplate="header">
+          <button type="button" pButton icon="fa-plus" (click)="addRow()"></button>
+        </ng-template>
+      </p-column>
   </p-dataTable>
 
   <div *ngIf="error" class="alert alert-danger">{{error}}</div>

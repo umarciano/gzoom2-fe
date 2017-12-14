@@ -97,14 +97,14 @@ var _ = require('lodash'),
       { partyId: '3', firstName: 'paperino', lastName: 'paperino'  }
     ],
     TIME_ENTRY = [
-      {timesheetId: '1', workEffortId : '1', percentage: '100'},
-      {timesheetId: '2', workEffortId : '2', percentage: '80'},
-      {timesheetId: '3', workEffortId : '3', percentage: '50'}
+      {timeEntryId: '1', timesheetId: '1', workEffortId : '10000', percentage: '100'},
+      {timeEntryId: '2', timesheetId: '1', workEffortId : '10001', percentage: '80'},
+      {timeEntryId: '3', timesheetId: '1', workEffortId : '10002', percentage: '50'}
     ],
     WORK_EFFORT = [
-      {attivitaLiv1: '1', attivitaLiv2 : '1.1', attivitaLiv3: '1.1.1', IdLiv3: '10000'},
-      {attivitaLiv1: '2', attivitaLiv2 : '2.1', attivitaLiv3: '2.1.1', IdLiv3: '10001'},
-      {attivitaLiv1: '3', attivitaLiv2 : '3.1', attivitaLiv3: '3.1.1', IdLiv3: '10002'}
+      {attivitaLiv1: '1', attivitaLiv2 : '1.1', attivitaLiv3: '1.1.1', workEffortId: '10000'},
+      {attivitaLiv1: '2', attivitaLiv2 : '2.1', attivitaLiv3: '2.1.1', workEffortId: '10001'},
+      {attivitaLiv1: '3', attivitaLiv2 : '3.1', attivitaLiv3: '3.1.1', workEffortId: '10002'}
     ],
     tokens = {},
     secret = generateSecret();

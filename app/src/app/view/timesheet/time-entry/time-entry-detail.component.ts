@@ -53,7 +53,8 @@ export class TimeEntryDetailComponent implements OnInit {
 
   ngOnInit() {
     console.log(" - ngOnInit ");
-    const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts());
+
+    // const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts());
     // const reloadedTimeEntries = this._reload.switchMap(() => this.timesheetService.timeEntries(this.timesheetId));
 
     this.route.paramMap
@@ -74,22 +75,14 @@ export class TimeEntryDetailComponent implements OnInit {
       if (data && data.length > 0) {
         this.timeEntries = data;
       }
-      // addRow();
-      let timeEntries1 = new PrimeTimeEntry(false);
-      timeEntries1.timesheetId = this.selectedTimesheetId;
-      
-      this.timeEntries.push(timeEntries1);
-      console.log(" - this.timeEntries " + this.timeEntries);
+      this.addRow();
     });
 
     const workEffortObs = this.route.data
     .map((data: { workEfforts: WorkEffort[] }) => data.workEfforts)
-    .merge(reloadedWorkEffort);
-
-
-    workEffortObs
-      .map(workEFforts2SelectItems)
-      .subscribe((data) => {
+    //.merge(reloadedWorkEffort)
+    .map(workEFforts2SelectItems)
+    .subscribe((data) => {
         this.workEffortSelectItem = data;
         this.workEffortSelectItem.push({label: this.i18nService.translate('Select WorkEffort'), value:null});
       });
@@ -101,14 +94,11 @@ export class TimeEntryDetailComponent implements OnInit {
     
     this.timeEntries.push(timeEntries1);
   }
-  
 }
-
-
 
 function workEFforts2SelectItems(workEffort: WorkEffort[]): SelectItem[] {
   return workEffort.map((t:WorkEffort) => {
-    return {label: t.IdLiv3, value: t.IdLiv3};
+    return {label: t.attivitaLiv1 + " - " + t.attivitaLiv2 + " - " + t.attivitaLiv3, value: t.workEffortId};
   });
 }
 
