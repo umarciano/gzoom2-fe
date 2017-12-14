@@ -8,8 +8,7 @@
 </div>
   <p-dataTable [editable]="true" [(value)]="timeEntries" scrollable="true" sortMode="multiple" [responsive]="true"
     [globalFilter]="gb" resizableColumns="true" [responsive]="true" columnResizeMode="expand" dataKey="timeEntryId" #dt exportFilename="timeEntries">
-      
-      <p-column field="workEffortId" header="{{'Work Effort'|i18n}}" [sortable]="true" [editable]="true"
+      <p-column field="workEffortId" header="{{'Work Effort'|i18n}}" [sortable]="true"
       [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}">
         <ng-template pTemplate="filter" let-col>
           <p-dropdown appendTo="body" [autoWidth]="false" [options]="workEffortSelectItem" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode);" styleClass="ui-column-filter"></p-dropdown>
