@@ -6,6 +6,8 @@
   <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
   <input #gb type="text" pInputText size="50" placeholder="{{'Global Filter'|i18n}}">
 </div>
+
+<form>
   <p-dataTable [editable]="true" [(value)]="timeEntries" scrollable="true" sortMode="multiple" [responsive]="true"
     [globalFilter]="gb" resizableColumns="true" [responsive]="true" columnResizeMode="expand" dataKey="timeEntryId" #dt exportFilename="timeEntries">
       <p-column field="workEffortId" header="{{'Work Effort'|i18n}}" [sortable]="true"
@@ -14,12 +16,14 @@
           <p-dropdown appendTo="body" [autoWidth]="false" [options]="workEffortSelectItem" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode);" styleClass="ui-column-filter"></p-dropdown>
         </ng-template>
         <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="body">
-            <p-dropdown appendTo="body" [(ngModel)]="row[col.field]" [options]="workEffortSelectItem" [autoWidth]="false" [style]="{'width':'100%'}" required="true"></p-dropdown>
+          <div>
+            <p-dropdown dataKey="workEffortId" name="workEffortId_o_{{ri}}" appendTo="body" [(ngModel)]="row[col.field]" [options]="workEffortSelectItem" [autoWidth]="false" [style]="{'width':'100%'}" required="true"></p-dropdown>
+          </div>
         </ng-template>
       </p-column>
       <p-column field="percentage" header="{{'Percentage'|i18n}}" [sortable]="true" [editable]="true">
         <ng-template pTemplate let-ri="rowIndex" let-col let-row="rowData">
-            <input type="number" [(ngModel)]="row[col.field]"/>
+            <input name="percentage_o_{{ri}}" type="number" [(ngModel)]="row[col.field]"/>
         </ng-template>
       </p-column>
       <p-column [style]="{'width':'10%'}" styleClass="col-button">
@@ -28,5 +32,5 @@
         </ng-template>
       </p-column>
   </p-dataTable>
-
+</form>
   <div *ngIf="error" class="alert alert-danger">{{error}}</div>
