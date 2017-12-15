@@ -22,11 +22,17 @@
             <input type="number" [(ngModel)]="row[col.field]"/>
         </ng-template>
       </p-column>
-      <p-column [style]="{'width':'10%'}" styleClass="col-button">
-        <ng-template pTemplate="header">
-          <button type="button" pButton icon="fa-plus" (click)="addRow()"></button>
-        </ng-template>
-      </p-column>
+      <p-footer>
+        <div class="ui-helper-clearfix" style="width:100%">
+          <div style="float: left">
+            <button type="button" pButton icon="fa-plus" (click)="addRow()" label="Add"></button>
+          </div>
+          <div class="btn-group" style="float: right" role="group" aria-label="Basic example">
+            <button type="button" pButton label="CSV"></button>
+            <button type="button" pButton label="Save"></button>
+          </div>
+        </div>
+      </p-footer>
   </p-dataTable>
 
   <div *ngIf="error" class="alert alert-danger">{{error}}</div>
