@@ -22,6 +22,8 @@ import { templateJitUrl } from '@angular/compiler';
 
 import {InputTextModule} from 'primeng/primeng';
 
+
+
 @Component({
   selector: 'app-time-entry-detail',
   templateUrl: './time-entry-detail.component.html',
