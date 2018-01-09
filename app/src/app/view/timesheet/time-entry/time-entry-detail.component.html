@@ -7,7 +7,7 @@
   <input #gb type="text" pInputText size="50" placeholder="{{'Global Filter'|i18n}}">
 </div>
 
-<form>
+<form (ngSubmit)="saveTimeEntry()">
   <p-dataTable [editable]="true" [(value)]="timeEntries" scrollable="true" sortMode="multiple" [responsive]="true"
     [globalFilter]="gb" resizableColumns="true" [responsive]="true" columnResizeMode="expand" dataKey="timeEntryId" #dt exportFilename="timeEntries">
       <p-column field="workEffortId" header="{{'Work Effort'|i18n}}" [sortable]="true"
@@ -33,7 +33,7 @@
           </div>
           <div class="btn-group" style="float: right" role="group" aria-label="Basic example">
             <button type="button" pButton icon="fa-file-o" label="{{'CSV'|i18n}}" (click)="dt.exportCSV()" style="float:left"></button>
-            <button type="button" pButton label="{{'Save'|i18n}}"></button>
+            <button type="submit" pButton label="{{'Save'|i18n}}"></button>
           </div>
         </div>
       </p-footer>

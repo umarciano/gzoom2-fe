@@ -96,6 +96,11 @@ export class TimeEntryDetailComponent implements OnInit {
     
     this.timeEntries.push(timeEntries1);
   }
+
+  saveTimeEntry() {
+    console.log("save timeEntry");
+    console.log(this.timeEntries);
+  }
 }
 
 function workEFforts2SelectItems(workEffort: WorkEffort[]): SelectItem[] {
