@@ -73,6 +73,42 @@ export class TimesheetService {
       .map(json => json.results as WorkEffort[]);
   }
 
+  createTimeEntry(timeEntry: TimeEntry):  Promise<TimeEntry> {
+    console.log('create timeEntry');
+    return this.client
+      .post('timesheet/time-entry-create', this.saveTimeEntryBodifier(timeEntry))
+      .toPromise()
+      .then(response => response)
+      .catch(response => {
+        console.error(`Error while creating in: ${response}`);
+        return Promise.reject(response.json() || response);
+      });
+  }
+
+  updateTimeEntry(timeEntryId: string, timeEntry: TimeEntry):  Promise<TimeEntry> {
+    console.log('update timeEntry');
+    return this.client
+      .put(`timesheet/time-entry-update/${timeEntryId}`, this.saveTimesheetBodifier(timeEntry))
+      .toPromise()
+      .then(response => response)
+      .catch((response: any) => {
+        console.error(`Error while updating in: ${response}`);
+        return Promise.reject(response.json() || response);
+      });
+  }
+
+  deleteTimeEntry(timeEntryId: string):  Promise<TimeEntry> {
+    console.log('delete timeEntryId with ' + timeEntryId);
+    return this.client
+      .delete(`timesheet/time-entry-delete/${timeEntryId}`)
+      .toPromise()
+      .then(response => response)
+      .catch((response: any) => {
+        console.error(`Error while deleting in: ${response}`);
+        return Promise.reject(response.json() || response);
+      });
+  }
+
   //Bodifier methods
   saveTimesheetBodifier(timesheet) {
       return {
@@ -82,6 +118,13 @@ export class TimesheetService {
         contractHours: (timesheet) ? timesheet.contractHours : null,
         partyId: (timesheet) ? timesheet.partyId : null,
         timesheetId: (timesheet) ? timesheet.timesheetId : null
+      };
+    }
+
+    saveTimeEntryBodifier(timeEntry) {
+      return {
+        timeEntryId: (timeEntry) ? timeEntry.timeEntryId : null,
+        workEffortId: (timeEntry) ? timeEntry.workEffortId : null
       };
     }
 

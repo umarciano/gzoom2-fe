@@ -38,7 +38,8 @@ export class TimeEntryDetailComponent implements OnInit {
   /** whether create or update */
   newTimeEntry: boolean;
   /** Timesheet to save*/
- // timeEntry: TimeEntry = new PrimeTimeEntry(false);
+  timeEntry: TimeEntry = new PrimeTimeEntry(false);
+  selectedTimeEntrytId: TimeEntry;
   selectedTimesheetId: string;
   selectedWorkEffortId: string;
   workEffortSelectItem: SelectItem[] = [];
@@ -91,6 +92,7 @@ export class TimeEntryDetailComponent implements OnInit {
   }
 
   addRow() {
+    this.newTimeEntry = true;
     let timeEntries1 = new PrimeTimeEntry(false);
     timeEntries1.timesheetId = this.selectedTimesheetId;
     
@@ -100,6 +102,35 @@ export class TimeEntryDetailComponent implements OnInit {
   saveTimeEntry() {
     console.log("save timeEntry");
     console.log(this.timeEntries);
+    
+    if (this.newTimeEntry) {
+      this.timesheetService
+        .createTimeEntry(this.timeEntry)
+        .then(() => {
+          this.timeEntry = null;
+          //this.displayDialog = false;
+          this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Created'), detail:this.i18nService.translate('Record created')}];
+          this._reload.next();
+        })
+        .catch((error) => {
+          console.log('error' , error.message);
+          this.error = this.i18nService.translate(error.message) || error;
+        });
+    } else {
+      this.timesheetService
+        .updateTimeEntry(this.selectedTimeEntrytId.timeEntryId, this.timeEntry)
+        .then(data => {
+          this.timeEntry = null;
+          //this.displayDialog = false;
+          this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Updated'), detail:this.i18nService.translate('Record updated')}];
+          this._reload.next();
+        })
+        .catch((error) => {
+          console.log('error' , error.message);
+          this.error = this.i18nService.translate(error.message) || error;
+        });
+    }
+
   }
 }
 
