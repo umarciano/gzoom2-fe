@@ -64,7 +64,7 @@ export class TimeEntryDetailComponent implements OnInit {
      // });
 
     // const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts());
-    // const reloadedTimeEntries = this._reload.switchMap(() => this.timesheetService.timeEntries(this.timesheetId));
+    const reloadedTimeEntries = this._reload.switchMap(() => this.timesheetService.timeEntries(this.timeEntry.timesheetId));
 
     this.route.paramMap
       .switchMap((params) => {

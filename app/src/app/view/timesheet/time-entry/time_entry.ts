@@ -3,6 +3,6 @@
  */
 export class TimeEntry {
   constructor(public timeEntryId?: string, public workEffortId?: string,
-              public description?: string) { }
+              public timesheetId?: string, public description?: string) { }
 
 }
