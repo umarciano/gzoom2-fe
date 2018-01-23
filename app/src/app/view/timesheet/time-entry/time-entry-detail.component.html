@@ -17,10 +17,11 @@
         </ng-template>
         <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="body">
           <div>
-            <p-dropdown dataKey="workEffortId" name="workEffortId_o_{{ri}}" appendTo="body" [(ngModel)]="row[col.field]" [options]="workEffortSelectItem" [autoWidth]="false" [style]="{'width':'100%'}" required="true"></p-dropdown>
+            <p-dropdown name="workEffortId_o_{{ri}}" appendTo="body" [(ngModel)]="row[col.field]" [options]="workEffortSelectItem" [autoWidth]="false" [style]="{'width':'100%'}" required="true"></p-dropdown>
           </div>
         </ng-template>
       </p-column>
+      
       <p-column field="percentage" header="{{'Percentage'|i18n}}" [sortable]="true" [editable]="true">
         <ng-template pTemplate let-ri="rowIndex" let-col let-row="rowData">
             <input name="percentage_o_{{ri}}" type="number" [(ngModel)]="row[col.field]"/>

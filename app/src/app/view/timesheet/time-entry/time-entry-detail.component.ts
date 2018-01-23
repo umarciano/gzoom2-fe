@@ -35,6 +35,7 @@ export class TimeEntryDetailComponent implements OnInit {
   _reload: Subject<void>;
   error = '';
   msgs: Message[] = [];
+  form: FormGroup;
   /** whether create or update */
   newTimeEntry: boolean;
   /** Timesheet to save*/
@@ -49,13 +50,18 @@ export class TimeEntryDetailComponent implements OnInit {
     private readonly confirmationService: ConfirmationService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly i18nService: I18NService) {
+    private readonly i18nService: I18NService,
+    private fb: FormBuilder) {
 
       this._reload = new Subject<void>();
   }
 
   ngOnInit() {
     console.log(" - ngOnInit ");
+
+    // this.form = this.fb.group({
+    //   'workEffortId': new FormControl('', Validators.required)
+     // });
 
     // const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts());
     // const reloadedTimeEntries = this._reload.switchMap(() => this.timesheetService.timeEntries(this.timesheetId));
@@ -78,7 +84,7 @@ export class TimeEntryDetailComponent implements OnInit {
       if (data && data.length > 0) {
         this.timeEntries = data;
       }
-      this.addRow();
+      //this.addRow();
     });
 
     const workEffortObs = this.route.data
@@ -102,7 +108,6 @@ export class TimeEntryDetailComponent implements OnInit {
   saveTimeEntry() {
     console.log("save timeEntry");
     console.log(this.timeEntries);
-    
     if (this.newTimeEntry) {
       this.timesheetService
         .createTimeEntry(this.timeEntry)
