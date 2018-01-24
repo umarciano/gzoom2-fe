@@ -116,7 +116,6 @@ export class TimeEntryDetailComponent implements OnInit {
     this.timesheetService
       .createOrUpdateTimeEntry(this.timeEntries)
       .then(() => {
-        this.timeEntry = null;
         this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Created'), detail:this.i18nService.translate('Record created')}];
         this._reload.next();
       })
