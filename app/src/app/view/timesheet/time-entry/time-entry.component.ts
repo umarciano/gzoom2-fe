@@ -67,7 +67,7 @@ export class TimeEntryComponent implements OnInit {
       'actualHours': new FormControl('')
     });
 
-    const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts());
+    const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts(this.selectedTimesheetId));
     const reloadedTimesheets = this._reload.switchMap(() => this.timesheetService.timesheets());
     const reloadedTimeEntries = this._reload.switchMap(() => this.timesheetService.timeEntries(this.timesheetId));
 

@@ -20,9 +20,10 @@ export class WorkEffortResolver implements Resolve<WorkEffort[]> {
     private readonly lockoutService: LockoutService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<WorkEffort[]> {
+    var id = route.paramMap.get('id');
     console.log('resolve workEfforts');
     return this.timesheetService
-    .workEfforts()
+    .workEfforts(id)
     .toPromise()
     .then(workEfforts => { return workEfforts; })
     .catch(err => {

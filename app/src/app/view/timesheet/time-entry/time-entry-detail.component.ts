@@ -63,7 +63,7 @@ export class TimeEntryDetailComponent implements OnInit {
     //   'workEffortId': new FormControl('', Validators.required)
      // });
 
-    const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts());
+    const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts(this.selectedTimesheetId));
     const reloadedTimeEntries = this._reload.switchMap(() => this.timesheetService.timeEntries(this.timeEntry.timesheetId));
 
     this.route.paramMap

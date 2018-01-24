@@ -66,10 +66,10 @@ export class TimesheetService {
       .map(json => json.results as TimeEntry[]);
   }
 
-  workEfforts(): Observable<WorkEffort[]> {
+  workEfforts(timesheetId: string): Observable<WorkEffort[]> {
     console.log('search workEffort activities');
     return this.client
-      .get('timesheet/time-entry-work-efforts')
+      .get(`timesheet/time-entry-work-efforts/${timesheetId}`)
       .map(json => json.results as WorkEffort[]);
   }
 
