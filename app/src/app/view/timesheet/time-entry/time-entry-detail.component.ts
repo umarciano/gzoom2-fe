@@ -31,7 +31,7 @@ import {InputTextModule} from 'primeng/primeng';
 })
 export class TimeEntryDetailComponent implements OnInit {
 
-  timeEntries: TimeEntry[];
+  timeEntries: TimeEntry[] = [];
   _reload: Subject<void>;
   error = '';
   msgs: Message[] = [];
@@ -63,7 +63,7 @@ export class TimeEntryDetailComponent implements OnInit {
     //   'workEffortId': new FormControl('', Validators.required)
      // });
 
-    // const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts());
+    const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts());
     const reloadedTimeEntries = this._reload.switchMap(() => this.timesheetService.timeEntries(this.timeEntry.timesheetId));
 
     this.route.paramMap
@@ -78,18 +78,18 @@ export class TimeEntryDetailComponent implements OnInit {
 
     this.route.data
     .map((data: { timeEntries: TimeEntry[] }) => data.timeEntries)
-    // .merge(reloadedTimeEntries)
+    .merge(reloadedTimeEntries)
     .subscribe((data) => {
       console.log(" - data " + data);
       if (data && data.length > 0) {
         this.timeEntries = data;
       }
-      //this.addRow();
+      this.addRow();
     });
 
     const workEffortObs = this.route.data
     .map((data: { workEfforts: WorkEffort[] }) => data.workEfforts)
-    //.merge(reloadedWorkEffort)
+    .merge(reloadedWorkEffort)
     .map(workEFforts2SelectItems)
     .subscribe((data) => {
         this.workEffortSelectItem = data;
@@ -108,6 +108,7 @@ export class TimeEntryDetailComponent implements OnInit {
   saveTimeEntry() {
     console.log("save timeEntry");
     console.log(this.timeEntries);
+
     if (this.newTimeEntry) {
       this.timesheetService
         .createTimeEntry(this.timeEntry)
@@ -146,7 +147,7 @@ function workEFforts2SelectItems(workEffort: WorkEffort[]): SelectItem[] {
 }
 
 class PrimeTimeEntry implements TimeEntry {
-  constructor(public doirty:boolean, public timeEntryId?: string, public timesheetId?: string, public workEffortId?: string,
+  constructor(public dirty:boolean, public timeEntryId?: string, public timesheetId?: string, public workEffortId?: string,
               public description?: string) { }
 }
 
