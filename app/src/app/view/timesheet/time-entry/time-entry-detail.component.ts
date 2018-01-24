@@ -72,9 +72,14 @@ export class TimeEntryDetailComponent implements OnInit {
         console.log(" - this.selectedTimesheetId " + this.selectedTimesheetId);
         return this.timesheetService.timeEntries(this.selectedTimesheetId);
       })
-      /*.subscribe((data) => {
+      .subscribe((data) => {
+        console.log(" - paramMap data " + data);
+      console.log(" - paramMap this.selectedTimesheetId " + this.selectedTimesheetId);
+          
+      if (data && data.length > 0) {
         this.timeEntries = data;
-    })*/;
+      }
+    });
 
     this.route.data
     .map((data: { timeEntries: TimeEntry[] }) => data.timeEntries)
@@ -109,9 +114,9 @@ export class TimeEntryDetailComponent implements OnInit {
     console.log("save timeEntry");
     console.log(this.timeEntries);
 
-    if (this.newTimeEntry) {
+   // if (this.newTimeEntry) {
       this.timesheetService
-        .createTimeEntry(this.timeEntry)
+        .createTimeEntry(this.timeEntries)
         .then(() => {
           this.timeEntry = null;
           //this.displayDialog = false;
@@ -122,7 +127,9 @@ export class TimeEntryDetailComponent implements OnInit {
           console.log('error' , error.message);
           this.error = this.i18nService.translate(error.message) || error;
         });
-    } else {
+    //} 
+    /*
+    else {
       this.timesheetService
         .updateTimeEntry(this.selectedTimeEntrytId.timeEntryId, this.timeEntry)
         .then(data => {
@@ -135,7 +142,7 @@ export class TimeEntryDetailComponent implements OnInit {
           console.log('error' , error.message);
           this.error = this.i18nService.translate(error.message) || error;
         });
-    }
+    } */
 
   }
 }
@@ -148,7 +155,7 @@ function workEFforts2SelectItems(workEffort: WorkEffort[]): SelectItem[] {
 
 class PrimeTimeEntry implements TimeEntry {
   constructor(public dirty:boolean, public timeEntryId?: string, public timesheetId?: string, public workEffortId?: string,
-              public description?: string) { }
+              public description?: string, public percentage?: number) { }
 }
 
 

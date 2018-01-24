@@ -11,6 +11,10 @@ import { WorkEffort } from '../view/timesheet/time-entry/work_effort';
 
 import * as moment from 'moment';
 
+import * as _ from 'lodash';
+
+import 'rxjs/add/operator/map';
+
 @Injectable()
 export class TimesheetService {
 
@@ -73,10 +77,10 @@ export class TimesheetService {
       .map(json => json.results as WorkEffort[]);
   }
 
-  createTimeEntry(timeEntry: TimeEntry):  Promise<TimeEntry> {
+  createTimeEntry(timeEntries: TimeEntry[]):  Promise<TimeEntry> {
     console.log('create timeEntry');
     return this.client
-      .post('timesheet/time-entry-create', this.saveTimeEntryBodifier(timeEntry))
+      .post('timesheet/time-entry-create', this.saveTimeEntriesBodifier(timeEntries))
       .toPromise()
       .then(response => response)
       .catch(response => {
@@ -121,17 +125,29 @@ export class TimesheetService {
       };
     }
 
-    saveTimeEntryBodifier(timeEntry) {
-      return {
-        timeEntryId: (timeEntry) ? timeEntry.timeEntryId : null,
-        workEffortId: (timeEntry) ? timeEntry.workEffortId : null
-      };
-    }
-
+    saveTimeEntriesBodifier(timeEntries: TimeEntry[]) {
+      return timeEntries.map((timeEntry) => {
+          return {
+            workEffortId: timeEntry.workEffortId,
+            timesheetId: timeEntry.timesheetId,
+            percentage: timeEntry.percentage,
+            timeEntryId: timeEntry.timeEntryId,
+            fromDate: this.getDate(timeEntry.fromDate),
+            thruDate: this.getDate(timeEntry.thruDate),
+          };
+        });
+      }
 
     getDate(date) {
       if (date) return moment(date).format("YYYY-MM-DD");
       else return null;
     }
+    
 
 }
+
+class PrimeTimeEntry implements TimeEntry {
+  constructor(public dirty:boolean, public timeEntryId?: string, public timesheetId?: string, 
+              public workEffortId?: string, public description?: string, public percentage?: number) { }
+}
+
