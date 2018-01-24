@@ -77,10 +77,10 @@ export class TimesheetService {
       .map(json => json.results as WorkEffort[]);
   }
 
-  createTimeEntry(timeEntries: TimeEntry[]):  Promise<TimeEntry> {
+  createOrUpdateTimeEntry(timeEntries: TimeEntry[]):  Promise<TimeEntry> {
     console.log('create timeEntry');
     return this.client
-      .post('timesheet/time-entry-create', this.saveTimeEntriesBodifier(timeEntries))
+      .post('timesheet/time-entry-create-or-update', this.saveTimeEntriesBodifier(timeEntries))
       .toPromise()
       .then(response => response)
       .catch(response => {
@@ -89,6 +89,7 @@ export class TimesheetService {
       });
   }
 
+  /*
   updateTimeEntry(timeEntryId: string, timeEntry: TimeEntry):  Promise<TimeEntry> {
     console.log('update timeEntry');
     return this.client
@@ -100,7 +101,8 @@ export class TimesheetService {
         return Promise.reject(response.json() || response);
       });
   }
-
+  */
+  
   deleteTimeEntry(timeEntryId: string):  Promise<TimeEntry> {
     console.log('delete timeEntryId with ' + timeEntryId);
     return this.client

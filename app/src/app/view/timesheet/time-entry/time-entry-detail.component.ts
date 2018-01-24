@@ -113,37 +113,17 @@ export class TimeEntryDetailComponent implements OnInit {
   saveTimeEntry() {
     console.log("save timeEntry");
     console.log(this.timeEntries);
-
-   // if (this.newTimeEntry) {
-      this.timesheetService
-        .createTimeEntry(this.timeEntries)
-        .then(() => {
-          this.timeEntry = null;
-          //this.displayDialog = false;
-          this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Created'), detail:this.i18nService.translate('Record created')}];
-          this._reload.next();
-        })
-        .catch((error) => {
-          console.log('error' , error.message);
-          this.error = this.i18nService.translate(error.message) || error;
-        });
-    //} 
-    /*
-    else {
-      this.timesheetService
-        .updateTimeEntry(this.selectedTimeEntrytId.timeEntryId, this.timeEntry)
-        .then(data => {
-          this.timeEntry = null;
-          //this.displayDialog = false;
-          this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Updated'), detail:this.i18nService.translate('Record updated')}];
-          this._reload.next();
-        })
-        .catch((error) => {
-          console.log('error' , error.message);
-          this.error = this.i18nService.translate(error.message) || error;
-        });
-    } */
-
+    this.timesheetService
+      .createOrUpdateTimeEntry(this.timeEntries)
+      .then(() => {
+        this.timeEntry = null;
+        this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Created'), detail:this.i18nService.translate('Record created')}];
+        this._reload.next();
+      })
+      .catch((error) => {
+        console.log('error' , error.message);
+        this.error = this.i18nService.translate(error.message) || error;
+      });
   }
 }
 
