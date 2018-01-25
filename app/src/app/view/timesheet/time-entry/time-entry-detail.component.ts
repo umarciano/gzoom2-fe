@@ -40,7 +40,7 @@ export class TimeEntryDetailComponent implements OnInit {
   newTimeEntry: boolean;
   /** Timesheet to save*/
   timeEntry: TimeEntry = new PrimeTimeEntry(false);
-  selectedTimeEntrytId: TimeEntry;
+  selectedTimeEntry: TimeEntry;
   selectedTimesheetId: string;
   selectedWorkEffortId: string;
   workEffortSelectItem: SelectItem[] = [];
@@ -64,7 +64,7 @@ export class TimeEntryDetailComponent implements OnInit {
      // });
 
     const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts(this.selectedTimesheetId));
-    const reloadedTimeEntries = this._reload.switchMap(() => this.timesheetService.timeEntries(this.timeEntry.timesheetId));
+    const reloadedTimeEntries = this._reload.switchMap(() => this.timesheetService.timeEntries(this.selectedTimesheetId));
 
     this.route.paramMap
       .switchMap((params) => {
@@ -117,6 +117,33 @@ export class TimeEntryDetailComponent implements OnInit {
       .createOrUpdateTimeEntry(this.timeEntries)
       .then(() => {
         this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Created'), detail:this.i18nService.translate('Record created')}];
+        this._reload.next();
+      })
+      .catch((error) => {
+        console.log('error' , error.message);
+        this.error = this.i18nService.translate(error.message) || error;
+      });
+  }
+
+  confirmDeleteTimeEntry(data: TimeEntry) {
+    this.confirmationService.confirm({
+      message: this.i18nService.translate('Do you want to delete this record?'),
+      header: this.i18nService.translate('Delete Confirmation'),
+      icon: 'fa fa-trash',
+      accept: () => {
+        this.deleteTimeEntry(data);
+      },
+      reject: () => {
+          this.timeEntry = null;
+        }
+    });
+  }
+
+  deleteTimeEntry(data: TimeEntry) {
+    this.timesheetService
+      .deleteTimeEntry(data.timeEntryId)
+      .then(data => {
+        this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Confirmed'), detail:this.i18nService.translate('Record deleted')}];
         this._reload.next();
       })
       .catch((error) => {
