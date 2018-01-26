@@ -21,7 +21,7 @@ import { TimesheetService } from '../../../api/timesheet.service';
 import { templateJitUrl } from '@angular/compiler';
 
 import {InputTextModule} from 'primeng/primeng';
-
+import {AutoCompleteModule} from 'primeng/primeng';
 
 
 @Component({

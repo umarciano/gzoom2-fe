@@ -15,6 +15,7 @@ import { TooltipModule } from 'primeng/primeng';
 import { CommonsModule } from '../../commons/commons.module';
 import { ApiModule } from '../../api/api.module';
 import { LayoutModule } from '../../layout/layout.module';
+import {AutoCompleteModule} from 'primeng/primeng';
 
 import { TimesheetRoutingModule } from './timesheet-routing.module';
 import { TimesheetComponent } from './timesheet/timesheet.component';
@@ -52,7 +53,8 @@ import { PartyResolver } from '../party/party/party-resolver.service';
     GrowlModule,
     DropdownModule,
     TooltipModule,
-    TimesheetRoutingModule
+    TimesheetRoutingModule,
+    AutoCompleteModule
   ],
   declarations: [
     TimesheetComponent,
