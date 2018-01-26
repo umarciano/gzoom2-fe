@@ -451,5 +451,25 @@ app.get('/rest/party/person', function(req, res) {
   }, _.random(200, 1000));
 });
 
+//timesheet/time-entry
+app.get('/rest/timesheet/time-entry/:id', function(req, res) {
+  const id = req.param('id');
+  var timeEntries = data.timeEntries(id);
+  log.debug('Looking up timeEntries ' + timeEntries);
+  setTimeout(function() {
+    res.json({ results: timeEntries, total: timeEntries.length });
+  }, _.random(200, 1000));
+});
+
+//timesheet/work-effort
+app.get('/rest/timesheet/time-entry-work-efforts/:id', function(req, res) {
+  const id = req.param('id');
+  var workEfforts = data.workEfforts();
+  log.debug('Looking up workEfforts ' + workEfforts);
+  setTimeout(function() {
+    res.json({ results: workEfforts, total: workEfforts.length });
+  }, _.random(200, 1000));
+});
+
 app.listen(PORT);
 log.info("Server started: http://localhost:" + PORT);
