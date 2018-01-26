@@ -462,8 +462,8 @@ app.get('/rest/timesheet/time-entry/:id', function(req, res) {
 });
 
 //timesheet/work-effort
-app.get('/rest/timesheet/time-entry-work-efforts', function(req, res) {
-  // const id = req.param('id');
+app.get('/rest/timesheet/time-entry-work-efforts/:id', function(req, res) {
+  const id = req.param('id');
   var workEfforts = data.workEfforts();
   log.debug('Looking up workEfforts ' + workEfforts);
   setTimeout(function() {
