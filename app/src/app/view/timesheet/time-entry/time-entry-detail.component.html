@@ -24,7 +24,7 @@
           <p-autoComplete name="workEffortId_o_{{ri}}" [(ngModel)]="row[col.field]" [suggestions]="filteredActivities" (completeMethod)="filterActivities($event)"
             [minLength]="1" placeholder="Inizia a scrivere..." [dropdown]="true" appendTo="body" [style]="{'width':'95%'}" [inputStyle]="{'width':'95%'}">
             <ng-template let-record pTemplate="item">
-                <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                <div class="ui-helper-clearfix">
                   <div>{{record}}</div>
                 </div>
             </ng-template>
