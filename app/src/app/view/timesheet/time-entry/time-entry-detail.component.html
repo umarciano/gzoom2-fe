@@ -10,7 +10,7 @@
 <form (ngSubmit)="saveTimeEntry()">
   <p-dataTable [editable]="true" [(value)]="timeEntries" scrollable="true" sortMode="multiple" [responsive]="true"
     [globalFilter]="gb" resizableColumns="true" [responsive]="true" columnResizeMode="expand" dataKey="timeEntryId" #dt exportFilename="timeEntries">
-      <p-column datakey="workEffortId" field="attivitaLiv1" header="{{'Work Effort'|i18n}}" [sortable]="true" [style]="{'width':'75%'}"
+      <p-column datakey="workEffortId" field="description" header="{{'Work Effort'|i18n}}" [sortable]="true" [style]="{'width':'75%'}"
         [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}">
         <!-- <ng-template pTemplate="filter" let-col>
           <p-dropdown appendTo="body" [autoWidth]="false" [options]="workEffortSelectItem" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode);" styleClass="ui-column-filter"></p-dropdown>
