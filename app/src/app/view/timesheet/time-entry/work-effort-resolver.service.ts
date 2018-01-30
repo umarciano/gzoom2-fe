@@ -6,28 +6,31 @@ import 'rxjs/add/operator/toPromise';
 
 import { LockoutService } from '../../../commons/lockout.service';
 import { TimesheetService } from '../../../api/timesheet.service';
-import { Timesheet } from './timesheet';
+import { TimeEntry } from './time_entry';
+import { WorkEffort } from './work_effort';
 
-import { DatePipe } from '@angular/common';
 /**
  * Retrieves the menus to be shown or locks the user out if something wrong happens.
  */
 @Injectable()
-export class TimesheetResolver implements Resolve<Timesheet[]> {
+export class WorkEffortResolver implements Resolve<WorkEffort[]> {
 
   constructor(
     private readonly timesheetService: TimesheetService,
     private readonly lockoutService: LockoutService) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Timesheet[]> {
-    console.log('resolve timesheets');
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<WorkEffort[]> {
+    var id = route.paramMap.get('id');
+    console.log('resolve workEfforts');
     return this.timesheetService
-      .timesheets()
-      .toPromise()
-      .then(timesheets => { return timesheets; })
-      .catch(err => {
-        console.error('Cannot retrieve timesheets', err);
-        this.lockoutService.lockout();
-      });
+    .workEfforts(id)
+    .toPromise()
+    .then(workEfforts => { return workEfforts; })
+    .catch(err => {
+      console.error('Cannot retrieve workEfforts', err);
+      this.lockoutService.lockout();
+    });
   }
 }
+
+

@@ -92,9 +92,19 @@ var _ = require('lodash'),
       {partyId: '5', timesheetId: '5', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' }
     ],
     PARTY = [
-      { partyId: '1', description: 'pippo' },
-      { partyId: '2', description: 'pluto' },
-      { partyId: '3', description: 'paperino' }
+      { partyId: '1', firstName: 'pippo', lastName: 'pippo' },
+      { partyId: '2', firstName: 'pluto', lastName: 'pluto'  },
+      { partyId: '3', firstName: 'paperino', lastName: 'paperino'  }
+    ],
+    TIME_ENTRY = [
+      {timeEntryId: '1', timesheetId: '1', workEffortId : '10000', percentage: '100'},
+      {timeEntryId: '2', timesheetId: '1', workEffortId : '10001', percentage: '80'},
+      {timeEntryId: '3', timesheetId: '1', workEffortId : '10002', percentage: '50'}
+    ],
+    WORK_EFFORT = [
+      {attivitaLiv1: '1', attivitaLiv2 : '1.1', attivitaLiv3: '1.1.1', workEffortId: '10000'},
+      {attivitaLiv1: '2', attivitaLiv2 : '2.1', attivitaLiv3: '2.1.1', workEffortId: '10001'},
+      {attivitaLiv1: '3', attivitaLiv2 : '3.1', attivitaLiv3: '3.1.1', workEffortId: '10002'}
     ],
     TIME_ENTRY = [
       {timeEntryId: '1', timesheetId: '1', workEffortId : '10000', attivitaLiv3: '1.1.1', percentage: '100'},
@@ -332,6 +342,7 @@ module.exports = {
     return id;
   },
 
+
   //timesheet
   timesheets: function() {
     return TIMESHEET;
@@ -339,6 +350,14 @@ module.exports = {
 
   partys: function () {
     return PARTY;
+  },
+  
+  timeEntries: function () {
+    return TIME_ENTRY;
+  },
+  
+  workEfforts: function () {
+    return WORK_EFFORT;
   }
 
 };

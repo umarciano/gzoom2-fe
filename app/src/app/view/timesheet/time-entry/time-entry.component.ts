@@ -40,9 +40,9 @@ export class TimeEntryComponent implements OnInit {
   /** Timesheet to save*/
   timeEntry: TimeEntry = new PrimeTimeEntry();
   /** Selected timesheet in Dialog*/
-  timesheetId: String;
+  timesheetId: string;
   selectedTimeEntry: TimeEntry;
-
+  selectedTimesheetId: string;
   selectedWorkEffortId: string;
   workEffortSelectItem: SelectItem[] = [];
 
@@ -67,12 +67,31 @@ export class TimeEntryComponent implements OnInit {
       'actualHours': new FormControl('')
     });
 
+    const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts(this.selectedTimesheetId));
+    const reloadedTimesheets = this._reload.switchMap(() => this.timesheetService.timesheets());
+    const reloadedTimeEntries = this._reload.switchMap(() => this.timesheetService.timeEntries(this.timesheetId));
+
     this.route.data
       .map((data: { timesheets: Timesheet[] }) => data.timesheets)
       .subscribe(data => this.timesheets = data);
 
-    const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts());
-    const reloadedTimesheets = this._reload.switchMap(() => this.timesheetService.timesheets());
+    this.route.data
+      .map((data: { timeEntries: TimeEntry[] }) => data.timeEntries)
+      .merge(reloadedTimeEntries)
+      .subscribe((data) => {
+        this.timeEntries = data;
+      });
+
+    this.route.paramMap
+      .switchMap((params) => {
+        this.selectedTimesheetId = params.get('id');
+        //return this.timesheetService.timeEntries(this.selectedTimesheetId);
+        return this.timesheetService.timeEntries('10020');
+      })
+      .subscribe((data) => {
+        this.timeEntries = data;
+        this._reload.next();
+    });
 
     const timesheetsObs = this.route.data
     .map((data: { timesheets: Timesheet[] }) => data.timesheets)
@@ -95,11 +114,12 @@ export class TimeEntryComponent implements OnInit {
       });
     }
 
-    selectTimesheet(data: Timesheet) {
+    onRowSelect(data: Timesheet) {
       this.timesheetId = data.timesheetId;
       this.displayDialog = true;
-      this.timesheetService
-        .timeEntries(this.timesheetId)
+      /*return this.timesheetService
+        .timeEntries(this.timesheetId);*/
+      this.router.navigate([this.timesheetId], { relativeTo: this.route });
     }
 }
 
