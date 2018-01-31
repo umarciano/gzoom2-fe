@@ -9,7 +9,7 @@
                 #dts exportFilename="uomRatingScales">
       <p-header>
         <div class="ui-helper-clearfix">
-          <button type="button" pButton icon="fa-file-o" iconPos="left" label="{{'CSV'|i18n}}" (click)="dts.exportCSV()" style="float:left"></button>
+          <button type="button" pButton icon="far fa-file" iconPos="left" label="{{'CSV'|i18n}}" (click)="dts.exportCSV()" style="float:left"></button>
         </div>
       </p-header>
       <p-column [style]="{'width':'35%'}" field="uom.description" header="{{'Uom Id'|i18n}}"
@@ -30,7 +30,7 @@
           <button [disabled]="!displayRangeScale &amp;&amp; !isRatingScale" type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
         </ng-template>
         <ng-template let-uomRatingScale="rowData" pTemplate="body">
-          <button [disabled]="!displayRangeScale" type="button" pButton icon="fa-pencil" (click)="selectUomRatingScale(uomRatingScale)"></button>
+          <button [disabled]="!displayRangeScale" type="button" pButton icon="fa-pencil-alt" (click)="selectUomRatingScale(uomRatingScale)"></button>
         </ng-template>
       </p-column>
     </p-dataTable>
@@ -79,7 +79,7 @@
           </div>
           <p-footer>
             <div class="ui-dialog-buttonpane ui-helper-clearfix">
-              <button *ngIf="!newUom" type="button" pButton icon="fa-trash" (click)="confirm()" label="{{'Delete'|i18n}}"></button>
+              <button *ngIf="!newUom" type="button" pButton icon="fa-trash-alt" (click)="confirm()" label="{{'Delete'|i18n}}"></button>
               <button type="button" pButton icon="fa-check" (click)="save()" label="{{'Save'|i18n}}"></button>
             </div>
           </p-footer>

@@ -38,7 +38,7 @@
       </p-column>
       <p-column [style]="{'width':'10%'}" styleClass="col-button">
         <ng-template let-timeEntry="rowData" pTemplate="body">
-          <button type="button" pButton icon="fa-trash" (click)="confirmDeleteTimeEntry(timeEntry)"></button>
+          <button type="button" pButton icon="fa-trash-alt" (click)="confirmDeleteTimeEntry(timeEntry)"></button>
         </ng-template>
       </p-column>
       <p-footer>
@@ -47,7 +47,7 @@
             <button type="button" pButton icon="fa-plus" (click)="addRow()" label="Add"></button>
           </div>
           <div class="btn-group" style="float: right" role="group" aria-label="Basic example">
-            <button type="button" pButton icon="fa-file-o" label="{{'CSV'|i18n}}" (click)="dt.exportCSV()" style="float:left"></button>
+            <button type="button" pButton icon="far fa-file" label="{{'CSV'|i18n}}" (click)="dt.exportCSV()" style="float:left"></button>
             <button type="submit" pButton label="{{'Save'|i18n}}"></button>
           </div>
         </div>

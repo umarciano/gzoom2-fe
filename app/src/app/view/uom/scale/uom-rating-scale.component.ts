@@ -170,7 +170,7 @@ export class UomRatingScaleComponent implements OnInit {
     this.confirmationService.confirm({
       message: this.i18nService.translate('Do you want to delete this record?'),
       header: this.i18nService.translate('Delete Confirmation'),
-      icon: 'fa fa-trash',
+      icon: 'fa fa-trash-alt',
       accept: () => {
         this.delete();
         this.displayDialog = false;
