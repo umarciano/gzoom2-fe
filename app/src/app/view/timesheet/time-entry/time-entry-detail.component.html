@@ -10,15 +10,25 @@
 <form (ngSubmit)="saveTimeEntry()">
   <p-dataTable [editable]="true" [(value)]="timeEntries" scrollable="true" sortMode="multiple" [responsive]="true"
     [globalFilter]="gb" resizableColumns="true" [responsive]="true" columnResizeMode="expand" dataKey="timeEntryId" #dt exportFilename="timeEntries">
-      <p-column field="workEffortId" header="{{'Work Effort'|i18n}}" [sortable]="true" [style]="{'width':'75%'}"
-      [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}">
-        <ng-template pTemplate="filter" let-col>
+      <p-column datakey="workEffortId" field="description" header="{{'Work Effort'|i18n}}" [sortable]="true" [style]="{'width':'75%'}"
+        [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}">
+        <!-- <ng-template pTemplate="filter" let-col>
           <p-dropdown appendTo="body" [autoWidth]="false" [options]="workEffortSelectItem" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode);" styleClass="ui-column-filter"></p-dropdown>
-        </ng-template>
-        <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="body">
+        </ng-template> -->
+        <!-- <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="body">
           <div>
             <p-dropdown name="workEffortId_o_{{ri}}" appendTo="body" [(ngModel)]="row[col.field]" [options]="workEffortSelectItem" [autoWidth]="false" [style]="{'width':'100%'}" required="true"></p-dropdown>
           </div>
+        </ng-template> -->
+        <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="body">
+          <p-autoComplete name="workEffortId_o_{{ri}}" [(ngModel)]="row[col.field]" [suggestions]="filteredActivities" (completeMethod)="filterActivities($event)"
+            [minLength]="1" placeholder="Inizia a scrivere..." [dropdown]="true" appendTo="body" [style]="{'width':'95%'}" [inputStyle]="{'width':'95%'}">
+            <ng-template let-record pTemplate="item">
+                <div class="ui-helper-clearfix">
+                  <div>{{record}}</div>
+                </div>
+            </ng-template>
+          </p-autoComplete>
         </ng-template>
   </p-column>
       <p-column field="percentage" header="{{'Percentage'|i18n}}" [sortable]="true" [editable]="true"> 

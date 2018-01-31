@@ -17,6 +17,9 @@ import { Message } from '../../../commons/message';
 import { I18NService } from '../../../commons/i18n.service';
 import { TimesheetService } from '../../../api/timesheet.service';
 
+import {AutoCompleteModule} from 'primeng/primeng';
+import { isBlank } from 'app/commons/commons';
+
 
 @Component({
   selector: 'app-time-entry-detail',
@@ -38,6 +41,8 @@ export class TimeEntryDetailComponent implements OnInit {
   selectedTimesheetId: string;
   selectedWorkEffortId: string;
   workEffortSelectItem: SelectItem[] = [];
+  activities: SelectItem[] = [];
+  filteredActivities: any[];
 
   constructor(
     private readonly timesheetService: TimesheetService,
@@ -52,10 +57,6 @@ export class TimeEntryDetailComponent implements OnInit {
 
   ngOnInit() {
     console.log(" - ngOnInit ");
-
-    // this.form = this.fb.group({
-    //   'workEffortId': new FormControl('', Validators.required)
-     // });
 
     const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts(this.selectedTimesheetId));
     const reloadedTimeEntries = this._reload.switchMap(() => this.timesheetService.timeEntries(this.selectedTimesheetId));
@@ -145,6 +146,16 @@ export class TimeEntryDetailComponent implements OnInit {
         this.error = this.i18nService.translate(error.message) || error;
       });
   }
+
+  filterActivities(event) {
+    this.filteredActivities = [];
+     for(let i = 0; i < this.workEffortSelectItem.length; i++) {
+         let record = this.workEffortSelectItem[i];
+         if(record.label.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
+                     this.filteredActivities.push(record.label);
+          }
+     }
+  }
 }
 
 function workEFforts2SelectItems(workEffort: WorkEffort[]): SelectItem[] {
@@ -157,5 +168,3 @@ class PrimeTimeEntry implements TimeEntry {
   constructor(public dirty:boolean, public timeEntryId?: string, public timesheetId?: string, public workEffortId?: string,
               public description?: string, public percentage?: number) { }
 }
-
-
