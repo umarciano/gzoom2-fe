@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders, Injectable, APP_INITIALIZER } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpModule, Http } from '@angular/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 import { AuthService, AuthServiceConfig } from './auth.service';
 import { AuthGuard } from './guard.service';
@@ -27,7 +27,7 @@ export interface CommonsConfig {
 }
 
 @NgModule({
-  imports: [CommonModule, HttpModule],
+  imports: [CommonModule, HttpClientModule],
   declarations: [
     I18NPipe,
     I18NNumPipe,
@@ -68,7 +68,7 @@ export class CommonsModule {
         { provide: I18NConfig, useValue: config.i18n },
         { provide: ApplicationConfig, useValue: config.application },
         /* next line loads the i18n configuration from server during bootstrap */
-        { provide: APP_INITIALIZER, useFactory: load, deps: [Http, I18NConfig], multi: true },
+        { provide: APP_INITIALIZER, useFactory: load, deps: [HttpClient, I18NConfig], multi: true },
         AuthService,
         LockoutService,
         AuthGuard,

@@ -12,13 +12,13 @@ import { RootMenu } from '../api/dto';
  * Retrieves the menus to be shown or locks the user out if something wrong happens.
  */
 @Injectable()
-export class MenuResolver implements Resolve<RootMenu> {
+export class MenuResolver implements Resolve<void | RootMenu> {
 
   constructor(
     private readonly menuService: MenuService,
     private readonly lockoutService: LockoutService) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<RootMenu> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | RootMenu> {
     return this.menuService
       .menu()
       .toPromise()

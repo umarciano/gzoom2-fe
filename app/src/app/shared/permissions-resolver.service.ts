@@ -10,7 +10,7 @@ import { LockoutService } from '../commons/lockout.service';
 import { AuthorizationService } from './authorization.service';
 
 @Injectable()
-export class PermissionsResolver implements Resolve<boolean> {
+export class PermissionsResolver implements Resolve<void | boolean> {
 
   constructor(
     private readonly accountService: AccountService,
@@ -23,7 +23,7 @@ export class PermissionsResolver implements Resolve<boolean> {
     });
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Promise<boolean> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Promise<void | boolean> {
     if (this.authorService.isInitialized()) {
       return true;
     }

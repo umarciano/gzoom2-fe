@@ -1,27 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { first, map, merge, switchMap } from 'rxjs/operators';
 
-import 'rxjs/add/operator/map'
-import 'rxjs/add/operator/merge';
-import 'rxjs/add/operator/first';
-import 'rxjs/add/operator/switchMap';
+import { ConfirmDialogModule, ConfirmationService, InputTextModule, SpinnerModule, TooltipModule } from 'primeng/primeng';
 
-import {TimeEntry} from './time_entry';
-import {Timesheet} from '../timesheet/timesheet';
-import {WorkEffort} from './work_effort';
+import { TimeEntry } from './time_entry';
+import { Timesheet } from '../timesheet/timesheet';
+import { WorkEffort } from './work_effort';
 
-import { ConfirmDialogModule, ConfirmationService, SpinnerModule, TooltipModule } from 'primeng/primeng';
 import { SelectItem } from '../../../commons/selectitem';
 import { Message } from '../../../commons/message';
 import { I18NService } from '../../../commons/i18n.service';
 import { TimesheetService } from '../../../api/timesheet.service';
-import { templateJitUrl } from '@angular/compiler';
-
-import {InputTextModule} from 'primeng/primeng';
-
 
 
 @Component({
@@ -81,10 +75,10 @@ export class TimeEntryDetailComponent implements OnInit {
       }
     });
 
-    this.route.data
-    .map((data: { timeEntries: TimeEntry[] }) => data.timeEntries)
-    .merge(reloadedTimeEntries)
-    .subscribe((data) => {
+    this.route.data.pipe(
+      map((data: { timeEntries: TimeEntry[] }) => data.timeEntries),
+      merge(reloadedTimeEntries)
+    ).subscribe((data) => {
       console.log(" - data " + data);
       if (data && data.length > 0) {
         this.timeEntries = data;
@@ -92,11 +86,11 @@ export class TimeEntryDetailComponent implements OnInit {
       this.addRow();
     });
 
-    const workEffortObs = this.route.data
-    .map((data: { workEfforts: WorkEffort[] }) => data.workEfforts)
-    .merge(reloadedWorkEffort)
-    .map(workEFforts2SelectItems)
-    .subscribe((data) => {
+    const workEffortObs = this.route.data.pipe(
+      map((data: { workEfforts: WorkEffort[] }) => data.workEfforts),
+      merge(reloadedWorkEffort),
+      map(workEFforts2SelectItems)
+    ).subscribe((data) => {
         this.workEffortSelectItem = data;
         this.workEffortSelectItem.push({label: this.i18nService.translate('Select WorkEffort'), value:null});
       });

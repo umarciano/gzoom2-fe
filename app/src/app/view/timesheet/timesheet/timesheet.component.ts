@@ -1,27 +1,26 @@
 import { Component, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/merge';
-import 'rxjs/add/operator/first';
-import 'rxjs/add/operator/switchMap';
+import { first, map, merge, switchMap } from 'rxjs/operators';
 
 import { ConfirmDialogModule, ConfirmationService, SpinnerModule, TooltipModule } from 'primeng/primeng';
+
+import * as moment from 'moment';
+
 import { SelectItem } from '../../../commons/selectitem';
 import { I18NService } from '../../../commons/i18n.service';
+import { i18NDatePipe } from '../../../commons/i18nDate.pipe';
 import { Message } from '../../../commons/message';
-import {Timesheet} from './timesheet';
+import { Timesheet } from './timesheet';
 import { TimesheetService } from '../../../api/timesheet.service';
 
-import {Party} from '../../party/party/party';
-import {PartyService} from '../../../api/party.service';
+import { Party } from '../../party/party/party';
+import { PartyService } from '../../../api/party.service';
 
-import { DatePipe } from '@angular/common';
-import { i18NDatePipe } from '../../../commons/i18nDate.pipe';
-import * as moment from 'moment';
 
 /** Convert from Party[] to SelectItem[] */
 function party2SelectItems(person: Party[]): SelectItem[] {
@@ -78,32 +77,28 @@ export class TimesheetComponent implements OnInit {
             'actualHours': new FormControl('')
 
         });
-    this.route.data
-      .map((data: { timesheets: Timesheet[] }) => data.timesheets)
-      .subscribe(data => this.timesheets = data);
+    this.route.data.pipe(
+      map((data: { timesheets: Timesheet[] }) => data.timesheets)
+    ).subscribe(data => this.timesheets = data);
 
     const reloadedParty = this._reload.switchMap(() => this.partyService.partys());
     const reloadedTimesheets = this._reload.switchMap(() => this.timesheetService.timesheets());
 
-    const partyObs = this.route.data
-      .map((data: { partys: Party[] }) => data.partys)
-      .merge(reloadedParty);
+    const partyObs = this.route.data.pipe(
+      map((data: { partys: Party[] }) => data.partys),
+      merge(reloadedParty),
+      map(party2SelectItems)
+    ).subscribe((data) => {
+      this.partySelectItem = data;
+      this.partySelectItem.push({label: this.i18nService.translate('Select Party'), value:null});
+    });
 
-
-    partyObs
-      .map(party2SelectItems)
-      .subscribe((data) => {
-        this.partySelectItem = data;
-        this.partySelectItem.push({label: this.i18nService.translate('Select Party'), value:null});
-      });
-
-      const timesheetsObs = this.route.data
-      .map((data: { timesheets: Timesheet[] }) => data.timesheets)
-      .merge(reloadedTimesheets);
-
-      timesheetsObs.subscribe((data) => {
-        this.timesheets = data;
-      });
+    const timesheetsObs = this.route.data.pipe(
+      map((data: { timesheets: Timesheet[] }) => data.timesheets),
+      merge(reloadedTimesheets)
+    ).subscribe((data) => {
+      this.timesheets = data;
+    });
   }
 
   confirm() {

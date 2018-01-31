@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 
 import { ApiClientService } from '../api/client.service';
+
 import { Hero } from '../hero';
 
 @Injectable()
@@ -17,8 +18,9 @@ export class HeroSearchService {
     params.append('name', term);
 
     return this.client
-      .get('heroes', {search: params})
-      .map(json => json.results as Hero[]);
+  .get('heroes' /*, {search: params}*/).pipe(
+        map(json => json.results as Hero[])
+      );
   }
 
 }

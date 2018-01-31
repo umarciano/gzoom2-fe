@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/map';
+import { map, merge } from 'rxjs/operators';
 
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 
@@ -53,10 +54,10 @@ export class UomTypeComponent implements OnInit {
 
     const reloadedUomTypes = this._reload.switchMap(() => this.uomService.uomTypes());
 
-    this.route.data
-      .map((data: { uomTypes: UomType[] }) => data.uomTypes)
-      .merge(reloadedUomTypes)
-      .subscribe(data => this.uomTypes = data);
+    this.route.data.pipe(
+      map((data: { uomTypes: UomType[] }) => data.uomTypes),
+      merge(reloadedUomTypes)
+    ).subscribe(data => this.uomTypes = data);
   }
 
   save(): void {

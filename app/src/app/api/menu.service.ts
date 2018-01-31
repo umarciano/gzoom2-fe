@@ -13,7 +13,7 @@ export class MenuService {
 
   constructor(private readonly client: ApiClientService) { }
 
-  menu(): Observable<RootMenu> {
+  menu(): Observable<void | RootMenu> {
     return this.client.get(MENU_ENDPOINT);
   }
 }

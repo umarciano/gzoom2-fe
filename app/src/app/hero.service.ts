@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 
 import { ApiClientService } from './api/client.service';
@@ -8,12 +9,12 @@ import { Hero } from './hero';
 import 'rxjs/add/operator/toPromise';
 
 const HEROES_URL = 'rest/heroes';  // URL to web api
-const HEADERS = new Headers({ 'Content-Type': 'application/json' });
+const HEADERS = new HttpHeaders({ 'Content-Type': 'application/json' });
 
 @Injectable()
 export class HeroService {
 
-  constructor(private http: Http, private client: ApiClientService) { }
+  constructor(private http: HttpClient, private client: ApiClientService) { }
 
   getHeroes(): Promise<Hero[]> {
     return this.client.get('heroes')
@@ -34,9 +35,9 @@ export class HeroService {
 
   create(name: string): Promise<Hero> {
     return this.http
-      .post(HEROES_URL, JSON.stringify({ name: name }), HEADERS)
+      .post(HEROES_URL, JSON.stringify({ name: name }), {headers: HEADERS})
       .toPromise()
-      .then(res => res.json().data)
+      .then(res => res)
       .catch(this.handleError);
   }
 

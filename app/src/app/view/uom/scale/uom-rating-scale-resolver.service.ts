@@ -12,13 +12,13 @@ import { UomRatingScale } from './uom_rating_scale';
  * Retrieves the menus to be shown or locks the user out if something wrong happens.
  */
 @Injectable()
-export class UomRatingScaleResolver implements Resolve<UomRatingScale[]> {
+export class UomRatingScaleResolver implements Resolve<void | UomRatingScale[]> {
 
   constructor(
     private readonly uomService: UomService,
     private readonly lockoutService: LockoutService) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<UomRatingScale[]> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | UomRatingScale[]> {
     var id = route.paramMap.get('id');
     console.log('resolve uomRatingScale ' + id);
     return this.uomService

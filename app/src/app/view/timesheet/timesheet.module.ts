@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AccordionModule } from 'primeng/primeng';     //accordion and accordion tab
-import { DropdownModule } from 'primeng/primeng';
+import { DropdownModule, AutoCompleteModule } from 'primeng/primeng';
 import { MenuItem } from 'primeng/primeng';
 import { DialogModule } from 'primeng/primeng';
 import { DataTableModule, SharedModule } from 'primeng/primeng';
@@ -51,6 +51,7 @@ import { PartyResolver } from '../party/party/party-resolver.service';
     CalendarModule,
     GrowlModule,
     DropdownModule,
+    AutoCompleteModule,
     TooltipModule,
     TimesheetRoutingModule
   ],

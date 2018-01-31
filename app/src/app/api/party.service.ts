@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { URLSearchParams } from '@angular/http'
 
-import 'rxjs/add/operator/map';
+
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 
 import { ApiClientService } from './client.service';
+
 import { Party } from '../view/party/party/party';
 
 @Injectable()
@@ -15,8 +17,9 @@ export class PartyService {
   partys(): Observable<Party[]> {
     console.log('search party persons');
     return this.client
-      .get('party/person')
-      .map(json => json.results as Party[]);
+      .get('party/person').pipe(
+        map(json => json.results as Party[])
+      );
   }
 
 

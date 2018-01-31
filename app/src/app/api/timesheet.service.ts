@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 
 import { ApiClientService } from './client.service';
+
 import { Timesheet } from '../view/timesheet/timesheet/timesheet';
 import { TimeEntry } from '../view/timesheet/time-entry/time_entry';
 import { WorkEffort } from '../view/timesheet/time-entry/work_effort';
 
 import * as moment from 'moment';
-
 import * as _ from 'lodash';
 
-import 'rxjs/add/operator/map';
 
 @Injectable()
 export class TimesheetService {
@@ -23,8 +22,9 @@ export class TimesheetService {
   timesheets(): Observable<Timesheet[]> {
     console.log('search timesheet');
     return this.client
-      .get('timesheet/timesheet')
-      .map(json => json.results as Timesheet[]);
+      .get('timesheet/timesheet').pipe(
+        map(json => json.results as Timesheet[])
+      );
   }
 
   createTimesheet(timesheet: Timesheet):  Promise<Timesheet> {
@@ -66,15 +66,17 @@ export class TimesheetService {
   timeEntries(timesheetId: string): Observable<TimeEntry[]> {
     console.log('search timeEntries for timesheetId: ' + timesheetId);
     return this.client
-      .get(`timesheet/time-entry/${timesheetId}`)
-      .map(json => json.results as TimeEntry[]);
+      .get(`timesheet/time-entry/${timesheetId}`).pipe(
+        map(json => json.results as TimeEntry[])
+      );
   }
 
   workEfforts(timesheetId: string): Observable<WorkEffort[]> {
     console.log('search workEffort activities');
     return this.client
-      .get(`timesheet/time-entry-work-efforts/${timesheetId}`)
-      .map(json => json.results as WorkEffort[]);
+      .get(`timesheet/time-entry-work-efforts/${timesheetId}`).pipe(
+        map(json => json.results as WorkEffort[])
+      );
   }
 
   createOrUpdateTimeEntry(timeEntries: TimeEntry[]):  Promise<TimeEntry> {
