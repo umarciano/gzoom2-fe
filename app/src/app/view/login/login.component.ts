@@ -1,8 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+
 import { AuthService } from '../../commons/auth.service';
 import { LoginService } from '../../api/login.service';
+import { ApiConfig } from '../../api/api-config';
+
+const LOGIN_ENDPOINT = 'login';
+const HTTP_HEADERS = new Headers();
 
 @Component({
   selector: 'app-login',
@@ -14,12 +21,16 @@ export class LoginComponent implements OnInit {
   loading = false;
   error = '';
   returnUrl: string;
+  private readonly loginUrl: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private loginService: LoginService) { }
+    // private loginService: LoginService,
+    private http: HttpClient, private apiConfig: ApiConfig) { 
+      this.loginUrl = `${apiConfig.rootPath}/${LOGIN_ENDPOINT}`;
+    }
 
   ngOnInit() {
     // get return url from route parameters or default to '/'
@@ -37,7 +48,31 @@ export class LoginComponent implements OnInit {
    */
   login() {
     this.loading = true;
-    this.loginService
+
+    const body = JSON.stringify({ username: this.model.username, password: this.model.password });
+   
+    this.http
+      .post(this.loginUrl, body, {
+        headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      }).subscribe(
+        (data: any) => {
+            console.log(" - data " + data);
+            let token = data.token;
+            console.log(" - token " + token);
+            this.authService.save(token, true); // TODO fix this with this.model.remember
+            this.loading = false;
+            this.router.navigate([this.returnUrl]);
+        },
+        err => {
+          console.log(err)
+          this.authService.lockout(); // sanity check
+          this.error = 'Username or password is incorrect';
+          this.loading = false;
+        }, // error
+        () => console.log('login Complete') // complete
+    );
+
+    /*this.loginService
       .login(this.model.username, this.model.password)
       .then(token => {
         this.authService.save(token, true); // TODO fix this with this.model.remember
@@ -48,6 +83,6 @@ export class LoginComponent implements OnInit {
         this.authService.lockout(); // sanity check
         this.error = 'Username or password is incorrect';
         this.loading = false;
-      });
+      });*/
   }
 }

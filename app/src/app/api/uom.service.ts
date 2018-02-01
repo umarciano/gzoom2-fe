@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 
 import { ApiClientService } from './client.service';
+
 import { UomType } from '../view/uom/uom-type/uom_type';
 import { Uom } from '../view/uom/uom/uom';
 import { UomRatingScale } from '../view/uom/scale/uom_rating_scale';
@@ -17,8 +18,9 @@ export class UomService {
   uomTypes(): Observable<UomType[]> {
     console.log('search uomType');
     return this.client
-      .get('uom/type')
-      .map(json => json.results as UomType[]);
+      .get('uom/type').pipe(
+        map(json => json.results as UomType[])
+      );
   }
 
   createUomType(uomType: UomType):  Promise<UomType> {
@@ -60,15 +62,17 @@ export class UomService {
   uoms(): Observable<Uom[]> {
     console.log('search uom');
     return this.client
-      .get('uom/value')
-      .map(json => json.results as Uom[]);
+      .get('uom/value').pipe(
+        map(json => json.results as Uom[])
+      );
   }
 
   uom(uomId: string): Observable<Uom> {
     console.log('search uom with ' + uomId);
     return this.client
-      .get(`uom/value/${uomId}`)
-      .map(json => json as Uom);
+      .get(`uom/value/${uomId}`).pipe(
+        map(json => json as Uom)
+      );
   }
 
   createUom(uom: Uom):  Promise<Uom> {
@@ -110,8 +114,9 @@ export class UomService {
   uomRatingScales(uomId: string): Observable<UomRatingScale[]> {
     console.log('search uomRatingScale');
     return this.client
-      .get(`uom/scale/${uomId}`)
-      .map(json => json.results as UomRatingScale[]);
+      .get(`uom/scale/${uomId}`).pipe(
+        map(json => json.results as UomRatingScale[])
+      );
   }
 
   createUomRatingScale(uomRatingScale: UomRatingScale):  Promise<UomRatingScale> {

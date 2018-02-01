@@ -12,13 +12,13 @@ import { Party } from './party';
  * Retrieves the menus to be shown or locks the user out if something wrong happens.
  */
 @Injectable()
-export class PartyResolver implements Resolve<Party[]> {
+export class PartyResolver implements Resolve<void | Party[]> {
 
   constructor(
     private readonly partyService: PartyService,
     private readonly lockoutService: LockoutService) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Party[]> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | Party[]> {
     console.log('resolve uomType');
     return this.partyService
       .partys()

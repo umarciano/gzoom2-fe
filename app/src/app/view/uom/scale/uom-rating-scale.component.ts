@@ -4,9 +4,7 @@ import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms'
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/merge';
-import 'rxjs/add/operator/switchMap';
+import { map, merge, switchMap } from 'rxjs/operators';
 
 import { ConfirmDialogModule, ConfirmationService, TooltipModule } from 'primeng/primeng';
 
@@ -82,18 +80,18 @@ export class UomRatingScaleComponent implements OnInit {
         this._reload.next();
       });
 
-    this.route.data
-      .map((data: { uomRatingScales: UomRatingScale[] }) => data.uomRatingScales)
-      .merge(reloadedUomRatingScales)
-      .subscribe((data) => {
-        if (data && data.length > 0) {
-          this.uomRatingScales = data;
-          this.displayRangeScale = true;
-        } else {
-          this.uomRatingScales = [];
-          this.displayRangeScale = false;
-        }
-      });
+    this.route.data.pipe(
+      map((data: { uomRatingScales: UomRatingScale[] }) => data.uomRatingScales),
+      merge(reloadedUomRatingScales)
+    ).subscribe((data) => {
+      if (data && data.length > 0) {
+        this.uomRatingScales = data;
+        this.displayRangeScale = true;
+      } else {
+        this.uomRatingScales = [];
+        this.displayRangeScale = false;
+      }
+    });
   }
 
   showDialogToAdd() {
@@ -172,7 +170,7 @@ export class UomRatingScaleComponent implements OnInit {
     this.confirmationService.confirm({
       message: this.i18nService.translate('Do you want to delete this record?'),
       header: this.i18nService.translate('Delete Confirmation'),
-      icon: 'fa fa-trash',
+      icon: 'fa fa-trash-alt',
       accept: () => {
         this.delete();
         this.displayDialog = false;

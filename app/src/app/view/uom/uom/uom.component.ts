@@ -1,24 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { first, map, merge, switchMap } from 'rxjs/operators';
+
 import { ConfirmDialogModule, ConfirmationService, SpinnerModule, TooltipModule } from 'primeng/primeng';
+
 import { SelectItem } from '../../../commons/selectitem';
 import { Message } from '../../../commons/message';
 import { I18NService } from '../../../commons/i18n.service';
-
 import { Uom } from './uom';
 import { UomRatingScale } from '../scale/uom_rating_scale';
 import { UomType } from '../uom-type/uom_type';
 import { UomService } from '../../../api/uom.service';
 
-import 'rxjs/add/operator/first';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/merge';
-import 'rxjs/add/operator/switchMap';
 
 /** Convert from UomType[] to SelectItem[] */
 function uomTypes2SelectItems(types: UomType[]): SelectItem[] {
@@ -83,35 +80,37 @@ export class UomComponent implements OnInit {
     const reloadedUomTypes = this._reload.switchMap(() => this.uomService.uomTypes());
     const reloadedUoms = this._reload.switchMap(() => this.uomService.uoms());
 
-    const uomTypesObs = this.route.data
-      .map((data: { uomTypes: UomType[] }) => data.uomTypes)
-      .merge(reloadedUomTypes);
+    const uomTypesObs = this.route.data.pipe(
+      map((data: { uomTypes: UomType[] }) => data.uomTypes),
+      merge(reloadedUomTypes)
+    );
 
-    uomTypesObs.first().subscribe(uomTypes => this.defaultUomType = uomTypes[0]);
+    uomTypesObs.pipe(first()).subscribe(uomTypes => this.defaultUomType = uomTypes[0]);
 
-    uomTypesObs
-      .map(uomTypes2SelectItems)
-      .subscribe((data) => {
-        this.uomTypeSelectItem = data;
-        this.uomTypeSelectItem.push({label: this.i18nService.translate('Select Uom Type'), value:null});
-      });
+    uomTypesObs.pipe(
+      map(uomTypes2SelectItems)
+    ).subscribe((data) => {
+      this.uomTypeSelectItem = data;
+      this.uomTypeSelectItem.push({label: this.i18nService.translate('Select Uom Type'), value:null});
+    });
 
-    const uomsObs = this.route.data
-      .map((data: { uoms: Uom[] }) => data.uoms)
-      .merge(reloadedUoms);
+    const uomsObs = this.route.data.pipe(
+      map((data: { uoms: Uom[] }) => data.uoms),
+      merge(reloadedUoms)
+    );
+      
+    uomsObs.pipe(first()).subscribe(uoms => this.onRowSelect(uoms, 0));
 
-      uomsObs.first().subscribe(uoms => this.onRowSelect(uoms, 0));
-
-      uomsObs.subscribe((data) => {
-        this.uoms = data;
-      });
+    uomsObs.subscribe((data) => {
+      this.uoms = data;
+    });
   }
 
   confirm() {
     this.confirmationService.confirm({
       message: this.i18nService.translate('Do you want to delete this record?'),
       header: this.i18nService.translate('Delete Confirmation'),
-      icon: 'fa fa-trash',
+      icon: 'fa fa-trash-alt',
       accept: () => {
         this.displayDialog = false;
         this._delete();

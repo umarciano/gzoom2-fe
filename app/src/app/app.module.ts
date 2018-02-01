@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 // ng-bootstrap modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -22,8 +22,13 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
 
 import { HeroService } from './hero.service';
 
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+
+import {AuthInterceptor} from './api/auth-interceptor';
+
 const ROOT_PATH = '../rest';
 const GZOOM_PATH = '/gzoom/control/box';
+
 
 @NgModule({
   imports: [
@@ -31,7 +36,7 @@ const GZOOM_PATH = '/gzoom/control/box';
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     // ng-bootstrap
     NgbModule.forRoot(),
     // application modules
@@ -52,7 +57,11 @@ const GZOOM_PATH = '/gzoom/control/box';
     HeroDetailComponent,
     HeroSearchComponent
   ],
-  providers: [HeroService],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true,
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

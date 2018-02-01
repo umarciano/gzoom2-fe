@@ -12,13 +12,13 @@ import { UomType } from './uom_type';
  * Retrieves the menus to be shown or locks the user out if something wrong happens.
  */
 @Injectable()
-export class UomTypeResolver implements Resolve<UomType[]> {
+export class UomTypeResolver implements Resolve<void | UomType[]> {
 
   constructor(
     private readonly uomService: UomService,
     private readonly lockoutService: LockoutService) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<UomType[]> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | UomType[]> {
     console.log('resolve uomType');
     return this.uomService
       .uomTypes()

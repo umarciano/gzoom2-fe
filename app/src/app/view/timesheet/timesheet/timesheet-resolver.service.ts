@@ -13,13 +13,13 @@ import { DatePipe } from '@angular/common';
  * Retrieves the menus to be shown or locks the user out if something wrong happens.
  */
 @Injectable()
-export class TimesheetResolver implements Resolve<Timesheet[]> {
+export class TimesheetResolver implements Resolve<void | Timesheet[]> {
 
   constructor(
     private readonly timesheetService: TimesheetService,
     private readonly lockoutService: LockoutService) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Timesheet[]> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | Timesheet[]> {
     console.log('resolve timesheets');
     return this.timesheetService
       .timesheets()

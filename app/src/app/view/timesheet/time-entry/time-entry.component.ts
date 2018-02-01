@@ -1,25 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { first, map, merge, switchMap } from 'rxjs/operators';
 
-import 'rxjs/add/operator/map'
-import 'rxjs/add/operator/merge';
-import 'rxjs/add/operator/first';
-import 'rxjs/add/operator/switchMap';
+import { ConfirmDialogModule, ConfirmationService, InputTextModule, SpinnerModule, TooltipModule } from 'primeng/primeng';
 
 import {TimeEntry} from './time_entry';
 import {Timesheet} from '../timesheet/timesheet';
 
-import { ConfirmDialogModule, ConfirmationService, SpinnerModule, TooltipModule } from 'primeng/primeng';
 import { SelectItem } from '../../../commons/selectitem';
 import { Message } from '../../../commons/message';
 import { I18NService } from '../../../commons/i18n.service';
 import { TimesheetService } from '../../../api/timesheet.service';
-import { templateJitUrl } from '@angular/compiler';
-
-import {InputTextModule} from 'primeng/primeng';
 
 @Component({
   selector: 'app-time-entry',
@@ -71,14 +66,14 @@ export class TimeEntryComponent implements OnInit {
     const reloadedTimesheets = this._reload.switchMap(() => this.timesheetService.timesheets());
     const reloadedTimeEntries = this._reload.switchMap(() => this.timesheetService.timeEntries(this.timesheetId));
 
-    this.route.data
-      .map((data: { timesheets: Timesheet[] }) => data.timesheets)
-      .subscribe(data => this.timesheets = data);
+    this.route.data.pipe(
+        map((data: { timesheets: Timesheet[] }) => data.timesheets)
+    ).subscribe(data => this.timesheets = data);
 
-    this.route.data
-      .map((data: { timeEntries: TimeEntry[] }) => data.timeEntries)
-      .merge(reloadedTimeEntries)
-      .subscribe((data) => {
+    this.route.data.pipe(
+        map((data: { timeEntries: TimeEntry[] }) => data.timeEntries),
+        merge(reloadedTimeEntries)
+      ).subscribe((data) => {
         this.timeEntries = data;
       });
 
@@ -93,22 +88,18 @@ export class TimeEntryComponent implements OnInit {
         this._reload.next();
     });
 
-    const timesheetsObs = this.route.data
-    .map((data: { timesheets: Timesheet[] }) => data.timesheets)
-    .merge(reloadedTimesheets);
-
-    timesheetsObs.subscribe((data) => {
+    const timesheetsObs = this.route.data.pipe(
+      map((data: { timesheets: Timesheet[] }) => data.timesheets),
+      merge(reloadedTimesheets)
+    ).subscribe((data) => {
       this.timesheets = data;
     });
 
-    const workEffortObs = this.route.data
-    .map((data: { workEfforts: TimeEntry[] }) => data.workEfforts)
-    .merge(reloadedWorkEffort);
-
-
-    workEffortObs
-      .map(workEFforts2SelectItems)
-      .subscribe((data) => {
+    const workEffortObs = this.route.data.pipe(
+      map((data: { workEfforts: TimeEntry[] }) => data.workEfforts),
+      merge(reloadedWorkEffort),
+      map(workEFforts2SelectItems)
+    ).subscribe((data) => {
         this.workEffortSelectItem = data;
         this.workEffortSelectItem.push({label: this.i18nService.translate('Select WorkEffort'), value:null});
       });

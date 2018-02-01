@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/switchMap';
+import { map } from 'rxjs/operators';
+
 
 import { RootMenu, FolderMenu, LeafMenu } from '../../api/dto';
 
@@ -20,8 +20,9 @@ export class SidebarComponent implements OnInit {
   constructor(private readonly route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.roots = this.route.data
-      .map((data: { menu: RootMenu }) => data.menu.children);
+    this.roots = this.route.data.pipe(
+      map((data: { menu: RootMenu }) => data.menu.children)
+    );
   }
 
   addExpandClass(element: any) {

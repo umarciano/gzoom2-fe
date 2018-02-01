@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AccordionModule } from 'primeng/primeng';     //accordion and accordion tab
-import { DropdownModule } from 'primeng/primeng';
+import { DropdownModule, AutoCompleteModule } from 'primeng/primeng';
 import { MenuItem } from 'primeng/primeng';
 import { DialogModule } from 'primeng/primeng';
 import { DataTableModule, SharedModule } from 'primeng/primeng';
@@ -15,7 +15,6 @@ import { TooltipModule } from 'primeng/primeng';
 import { CommonsModule } from '../../commons/commons.module';
 import { ApiModule } from '../../api/api.module';
 import { LayoutModule } from '../../layout/layout.module';
-import {AutoCompleteModule} from 'primeng/primeng';
 
 import { TimesheetRoutingModule } from './timesheet-routing.module';
 import { TimesheetComponent } from './timesheet/timesheet.component';
@@ -52,9 +51,9 @@ import { PartyResolver } from '../party/party/party-resolver.service';
     CalendarModule,
     GrowlModule,
     DropdownModule,
+    AutoCompleteModule,
     TooltipModule,
-    TimesheetRoutingModule,
-    AutoCompleteModule
+    TimesheetRoutingModule
   ],
   declarations: [
     TimesheetComponent,

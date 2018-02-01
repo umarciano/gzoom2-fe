@@ -1,15 +1,10 @@
 import { Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  Http,
-  Headers,
-  RequestOptionsArgs,
-  RequestOptions,
-  Response
-} from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
@@ -25,7 +20,7 @@ import { LockoutService } from '../commons/lockout.service';
 export class ApiClientService {
 
   constructor(
-    private http: Http,
+    private http: HttpClient,
     private router: Router,
     private authService: AuthService,
     private lockout: LockoutService,
@@ -38,13 +33,12 @@ export class ApiClientService {
    * @param  {RequestOptionsArgs} options Additional options
    * @return {Observable<any>}            An Observable of the outcome
    */
-  get(path: string, options?: RequestOptionsArgs): Observable<any> {
+  get(path: string): Observable<any> {
     const url = this.makeUrl(path);
-    const opts = this.makeOptions(options);
+    const opts = this.makeOptions();
 
     return this.http
       .get(url, opts)
-      .map(res => res.json())
       .catch(this.onAuthError(this));
   }
 
@@ -55,49 +49,49 @@ export class ApiClientService {
    * @param  {any}                body    Any value that will be converted to a JSON string and
    *                                      sent as the HTTP message body. Optional, if nothing is
    *                                      specified then no body is sent at all.
-   * @param  {RequestOptionsArgs} options Additional options
    * @return {Observable<any>}            An Observable of the outcome
    */
-  post(path: string, body?: any, options?: RequestOptionsArgs): Observable<any> {
+  post(path: string, body?: any): Observable<any> {
     const url = this.makeUrl(path);
-    const opts = this.makeOptions(options, true);
+    const opts = this.makeOptions(true);
     const msg = body ? (typeof body === 'string') ? body : JSON.stringify(body) : undefined;
-
+    // TODO opts
     return this.http
-      .post(url, msg, opts)
-      .map(res => res.json())
+      .post(url, msg, {
+        headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      })
       .catch(this.onAuthError(this));
   }
 
-  put(path: string, body?: any, options?: RequestOptionsArgs): Observable<any> {
+  put(path: string, body?: any): Observable<any> {
     const url = this.makeUrl(path);
-    const opts = this.makeOptions(options, true);
+    const opts = this.makeOptions(true);
     const msg = body ? (typeof body === 'string') ? body : JSON.stringify(body) : undefined;
-
+    // TODO opts
     return this.http
-      .put(url, msg, opts)
-      .map(res => res.json())
+      .put(url, msg, {
+        headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      })
       .catch(this.onAuthError(this));
   }
 
-  delete(path: string, options?: RequestOptionsArgs): Observable<any> {
+  delete(path: string): Observable<any> {
     const url = this.makeUrl(path);
-    const opts = this.makeOptions(options, true);
-
+    const opts = this.makeOptions(true);
+    // TODO opts
     return this.http
-      .delete(url, opts)
-      .map(res => res.json())
+      .delete(url, {
+        headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      })
       .catch(this.onAuthError(this));
   }
 
-  private makeOptions(options?: RequestOptionsArgs, hasBody = false): RequestOptions {
-    const opts = new RequestOptions(options || {});
-    opts.headers = opts.headers || new Headers();
-    this.addAuthHeader(opts.headers);
+  private makeOptions(hasBody = false): any {
+    let headers = new HttpHeaders();
     if (hasBody) {
-      this.addJsonHeader(opts.headers);
+      headers.set('Content-Type', 'application/json');
     }
-    return opts;
+    return headers;
   }
 
   private makeUrl(path: string): string {
@@ -107,21 +101,13 @@ export class ApiClientService {
   }
 
   /**
-   * Sets the authentication token
-   *
-   * @param  {Headers} headers The headers
-   */
-  private addAuthHeader(headers: Headers) {
-    headers.set('Authorization', 'Bearer ' + this.authService.token());
-  }
-
-  /**
    * Sets the JSON content type.
    *
    * @param  {Headers} headers The headers
    */
-  private addJsonHeader(headers: Headers) {
+  private addJsonHeader(headers: HttpHeaders) {
     headers.set('Content-Type', 'application/json');
+    // headers.set('Accept', 'application/json');
   }
 
   /**

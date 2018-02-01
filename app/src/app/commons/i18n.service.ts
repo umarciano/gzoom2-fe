@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { Headers } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -25,12 +26,12 @@ export class I18NConfig {
  * @param  {I18NConfig} config I18N (partial configuration)
  * @return {function} A function that loads the localization data
  */
-export function load(http: Http, config: I18NConfig): () => Promise<boolean> {
+export function load(http: HttpClient, config: I18NConfig): () => Promise<boolean> {
   return () => http
     .get(`${config.rootPath}/profile/i18n`)
     .toPromise()
     .then(res => {
-      config.localizations = res.json() as Localizations;
+      config.localizations = res as Localizations;
       return true;
     })
     .catch(err => {

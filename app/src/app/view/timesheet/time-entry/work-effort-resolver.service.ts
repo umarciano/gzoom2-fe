@@ -13,13 +13,13 @@ import { WorkEffort } from './work_effort';
  * Retrieves the menus to be shown or locks the user out if something wrong happens.
  */
 @Injectable()
-export class WorkEffortResolver implements Resolve<WorkEffort[]> {
+export class WorkEffortResolver implements Resolve<void | WorkEffort[]> {
 
   constructor(
     private readonly timesheetService: TimesheetService,
     private readonly lockoutService: LockoutService) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<WorkEffort[]> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | WorkEffort[]> {
     var id = route.paramMap.get('id');
     console.log('resolve workEfforts');
     return this.timesheetService
