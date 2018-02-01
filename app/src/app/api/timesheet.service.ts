@@ -138,6 +138,7 @@ export class TimesheetService {
             timeEntryId: timeEntry.timeEntryId,
             fromDate: this.getDate(timeEntry.fromDate),
             thruDate: this.getDate(timeEntry.thruDate),
+            description: timeEntry.description
           };
         });
       }
