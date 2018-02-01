@@ -42,8 +42,7 @@ export class TimeEntryDetailComponent implements OnInit {
   selectedWorkEffortId: string;
   workEffortSelectItem: SelectItem[] = [];
   activities: SelectItem[] = [];
-  filteredActivities: any[];
-  record: SelectItem[];
+  filteredActivities: any[] = [];
 
   constructor(
     private readonly timesheetService: TimesheetService,
@@ -149,15 +148,37 @@ export class TimeEntryDetailComponent implements OnInit {
   }
 
   filterActivities(event) {
+    console.log(" - event " + event);
+    console.log(" - event.query " + event.query);
     this.filteredActivities = [];
+    console.log(" - this.filteredActivities " + this.filteredActivities);
      for(let i = 0; i < this.workEffortSelectItem.length; i++) {
          let record = this.workEffortSelectItem[i];
          if(record.label.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
-                     this.filteredActivities.push(record);
+          console.log(" - push " + record.label);
+                     this.filteredActivities.push(record.label);
           }
      }
+    console.log(" - this.filteredActivities " + this.filteredActivities);
+    
   }
-  
+  onDropdownClick(event)  {
+    console.log(" - onDropdownClick event " + event);
+    
+  }
+  onSelect(valueSelected, index) {
+    console.log(" - onSelect valueSelected " + valueSelected);
+    this.filteredActivities = [];
+    console.log(" - onSelect this.filteredActivities " + this.filteredActivities);
+     for(let i = 0; i < this.workEffortSelectItem.length; i++) {
+         let record = this.workEffortSelectItem[i];
+         if(record.label.toLowerCase().indexOf(valueSelected.toLowerCase()) == 0) {
+            console.log(" - onSelect value " + record.value);
+            this.timeEntries[index].workEffortId = record.value;
+          }
+     }
+    
+  }
 }
 
 function workEFforts2SelectItems(workEffort: WorkEffort[]): SelectItem[] {
