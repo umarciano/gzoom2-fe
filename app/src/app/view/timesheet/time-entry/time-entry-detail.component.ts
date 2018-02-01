@@ -154,7 +154,7 @@ export class TimeEntryDetailComponent implements OnInit {
     console.log(" - this.filteredActivities " + this.filteredActivities);
      for(let i = 0; i < this.workEffortSelectItem.length; i++) {
          let record = this.workEffortSelectItem[i];
-         if(record.label.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
+         if(record.label.toLowerCase().indexOf(event.query.toLowerCase()) >= 0) {
           console.log(" - push " + record.label);
                      this.filteredActivities.push(record.label);
           }
@@ -172,7 +172,7 @@ export class TimeEntryDetailComponent implements OnInit {
     console.log(" - onSelect this.filteredActivities " + this.filteredActivities);
      for(let i = 0; i < this.workEffortSelectItem.length; i++) {
          let record = this.workEffortSelectItem[i];
-         if(record.label.toLowerCase().indexOf(valueSelected.toLowerCase()) == 0) {
+         if(record.label.toLowerCase().indexOf(valueSelected.toLowerCase()) >= 0) {
             console.log(" - onSelect value " + record.value);
             this.timeEntries[index].workEffortId = record.value;
           }
