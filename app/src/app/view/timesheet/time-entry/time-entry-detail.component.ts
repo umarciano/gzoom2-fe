@@ -43,6 +43,7 @@ export class TimeEntryDetailComponent implements OnInit {
   workEffortSelectItem: SelectItem[] = [];
   activities: SelectItem[] = [];
   filteredActivities: any[];
+  record: SelectItem[];
 
   constructor(
     private readonly timesheetService: TimesheetService,
@@ -152,10 +153,11 @@ export class TimeEntryDetailComponent implements OnInit {
      for(let i = 0; i < this.workEffortSelectItem.length; i++) {
          let record = this.workEffortSelectItem[i];
          if(record.label.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
-                     this.filteredActivities.push(record.label);
+                     this.filteredActivities.push(record);
           }
      }
   }
+  
 }
 
 function workEFforts2SelectItems(workEffort: WorkEffort[]): SelectItem[] {

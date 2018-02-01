@@ -21,11 +21,11 @@
           </div>
         </ng-template> -->
         <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="body">
-          <p-autoComplete name="workEffortId_o_{{ri}}" [(ngModel)]="row[col.field]" [suggestions]="filteredActivities" (completeMethod)="filterActivities($event)"
+          <p-autoComplete name="workEffortId_o_{{ri}}" [(ngModel)]="record" field="value" [suggestions]="filteredActivities" (completeMethod)="filterActivities($event)"
             [minLength]="1" placeholder="Inizia a scrivere..." [dropdown]="true" appendTo="body" [style]="{'width':'95%'}" [inputStyle]="{'width':'95%'}">
             <ng-template let-record pTemplate="item">
                 <div class="ui-helper-clearfix">
-                  <div>{{record}}</div>
+                  <div>{{record.label}}</div>
                 </div>
             </ng-template>
           </p-autoComplete>
