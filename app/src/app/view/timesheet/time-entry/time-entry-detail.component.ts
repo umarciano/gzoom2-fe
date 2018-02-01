@@ -101,13 +101,11 @@ export class TimeEntryDetailComponent implements OnInit {
     this.newTimeEntry = true;
     let timeEntries1 = new PrimeTimeEntry(false);
     timeEntries1.timesheetId = this.selectedTimesheetId;
-    
     this.timeEntries.push(timeEntries1);
   }
 
   saveTimeEntry() {
     console.log("save timeEntry");
-    console.log(this.timeEntries);
     this.timesheetService
       .createOrUpdateTimeEntry(this.timeEntries)
       .then(() => {
@@ -148,36 +146,24 @@ export class TimeEntryDetailComponent implements OnInit {
   }
 
   filterActivities(event) {
-    console.log(" - event " + event);
-    console.log(" - event.query " + event.query);
     this.filteredActivities = [];
-    console.log(" - this.filteredActivities " + this.filteredActivities);
      for(let i = 0; i < this.workEffortSelectItem.length; i++) {
          let record = this.workEffortSelectItem[i];
          if(record.label.toLowerCase().indexOf(event.query.toLowerCase()) >= 0) {
-          console.log(" - push " + record.label);
                      this.filteredActivities.push(record.label);
           }
      }
-    console.log(" - this.filteredActivities " + this.filteredActivities);
     
   }
-  onDropdownClick(event)  {
-    console.log(" - onDropdownClick event " + event);
-    
-  }
+  
   onSelect(valueSelected, index) {
-    console.log(" - onSelect valueSelected " + valueSelected);
     this.filteredActivities = [];
-    console.log(" - onSelect this.filteredActivities " + this.filteredActivities);
      for(let i = 0; i < this.workEffortSelectItem.length; i++) {
          let record = this.workEffortSelectItem[i];
          if(record.label.toLowerCase().indexOf(valueSelected.toLowerCase()) >= 0) {
-            console.log(" - onSelect value " + record.value);
             this.timeEntries[index].workEffortId = record.value;
           }
      }
-    
   }
 }
 
