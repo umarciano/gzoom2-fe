@@ -82,7 +82,7 @@
         </div>
         <div class="ui-grid-col-5">
           <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['uomTypeId'].valid&amp;&amp;form.controls['uomTypeId'].dirty">
-            <i class="fa fa-close"></i>
+            <i class="fa fa-times"></i>
             {{'Uom Type Id is required'|i18n}}
           </div>
         </div>
@@ -96,7 +96,7 @@
         </div>
         <div class="ui-grid-col-5">
           <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['uomId'].valid&amp;&amp;form.controls['uomId'].dirty">
-            <i class="fa fa-close"></i>
+            <i class="fa fa-times"></i>
             <span *ngIf="form.controls['uomId'].errors['required']">{{'Uom Id is required'|i18n}}</span>
             <span *ngIf="form.controls['uomId'].errors['maxLenght']">{{'Uom Id must be not longer than 20'|i18n}}</span>
           </div>
@@ -111,7 +111,7 @@
         </div>
         <div class="ui-grid-col-5">
           <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['description'].valid&amp;&amp;form.controls['description'].dirty">
-            <i class="fa fa-close"></i>
+            <i class="fa fa-times"></i>
             <span *ngIf="form.controls['description'].errors['required']">{{'Description is required'|i18n}}</span>
             <span *ngIf="form.controls['description'].errors['maxLenght']">{{'Description must be not longer than 255'|i18n}}</span>
           </div>
@@ -126,7 +126,7 @@
         </div>
         <div class="ui-grid-col-5">
           <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['abbreviation'].valid&amp;&amp;form.controls['abbreviation'].dirty">
-            <i class="fa fa-close"></i>
+            <i class="fa fa-times"></i>
             <span *ngIf="form.controls['abbreviation'].errors['required']">{{'Abbreviation is required'|i18n}}</span>
             <span *ngIf="form.controls['abbreviation'].errors['maxLenght']">{{'Abbreviation must be not longer than 60'|i18n}}</span>
           </div>
@@ -141,7 +141,7 @@
         </div>
         <div class="ui-grid-col-5">
             <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['decimalScale'].valid&amp;&amp;form.controls['decimalScale'].dirty">
-                <i class="fa fa-close"></i>
+                <i class="fa fa-times"></i>
                 <span *ngIf="form.controls['decimalScale'].errors['required']">{{'Decimal Scale is required'|i18n}}</span>
             </div>
         </div>
