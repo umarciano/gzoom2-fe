@@ -42,6 +42,14 @@ var _ = require('lodash'),
         lastName: "Fossi",
         email: "andrea.fossi@mapsgroup.it",
         externalLoginKey: "0987654321abcdef"
+      },
+      "admin": {
+        id: inc(),
+        username: "admin",
+        firstName: "admin",
+        lastName: "admin",
+        email: "admin.admin@mapsgroup.it",
+        externalLoginKey: "opopopopop1y1y1y1"
       }
     },
     HEROES = [
@@ -153,7 +161,8 @@ module.exports = {
   authenticate: function(username, password) {
     if ((username === 'gica' && password === 'password') ||
         (username === 'anfo' && password === 'password') ||
-        (username === 'fast' && password === 'password')) {
+        (username === 'fast' && password === 'password') ||
+        (username === 'admin' && password === 'admin')) {
       return _(PEOPLE).find(function(p) {
         return p.username === username;
       });
@@ -358,6 +367,10 @@ module.exports = {
   
   workEfforts: function () {
     return WORK_EFFORT;
+  },
+
+  createOrUpdateTimeEntry: function(timeEntries) {
+
   }
 
 };

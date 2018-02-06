@@ -471,5 +471,15 @@ app.get('/rest/timesheet/time-entry-work-efforts/:id', function(req, res) {
   }, _.random(200, 1000));
 });
 
+//timesheet/time-entry-create-or-update
+app.post('/rest/timesheet/time-entry-create-or-update', function(req, res) {
+  var timeEntries = data.timeEntries();
+  log.debug('Looking up timeEntries -', timeEntries);
+  data.createOrUpdateTimeEntry(timeEntries);
+  setTimeout(function() {
+    res.json({ results: timeEntries, total: timeEntries.length });
+  }, _.random(200, 1000));
+});
+
 app.listen(PORT);
 log.info("Server started: http://localhost:" + PORT);
