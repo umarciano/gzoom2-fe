@@ -15,12 +15,7 @@
             [responsive]="true"
             columnResizeMode="expand"
             dataKey="timesheetId"
-            #dt exportFilename="timesheets">
-    <p-header>
-      <div class="ui-helper-clearfix">
-        <button type="button" pButton icon="far fa-file" iconPos="left" label="{{'CSV'|i18n}}" (click)="dt.exportCSV()" style="float:left"></button>
-      </div>
-    </p-header>
+            #dt exportFilename="timesheets">    
     <p-column [style]="{'width':'30%'}" field="partyName" header="{{'Party'|i18n}}" [sortable]="true"></p-column>
     <p-column [style]="{'width':'20%'}" field="fromDate" header="{{'From Date'|i18n}}" [sortable]="true">
         <ng-template let-col let-row="rowData" pTemplate>
@@ -37,6 +32,7 @@
     <p-column [style]="{'width':'10%'}" styleClass="col-button">
         <ng-template pTemplate="header">
             <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
+            <button type="button" pButton icon="far fa-file" (click)="dt.exportCSV()" ></button>
         </ng-template>
           <ng-template let-timesheet="rowData" pTemplate="body">
               <button type="button" pButton icon="fa-chevron-right" (click)="onRowSelect(timesheet)"></button>

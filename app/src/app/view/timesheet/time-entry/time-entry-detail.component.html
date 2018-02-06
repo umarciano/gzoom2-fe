@@ -20,7 +20,7 @@
           <div>
             <p-dropdown name="workEffortId_o_{{ri}}" appendTo="body" [(ngModel)]="row[col.field]" [options]="workEffortSelectItem" [autoWidth]="false" [style]="{'width':'100%'}" required="true"></p-dropdown>
           </div>
-        </ng-template> -->
+        </ng-template> -->          
         <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="body">
           <p-autoComplete name="workEffortId_o_{{ri}}" [(ngModel)]="row[col.field]" [suggestions]="filteredActivities" 
           (onDropdownClick) = "onDropdownClick($event)" (onSelect)="onSelect($event, ri)" (completeMethod)="filterActivities($event)"
@@ -38,22 +38,16 @@
             <input name="percentage_o_{{ri}}" type="number" [(ngModel)]="row[col.field]"/>
         </ng-template>
       </p-column>
-      <p-column [style]="{'width':'10%'}" styleClass="col-button">
+      <p-column [style]="{'width':'15%'}" styleClass="col-button">
+        <ng-template pTemplate="header">
+            <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
+            <button type="submit" pButton icon="fa-check"></button>
+            <button type="button" pButton icon="far fa-file" (click)="dt.exportCSV()" ></button>
+        </ng-template>
         <ng-template let-timeEntry="rowData" pTemplate="body">
           <button type="button" pButton icon="fa-trash-alt" (click)="confirmDeleteTimeEntry(timeEntry)"></button>
         </ng-template>
       </p-column>
-      <p-footer>
-        <div class="ui-helper-clearfix" style="width:100%">
-          <div style="float: left">
-            <button type="button" pButton icon="fa-plus" (click)="addRow()" label="Add"></button>
-          </div>
-          <div class="btn-group" style="float: right" role="group" aria-label="Basic example">
-            <button type="button" pButton icon="far fa-file" label="{{'CSV'|i18n}}" (click)="dt.exportCSV()" style="float:left"></button>
-            <button type="submit" pButton label="{{'Save'|i18n}}"></button>
-          </div>
-        </div>
-      </p-footer>
   </p-dataTable>
 </form>
 
