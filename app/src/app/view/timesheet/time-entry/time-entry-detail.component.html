@@ -10,7 +10,7 @@
 <form (ngSubmit)="saveTimeEntry()">
   <p-dataTable [editable]="true" [(value)]="timeEntries" scrollable="true" sortMode="multiple" [responsive]="true"
     [globalFilter]="gb" resizableColumns="true" [responsive]="true" columnResizeMode="expand" dataKey="timeEntryId" #dt exportFilename="timeEntries">
-      <p-column datakey="workEffortId" field="description" header="{{'Work Effort'|i18n}}" [sortable]="true" [style]="{'width':'75%'}"
+      <p-column datakey="workEffortId" field="description" header="{{'Work Effort'|i18n}}" [sortable]="true" [style]="{'width':'80%'}"
         [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}">
         <!-- field="description"  cambia la description ma non l'id 
 		<ng-template pTemplate="filter" let-col>
@@ -32,13 +32,16 @@
             </ng-template>
           </p-autoComplete>
         </ng-template>
-  </p-column>
-      <p-column field="percentage" header="{{'Percentage'|i18n}}" [sortable]="true" [editable]="true"> 
-        <ng-template pTemplate let-ri="rowIndex" let-col let-row="rowData">
-            <input name="percentage_o_{{ri}}" type="number" [(ngModel)]="row[col.field]"/>
+      </p-column>
+      <p-column field="percentage" header="{{'Percentage'|i18n}}" [sortable]="true" [editable]="true" styleClass="text-align-right">
+        <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="body">
+            <span>{{row[col.field]}}</span>
+        </ng-template>
+        <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="editor">
+            <p-spinner input="number" name="percentage_o_{{ri}}" [(ngModel)]="row[col.field]" [min]="0" [max]="100"></p-spinner>
         </ng-template>
       </p-column>
-      <p-column [style]="{'width':'15%'}" styleClass="col-button">
+      <p-column [style]="{'width':'10%'}" styleClass="col-button">
         <ng-template pTemplate="header">
             <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
             <button type="submit" pButton icon="fa-check"></button>
@@ -47,10 +50,17 @@
         <ng-template let-timeEntry="rowData" pTemplate="body">
           <button type="button" pButton icon="fa-trash-alt" (click)="confirmDeleteTimeEntry(timeEntry)"></button>
         </ng-template>
-      </p-column>
+      </p-column>      
+      <p-footerColumnGroup>
+        <p-row>
+            <p-column footer="{{'Totals:'|i18n}}" [style]="{'width':'80%','text-align':'right'}"></p-column>
+            <p-column [(footer)]="totalPercentage" [style]="{'text-align':'right'}"></p-column>
+            <p-column footer="" [style]="{'width':'10%'}"></p-column>
+        </p-row>
+    </p-footerColumnGroup>
   </p-dataTable>
 </form>
 
 <p-confirmDialog header="{{'Confirmation'|i18n}}" icon="fa fa-question-circle" acceptLabel="{{'Yes'|i18n}}" rejectLabel="{{'No'|i18n}}"></p-confirmDialog>
 
-  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>

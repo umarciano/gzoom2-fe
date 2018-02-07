@@ -106,3 +106,15 @@ $commons-sizes: (
 .fa-close::before {
   content: "\f00d";
 }
+
+/*----------------------------------------------------------------------------*/
+/* input number right                                                         */
+/*----------------------------------------------------------------------------*/
+.ui-spinner-input{
+  text-align:right !important;
+  padding-right: 30px !important;
+}
+
+.text-align-right{
+  text-align:right !important;
+}

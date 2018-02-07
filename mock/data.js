@@ -93,11 +93,11 @@ var _ = require('lodash'),
       { uom: {uomId: 'SN', description: 'Presente S/N	'}, uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, uomRatingValue:100.000000, description:'Sì'}
     ],
     TIMESHEET = [
-      {partyId: '1', timesheetId: '1', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
-      {partyId: '2', timesheetId: '2', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
-      {partyId: '3', timesheetId: '3', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
-      {partyId: '4', timesheetId: '4', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' },
-      {partyId: '5', timesheetId: '5', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: '40', actualHours: '40' }
+      {partyId: '1', timesheetId: '1', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: 40, actualHours: 40 },
+      {partyId: '2', timesheetId: '2', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: 40, actualHours: 40 },
+      {partyId: '3', timesheetId: '3', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: 40, actualHours: 40 },
+      {partyId: '4', timesheetId: '4', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: 40, actualHours: 40 },
+      {partyId: '5', timesheetId: '5', fromDate: '2017-01-01', thruDate: '2017-12-31', contractHours: 40, actualHours: 40 }
     ],
     PARTY = [
       { partyId: '1', firstName: 'pippo', lastName: 'pippo' },
@@ -105,9 +105,9 @@ var _ = require('lodash'),
       { partyId: '3', firstName: 'paperino', lastName: 'paperino'  }
     ],
     TIME_ENTRY = [
-      {timeEntryId: '1', timesheetId: '1', workEffortId : '10000', percentage: '100'},
-      {timeEntryId: '2', timesheetId: '1', workEffortId : '10001', percentage: '80'},
-      {timeEntryId: '3', timesheetId: '1', workEffortId : '10002', percentage: '50'}
+      {timeEntryId: '1', timesheetId: '1', workEffortId : '10000', percentage: 10},
+      {timeEntryId: '2', timesheetId: '1', workEffortId : '10001', percentage: 8},
+      {timeEntryId: '3', timesheetId: '1', workEffortId : '10002', percentage: 50}
     ],
     WORK_EFFORT = [
       {attivitaLiv1: '1', attivitaLiv2 : '1.1', attivitaLiv3: '1.1.1', workEffortId: '10000'},

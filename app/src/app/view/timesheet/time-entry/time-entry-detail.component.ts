@@ -19,6 +19,8 @@ import { TimesheetService } from '../../../api/timesheet.service';
 
 import {AutoCompleteModule} from 'primeng/primeng';
 import { isBlank } from 'app/commons/commons';
+import { summaryForJitFileName } from '@angular/compiler/src/aot/util';
+import { isNumber } from '@ng-bootstrap/ng-bootstrap/util/util';
 
 
 @Component({
@@ -43,6 +45,7 @@ export class TimeEntryDetailComponent implements OnInit {
   workEffortSelectItem: SelectItem[] = [];
   activities: SelectItem[] = [];
   filteredActivities: any[] = [];
+  totalPercentage: number;
 
   constructor(
     private readonly timesheetService: TimesheetService,
@@ -69,7 +72,7 @@ export class TimeEntryDetailComponent implements OnInit {
       })
       .subscribe((data) => {
         console.log(" - paramMap data " + data);
-      console.log(" - paramMap this.selectedTimesheetId " + this.selectedTimesheetId);
+        console.log(" - paramMap this.selectedTimesheetId " + this.selectedTimesheetId);
           
       if (data && data.length > 0) {
         this.timeEntries = data;
@@ -85,6 +88,12 @@ export class TimeEntryDetailComponent implements OnInit {
         this.timeEntries = data;
       }
       this.addRow();
+
+      //aggiornare totale
+      this.totalPercentage = 0;
+      this.timeEntries.forEach(c => this.totalPercentage +=  isNumber(c.percentage) ?  +c.percentage : +0);
+      console.log(" - totalPercentage " + this.totalPercentage);
+      
     });
 
     const workEffortObs = this.route.data.pipe(
@@ -106,6 +115,16 @@ export class TimeEntryDetailComponent implements OnInit {
 
   saveTimeEntry() {
     console.log("save timeEntry");
+
+    //aggiornare totale
+    this.totalPercentage = 0;
+    this.timeEntries.forEach(c => this.totalPercentage +=  isNumber(c.percentage) ?  +c.percentage : +0);
+    console.log(" - totalPercentage " + this.totalPercentage);
+    if (this.totalPercentage > 100) {
+      this.error = this.i18nService.translate("The percentage can not be greater than 100");
+      return;
+    }
+
     this.timesheetService
       .createOrUpdateTimeEntry(this.timeEntries)
       .then(() => {
