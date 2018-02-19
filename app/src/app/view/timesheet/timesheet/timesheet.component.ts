@@ -158,7 +158,8 @@ export class TimesheetComponent implements OnInit {
     this.error = '';
     this.newTimesheet = true;
     this.timesheet = new PrimeTimesheet();
-    this.displayDialog = true;   
+    this.displayDialog = true; 
+    this.selectedPartyId = null;  
   }
 
   selectTimesheet(data: Timesheet) {

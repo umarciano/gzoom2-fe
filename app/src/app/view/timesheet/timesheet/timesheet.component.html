@@ -43,10 +43,13 @@
 
 <p-confirmDialog header="{{'Confirmation'|i18n}}" icon="fa fa-question-circle" acceptLabel="{{'Yes'|i18n}}" rejectLabel="{{'No'|i18n}}"></p-confirmDialog>
 
+
+
 <p-dialog header="{{'Timesheet Detail'|i18n}}" width="900" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
   <form [formGroup]="form" novalidate (ngSubmit)="save()">
     <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px" *ngIf="timesheet">
 
+      
       <div class="ui-grid-row">
         <div class="ui-grid-col-3">
           <label for="partyId">{{'Party'|i18n}}*:</label>
@@ -68,6 +71,7 @@
           </div>
         </div>
       </div>
+
       <!-- From date -->
       <div class="ui-grid-row">
         <div class="ui-grid-col-3">
