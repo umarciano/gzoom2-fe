@@ -39,6 +39,7 @@ export class TimeEntryDetailComponent implements OnInit {
   newTimeEntry: boolean;
   /** Timesheet to save*/
   timeEntry: TimeEntry = new PrimeTimeEntry(false);
+  timesheet: Timesheet;
   selectedTimeEntry: TimeEntry;
   selectedTimesheetId: string;
   selectedWorkEffortId: string;
@@ -63,6 +64,19 @@ export class TimeEntryDetailComponent implements OnInit {
 
     const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts(this.selectedTimesheetId));
     const reloadedTimeEntries = this._reload.switchMap(() => this.timesheetService.timeEntries(this.selectedTimesheetId));
+    const reloadedTimesheet = this._reload.switchMap(() => this.timesheetService.timesheet(this.selectedTimesheetId));
+
+    this.route.paramMap
+      .switchMap((params) => {
+        this.selectedTimesheetId = params.get('id');
+        console.log(" - this.selectedTimesheetId " + this.selectedTimesheetId);
+        return this.timesheetService.timesheet(this.selectedTimesheetId);
+      })
+      .subscribe((data) => {
+        console.log(" - paramMap data " + data);
+        this.timesheet = data;
+    });
+
 
     this.route.paramMap
       .switchMap((params) => {

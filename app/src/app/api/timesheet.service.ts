@@ -27,6 +27,14 @@ export class TimesheetService {
       );
   }
 
+  timesheet(timesheetId: string):  Observable<Timesheet> {
+    console.log('search timesheet with ' + timesheetId);
+    return this.client
+      .get(`timesheet/timesheet/${timesheetId}`).pipe(
+        map(json => json as Timesheet)
+      );
+  }
+
   createTimesheet(timesheet: Timesheet):  Promise<Timesheet> {
     console.log('create Timesheet');
     return this.client

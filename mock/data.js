@@ -347,6 +347,10 @@ module.exports = {
     return TIMESHEET;
   },
 
+  timesheet: function(id) {
+    return TIMESHEET.filter((val,i) => val.timesheetId == id)[0];
+  },
+
   partys: function () {
     return PARTY;
   },
