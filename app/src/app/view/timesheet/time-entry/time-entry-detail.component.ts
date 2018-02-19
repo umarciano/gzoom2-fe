@@ -74,9 +74,9 @@ export class TimeEntryDetailComponent implements OnInit {
         console.log(" - paramMap data " + data);
         console.log(" - paramMap this.selectedTimesheetId " + this.selectedTimesheetId);
           
-      if (data && data.length > 0) {
-        this.timeEntries = data;
-      }
+        if (data && data.length > 0) {
+          this.timeEntries = data;
+        }
     });
 
     this.route.data.pipe(

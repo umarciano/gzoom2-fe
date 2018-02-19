@@ -23,9 +23,9 @@ import { PartyService } from '../../../api/party.service';
 
 
 /** Convert from Party[] to SelectItem[] */
-function party2SelectItems(person: Party[]): SelectItem[] {
-    return person.map((p:Party) => {
-      return {label: p.firstName+" "+p.lastName, value: p.partyId};
+function party2SelectItems(party: Party[]): SelectItem[] {
+    return party.map((p:Party) => {
+      return {label: p.partyName, value: p.partyId};
     });
 }
 
@@ -55,6 +55,8 @@ export class TimesheetComponent implements OnInit {
   selectedPartyId: string;
   /** List of Party in Select */
   partySelectItem: SelectItem[] = [];
+
+  filteredActivitiesParty: any[] = [];
 
   constructor(
     private readonly timesheetService: TimesheetService,
@@ -90,7 +92,7 @@ export class TimesheetComponent implements OnInit {
       map(party2SelectItems)
     ).subscribe((data) => {
       this.partySelectItem = data;
-      this.partySelectItem.push({label: this.i18nService.translate('Select Party'), value:null});
+      //this.partySelectItem.push({label: this.i18nService.translate('Select Party'), value:null});
     });
 
     const timesheetsObs = this.route.data.pipe(
@@ -156,8 +158,7 @@ export class TimesheetComponent implements OnInit {
     this.error = '';
     this.newTimesheet = true;
     this.timesheet = new PrimeTimesheet();
-    this.displayDialog = true;
-    //this.selectedPartyId = this.defaultParty.partyId;
+    this.displayDialog = true;   
   }
 
   selectTimesheet(data: Timesheet) {
@@ -168,8 +169,29 @@ export class TimesheetComponent implements OnInit {
 
     this.newTimesheet = false;
     this.timesheet = this._cloneTimesheet(data);
-    this.selectedPartyId = data.partyId;
+    this.selectedPartyId = data.partyId;    
     this.displayDialog = true;
+  }
+
+  filterActivitiesParty(event) {
+    this.filteredActivitiesParty = [];
+    for(let i = 0; i < this.partySelectItem.length; i++) {      
+        let record = this.partySelectItem[i];
+        if(record.label.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
+            this.filteredActivitiesParty.push(record.label);
+        }
+    }
+  }
+
+    
+  onSelect(valueSelected) {
+    this.filteredActivitiesParty = [];
+     for(let i = 0; i < this.partySelectItem.length; i++) {
+         let record = this.partySelectItem[i];
+         if(record.label.toLowerCase().indexOf(valueSelected.toLowerCase()) >= 0) {
+            this.selectedPartyId = record.value;
+          }
+     }
   }
 
   _cloneTimesheet(t: Timesheet): Timesheet {

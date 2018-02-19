@@ -52,9 +52,14 @@
           <label for="partyId">{{'Party'|i18n}}*:</label>
         </div>
         <div class="ui-grid-col-4">
-          <p-dropdown [options]="partySelectItem" formControlName="partyId" required [(ngModel)]="selectedPartyId"
-           [autoWidth]="false" [style]="{'width':'100%'}">
-          </p-dropdown>
+          <p-autoComplete formControlName="partyId" required [(ngModel)]="timesheet.partyName" [suggestions]="filteredActivitiesParty" 
+              (completeMethod)="filterActivitiesParty($event)" (onSelect)="onSelect($event)" [minLength]="1" placeholder="Inizia a scrivere..." [dropdown]="true">
+              <ng-template let-record pTemplate="item">
+                <div class="ui-helper-clearfix">
+                  <div>{{record}}</div>
+                </div>
+              </ng-template>
+          </p-autoComplete>          
         </div>
         <div class="ui-grid-col-5">
           <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['partyId'].valid&amp;&amp;form.controls['partyId'].dirty">

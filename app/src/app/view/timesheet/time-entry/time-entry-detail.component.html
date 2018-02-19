@@ -1,4 +1,5 @@
 <h3 class="first">{{'GP_MENU_00335'|i18n}}</h3>
+<h4 class="first">{{partyName}}</h4>
 
 <p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
 
@@ -10,7 +11,7 @@
 <form (ngSubmit)="saveTimeEntry()">
   <p-dataTable [editable]="true" [(value)]="timeEntries" scrollable="true" sortMode="multiple" [responsive]="true"
     [globalFilter]="gb" resizableColumns="true" [responsive]="true" columnResizeMode="expand" dataKey="timeEntryId" #dt exportFilename="timeEntries">
-      <p-column datakey="workEffortId" field="description" header="{{'Work Effort'|i18n}}" [sortable]="true" [style]="{'width':'80%'}"
+      <p-column datakey="workEffortId" field="description" header="{{'Title, work effort'|i18n}}" [sortable]="true" [style]="{'width':'80%'}"
         [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}">
         <!-- field="description"  cambia la description ma non l'id 
 		<ng-template pTemplate="filter" let-col>

@@ -91,38 +91,28 @@ var _ = require('lodash'),
       { uom: {uomId: 'RAT_VAL', description: 'Scala valutazione comportamenti Dirigenti'}, uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, uomRatingValue:100.000000, description:''},
       { uom: {uomId: 'SN', description: 'Presente S/N	'}, uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, uomRatingValue:0.000000, description:'No'},
       { uom: {uomId: 'SN', description: 'Presente S/N	'}, uomType: {uomTypeId: 'RATING_SCALE', description: 'Scale Valori'}, uomRatingValue:100.000000, description:'Sì'}
+    ],    
+    PARTY = [
+      { partyId: '1', firstName: 'CORTI', lastName: 'MARIACHIARA', partyName : "CORTI MARIACHIARA" },
+      { partyId: '2', firstName: 'STEFANONI', lastName: 'SILVANO', partyName : "STEFANONI SILVANO"  },
+      { partyId: '3', firstName: 'RIVA', lastName: 'SILVIA', partyName : "RIVA SILVIA"  }
+    ],
+    WORK_EFFORT = [
+      {attivitaLiv1: 'livello 1', attivitaLiv2 : 'livello 1.1', attivitaLiv3: 'livello 1.1.1', workEffortId: '10000'},
+      {attivitaLiv1: 'livello 1', attivitaLiv2 : 'livello 1.2', attivitaLiv3: 'livello 1.2.1', workEffortId: '10001'},
+      {attivitaLiv1: 'livello 1', attivitaLiv2 : 'livello 1.3', attivitaLiv3: 'livello 1.3.1', workEffortId: '10002'}
     ],
     TIMESHEET = [
-      {partyId: '1', timesheetId: '1', fromDate: '2017-05-01', thruDate: '2017-5-31', contractHours: 40, actualHours: 40 },
-      {partyId: '2', timesheetId: '2', fromDate: '2017-05-01', thruDate: '2017-5-31', contractHours: 40, actualHours: 40 },
-      {partyId: '3', timesheetId: '3', fromDate: '2017-05-01', thruDate: '2017-5-31', contractHours: 40, actualHours: 40 },
-      {partyId: '4', timesheetId: '4', fromDate: '2017-05-01', thruDate: '2017-5-31', contractHours: 40, actualHours: 40 },
-      {partyId: '5', timesheetId: '5', fromDate: '2017-05-01', thruDate: '2017-5-31', contractHours: 40, actualHours: 40 }
-    ],
-    PARTY = [
-      { partyId: '1', firstName: 'pippo', lastName: 'pippo' },
-      { partyId: '2', firstName: 'pluto', lastName: 'pluto'  },
-      { partyId: '3', firstName: 'paperino', lastName: 'paperino'  }
+      {partyId: '1', timesheetId: '1', fromDate: '2017-05-01', thruDate: '2017-5-31', contractHours: 5, actualHours: 10, partyName : "CORTI MARIACHIARA" },
+      {partyId: '2', timesheetId: '2', fromDate: '2017-05-01', thruDate: '2017-5-31', contractHours: 11, actualHours: 20, partyName : "STEFANONI SILVANO" },
+      {partyId: '3', timesheetId: '3', fromDate: '2017-05-01', thruDate: '2017-5-31', contractHours: 15, actualHours: 30, partyName : "RIVA SILVIA" },
+      {partyId: '4', timesheetId: '4', fromDate: '2017-05-01', thruDate: '2017-5-31', contractHours: 21, actualHours: 40, partyName : "ZUCCHI MARIALUIGIA" },
+      {partyId: '5', timesheetId: '5', fromDate: '2017-05-01', thruDate: '2017-5-31', contractHours: 31, actualHours: 50, partyName : "PARTY NAME PROVA" }
     ],
     TIME_ENTRY = [
-      {timeEntryId: '1', timesheetId: '1', workEffortId : '10000', percentage: 10, description: 'titolo1' },
-      {timeEntryId: '2', timesheetId: '1', workEffortId : '10001', percentage: 8, description: 'titolo2' },
-      {timeEntryId: '3', timesheetId: '1', workEffortId : '10002', percentage: 50, description: 'titolo3' }
-    ],
-    WORK_EFFORT = [
-      {attivitaLiv1: '1', attivitaLiv2 : '1.1', attivitaLiv3: '1.1.1', workEffortId: '10000'},
-      {attivitaLiv1: '2', attivitaLiv2 : '2.1', attivitaLiv3: '2.1.1', workEffortId: '10001'},
-      {attivitaLiv1: '3', attivitaLiv2 : '3.1', attivitaLiv3: '3.1.1', workEffortId: '10002'}
-    ],
-    TIME_ENTRY = [
-      {timeEntryId: '1', timesheetId: '1', workEffortId : '10000', attivitaLiv3: '1.1.1', percentage: '100'},
-      {timeEntryId: '2', timesheetId: '1', workEffortId : '10001', attivitaLiv3: '2.1.1', percentage: '80'},
-      {timeEntryId: '3', timesheetId: '1', workEffortId : '10002', attivitaLiv3: '3.1.1', percentage: '50'}
-    ],
-    WORK_EFFORT = [
-      {attivitaLiv1: '1', attivitaLiv2 : '1.1', attivitaLiv3: '1.1.1', workEffortId: '10000'},
-      {attivitaLiv1: '2', attivitaLiv2 : '2.1', attivitaLiv3: '2.1.1', workEffortId: '10001'},
-      {attivitaLiv1: '3', attivitaLiv2 : '3.1', attivitaLiv3: '3.1.1', workEffortId: '10002'}
+      {timeEntryId: '1', timesheetId: '1', workEffortId : '10000', percentage: '10', description: 'livello 1 - livello 1.1 - livello 1.1.1'},
+      {timeEntryId: '2', timesheetId: '1', workEffortId : '10001', percentage: '8', description: 'livello 1 - livello 1.2 - livello 1.2.1'},
+      {timeEntryId: '3', timesheetId: '1', workEffortId : '10002', percentage: '50', description: 'livello 1 - livello 1.3 - livello 1.3.1'}
     ],
     tokens = {},
     secret = generateSecret();
@@ -202,7 +192,7 @@ module.exports = {
       children: [
         { id: 'GP_MENU_00001', label: 'Performance Management', classes: ['ion ion-speedometer'] },
         { id: 'GP_MENU_00002', label: 'Governance', classes: ['fa-balance-scale'] },
-        { id: 'GP_MENU_00003', label: 'Accountability', classes: ['fa-money'] },
+        { id: 'GP_MENU_00003', label: 'Accountability', classes: ['fa-money-bill-alt'] },
         { id: 'GP_MENU_00004', label: 'Basic Data', classes: ['fa-database'] }
       ]
     };

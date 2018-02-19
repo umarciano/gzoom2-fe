@@ -451,6 +451,15 @@ app.get('/rest/party/person', function(req, res) {
   }, _.random(200, 1000));
 });
 
+//party/party
+app.get('/rest/party', function(req, res) {
+  var partys = data.partys();
+  log.debug('Looking up party ' + partys);
+  setTimeout(function() {
+    res.json({ results: partys, total: partys.length });
+  }, _.random(200, 1000));
+});
+
 //timesheet/time-entry
 app.get('/rest/timesheet/time-entry/:id', function(req, res) {
   const id = req.param('id');
