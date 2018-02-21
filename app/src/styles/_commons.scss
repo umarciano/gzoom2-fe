@@ -115,6 +115,14 @@ $commons-sizes: (
   padding-right: 30px !important;
 }
 
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type=number] {
+  text-align:right;
+}
+
 .text-align-right{
   text-align:right !important;
 }

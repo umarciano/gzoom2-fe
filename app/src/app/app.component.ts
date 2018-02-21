@@ -33,6 +33,6 @@ export class AppComponent implements OnInit {
         if (event.url === '/') {
           this.router.navigate(['/c/dashboard']);
         }
-      });
+      });     
   }
 }

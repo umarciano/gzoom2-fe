@@ -26,9 +26,15 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import {AuthInterceptor} from './api/auth-interceptor';
 
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeIt from '@angular/common/locales/it';
+import localeItExtra from '@angular/common/locales/extra/it';
+registerLocaleData(localeIt, localeItExtra);
+
+
 const ROOT_PATH = '../rest';
 const GZOOM_PATH = '/gzoom/control/box';
-
 
 @NgModule({
   imports: [
@@ -61,6 +67,10 @@ const GZOOM_PATH = '/gzoom/control/box';
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true,
+  },
+  {
+    provide: LOCALE_ID, 
+    useValue: navigator.language
   }],
   bootstrap: [AppComponent]
 })

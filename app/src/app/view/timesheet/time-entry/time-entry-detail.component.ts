@@ -22,6 +22,8 @@ import { isBlank } from 'app/commons/commons';
 import { summaryForJitFileName } from '@angular/compiler/src/aot/util';
 import { isNumber } from '@ng-bootstrap/ng-bootstrap/util/util';
 
+import { Uom } from '../../uom/uom/uom';
+import { UomService } from '../../../api/uom.service';
 
 @Component({
   selector: 'app-time-entry-detail',
@@ -39,7 +41,7 @@ export class TimeEntryDetailComponent implements OnInit {
   newTimeEntry: boolean;
   /** Timesheet to save*/
   timeEntry: TimeEntry = new PrimeTimeEntry(false);
-  timesheet: Timesheet;
+  timesheet: Timesheet = new Timesheet();
   selectedTimeEntry: TimeEntry;
   selectedTimesheetId: string;
   selectedWorkEffortId: string;
@@ -48,9 +50,15 @@ export class TimeEntryDetailComponent implements OnInit {
   filteredActivities: any[] = [];
   totalPercentage: number;
 
+   /** uom per formattazione */
+   formatNumber: String;
+   uom: Uom;
+   patternDecimal: String;
+
   constructor(
     private readonly timesheetService: TimesheetService,
     private readonly confirmationService: ConfirmationService,
+    private readonly uomService: UomService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly i18nService: I18NService,
@@ -76,6 +84,17 @@ export class TimeEntryDetailComponent implements OnInit {
         console.log(" - paramMap data " + data);
         this.timesheet = data;
     });
+
+    /**Carico il mio uom */
+    this.route.paramMap
+    .switchMap((params) => { return this.uomService.uom("OTH_100"); })
+    .subscribe((data) => { 
+      this.uom = data;
+      this.formatNumber = this.uomService.formatNumber(data); 
+      this.patternDecimal = this.uomService.patternDecimal(data);
+      console.log('decimalScale'+ this.uom.decimalScale);
+    });
+
 
 
     this.route.paramMap
@@ -132,7 +151,7 @@ export class TimeEntryDetailComponent implements OnInit {
 
     //aggiornare totale
     this.totalPercentage = 0;
-    this.timeEntries.forEach(c => this.totalPercentage +=  isNumber(c.percentage) ?  +c.percentage : +0);
+    // this.timeEntries.forEach(c => this.totalPercentage +=  isNumber(c.percentage) ?  +c.percentage : +0);
     console.log(" - totalPercentage " + this.totalPercentage);
     if (this.totalPercentage > 100) {
       this.error = this.i18nService.translate("The percentage can not be greater than 100");

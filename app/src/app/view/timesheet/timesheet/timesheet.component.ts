@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
@@ -21,6 +22,8 @@ import { TimesheetService } from '../../../api/timesheet.service';
 import { Party } from '../../party/party/party';
 import { PartyService } from '../../../api/party.service';
 
+import { Uom } from '../../uom/uom/uom';
+import { UomService } from '../../../api/uom.service';
 
 /** Convert from Party[] to SelectItem[] */
 function party2SelectItems(party: Party[]): SelectItem[] {
@@ -55,12 +58,17 @@ export class TimesheetComponent implements OnInit {
   selectedPartyId: string;
   /** List of Party in Select */
   partySelectItem: SelectItem[] = [];
-
+  /** uom per formattazione */
+  formatNumber: String;
+  uom: Uom;
+  patternDecimal: String;
+  /** Lista utilizzata per ricerca autocomplete party**/
   filteredActivitiesParty: any[] = [];
 
   constructor(
     private readonly timesheetService: TimesheetService,
     private readonly partyService: PartyService,
+    private readonly uomService: UomService,
     private readonly confirmationService: ConfirmationService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
@@ -71,17 +79,30 @@ export class TimesheetComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.form = this.fb.group({
-            'partyId': new FormControl('', Validators.required),
-            'fromDate': new FormControl('', Validators.required),
-            'thruDate': new FormControl('', Validators.required),
-            'contractHours': new FormControl(''),
-            'actualHours': new FormControl('')
 
-        });
+    this.form = this.fb.group({
+      'partyId': new FormControl('', Validators.required),
+      'fromDate': new FormControl('', Validators.required),
+      'thruDate': new FormControl('', Validators.required),
+      'contractHours': new FormControl(''),
+      'actualHours': new FormControl('')
+  });
+
+     /**Carico il mio uom */
+     this.route.paramMap
+     .switchMap((params) => { return this.uomService.uom("OTH_100"); })
+     .subscribe((data) => { 
+       this.uom = data;
+       this.formatNumber = this.uomService.formatNumber(data); 
+       this.patternDecimal = this.uomService.patternDecimal(data);
+       console.log('decimalScale'+ this.uom.decimalScale);
+     });
+
     this.route.data.pipe(
       map((data: { timesheets: Timesheet[] }) => data.timesheets)
     ).subscribe(data => this.timesheets = data);
+
+   
 
     const reloadedParty = this._reload.switchMap(() => this.partyService.partys());
     const reloadedTimesheets = this._reload.switchMap(() => this.timesheetService.timesheets());
@@ -92,7 +113,7 @@ export class TimesheetComponent implements OnInit {
       map(party2SelectItems)
     ).subscribe((data) => {
       this.partySelectItem = data;
-      //this.partySelectItem.push({label: this.i18nService.translate('Select Party'), value:null});
+      this.partySelectItem.push({label: this.i18nService.translate('Select Party'), value:null});
     });
 
     const timesheetsObs = this.route.data.pipe(
@@ -216,7 +237,6 @@ export class TimesheetComponent implements OnInit {
       this.error = this.i18nService.translate(error.message) || error;
     });
   }
-
 }
 
 class PrimeTimesheet implements Timesheet {

@@ -11,12 +11,16 @@ import { TimeEntryComponent } from './time-entry/time-entry.component';
 import { TimeEntryDetailComponent } from './time-entry/time-entry-detail.component';
 
 import { PartyResolver } from '../party/party/party-resolver.service';
+import { UomResolver } from '../uom/uom/uom-resolver.service';
 
 const routes: Routes = [
   { path: ':id', component: TimeEntryDetailComponent, resolve: { timeEntries: TimeEntryResolver,
                                                                 workEfforts: WorkEffortResolver,
-                                                                timesheet: TimesheetResolver}},
-  { path: '', component: TimesheetComponent, resolve: { timesheets: TimesheetResolver, partys: PartyResolver}}                                                          
+                                                                timesheet: TimesheetResolver,
+                                                                uom: UomResolver}},
+  { path: '', component: TimesheetComponent, resolve: { timesheets: TimesheetResolver, 
+                                                        partys: PartyResolver,
+                                                        uom: UomResolver}}                                                          
 ];
 
 @NgModule({

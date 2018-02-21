@@ -31,6 +31,10 @@ import {Party} from '../party/party/party';
 import { PartyService } from '../../api/party.service';
 import { PartyResolver } from '../party/party/party-resolver.service';
 
+import { UomService } from '../../api/uom.service';
+import { UomResolver } from '../uom/uom/uom-resolver.service';
+
+
 
 
 @NgModule({
@@ -63,9 +67,11 @@ import { PartyResolver } from '../party/party/party-resolver.service';
   providers: [
     TimesheetService,
     PartyService,
+    UomService,
     TimesheetResolver,
     TimeEntryResolver,
     PartyResolver,
+    UomResolver,
     WorkEffortResolver,
     ConfirmationService
   ]

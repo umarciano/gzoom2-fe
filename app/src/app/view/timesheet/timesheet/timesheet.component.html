@@ -1,5 +1,6 @@
 <h3 class="first">{{'GP_MENU_00334'|i18n}}</h3>
 
+
 <p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
 
 <router-outlet></router-outlet>
@@ -27,8 +28,19 @@
           <span>{{row[col.field] | i18nDate}}</span>
         </ng-template>
     </p-column>
-    <p-column [style]="{'width':'20%'}" styleClass="text-align-right" field="contractHours" header="{{'Contract Hours'|i18n}}" [sortable]="true"></p-column>
-    <p-column [style]="{'width':'20%'}" styleClass="text-align-right" field="actualHours" header="{{'Actual Hours'|i18n}}" [sortable]="true"></p-column>
+
+    <p-column [style]="{'width':'20%'}" styleClass="text-align-right" field="contractHours" header="{{'Contract Hours'|i18n}}" [sortable]="true">
+        <ng-template let-col let-row="rowData" pTemplate>
+          <span>{{row[col.field] | number:formatNumber}}</span>
+        </ng-template>
+    </p-column>
+
+    <p-column [style]="{'width':'20%'}" styleClass="text-align-right" field="actualHours" header="{{'Actual Hours'|i18n}}" [sortable]="true">
+      <ng-template let-col let-row="rowData" pTemplate>
+        <span>{{row[col.field] | number:formatNumber}}</span>
+      </ng-template>
+    </p-column>
+
     <p-column [style]="{'width':'10%'}" styleClass="col-button">
         <ng-template pTemplate="header">
             <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
@@ -96,17 +108,27 @@
           <label for="contractHours">{{'Contract Hours'|i18n}}:</label>
         </div>
         <div class="ui-grid-col-4">
-            <p-spinner formControlName="contractHours" [(ngModel)]="timesheet.contractHours"></p-spinner>
+              <input type="number"
+                 formControlName="contractHours"
+                 class="ui-inputtext ui-widget ui-state-default ui-corner-all"
+                 [(ngModel)]="timesheet.contractHours"
+                 [pattern]="patternDecimal"
+                 />
         </div>
       </div>
       <!-- actualHours -->
       <div class="ui-grid-row">
         <div class="ui-grid-col-3">
-          <label for="actualHours">{{'Actual hours'|i18n}}:</label>
+          <label for="actualHours">{{'Actual Hours'|i18n}}:</label>
         </div>
         <div class="ui-grid-col-4">
-            <p-spinner formControlName="actualHours" [(ngModel)]="timesheet.actualHours"></p-spinner>
-        </div>
+          <input type="number"
+                 formControlName="actualHours"
+                 class="ui-inputtext ui-widget ui-state-default ui-corner-all"
+                 [(ngModel)]="timesheet.actualHours"
+                 [pattern]="patternDecimal"
+                 />
+        </div>        
       </div>
   </div>
     <p-footer>

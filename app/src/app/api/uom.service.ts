@@ -9,6 +9,7 @@ import { ApiClientService } from './client.service';
 import { UomType } from '../view/uom/uom-type/uom_type';
 import { Uom } from '../view/uom/uom/uom';
 import { UomRatingScale } from '../view/uom/scale/uom_rating_scale';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Injectable()
 export class UomService {
@@ -74,6 +75,29 @@ export class UomService {
         map(json => json as Uom)
       );
   }
+
+  /**
+   * "1.2-2"
+   */
+  formatNumber(uom: Uom): String{
+    var format = "1.";
+    if (uom.decimalScale != null) {
+      format += uom.decimalScale + "-" + uom.decimalScale;      
+    } else format += "0-0"; 
+    console.log("- fomar="+ format);    
+    return format;
+  }
+
+  patternDecimal(uom: Uom): String{
+    var format = "^[0-9]+(.[0-9]{0,@})?$";
+    if (uom.decimalScale == null) {
+      format = format.replace('@', '0');      
+    } else format = format.replace('@', String(uom.decimalScale));   
+    console.log("- pattern="+ format);    
+    return format;
+  }
+
+  
 
   createUom(uom: Uom):  Promise<Uom> {
     console.log('create Uom');
