@@ -20,12 +20,12 @@
     <p-column [style]="{'width':'30%'}" field="partyName" header="{{'Party'|i18n}}" [sortable]="true"></p-column>
     <p-column [style]="{'width':'20%'}" field="fromDate" header="{{'From Date'|i18n}}" [sortable]="true">
         <ng-template let-col let-row="rowData" pTemplate>
-            <span>{{row[col.field] | i18nDate}}</span>
+            <span>{{row[col.field] | date:i18nService.getFormat('date-short')}}</span>
         </ng-template>
     </p-column>
     <p-column [style]="{'width':'20%'}" field="thruDate" header="{{'Thru Date'|i18n}}" [sortable]="true">
         <ng-template let-col let-row="rowData" pTemplate>
-          <span>{{row[col.field] | i18nDate}}</span>
+          <span>{{row[col.field] | date:i18nService.getFormat('date-short')}}</span>
         </ng-template>
     </p-column>
 
@@ -90,7 +90,7 @@
           <label for="fromDate">{{'From Date'|i18n}}*:</label>
         </div>
         <div class="ui-grid-col-4">
-          <p-calendar [locale]="calendarLocale" formControlName="fromDate" [(ngModel)]="timesheet.fromDate" dateFormat="dd/mm/yy" name="fromDate" required [showIcon]="true"></p-calendar>
+          <p-calendar [locale]="i18nService.getCalendarLocale()" formControlName="fromDate" [(ngModel)]="timesheet.fromDate" dateFormat="{{'date-short-pcalendar'|i18nDate}}" name="fromDate" required [showIcon]="true"></p-calendar>
         </div>
       </div>
       <!-- Thru date -->
@@ -99,7 +99,7 @@
           <label for="thruDate">{{'Thru Date'|i18n}}*:</label>
         </div>
         <div class="ui-grid-col-4">
-          <p-calendar [locale]="calendarLocale" formControlName="thruDate" [(ngModel)]="timesheet.thruDate" dateFormat="dd/mm/yy" name="thruDate" required [showIcon]="true"></p-calendar>
+          <p-calendar [locale]="i18nService.getCalendarLocale()" formControlName="thruDate" [(ngModel)]="timesheet.thruDate" dateFormat="{{'date-short-pcalendar'|i18nDate}}" name="thruDate" required [showIcon]="true"></p-calendar>
         </div>
       </div>
       <!-- contractHours -->

@@ -65,8 +65,6 @@ export class TimesheetComponent implements OnInit {
   /** Lista utilizzata per ricerca autocomplete party**/
   filteredActivitiesParty: any[] = [];
 
-  calendarLocale: any;
-
   constructor(
     private readonly timesheetService: TimesheetService,
     private readonly partyService: PartyService,
@@ -81,9 +79,6 @@ export class TimesheetComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.calendarLocale = this.i18nService.getCalendarLocale();
-    
 
     this.form = this.fb.group({
       'partyId': new FormControl('', Validators.required),

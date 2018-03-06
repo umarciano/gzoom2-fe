@@ -107,7 +107,8 @@
     "date-range-short": "%d - %d",
     "date-range-long": "Dal %D al %D",
     "date-time-short": "DD-MM-YYYY, LT",
-    "date-time-long": "D MMMM YYYY - LT"
+    "date-time-long": "D MMMM YYYY - LT",
+    "date-short-pcalendar": "dd/mm/yy"
   },
   "calendarLocale": {  
     "firstDayOfWeek": 0,
