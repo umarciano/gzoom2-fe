@@ -34,8 +34,8 @@ import { PartyResolver } from '../party/party/party-resolver.service';
 import { UomService } from '../../api/uom.service';
 import { UomResolver } from '../uom/uom/uom-resolver.service';
 
-
-
+import { NumberDecimalDirective } from './../../commons/number.directive';
+import { NumberDecimalAccessor } from './../../commons/number.accessor';
 
 @NgModule({
   imports: [
@@ -62,7 +62,9 @@ import { UomResolver } from '../uom/uom/uom-resolver.service';
   declarations: [
     TimesheetComponent,
     TimeEntryComponent,
-    TimeEntryDetailComponent
+    TimeEntryDetailComponent,
+    NumberDecimalDirective,
+    NumberDecimalAccessor
   ],
   providers: [
     TimesheetService,

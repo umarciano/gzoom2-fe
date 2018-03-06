@@ -90,7 +90,7 @@
           <label for="fromDate">{{'From Date'|i18n}}*:</label>
         </div>
         <div class="ui-grid-col-4">
-          <p-calendar formControlName="fromDate" [(ngModel)]="timesheet.fromDate" dateFormat="dd/mm/yy" name="fromDate" required [showIcon]="true"></p-calendar>
+          <p-calendar [locale]="calendarLocale" formControlName="fromDate" [(ngModel)]="timesheet.fromDate" dateFormat="dd/mm/yy" name="fromDate" required [showIcon]="true"></p-calendar>
         </div>
       </div>
       <!-- Thru date -->
@@ -99,7 +99,7 @@
           <label for="thruDate">{{'Thru Date'|i18n}}*:</label>
         </div>
         <div class="ui-grid-col-4">
-          <p-calendar formControlName="thruDate" [(ngModel)]="timesheet.thruDate" dateFormat="dd/mm/yy" name="thruDate" required [showIcon]="true"></p-calendar>
+          <p-calendar [locale]="calendarLocale" formControlName="thruDate" [(ngModel)]="timesheet.thruDate" dateFormat="dd/mm/yy" name="thruDate" required [showIcon]="true"></p-calendar>
         </div>
       </div>
       <!-- contractHours -->
@@ -108,11 +108,10 @@
           <label for="contractHours">{{'Contract Hours'|i18n}}:</label>
         </div>
         <div class="ui-grid-col-4">
-              <input type="number"
+              <input type="number" 
                  formControlName="contractHours"
                  class="ui-inputtext ui-widget ui-state-default ui-corner-all"
                  [(ngModel)]="timesheet.contractHours"
-                 [pattern]="patternDecimal"
                  />
         </div>
       </div>
@@ -122,11 +121,10 @@
           <label for="actualHours">{{'Actual Hours'|i18n}}:</label>
         </div>
         <div class="ui-grid-col-4">
-          <input type="number"
+          <input type="number" 
                  formControlName="actualHours"
                  class="ui-inputtext ui-widget ui-state-default ui-corner-all"
                  [(ngModel)]="timesheet.actualHours"
-                 [pattern]="patternDecimal"
                  />
         </div>        
       </div>

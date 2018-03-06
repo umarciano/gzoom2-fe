@@ -88,7 +88,7 @@ export class UomService {
     return format;
   }
 
-  patternDecimal(uom: Uom): String{
+  patternRegExp(uom: Uom): String{
     var format = "^[0-9]+(.[0-9]{0,@})?$";
     if (uom.decimalScale == null) {
       format = format.replace('@', '0');      

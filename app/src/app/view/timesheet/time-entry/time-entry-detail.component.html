@@ -44,13 +44,10 @@
             <span>{{row[col.field] |number:formatNumber}}</span>
         </ng-template>
         <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="editor">            
-            <input type="number"
-                name="percentage_o_{{ri}}"
+            <input type="number" numberDecimal="{{patternRegExp}}"
+                 name="percentage_o_{{ri}}"
                  class="ui-inputtext ui-widget ui-state-default ui-corner-all"
                  [(ngModel)]="row[col.field]"
-                 [pattern]="patternDecimal"
-                 [min]="0" 
-                 [max]="100"
                  />
         </ng-template>
         <ng-template pTemplate="footer">

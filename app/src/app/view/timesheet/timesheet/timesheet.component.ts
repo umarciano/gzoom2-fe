@@ -61,9 +61,11 @@ export class TimesheetComponent implements OnInit {
   /** uom per formattazione */
   formatNumber: String;
   uom: Uom;
-  patternDecimal: String;
+  patternRegExp: String;
   /** Lista utilizzata per ricerca autocomplete party**/
   filteredActivitiesParty: any[] = [];
+
+  calendarLocale: any;
 
   constructor(
     private readonly timesheetService: TimesheetService,
@@ -80,13 +82,16 @@ export class TimesheetComponent implements OnInit {
 
   ngOnInit() {
 
+    this.calendarLocale = this.i18nService.getCalendarLocale();
+    
+
     this.form = this.fb.group({
       'partyId': new FormControl('', Validators.required),
       'fromDate': new FormControl('', Validators.required),
       'thruDate': new FormControl('', Validators.required),
       'contractHours': new FormControl(''),
       'actualHours': new FormControl('')
-  });
+    });
 
      /**Carico il mio uom */
      this.route.paramMap
@@ -94,7 +99,7 @@ export class TimesheetComponent implements OnInit {
      .subscribe((data) => { 
        this.uom = data;
        this.formatNumber = this.uomService.formatNumber(data); 
-       this.patternDecimal = this.uomService.patternDecimal(data);
+       this.patternRegExp = this.uomService.patternRegExp(data);
        console.log('decimalScale'+ this.uom.decimalScale);
      });
 

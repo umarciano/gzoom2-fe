@@ -53,7 +53,7 @@ export class TimeEntryDetailComponent implements OnInit {
    /** uom per formattazione */
    formatNumber: String;
    uom: Uom;
-   patternDecimal: String;
+   patternRegExp: String;
 
   constructor(
     private readonly timesheetService: TimesheetService,
@@ -91,7 +91,7 @@ export class TimeEntryDetailComponent implements OnInit {
     .subscribe((data) => { 
       this.uom = data;
       this.formatNumber = this.uomService.formatNumber(data); 
-      this.patternDecimal = this.uomService.patternDecimal(data);
+      this.patternRegExp = this.uomService.patternRegExp(data);
       console.log('decimalScale'+ this.uom.decimalScale);
     });
 

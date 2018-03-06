@@ -10,6 +10,7 @@ interface Localizations {
   language?: string;
   translations: { [x: string]: string; };
   formats: { [x: string]: string | number | boolean; };
+  calendarLocale: { [x: string]: any; };
 }
 
 export class I18NConfig {
@@ -36,7 +37,7 @@ export function load(http: HttpClient, config: I18NConfig): () => Promise<boolea
     })
     .catch(err => {
       console.error('No way to get the localization data', err);
-      config.localizations = { translations: {}, formats: {} };
+      config.localizations = { translations: {}, formats: {}, calendarLocale: {} };
       return true;
     });
 }
@@ -51,6 +52,7 @@ const SUFFIX_RE = /^((?:.|\s)+)__\{([-\w]+)\}$/; // see https://regex101.com/r/b
 export class I18NService {
   private readonly _t: { [x: string]: string; };
   private readonly _f: { [x: string]: string | number | boolean; };
+  private readonly _calendarLocale: { [x: string]: any; };
 
   private static removeSuffix(text) {
     const matches = SUFFIX_RE.exec(text);
@@ -60,6 +62,7 @@ export class I18NService {
   constructor(private readonly config: I18NConfig) {
     this._t = config.localizations.translations;
     this._f = config.localizations.formats;
+    this._calendarLocale = config.localizations.calendarLocale;
   }
 
   /**
@@ -117,4 +120,13 @@ export class I18NService {
     const f: string = this._f[text] as string;
     return !isBlank(f) ? f : args[text];
   }
+
+  /**
+   * Retrieves the all lable from the calendar locale
+   *
+   */
+  getCalendarLocale(): any {
+    return this._calendarLocale;
+  }
+
 }
