@@ -36,10 +36,10 @@
           </p-autoComplete>
         </ng-template>
         <ng-template pTemplate="footer" >
-          <span>{{'Totals:'|i18n}}</span>
+          <span>{{'Totals'|i18n}}</span>
         </ng-template>
       </p-column>
-      <p-column field="percentage" header="{{'Percentage'|i18n}}" [sortable]="true" [editable]="true" styleClass="text-align-right">
+      <p-column [filter]="true" filterMatchMode="contains" field="percentage" header="{{'Percentage'|i18n}}" [sortable]="true" [editable]="true" styleClass="text-align-right">
         <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="body">
             <span>{{row[col.field] |number:formatNumber}}</span>
         </ng-template>
