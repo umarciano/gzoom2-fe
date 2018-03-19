@@ -15,6 +15,13 @@ import { HeaderComponent } from './header/header.component';
 import { FolderMenuComponent } from './sidebar/folder-menu/folder-menu.component';
 import { LeafMenuComponent } from './sidebar/leaf-menu/leaf-menu.component';
 
+import { ButtonModule } from 'primeng/primeng';
+import { DialogModule } from 'primeng/primeng';
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { EqualValidator } from '../commons/equal-validator.directive';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -22,7 +29,11 @@ import { LeafMenuComponent } from './sidebar/leaf-menu/leaf-menu.component';
     CommonsModule,
     ApiModule,
     SharedModule,
-    NgbModule
+    NgbModule,
+    DialogModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ButtonModule,
   ],
   declarations: [
     FocusComponent,
@@ -31,7 +42,9 @@ import { LeafMenuComponent } from './sidebar/leaf-menu/leaf-menu.component';
     FooterComponent,
     HeaderComponent,
     FolderMenuComponent,
-    LeafMenuComponent
+    LeafMenuComponent,
+    EqualValidator
   ]
 })
 export class LayoutModule { }
+

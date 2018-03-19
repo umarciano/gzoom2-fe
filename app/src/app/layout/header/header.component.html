@@ -10,66 +10,75 @@
 
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
 
-            <ul class="navbar-nav ml-auto mt-2 mt-md-0">
-                <li class="nav-item dropdown" ngbDropdown placement="bottom-right">
-                    <!-- <div class="dropdown"> -->   
-                    <a href="javascript:void(0)" class="nav-link dropdown-toggle" ngbDropdownToggle>
-                        <i class="fa fa-envelope"></i> <b class="caret"></b>
-                    </a>
-                    
-                    <div ngbDropdownMenu>
-                        <ul>
-                            <li class="media">
-                                <img class="d-flex align-self-center mr-3" src="http://i.huffpost.com/gadgets/slideshows/461162/slide_461162_6224974_sq50.jpg" alt="Generic placeholder image">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-1">John Smith</h5>
-                                    <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                    <p class="last"> Lorem ipsum dolor sit amet, consectetur...</p>
-                                </div>
-                            </li>
-                            <li class="media">
-                                <img class="d-flex align-self-center mr-3" src="http://i.huffpost.com/gadgets/slideshows/461162/slide_461162_6224974_sq50.jpg" alt="Generic placeholder image">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-1">John Smith</h5>
-                                    <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                    <p class="last"> Lorem ipsum dolor sit amet, consectetur...</p>
-                                </div>
-                            </li>
-                            <li class="media">
-                                <img class="d-flex align-self-center mr-3" src="http://i.huffpost.com/gadgets/slideshows/461162/slide_461162_6224974_sq50.jpg" alt="Generic placeholder image">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-1">John Smith</h5>
-                                    <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                    <p class="last"> Lorem ipsum dolor sit amet, consectetur...</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item dropdown" ngbDropdown placement="bottom-right">
-                    <a href="javascript:void(0)" class="nav-link dropdown-toggle" ngbDropdownToggle>
-                        <i class="fa fa-bell"></i> <b class="caret"></b>
-                    </a>
-                    <div ngbDropdownMenu>
-                        <a href="javascript:void(0)" class="dropdown-item">Pending Task <span class="badge badge-info">6</span></a>
-                        <a href="javascript:void(0)" class="dropdown-item">In queue <span class="badge badge-info"> 13</span></a>
-                        <a href="javascript:void(0)" class="dropdown-item">Mail <span class="badge badge-info"> 45</span></a>
-                        <li class="dropdown-divider"></li>
-                        <a href="javascript:void(0)" class="dropdown-item">View All</a>
-                    </div>
-                </li>
+            <ul class="navbar-nav ml-auto mt-2 mt-md-0">                
                 <div class="nav-item dropdown" ngbDropdown placement="bottom-right">
                     <a href="javascript:void(0)" class="nav-link dropdown-toggle" ngbDropdownToggle>
                         <i class="fa fa-user"></i> &nbsp; {{user|fullname}} <b class="caret"></b>
                     </a>
                     <div ngbDropdownMenu>
-                        <a class="dropdown-item" href="jvascript:void(0)"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        <a class="dropdown-item" href="jvascript:void(0)"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        <a class="dropdown-item" href="jvascript:void(0)"><i class="fa fa-fw fa-cog"></i> Settings</a>
-                        <a class="dropdown-item" (click)="logout()"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        <a class="dropdown-item" href="jvascript:void(0)"><i class="fa fa-fw fa-user"></i> {{'Profile'|i18n}}</a>
+                        <a class="dropdown-item" (click)="changePasswordDialog()"><i class="fa fa-fw fa-key"></i> {{'Change password'|i18n}}</a>
+                        <a class="dropdown-item" (click)="logout()"><i class="fa fa-fw fa-power-off"></i> {{'Logout'|i18n}}</a>
                     </div>
                 </div>
             </ul>
         </div>
     </nav>
 </div>
+
+
+<p-dialog header="{{'Change password'|i18n}}" width="900" [(visible)]="displayChangePassword" [responsive]="true" showEffect="fade" [modal]="true">
+    <form [formGroup]="form" novalidate (ngSubmit)="save()">
+      <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px" *ngIf="user">        
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-3">
+            <label for="currentPasswordVerify">{{'Current Password'|i18n}}*:</label>
+          </div>
+          <div class="ui-grid-col-4">
+            <input pPassword type="password" [(ngModel)]="currentPasswordVerify" formControlName="currentPasswordVerify"/>       
+          </div>
+          <div class="ui-grid-col-5">
+            <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['currentPasswordVerify'].valid&amp;&amp;form.controls['currentPasswordVerify'].dirty">
+              <i class="fa fa-times"></i>
+              {{'Current Password is required'|i18n}}
+            </div>
+          </div>
+        </div> 
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-3">
+              <label for="newPassword">{{'New Password'|i18n}}*:</label>
+            </div>
+            <div class="ui-grid-col-4">
+              <input pPassword type="password" [(ngModel)]="newPassword" formControlName="newPassword" />       
+            </div>
+            <div class="ui-grid-col-5">
+              <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['newPassword'].valid&amp;&amp;form.controls['newPassword'].dirty">
+                <i class="fa fa-times"></i>
+                {{'New Password is required'|i18n}}
+              </div>
+            </div>
+          </div> 
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-3">
+              <label for="newPasswordVerify">{{'Verify new Password'|i18n}}*:</label>
+            </div>
+            <div class="ui-grid-col-4">
+              <input pPassword type="password" [(ngModel)]="newPasswordVerify" formControlName="newPasswordVerify" validateEqual="newPassword"/>       
+            </div>
+            <div class="ui-grid-col-5">
+              <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['newPasswordVerify'].valid&amp;&amp;form.controls['newPasswordVerify'].dirty">
+                <i class="fa fa-times"></i>
+                {{'Verify new Password is incorrect'|i18n}}
+              </div>
+            </div>
+          </div>  
+    </div>
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="submit" pButton icon="fa-check" label="{{'Save'|i18n}}" [disabled]="!form.valid"></button>
+        </div>
+      </p-footer>
+    </form>
+  
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  </p-dialog>

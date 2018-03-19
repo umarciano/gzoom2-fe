@@ -25,7 +25,8 @@ var _ = require('lodash'),
         firstName: "Gianluca",
         lastName: "Cattani",
         email: "gianluca.cattani@mapsgroup.it",
-        externalLoginKey: "adsdas010101010"
+        externalLoginKey: "adsdas010101010",
+        currentPassword: "adsdas010101010"
       },
       "fast": {
         id: inc(),
@@ -33,7 +34,8 @@ var _ = require('lodash'),
         firstName: "Fabio",
         lastName: "Strozzi",
         email: "fabio.strozzi@mapsgroup.it",
-        externalLoginKey: "x0x0x0x0y1y1y1y1"
+        externalLoginKey: "x0x0x0x0y1y1y1y1",
+        currentPassword: "x0x0x0x0y1y1y1y1"
       },
       "anfo": {
         id: inc(),
@@ -41,7 +43,8 @@ var _ = require('lodash'),
         firstName: "Andrea",
         lastName: "Fossi",
         email: "andrea.fossi@mapsgroup.it",
-        externalLoginKey: "0987654321abcdef"
+        externalLoginKey: "0987654321abcdef",
+        currentPassword: "0987654321abcdef"
       },
       "admin": {
         id: inc(),
@@ -49,7 +52,8 @@ var _ = require('lodash'),
         firstName: "admin",
         lastName: "admin",
         email: "admin.admin@mapsgroup.it",
-        externalLoginKey: "opopopopop1y1y1y1"
+        externalLoginKey: "opopopopop1y1y1y1",
+        currentPassword: "opopopopop1y1y1y1"
       }
     },
     HEROES = [
@@ -190,10 +194,10 @@ module.exports = {
     const root = {
       id: 'GP_MENU',
       children: [
-        { id: 'GP_MENU_00001', label: 'Performance Management', classes: ['ion ion-speedometer'] },
-        { id: 'GP_MENU_00002', label: 'Governance', classes: ['fa-balance-scale'] },
-        { id: 'GP_MENU_00003', label: 'Accountability', classes: ['fa-money-bill-alt'] },
-        { id: 'GP_MENU_00004', label: 'Basic Data', classes: ['fa-database'] }
+        { id: 'GP_MENU_00001', label: 'Performance Management', classes: ['fa-cogs'] },
+        { id: 'GP_MENU_00002', label: 'Governance', classes: ['fa-tachometer-alt'] },
+        { id: 'GP_MENU_00003', label: 'Accountability', classes: ['fa-tasks'] },
+        { id: 'GP_MENU_00004', label: 'Basic Data', classes: ['fa-chart-line'] }
       ]
     };
 
