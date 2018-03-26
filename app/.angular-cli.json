@@ -1,11 +1,11 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "version": "1.0.0-beta.30",
-    "name": "test1"
+    "name": "gzoom2"
   },
   "apps": [
     {
+      "name": "gzoom2",
       "root": "src",
       "outDir": "dist",
       "assets": [
