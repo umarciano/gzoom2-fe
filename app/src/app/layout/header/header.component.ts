@@ -15,7 +15,8 @@ export class HeaderComponent {
   user: UserProfile;
   displayChangePassword: boolean;
   form: FormGroup;
-
+  error = '';
+  
   currentPasswordVerify: String;
   newPassword: String;
   newPasswordVerify: String;
