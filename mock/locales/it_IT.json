@@ -68,6 +68,7 @@
     "Passwords differ!": "La password differiscono!",
     "Password Strength": "Forza della password",
     "Password updated": "Password cambiata",
+    "patternRegExp": "Impostare il valore correttamente",
     "Permissions:": "Permessi:",
     "Pharmaceutical": "Farmaceutica",
     "Prescription Code:": "Codice Prescrizione:",
@@ -108,16 +109,19 @@
     "Yes": "Si",
     "You can go back to home page": "Puoi tornare alla pagina principale"
   },
-  "formats": {
+  "formats":   {
     "first-day": 1,
+    "decimal-separator": ",",
+    "thousand-separator": ".",
     "timestamp": "lll",
-    "date-short": "DD/MM/YYYY",
-    "date-long": "D MMM YYYY",
+    "date-short": "dd/MM/yyyy",
+    "date-long": "d MMM yyyy",
     "date-range-short": "%d - %d",
     "date-range-long": "Dal %D al %D",
-    "date-time-short": "DD-MM-YYYY, LT",
-    "date-time-long": "D MMMM YYYY - LT",
-    "date-short-pcalendar": "dd/mm/yy"
+    "date-time-short": "dd-MM-yyyy, LT",
+    "date-time-long": "d MMMM yyyy - LT",
+    "date-short-pcalendar": "dd/mm/yy",
+    "date-MMMM-YYYY": "MMMM yyyy"
   },
   "calendarLocale": {  
     "firstDayOfWeek": 1,      

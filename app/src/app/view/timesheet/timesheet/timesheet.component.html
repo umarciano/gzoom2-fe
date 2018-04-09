@@ -1,6 +1,5 @@
 <h3 class="first">{{'GP_MENU_00334'|i18n}}</h3>
 
-
 <p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
 
 <router-outlet></router-outlet>
@@ -116,8 +115,15 @@
                  formControlName="contractHours"
                  class="ui-inputtext ui-widget ui-state-default ui-corner-all"
                  [(ngModel)]="timesheet.contractHours"
+                 [(pattern)]="patternRegExp"
                  />
         </div>
+        <div class="ui-grid-col-5">
+          <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['contractHours'].valid">
+            <i class="fa fa-times"></i>
+            {{'patternRegExp'|i18n}} 
+          </div>
+        </div> 
       </div>
       <!-- actualHours -->
       <div class="ui-grid-row">
@@ -129,7 +135,14 @@
                  formControlName="actualHours"
                  class="ui-inputtext ui-widget ui-state-default ui-corner-all"
                  [(ngModel)]="timesheet.actualHours"
+                 [(pattern)]="patternRegExp"
                  />
+        </div>
+        <div class="ui-grid-col-5">
+          <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['actualHours'].valid">
+            <i class="fa fa-times"></i>
+            {{'patternRegExp'|i18n}} 
+          </div>
         </div>        
       </div>
   </div>

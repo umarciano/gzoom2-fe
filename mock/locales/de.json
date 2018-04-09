@@ -71,6 +71,7 @@
     "Prescription Type:": "Tipo Prescrizione:",
     "Previous__{page}": "Precedente",
     "Profile": "Profilo",
+    "patternRegExp": "Impostare il valore correttamente",
     "Remember me": "Ricordami",
     "Repeat the new password": "Ripeti la password",
     "Retries:": "Tentativi:",
@@ -102,22 +103,21 @@
   "formats": {
     "first-day": 1,
     "timestamp": "lll",
-    "date-short": "DD/MM/YYYY",
-    "date-long": "D MMM YYYY",
+    "date-short": "dd/MM/yyyy",
+    "date-long": "d MMM yyyy",
     "date-range-short": "%d - %d",
     "date-range-long": "Dal %D al %D",
-    "date-time-short": "DD-MM-YYYY, LT",
-    "date-time-long": "D MMMM YYYY - LT",
-    "date-short-pcalendar": "dd/mm/yy"
+    "date-time-short": "dd-MM-yyyy, LT",
+    "date-time-long": "d MMMM yyyy - LT",
+    "date-short-pcalendar": "dd/mm/yy",
+    "date-MMMM-YYYY": "MMMM yyyy"
   },
   "calendarLocale": {  
-    "firstDayOfWeek": 0,
-    "dayNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    "dayNamesShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    "dayNamesMin": ["Su","Mo","Tu","We","Th","Fr","Sa"],
-    "monthNames": [ "January","February","March1","April","May","June","July","August","September","October","November","December" ],
-    "monthNamesShort": [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
-    "today": "Today",
-    "clear": "Clear"
-  }  
+    "firstDayOfWeek": 1,      
+  	"monthNames":["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"],
+  	"monthNamesShort":["Gen","Feb","Mar","Apr","Mag","Giu","Lug","Ago","Set","Ott","Nov","Dic"],
+  	"dayNames":["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"],
+  	"dayNamesShort":["Dom","Lun","Mar","Mer","Gio","Ven","Sab"],
+  	"dayNamesMin":["Do","Lu","Ma","Me","Gi","Ve","Sa"]
+  } 
 }

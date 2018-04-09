@@ -199,7 +199,7 @@ export class TimesheetComponent implements OnInit {
     this.filteredActivitiesParty = [];
     for(let i = 0; i < this.partySelectItem.length; i++) {      
         let record = this.partySelectItem[i];
-        if(record.label.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
+        if(record.label.toLowerCase().indexOf(event.query.toLowerCase()) >= 0) {
             this.filteredActivitiesParty.push(record.label);
         }
     }

@@ -1,5 +1,5 @@
 <h3 class="first">{{'GP_MENU_00335'|i18n}}</h3>
-<h4 class="first">{{timesheet.partyName}}  {{timesheet.actualHours | number:formatNumber}}
+<h4 class="first">{{timesheet.partyName}}  {{timesheet.thruDate | date:i18nService.getFormat('date-MMMM-YYYY')}}
  
 </h4>
 

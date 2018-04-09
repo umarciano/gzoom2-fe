@@ -147,11 +147,11 @@ export class TimeEntryDetailComponent implements OnInit {
   }
 
   saveTimeEntry() {
-    console.log("save timeEntry");
+    console.log("start save timeEntry");
 
     //aggiornare totale
     this.totalPercentage = 0;
-    // this.timeEntries.forEach(c => this.totalPercentage +=  isNumber(c.percentage) ?  +c.percentage : +0);
+    this.timeEntries.forEach(c => this.totalPercentage +=  isNumber(c.percentage) ?  +c.percentage : +0);
     console.log(" - totalPercentage " + this.totalPercentage);
     if (this.totalPercentage > 100) {
       this.error = this.i18nService.translate("The percentage can not be greater than 100");
