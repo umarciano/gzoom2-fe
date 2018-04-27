@@ -61,7 +61,7 @@ export class TimeEntryDetailComponent implements OnInit {
     private readonly uomService: UomService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly i18nService: I18NService,
+    public readonly i18nService: I18NService,
     private fb: FormBuilder) {
 
       this._reload = new Subject<void>();
