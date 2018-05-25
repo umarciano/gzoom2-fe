@@ -174,7 +174,7 @@ export class TimeEntryDetailComponent implements OnInit {
     this.confirmationService.confirm({
       message: this.i18nService.translate('Do you want to delete this record?'),
       header: this.i18nService.translate('Delete Confirmation'),
-      icon: 'fa fa-trash-alt',
+      icon: 'fa fa-question-circle',
       accept: () => {
         this.deleteTimeEntry(data);
       },

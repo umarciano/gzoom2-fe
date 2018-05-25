@@ -11,9 +11,9 @@
   height: 100%;
   z-index: 100;
   // padding-top: 200px;
-  background: transparent url("/assets/images/focuslayout-bg.jpg") no-repeat scroll center center / cover;
+  background-color: map-get($app-colors, background-cl);
   background-size: cover;
-  color: white;
+  color: map-get($app-colors, default-cl);
 
   > .container, > .container-fluid,
   > .container > .row, > .container-fluid > .row {
@@ -24,13 +24,14 @@
     position: relative;
     text-align: center;
     margin: 0;
-    background-color: map-get($app-colors, overlay);
+    background-color: map-get($app-colors, navbar-bg);
     padding: 10% 3%;
     border: 1px solid map-get($app-colors, grey);
     border-radius: 5px;
 
     input, span {
       color: map-get($app-colors, grey);
+      background-color: map-get($app-colors, background-cl);
     }
 
     h1 small {

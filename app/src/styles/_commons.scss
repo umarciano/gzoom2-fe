@@ -120,9 +120,13 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 input[type=number] {
+  -moz-appearance: none;
+}
+
+input[type=number] {
   text-align:right;
 }
 
-.text-align-right{
+td.text-align-right{
   text-align:right !important;
 }

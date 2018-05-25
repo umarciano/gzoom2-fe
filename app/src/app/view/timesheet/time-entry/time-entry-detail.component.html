@@ -12,8 +12,8 @@
 
 <form (ngSubmit)="saveTimeEntry()">
   <p-dataTable [editable]="true" [(value)]="timeEntries" scrollable="true" sortMode="multiple" [responsive]="true"
-    [globalFilter]="gb" resizableColumns="true" [responsive]="true" columnResizeMode="expand" dataKey="timeEntryId" #dt exportFilename="timeEntries">
-    <p-column datakey="workEffortId" field="description" header="{{'Title, work effort'|i18n}}" [sortable]="true" [style]="{'width':'80%'}"
+    [globalFilter]="gb" [responsive]="true" dataKey="timeEntryId" #dt exportFilename="timeEntries">
+    <p-column datakey="workEffortId" field="description" header="{{'Title, work effort'|i18n}}*" [sortable]="true" [style]="{'width':'80%'}"
         [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}">
         <!-- field="description"  cambia la description ma non l'id 
 		<ng-template pTemplate="filter" let-col>
@@ -39,7 +39,7 @@
           <span>{{'Totals'|i18n}}</span>
         </ng-template>
       </p-column>
-      <p-column [filter]="true" filterMatchMode="contains" field="percentage" header="{{'Percentage'|i18n}}" [sortable]="true" [editable]="true" styleClass="text-align-right">
+      <p-column [filter]="true" filterPlaceholder="{{'Search...'|i18n}}" filterMatchMode="contains" field="percentage" header="{{'Percentage'|i18n}}" [sortable]="true" [editable]="true" styleClass="text-align-right">
         <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="body">
             <span>{{row[col.field] |number:formatNumber}}</span>
         </ng-template>
@@ -69,6 +69,6 @@
   </p-dataTable>
 </form>
 
-<p-confirmDialog header="{{'Confirmation'|i18n}}" icon="fa fa-question-circle" acceptLabel="{{'Yes'|i18n}}" rejectLabel="{{'No'|i18n}}"></p-confirmDialog>
+<p-confirmDialog header="{{'Confirmation'|i18n}}" acceptLabel="{{'Yes'|i18n}}" rejectLabel="{{'No'|i18n}}"></p-confirmDialog>
 
 <div *ngIf="error" class="alert alert-danger">{{error}}</div>

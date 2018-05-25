@@ -73,7 +73,7 @@
     <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px" *ngIf="uom">
       <div class="ui-grid-row">
         <div class="ui-grid-col-3">
-          <label for="uomTypeId">{{'Uom Type Id'|i18n}}*:</label>
+          <label for="uomTypeId">{{'Uom Type Id'|i18n}}:</label>
         </div>
         <div class="ui-grid-col-4">
           <p-dropdown [options]="uomTypeSelectItem" formControlName="uomTypeId" required [(ngModel)]="selectedUomTypeId"
@@ -89,7 +89,7 @@
       </div>
       <div class="ui-grid-row">
         <div class="ui-grid-col-3">
-          <label for="uomId">{{'Uom Id'|i18n}}*:</label>
+          <label for="uomId">{{'Uom Id'|i18n}}:</label>
         </div>
         <div class="ui-grid-col-4">
           <input pInputText class="form-control" formControlName="uomId" required [(ngModel)]="uom.uomId" placeholder="{{'Required'|i18n}}"/>
@@ -104,7 +104,7 @@
       </div>
       <div class="ui-grid-row">
         <div class="ui-grid-col-3">
-          <label for="description">{{'Description'|i18n}}*:</label>
+          <label for="description">{{'Description'|i18n}}:</label>
         </div>
         <div class="ui-grid-col-4">
           <input pTooltip="{{uom.description}}" pInputText class="form-control" formControlName="description" required [(ngModel)]="uom.description" placeholder="{{'Required'|i18n}}"/>
@@ -119,7 +119,7 @@
       </div>
       <div class="ui-grid-row">
         <div class="ui-grid-col-3">
-          <label for="abbreviation">{{'Abbreviation'|i18n}}*:</label>
+          <label for="abbreviation">{{'Abbreviation'|i18n}}:</label>
         </div>
         <div class="ui-grid-col-4">
           <input pInputText class="form-control" formControlName="abbreviation" required [(ngModel)]="uom.abbreviation" placeholder="{{'Required'|i18n}}"/>
@@ -134,7 +134,7 @@
       </div>
       <div class="ui-grid-row">
         <div class="ui-grid-col-3">
-          <label for="decimalScale">{{'Decimal Scale'|i18n}}*:</label>
+          <label for="decimalScale">{{'Decimal Scale'|i18n}}:</label>
         </div>
         <div class="ui-grid-col-4">
           <p-spinner [min]="0" formControlName="decimalScale" required [(ngModel)]="uom.decimalScale" placeholder="{{'Required'|i18n}}" size="30"></p-spinner>
