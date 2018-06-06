@@ -70,11 +70,11 @@
     [sortable]="true"></p-column>
     <p-column [style]="{'width':'10%'}" styleClass="col-button">
         <ng-template pTemplate="header">
-            <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
-            <button placement="top" ngbTooltip="Tooltip on top" container="body" type="button" pButton icon="far fa-file" (click)="dt.exportCSV()"></button>
+            <button placement="top" ngbTooltip="{{'Add'|i18n}}" container="body" type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
+            <button placement="top" ngbTooltip="{{'Export'|i18n}}" container="body" type="button" pButton icon="far fa-file" (click)="dt.exportCSV()"></button>
         </ng-template>
         <ng-template let-uom="rowData" pTemplate="body">
-            <button type="button" pButton icon="fa-pencil-alt" (click)="selectUom(uom)"></button>
+            <button placement="top" ngbTooltip="{{'Modify'|i18n}}" container="body" type="button" pButton icon="fa-pencil-alt" (click)="selectUom(uom)"></button>
         </ng-template>
     </p-column>
 </p-dataTable>

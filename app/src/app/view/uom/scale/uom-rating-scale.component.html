@@ -22,11 +22,11 @@
         [sortable]="displayRangeScale"></p-column>
       <p-column [style]="{'width':'10%'}" styleClass="col-button">
         <ng-template pTemplate="header">
-          <button [disabled]="!displayRangeScale &amp;&amp; !isRatingScale" type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
-          <button type="button" pButton icon="far fa-file" (click)="dts.exportCSV()" ></button>
+          <button placement="top" ngbTooltip="{{'Add'|i18n}}" container="body" [disabled]="!displayRangeScale &amp;&amp; !isRatingScale" type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
+          <button placement="top" ngbTooltip="{{'Export'|i18n}}" container="body" type="button" pButton icon="far fa-file" (click)="dts.exportCSV()" ></button>
         </ng-template>
         <ng-template let-uomRatingScale="rowData" pTemplate="body">
-          <button [disabled]="!displayRangeScale" type="button" pButton icon="fa-pencil-alt" (click)="selectUomRatingScale(uomRatingScale)"></button>
+          <button placement="top" ngbTooltip="{{'Modify'|i18n}}" container="body" [disabled]="!displayRangeScale" type="button" pButton icon="fa-pencil-alt" (click)="selectUomRatingScale(uomRatingScale)"></button>
         </ng-template>
       </p-column>
     </p-dataTable>
