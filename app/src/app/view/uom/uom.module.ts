@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { AccordionModule } from 'primeng/primeng';     //accordion and accordion tab
 import { DropdownModule } from 'primeng/primeng';
 import { MenuItem } from 'primeng/primeng';
@@ -31,6 +33,7 @@ import { UomRatingScaleComponent } from './scale/uom-rating-scale.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbModule,
     CommonsModule,
     ApiModule,
     LayoutModule,

@@ -6,6 +6,19 @@
     <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
     <input #gb type="text" pInputText size="50" placeholder="{{'Global Filter'|i18n}}">
 </div>
+
+<i class="pos-t-neg-sm pos-r-neg-sm fa fa-info-circle text-info clickable"
+               [ngbTooltip]="tipContent"
+               placement="left"
+               container="body"
+               triggers="manual"
+               #t="ngbTooltip"
+               (click)="t.toggle()"></i>
+
+            <ng-template #tipContent>
+              BID orders will be placed on  with a price calculated as<br/>
+            </ng-template>
+
 <p-dataTable [value]="uoms"
             [rows]="5"
             scrollable="true"
@@ -58,7 +71,7 @@
     <p-column [style]="{'width':'10%'}" styleClass="col-button">
         <ng-template pTemplate="header">
             <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
-            <button type="button" pButton icon="far fa-file" (click)="dt.exportCSV()"></button>
+            <button placement="top" ngbTooltip="Tooltip on top" container="body" type="button" pButton icon="far fa-file" (click)="dt.exportCSV()"></button>
         </ng-template>
         <ng-template let-uom="rowData" pTemplate="body">
             <button type="button" pButton icon="fa-pencil-alt" (click)="selectUom(uom)"></button>
