@@ -46,8 +46,8 @@
             <button placement="top" ngbTooltip="{{'Export'|i18n}}" container="body" type="button" pButton icon="far fa-file" (click)="dt.exportCSV()" ></button>
         </ng-template>
           <ng-template let-timesheet="rowData" pTemplate="body">
-            <button type="button" pButton icon="fa-chevron-right" (click)="onRowSelect(timesheet)"></button>
-            <button type="button" pButton icon="fa-pencil-alt" (click)="selectTimesheet(timesheet)"></button>
+            <button placement="top" ngbTooltip="{{'Detail'|i18n}}" container="body" type="button" pButton icon="fa-chevron-right" (click)="onRowSelect(timesheet)"></button>
+            <button placement="top" ngbTooltip="{{'Modify'|i18n}}" container="body" type="button" pButton icon="fa-pencil-alt" (click)="selectTimesheet(timesheet)"></button>
         </ng-template>
     </p-column>
 </p-dataTable>

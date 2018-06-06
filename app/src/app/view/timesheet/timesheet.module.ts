@@ -36,8 +36,11 @@ import { UomResolver } from '../uom/uom/uom-resolver.service';
 import { NumberDecimalDirective } from './../../commons/number.directive';
 import { NumberDecimalAccessor } from './../../commons/number.accessor';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 @NgModule({
   imports: [
+    NgbModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
