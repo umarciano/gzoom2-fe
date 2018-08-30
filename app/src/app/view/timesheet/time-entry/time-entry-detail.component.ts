@@ -188,7 +188,7 @@ export class TimeEntryDetailComponent implements OnInit {
     this.timesheetService
       .deleteTimeEntry(data.timeEntryId)
       .then(data => {
-        this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Confirmed'), detail:this.i18nService.translate('Record deleted')}];
+        this.msgs = [{severity:this.i18nService.translate('Info'), summary:this.i18nService.translate('Confirmed'), detail:this.i18nService.translate('Record deleted')}];
         this._reload.next();
       })
       .catch((error) => {

@@ -50,7 +50,7 @@
         <div class="ui-grid-col-5">
           <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['description'].valid&amp;&amp;form.controls['description'].dirty">
             <i class="fa fa-times"></i>
-            <span *ngIf="form.controls['description'].errors['required']">{{'Description is required'|i18n}}</span>
+            <span *ngIf="form.controls['description'].errors['required']" pippo="Description is required">{{'Description is required'|i18n}}</span>
             <span *ngIf="form.controls['description'].errors['maxLenght']">{{'Description must be not longer than 255'|i18n}}</span>
           </div>
         </div>
