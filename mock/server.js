@@ -490,5 +490,59 @@ app.post('/rest/timesheet/time-entry-create-or-update', function(req, res) {
   }, _.random(200, 1000));
 });
 
+//rest/report/type
+app.get('/rest/report/:parentTypeId', function(req, res) {
+  const parentTypeId = req.param('parentTypeId');
+  log.debug('Looking up reports for ' + parentTypeId);
+  var reports = data.reports(parentTypeId);
+  setTimeout(function() {
+    res.json({ results: reports, total: reports.length });
+  }, _.random(200, 1000));
+});
+
+
+//rest/report/type
+app.get('/rest/report/:parentTypeId/:reportContentId', function(req, res) {
+  const parentTypeId = req.param('parentTypeId');
+  const reportContentId = req.param('reportContentId');
+  log.debug('Looking up report for ' + parentTypeId + ' and ' + reportContentId);
+  var report = data.report(reportContentId);
+  setTimeout(function() {
+    res.json(report);
+  }, _.random(200, 1000));
+});
+
+//rest/report/add
+app.post('/rest/report/add', function(req, res) {
+  log.debug('print ');
+  setTimeout(function() {
+    res.json('10000');
+  }, _.random(200, 1000));
+});
+
+//rest/report/:contentId/status
+app.get('/rest/report/:contentId/status', function(req, res) {
+  const contentId = req.param('contentId');
+  log.debug('Looking up reports for ' + contentId);
+  setTimeout(function() {
+    res.json({
+      "queryCount": null,
+      "pageCount": null,
+      "status": null,
+      "task": null,
+      "activityStatus": "DONE"
+    });
+  }, _.random(200, 1000));
+});
+
+//rest/report/:contentId
+app.delete('/rest/report/:contentId', function(req, res) {
+  const contentId = req.param('contentId');
+  log.debug('Delete contentId ' + contentId);
+  setTimeout(function() {
+    res.json(true);
+  }, _.random(200, 1000));
+});
+
 app.listen(PORT);
 log.info("Server started: http://localhost:" + PORT);

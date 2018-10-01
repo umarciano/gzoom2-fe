@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { FocusComponent } from '../../layout/focus/focus.component';
-
 import { TimesheetResolver } from './timesheet/timesheet-resolver.service';
 import { TimesheetComponent } from './timesheet/timesheet.component';
 import { TimeEntryResolver } from './time-entry/time-entry-resolver.service';

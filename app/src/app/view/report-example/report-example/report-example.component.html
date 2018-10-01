@@ -1,0 +1,26 @@
+<h3 class="first">{{'GP_MENU_00999'|i18n}}</h3>
+
+<div class="ui-grid-row">
+    <div class="ui-grid-col-3">
+      <label for="reportContentId">{{'Seleziona la stampa'|i18n}}*</label>
+    </div>
+    <div class="ui-grid-col-4">
+      <p-dataTable [value]="reports" [(selection)]="selectedReport" dataKey="reportContentId" (onRowSelect)="onRowSelect($event.data)" >
+        <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
+        <p-column field="reportContentId">
+          <ng-template let-report="rowData" pTemplate="body">
+            <span pTooltip="{{report.reportContentId}}">{{report.reportName}}</span>
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+    </div>
+    <div class="ui-grid-col-5">
+      <!-- <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['reportContentId'].valid&amp;&amp;form.controls['reportContentId'].dirty">
+        <i class="fa fa-times"></i>
+        {{'Report Content Id is required'|i18n}}
+      </div> -->
+    </div>
+  </div>
+
+<router-outlet></router-outlet>
+

@@ -1,0 +1,94 @@
+<p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
+
+<div class="ui-grid-row">
+  <div class="ui-grid-col-3">
+    <label for="mimeTypeId">{{'Seleziona il formato'|i18n}}*</label>
+  </div>
+  <div class="ui-grid-col-4">
+    <p-dataTable [value]="outputFormats" [(selection)]="outputFormat" (onRowSelect)="onRowSelect($event.data)" dataKey="mimeTypeId">
+      <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
+      <p-column field="mimeTypeId">
+        <ng-template let-outputFormat="rowData" pTemplate="body">
+          <span pTooltip="{{outputFormat.mimeTypeId}}">{{outputFormat.description}}</span>
+        </ng-template>
+      </p-column>
+    </p-dataTable>
+  </div>
+  <div class="ui-grid-col-5">
+    <!-- <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['reportContentId'].valid&amp;&amp;form.controls['reportContentId'].dirty">
+      <i class="fa fa-times"></i>
+      {{'Report Content Id is required'|i18n}}
+    </div> -->
+  </div>
+</div>
+
+<div class="ui-grid-row">
+  <div class="ui-grid-col-3">
+    <label for="workEffortTypeId">{{'Tipologia'|i18n}}*</label>
+  </div>
+  <div class="ui-grid-col-4">
+    <p-radioButton name="workEffortTypeId" value="PRVST" label="Prova Stampa" [(ngModel)]="selectedReport.workEffortTypeId" inputId="PRVST"></p-radioButton>
+    <!-- <p-autoComplete class="form-control" formControlName="partyId" required [(ngModel)]="timesheet.partyName" [suggestions]="filteredActivitiesParty" 
+        (completeMethod)="filterActivitiesParty($event)" (onSelect)="onSelect($event)" [minLength]="1" placeholder="Inizia a scrivere..." [dropdown]="true">
+        <ng-template let-record pTemplate="item">
+          <div class="ui-helper-clearfix">
+            <div>{{record}}</div>
+          </div>
+        </ng-template>
+    </p-autoComplete> -->          
+  </div>
+  <div class="ui-grid-col-5">
+    <!-- <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['reportContentId'].valid&amp;&amp;form.controls['reportContentId'].dirty">
+      <i class="fa fa-times"></i>
+      {{'Report Content Id is required'|i18n}}
+    </div> -->
+  </div>
+</div>
+<div class="ui-grid-row">
+  <div class="ui-grid-col-3">
+    <label for="monitoringDate">{{'Data al'|i18n}}*</label>
+  </div>
+  <div class="ui-grid-col-4">
+      <p-calendar styleClass="calendar-icon" [locale]="i18nService.getCalendarLocale()" [(ngModel)]="selectedReport.monitoringDate" dateFormat="{{'date-short-pcalendar'|i18nDate}}" name="monitoringDate" required [showIcon]="true"></p-calendar>
+      <!-- <p-autoComplete class="form-control" formControlName="partyId" required [(ngModel)]="timesheet.partyName" [suggestions]="filteredActivitiesParty" 
+        (completeMethod)="filterActivitiesParty($event)" (onSelect)="onSelect($event)" [minLength]="1" placeholder="Inizia a scrivere..." [dropdown]="true">
+        <ng-template let-record pTemplate="item">
+          <div class="ui-helper-clearfix">
+            <div>{{record}}</div>
+          </div>
+        </ng-template>
+    </p-autoComplete> -->          
+  </div>
+  <div class="ui-grid-col-5">
+    <!-- <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['reportContentId'].valid&amp;&amp;form.controls['reportContentId'].dirty">
+      <i class="fa fa-times"></i>
+      {{'Report Content Id is required'|i18n}}
+    </div> -->
+  </div>
+</div>
+<div class="ui-grid-row">
+  <div class="ui-grid-col-3">
+    <label for="exposeReleaseDate">{{'Esponi data stampa'|i18n}}*</label>
+  </div>
+  <div class="ui-grid-col-4">
+      <p-inputSwitch [(ngModel)]="selectedReport.exposeReleaseDate"></p-inputSwitch>
+      <!-- <p-autoComplete class="form-control" formControlName="partyId" required [(ngModel)]="timesheet.partyName" [suggestions]="filteredActivitiesParty" 
+        (completeMethod)="filterActivitiesParty($event)" (onSelect)="onSelect($event)" [minLength]="1" placeholder="Inizia a scrivere..." [dropdown]="true">
+        <ng-template let-record pTemplate="item">
+          <div class="ui-helper-clearfix">
+            <div>{{record}}</div>
+          </div>
+        </ng-template>
+    </p-autoComplete> -->          
+  </div>
+  <div class="ui-grid-col-5">
+    <!-- <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['reportContentId'].valid&amp;&amp;form.controls['reportContentId'].dirty">
+      <i class="fa fa-times"></i>
+      {{'Report Content Id is required'|i18n}}
+    </div> -->
+  </div>
+</div>
+
+<a (click)="print()">
+    <i class="fa fa-print"></i> &nbsp; {{'Print'|i18n}} <b class="caret"></b>
+</a>

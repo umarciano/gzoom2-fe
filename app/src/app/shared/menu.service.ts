@@ -20,8 +20,9 @@ const REFURBISHED_PAGES = {
   'GP_MENU_00001_2': ['dashboard'],
   'GP_MENU_00001_3': ['example'],
   'GP_MENU_00332': ['uom/value'],
-  'GP_MENU_00334': ['timesheet'],
-  'GP_MENU_00347': ['uom/type']
+  'GP_MENU_00334': ['timesheet'], // 'GP_MENU_00334': ['timesheet/timesheet'],
+  'GP_MENU_00347': ['uom/type'],
+  'GP_MENU_00999': ['report-example-1'] // 'GP_MENU_00999': ['timesheet/timesheet-report/CTX_PR']
 };
 
 @Injectable()

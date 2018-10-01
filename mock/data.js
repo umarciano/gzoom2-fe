@@ -101,6 +101,17 @@ var _ = require('lodash'),
       { partyId: '2', firstName: 'STEFANONI', lastName: 'SILVANO', partyName : "STEFANONI SILVANO"  },
       { partyId: '3', firstName: 'RIVA', lastName: 'SILVIA', partyName : "RIVA SILVIA"  }
     ],
+    REPORT = [
+      { reportContentId: 'REP_TIMESHEET', reportName: 'Stampa Timesheet', parentTypeId: 'CTX_PR',
+       outputFormat: ['pdf'], 
+       workEffortTypeId: ['PRVST'], 
+       params: {orgUnitId: 'string', partyId: 'string'}},
+      { reportContentId: 'REP_MENS_MACATT', reportName: 'Stampa mensile Macro-attività', parentTypeId: 'CTX_PR',
+       outputFormat: ['pdf', 'xls'], 
+       workEffortTypeId: ['PRVST'], 
+       params: {orgUnitId: 'string', partyId: 'string'}},
+      { reportContentId: '10000', reportName: 'pippo', parentTypeId: 'CTX_OR'  }
+    ],
     WORK_EFFORT = [
       {attivitaLiv1: 'livello 1', attivitaLiv2 : 'livello 1.1', attivitaLiv3: 'livello 1.1.1', workEffortId: '10000'},
       {attivitaLiv1: 'livello 1', attivitaLiv2 : 'livello 1.2', attivitaLiv3: 'livello 1.2.1', workEffortId: '10001'},
@@ -226,7 +237,9 @@ module.exports = {
         { id: 'GP_MENU_00332',  label: 'GP_MENU_00332', classes: null},
         { id: 'GP_MENU_00333',  label: 'GP_MENU_00333', classes: null},
         { id: 'GP_MENU_00334',  label: 'GP_MENU_00334', classes: null},
-        { id: 'GP_MENU_00335',  label: 'GP_MENU_00335', classes: null}
+        { id: 'GP_MENU_00335',  label: 'GP_MENU_00335', classes: null},
+        { id: 'GP_MENU_00347',  label: 'GP_MENU_00347', classes: null},
+        { id: 'GP_MENU_00999',  label: 'GP_MENU_00999', classes: null}
       ];
 
       par.children
@@ -369,6 +382,14 @@ module.exports = {
 
   createOrUpdateTimeEntry: function(timeEntries) {
 
+  },
+
+  reports: function(parentTypeId) {
+    return REPORT.filter((val,i) => val.parentTypeId == parentTypeId);
+  },
+
+  report: function(reportContentId) {
+    return REPORT.filter((val,i) => val.reportContentId == reportContentId)[0];
   }
 
 };

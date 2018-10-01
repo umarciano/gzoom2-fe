@@ -29,6 +29,8 @@ const routes: Routes = [
       { path: 'legacy', loadChildren: './legacy/legacy.module#LegacyModule' },
       { path: 'uom', loadChildren: './uom/uom.module#UomModule' },
       { path: 'timesheet', loadChildren: './timesheet/timesheet.module#TimesheetModule' },
+      { path: 'report-example-1', loadChildren: './report-example/report-example.module#ReportExampleModule' },
+      //{ path: 'work-effort-type-report', loadChildren: './work-effort-type-report/work-effort-type-report.module#WorkEffortTypeReportModule' },
       { path: '', pathMatch: 'full', redirectTo: '/c/dashboard' }
     ]
   }
