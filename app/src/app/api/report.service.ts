@@ -8,9 +8,8 @@ import { ApiClientService } from './client.service';
 
 import { Report } from '../report/report';
 import { ReportStatus } from '../report/report-status';
-import { Timesheet } from '../view/timesheet/timesheet/timesheet';
-import { TimeEntry } from '../view/timesheet/time-entry/time_entry';
-import { WorkEffort } from '../view/timesheet/time-entry/work_effort';
+import { WorkEffort } from '../report/report';
+
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -38,9 +37,9 @@ export class ReportService {
   }
 
   add(report) {
-    console.log('add ' + report);
+    console.log('add ', report);
     return this.client
-    .post('report/add', this.saveReportBodifier(report))
+    .post('report/add', report)
     .toPromise()
     .then(response => response)
     .catch(response => {
@@ -49,10 +48,18 @@ export class ReportService {
     });
   }
 
-  status(contentId) {
+  status(activityId) {
     console.log('status ');
     return this.client
-      .get(`report/${contentId}/status`).pipe(
+      .get(`report/${activityId}/status`).pipe(
+        map(json => json as ReportStatus)
+      );
+  }
+
+  stream(activityId) {
+    console.log('stream ');
+    return this.client
+      .get(`report/${activityId}/stream`).pipe(
         map(json => json as ReportStatus)
       );
   }
@@ -92,5 +99,14 @@ export class ReportService {
     if (date) return moment(date).format("YYYY-MM-DD");
     else return null;
   }
-}
 
+
+  workEfforts(parentTypeId:string, reportContentId:string, workEffortTypeId: string): Observable<WorkEffort[]> {
+    console.log('search workEffort list');
+    return this.client
+      .get(`report/${parentTypeId}/${reportContentId}/${workEffortTypeId}`).pipe(
+        map(json => json.results as WorkEffort[])
+      );
+  }
+  
+}

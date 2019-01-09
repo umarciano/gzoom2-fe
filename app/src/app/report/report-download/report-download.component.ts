@@ -16,6 +16,7 @@ import { Subject } from 'rxjs/Subject';
 import { first, map, merge, switchMap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/Rx';
+import { Output } from '@angular/compiler/src/core';
 
 @Component({
   selector: 'app-report-download',
@@ -25,8 +26,10 @@ import 'rxjs/Rx';
 export class ReportDownloadComponent implements OnInit {
   doctors = [];
   pollingData: any;
-  selectedContentId: string;
+  selectedActivityId: string;
   reportStatus: ReportStatus;
+
+  pippo: any;
 
   constructor(private readonly route: ActivatedRoute,
     private readonly router: Router,
@@ -36,21 +39,41 @@ export class ReportDownloadComponent implements OnInit {
       
       this.pollingData = Observable.interval(5000)
       .switchMap((params) => {
-        return this.reportService.status(this.selectedContentId);
+        return this.reportService.status(this.selectedActivityId);
       })
       .subscribe((data) => { 
         this.reportStatus = data;
-        if(this.reportStatus.activityStatus != 'RUNNING') {
+        if(this.reportStatus.activityStatus == 'DONE') {
+          //dovrei fare il downloadd 
+          console.log('PIPPO=', this.selectedActivityId);
+          //this.router.navigate(['stream'], { relativeTo: this.route });
+          this.pippo = this.reportService.stream(this.selectedActivityId);
+         // var newWindow = window.open('/c/report-example-1/report-download/' + this.selectedActivityId+ "/stream");
+         this.ngOnDestroy();
+        }
+        if(this.reportStatus.activityStatus != 'RUNNING') { 
           this.ngOnDestroy();
         }
-        console.log('reportStatus'+ this.reportStatus);
+        console.log('reportStatus', this.reportStatus);
       });
 
       this.route.paramMap
       .switchMap((params) => {
         console.log('switchMap'+ params);
-        this.selectedContentId = params.get('contentId');
-        return this.reportService.status(this.selectedContentId);
+        this.selectedActivityId = params.get('activityId');
+        return this.reportService.status(this.selectedActivityId);
+      })
+      .subscribe((data) => { 
+        this.reportStatus = data;
+        console.log('reportStatus', this.reportStatus);
+      });
+
+
+      this.route.paramMap
+      .switchMap((params) => {
+        console.log('switchMap'+ params);
+        this.selectedActivityId = params.get('activityId');
+        return this.reportService.stream(this.selectedActivityId);
       })
       .subscribe((data) => { 
         this.reportStatus = data;

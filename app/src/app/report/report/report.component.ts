@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { Validators, FormControl, FormArray, FormGroup, FormBuilder } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -13,11 +13,35 @@ import { I18NService } from '../../commons/i18n.service';
 import { Message } from '../../commons/message';
 
 import { Report } from '../../report/report';
-import { OutputType } from '../../report/report';
+import { ReportParam } from '../../report/report';
+import { ReportType } from '../../report/report';
+import { WorkEffort } from '../../report/report';
+import { WorkEffortType } from '../../report/report';
 import { ReportService } from '../../api/report.service';
+import { Party } from '../../view/party/party/party';
+import { PartyService } from '../../api/party.service';
+
+import { StatusItem } from '../../view/status-item/status-item/status-item';
+import { StatusItemService } from '../../api/status-item.service';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/Rx';
+
+
+/** Convert from Party[] to SelectItem[] */
+function party2SelectItems(party: Party[]): SelectItem[] {
+  return party.map((p:Party) => {
+    return {label: p.partyName, value: p.partyId};
+  });
+}
+
+/** Convert from StatusItem[] to SelectItem[] */
+function statusItem2SelectItems(party: StatusItem[]): SelectItem[] {
+  return party.map((p:StatusItem) => {
+    return {label: p.description, value: p.description};
+  });
+}
+
 
 @Component({
   selector: 'app-report',
@@ -35,128 +59,125 @@ export class ReportComponent implements OnInit {
 
   reportContentId: string;
 
-  outputFormat: OutputType;
-  outputFormats: OutputType[];
+  outputFormat: ReportType;
+  outputFormats: ReportType[];
+  workEffortType: WorkEffortType;
+  workEffortTypes: WorkEffortType[];
+  params: ReportParam[];  
+  
+  workEffortSelectItem: SelectItem[] = [];
+  workEffort: WorkEffort;
+  workEffortId: String;
 
-  mimeTypeId: string;
+  orgUnitIdSelectItem: SelectItem[] = [];
+  currentStatusNameSelectItem: SelectItem[] = [];
 
-  // form: FormGroup;
+  form: FormGroup;
 
-/*   doctors = [];
-  pollingData: any;      
- */
+  paramsValue: any = {};
+  paramsSelectItem: any = {};
+
   constructor(private readonly route: ActivatedRoute,
   private readonly router: Router,
   private readonly i18nService: I18NService,
   private readonly reportService: ReportService,
-  private fb: FormBuilder, http: HttpClient, ) {
-    this._reload = new Subject<void>();
-    // concatMap if request longer more 5 sec
-    /* this.pollingData = Observable.interval(5000).startWith(0)
-     .switchMap(() => http.get('http://jsonplaceholder.typicode.com/users/'))
-     .pipe(
-      map(json => json)
-    ).subscribe((data: any[]) => {
-       this.doctors=data; 
-       console.log(data);// see console you get output every 5 sec
-    }); */
-    /*  map((data) => data.json())
-      ).subscribe((data) => {
-           this.doctors=data; 
-            console.log(data);// see console you get output every 5 sec
-         });*/
-         // this.selectedReport = new Report();
+  private readonly partyService: PartyService,
+  private readonly statusItemService: StatusItemService,
+  private fb: FormBuilder, 
+  http: HttpClient,) {
+    this._reload = new Subject<void>();    
   }
 
   ngOnInit() {
-    console.log('ngOnInit Report component ' + this.reportContentId);
-    let reloadedReport = this._reload
-    //  .switchMap(() => this.uomService.uomRatingScales(this.selectedUomId));;
 
-    
-     const reportObs = this.route.data.pipe(
-       map((data: { report: Report }) => data.report)//,
-       //.merge(reloadedReport)
+   // this.route.paramMap('');
+    console.log('ngOnInit Report component ');
+    //let reloadedReport = this._reload;    
+    const reportObs = this.route.data.pipe(
+       map((data: { report: Report }) => data.report)       
     );
-
-    // bisogna chiamarlo data e non altro nome
-    // tolgo.pipe(first()) perche non solo la prima volta ma sempre
     reportObs
     .subscribe((data) => {
       console.log('ngOnInit subscribe report ' + data);
-      // TODO this.reports = reports;
       this.onRowSelect(data);
     });
 
-    /*reportObs.subscribe((report) => {
-      this.onRowSelect(report));
+    const reloadedOrgUnit = this._reload.switchMap(() => this.partyService.orgUnits());
+    const reloadedOrgUnitObs = this.route.data.pipe(
+      map((data: { orgUnits: Party[] }) => data.orgUnits),
+      merge(reloadedOrgUnit),
+      map(party2SelectItems)
+    ).subscribe((data) => {
+      this.orgUnitIdSelectItem = data;
+      this.orgUnitIdSelectItem.push({label: this.i18nService.translate('Select Unit Organization'), value:null});
+      this.paramsSelectItem['orgUnitIdSelectItem'] = this.orgUnitIdSelectItem;
+    });
 
-    });*/
-    // tolgo.pipe(first()) perche non solo la prima volta ma sempre
-    /* .subscribe((data) => {
-      if (data) {
-        console.log('ngOnInit subscribe data data ' + data);
-        this.selectedReport = data;
-        this.outputFormats = data.outputFormats;
-        this.selectedReport.outputFormat = this.outputFormats[0].mimeTypeId;
-        let parentTypeId = this.selectedReport.parentTypeId;
-        
-        console.log('ngOnInit paramMap reportContentId ' + this.selectedReport.reportContentId);
-        console.log('ngOnInit paramMap outputFormat ' + this.selectedReport.outputFormat);
-        console.log('ngOnInit paramMap parentTypetId ' + parentTypeId);
-      }
-    });*/
-
-  /*this.form = this.fb.group({
-    'partyId': new FormControl('', Validators.required),
-    'fromDate': new FormControl('', Validators.required),
-    'thruDate': new FormControl('', Validators.required),
-    'contractHours': new FormControl(''),
-    'actualHours': new FormControl('')
-  });*/
+  //TODO  'CTX_PR' -> BHO
+    const reloadedStatus = this._reload.switchMap(() => this.statusItemService.statusItems('CTX_PR'));
+    const reloadedStatusObs = this.route.data.pipe(
+      map((data: { statusItems: Party[] }) => data.statusItems),
+      merge(reloadedStatus),
+      map(statusItem2SelectItems)
+    ).subscribe((data) => {
+      this.currentStatusNameSelectItem = data;
+      this.currentStatusNameSelectItem.push({label: this.i18nService.translate('Select Status Item'), value:null});
+      this.paramsSelectItem['currentStatusNameSelectItem'] = this.currentStatusNameSelectItem;
+    });
   }
 
   onRowSelect(data) {
     console.log('report ', data);
 
     this.selectedReport = data;
+
+    //TODO param
+    this.params = data.params;
+    console.log('onRowSelect params ',  this.params);
+
+    var paramForm = {};    
+    this.params.forEach((element) => {
+      var controller = new FormControl('');
+      if (element.mandatory)
+        controller = new FormControl('', Validators.required);
+      paramForm[element.paramName] = controller;
+
+      //setto i defaultValue    TODO capire come gestire i boolean?????  
+      this.paramsValue[element.paramName] = element.paramDefault;      
+    });
+
+
+    this.form = this.fb.group(paramForm);
+
+     
     this.outputFormats = data.outputFormats;
-    console.log('ngOnInit paramMap outputFormat ' + this.selectedReport.outputFormat);
-    this.outputFormat = this.outputFormats[0];
-    this.selectedReport.outputFormat = this.outputFormats[0].mimeTypeId;
-    console.log('ngOnInit paramMap outputFormat ' + this.selectedReport.outputFormat);
+    console.log('onRowSelect outputFormats ', this.outputFormats);
+    this.outputFormat = data.outputFormats[0];
+    console.log('onRowSelect outputFormat ',  this.outputFormat);
+
     let parentTypeId = this.selectedReport.parentTypeId;
-    console.log('ngOnInit paramMap mimeTypeId ' + this.selectedReport.mimeTypeId);
-    this.mimeTypeId = this.outputFormats[0].mimeTypeId;
-    console.log('ngOnInit paramMap mimeTypeId ' + this.selectedReport.mimeTypeId);
-    console.log('ngOnInit paramMap reportContentId ' + this.selectedReport.reportContentId);
-    console.log('ngOnInit paramMap outputFormat ' + this.selectedReport.outputFormat);
-    console.log('ngOnInit paramMap parentTypetId ' + parentTypeId);
+    console.log('onRowSelect reportContentId ' + this.selectedReport.reportContentId);
+    console.log('onRowSelect parentTypetId ' + parentTypeId);
+
+    this.workEffortTypes = data.workEffortTypes;
+    console.log('onRowSelect workEffortTypes ', this.workEffortTypes);
+   
+    this.workEffortType = data.workEffortTypes[0];
+    console.log('onRowSelect workEffortTypeId ', this.workEffortType);
+    this.routerWorkEffortType();
   }
 
-  print() {
-  /*this.timesheet.partyId = this.selectedPartyId;
-  if (this.newTimesheet) {
-    this.timesheetService
-      .createTimesheet(this.timesheet)
-      .then(() => {
-        this.timesheet = null;
-        this.displayDialog = false;
-        this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Created'), detail:this.i18nService.translate('Record created')}];
-        this._reload.next();
-      })
-      .catch((error) => {
-        console.log('error' , error.message);
-        this.error = this.i18nService.translate(error.message) || error;
-      });
-    }*/
+  print() {  
+        
+    console.log('print report ');
+
+    this.selectedReport.outputFormat = this.outputFormat.mimeTypeId;
+    this.selectedReport.workEffortTypeId = this.workEffortType.workEffortTypeId;
+    this.selectedReport.paramsValue = this.paramsValue;
+
     this.reportService
       .add(this.selectedReport)
-      .then(contentId => {
-        /*this.timesheet = null;
-        this.displayDialog = false;
-        this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Created'), detail:this.i18nService.translate('Record created')}];
-        this._reload.next();*/
+      .then(contentId => {        
         console.log(" contentId " + contentId);
         var newWindow = window.open('/c/report-example-1/report-download/' + contentId);
       })
@@ -166,9 +187,16 @@ export class ReportComponent implements OnInit {
       });
   }
 
+  onRowSelectWorkEffortType(data) {
+    console.log('onRowSelectWorkEffortType workEffortTypeId ', data);
+    this.workEffortType = data;
+    this.routerWorkEffortType();
+  }
+  routerWorkEffortType() {
+    if (this.workEffortType) {
+      this.router.navigate([this.workEffortType.workEffortTypeId], { relativeTo: this.route });
+    }
+  }
 
-/*   ngOnDestroy() {
-    this.pollingData.unsubscribe();
-  } */
 
 }

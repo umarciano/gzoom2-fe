@@ -12,21 +12,21 @@ import { Party } from './party';
  * Retrieves the menus to be shown or locks the user out if something wrong happens.
  */
 @Injectable()
-export class PartyResolver implements Resolve<void | Party[]> {
+export class OrgUnitResolver implements Resolve<void | Party[]> {
 
   constructor(
     private readonly partyService: PartyService,
     private readonly lockoutService: LockoutService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | Party[]> {
-    console.log('resolve partys');
+    console.log('resolve orgUnits');
     return this.partyService
-      .partys()
+      .orgUnits()
       .toPromise()
-      .then(partys => { return partys; })
-      .catch(err => { // TODO devo fare il lockout?
+      .then(orgUnits => { return orgUnits; })
+      .catch(err => { 
         console.error('Cannot retrieve party', err);
-        this.lockoutService.lockout(); // TODO cos'e?
+        this.lockoutService.lockout();
       });
   }
 }

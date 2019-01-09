@@ -55,18 +55,10 @@ export class ReportExampleComponent implements OnInit {
            });*/
   }
 
-  ngOnInit() {
-    /*this.form = this.fb.group({
-      'partyId': new FormControl('', Validators.required),
-      'fromDate': new FormControl('', Validators.required),
-      'thruDate': new FormControl('', Validators.required),
-      'contractHours': new FormControl(''),
-      'actualHours': new FormControl('')
-    });*/
+  ngOnInit() {    
 
     const reportObs = this.route.data.pipe(
-      map((data: { reports: Report[] }) => data.reports) //,
-      //merge(reloadedUoms)
+      map((data: { reports: Report[] }) => data.reports)      
     );
       
     reportObs.pipe(first())
@@ -85,46 +77,10 @@ export class ReportExampleComponent implements OnInit {
 
   onRowSelect(data) {
     console.log('report ', data);
-
     this.selectedReport = data;
     if (this.selectedReport) {
       this.router.navigate([this.selectedReport.reportContentId], { relativeTo: this.route });
     }
   }
-
- // print() {
-    /*this.timesheet.partyId = this.selectedPartyId;
-    if (this.newTimesheet) {
-      this.timesheetService
-        .createTimesheet(this.timesheet)
-        .then(() => {
-          this.timesheet = null;
-          this.displayDialog = false;
-          this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Created'), detail:this.i18nService.translate('Record created')}];
-          this._reload.next();
-        })
-        .catch((error) => {
-          console.log('error' , error.message);
-          this.error = this.i18nService.translate(error.message) || error;
-        });
-      }*/
-      // this.reportService
-      //   .add(this.selectedReport)
-      //   .then(data => {
-          /*this.timesheet = null;
-          this.displayDialog = false;
-          this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Created'), detail:this.i18nService.translate('Record created')}];
-          this._reload.next();*/
-  //         console.log(" id data " + data);
-  //       })
-  //       .catch((error) => {
-  //         console.log('error' , error.message);
-  //         this.error = this.i18nService.translate(error.message) || error;
-  //       });
-  // }
-
-  
-/*   ngOnDestroy() {
-    this.pollingData.unsubscribe();
-  } */
+ 
 }

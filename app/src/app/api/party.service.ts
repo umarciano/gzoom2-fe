@@ -22,6 +22,14 @@ export class PartyService {
       );
   }
 
+  orgUnits(): Observable<Party[]> {
+    console.log('search orgUnits');
+    return this.client
+      .get('orgUnits').pipe(
+        map(json => json.results as Party[])
+      );
+  }
+
 
 
 }

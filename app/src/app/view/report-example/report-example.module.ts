@@ -25,8 +25,15 @@ import { ReportExampleResolver } from './report-example/report-example-resolver.
 import { ReportExampleRoutingModule } from './report-example-routing.module';
 import { ReportExampleComponent } from './report-example/report-example.component';
 import { ReportResolver } from '../../report/report/report-resolver.service';
+import { ReportWorkefforttypeResolverService } from '../../report/report/report-workefforttype/report-workefforttype-resolver.service';
 import { ReportDownloadComponent } from '../../report/report-download/report-download.component';
 import { ReportComponent } from '../../report/report/report.component';
+import { ReportWorkefforttypeComponent } from '../../report/report/report-workefforttype/report-workefforttype.component';
+import { PartyService } from 'app/api/party.service';
+import { PartyResolver } from 'app/view/party/party/party-resolver.service';
+import { OrgUnitResolver } from 'app/view/party/party/org-unit-resolver.service';
+import { StatusItemService } from 'app/api/status-item.service';
+import { StatusItemResolverService } from 'app/view/status-item/status-item/status-item-resolver.service';
 
 @NgModule({
   imports: [
@@ -55,13 +62,20 @@ import { ReportComponent } from '../../report/report/report.component';
   declarations: [
     ReportExampleComponent,
     ReportDownloadComponent,
-    ReportComponent
+    ReportComponent,
+    ReportWorkefforttypeComponent
   ],
   providers: [
     ReportService,
+    PartyService,
+    StatusItemService,
     ConfirmationService,
     ReportExampleResolver,
-    ReportResolver
+    ReportResolver,
+    ReportWorkefforttypeResolverService,
+    PartyResolver,
+    OrgUnitResolver,
+    StatusItemResolverService
   ]
 })
 

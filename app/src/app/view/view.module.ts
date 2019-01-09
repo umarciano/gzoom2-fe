@@ -5,6 +5,7 @@ import { CommonsModule } from '../commons/commons.module';
 import { LayoutModule } from '../layout/layout.module';
 import { ViewRoutingModule } from './view-routing.module';
 
+
 @NgModule({
   imports: [
     CommonModule,

@@ -1,0 +1,26 @@
+import { Injectable } from '@angular/core';
+import { URLSearchParams } from '@angular/http'
+
+
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
+
+import { ApiClientService } from './client.service';
+
+import { StatusItem } from '../view/status-item/status-item/status-item';
+
+
+@Injectable()
+export class StatusItemService {
+
+  constructor(private client: ApiClientService) { }
+
+  statusItems(parentTypeId: string): Observable<StatusItem[]> {
+    console.log('search statusItem with '+ parentTypeId);
+    return this.client
+      .get(`statusItems/${parentTypeId}`).pipe(
+        map(json => json.results as StatusItem[])
+      );
+  }
+
+}

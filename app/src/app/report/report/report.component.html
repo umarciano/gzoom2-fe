@@ -1,15 +1,17 @@
 <p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
 
+
+
 <div class="ui-grid-row">
   <div class="ui-grid-col-3">
-    <label for="mimeTypeId">{{'Seleziona il formato'|i18n}}*</label>
+    <label for="workEffortTypeId">{{'Tipologia'|i18n}}*</label>
   </div>
   <div class="ui-grid-col-4">
-    <p-dataTable [value]="outputFormats" [(selection)]="outputFormat" (onRowSelect)="onRowSelect($event.data)" dataKey="mimeTypeId">
+    <p-dataTable [value]="workEffortTypes" [(selection)]="workEffortType" (onRowSelect)="onRowSelectWorkEffortType($event.data)" dataKey="workEffortTypeId">
       <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
-      <p-column field="mimeTypeId">
-        <ng-template let-outputFormat="rowData" pTemplate="body">
-          <span pTooltip="{{outputFormat.mimeTypeId}}">{{outputFormat.description}}</span>
+      <p-column field="workEffortTypeId">
+        <ng-template let-workEffortType="rowData" pTemplate="body">
+          <span pTooltip="{{workEffortType.workEffortTypeId}}">{{workEffortType.description}}</span>
         </ng-template>
       </p-column>
     </p-dataTable>
@@ -24,71 +26,90 @@
 
 <div class="ui-grid-row">
   <div class="ui-grid-col-3">
-    <label for="workEffortTypeId">{{'Tipologia'|i18n}}*</label>
+    <label for="outputFormat">{{'Seleziona il formato'|i18n}}*</label>
   </div>
   <div class="ui-grid-col-4">
-    <p-radioButton name="workEffortTypeId" value="PRVST" label="Prova Stampa" [(ngModel)]="selectedReport.workEffortTypeId" inputId="PRVST"></p-radioButton>
-    <!-- <p-autoComplete class="form-control" formControlName="partyId" required [(ngModel)]="timesheet.partyName" [suggestions]="filteredActivitiesParty" 
-        (completeMethod)="filterActivitiesParty($event)" (onSelect)="onSelect($event)" [minLength]="1" placeholder="Inizia a scrivere..." [dropdown]="true">
-        <ng-template let-record pTemplate="item">
-          <div class="ui-helper-clearfix">
-            <div>{{record}}</div>
-          </div>
+    <p-dataTable [value]="outputFormats" [(selection)]="outputFormat" dataKey="mimeTypeId"  >
+      <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
+      <p-column field="outputFormat">
+        <ng-template let-reportType="rowData" pTemplate="body">
+          <span pTooltip="{{reportType.mimeTypeId}}">{{reportType.description}}</span>
         </ng-template>
-    </p-autoComplete> -->          
-  </div>
-  <div class="ui-grid-col-5">
-    <!-- <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['reportContentId'].valid&amp;&amp;form.controls['reportContentId'].dirty">
-      <i class="fa fa-times"></i>
-      {{'Report Content Id is required'|i18n}}
-    </div> -->
-  </div>
+      </p-column>
+    </p-dataTable>
+  </div>  
 </div>
-<div class="ui-grid-row">
-  <div class="ui-grid-col-3">
-    <label for="monitoringDate">{{'Data al'|i18n}}*</label>
-  </div>
-  <div class="ui-grid-col-4">
-      <p-calendar styleClass="calendar-icon" [locale]="i18nService.getCalendarLocale()" [(ngModel)]="selectedReport.monitoringDate" dateFormat="{{'date-short-pcalendar'|i18nDate}}" name="monitoringDate" required [showIcon]="true"></p-calendar>
-      <!-- <p-autoComplete class="form-control" formControlName="partyId" required [(ngModel)]="timesheet.partyName" [suggestions]="filteredActivitiesParty" 
-        (completeMethod)="filterActivitiesParty($event)" (onSelect)="onSelect($event)" [minLength]="1" placeholder="Inizia a scrivere..." [dropdown]="true">
-        <ng-template let-record pTemplate="item">
-          <div class="ui-helper-clearfix">
-            <div>{{record}}</div>
-          </div>
-        </ng-template>
-    </p-autoComplete> -->          
-  </div>
-  <div class="ui-grid-col-5">
-    <!-- <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['reportContentId'].valid&amp;&amp;form.controls['reportContentId'].dirty">
-      <i class="fa fa-times"></i>
-      {{'Report Content Id is required'|i18n}}
-    </div> -->
-  </div>
-</div>
-<div class="ui-grid-row">
-  <div class="ui-grid-col-3">
-    <label for="exposeReleaseDate">{{'Esponi data stampa'|i18n}}*</label>
-  </div>
-  <div class="ui-grid-col-4">
-      <p-inputSwitch [(ngModel)]="selectedReport.exposeReleaseDate"></p-inputSwitch>
-      <!-- <p-autoComplete class="form-control" formControlName="partyId" required [(ngModel)]="timesheet.partyName" [suggestions]="filteredActivitiesParty" 
-        (completeMethod)="filterActivitiesParty($event)" (onSelect)="onSelect($event)" [minLength]="1" placeholder="Inizia a scrivere..." [dropdown]="true">
-        <ng-template let-record pTemplate="item">
-          <div class="ui-helper-clearfix">
-            <div>{{record}}</div>
-          </div>
-        </ng-template>
-    </p-autoComplete> -->          
-  </div>
-  <div class="ui-grid-col-5">
-    <!-- <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['reportContentId'].valid&amp;&amp;form.controls['reportContentId'].dirty">
-      <i class="fa fa-times"></i>
-      {{'Report Content Id is required'|i18n}}
-    </div> -->
-  </div>
-</div>
+  
 
-<a (click)="print()">
-    <i class="fa fa-print"></i> &nbsp; {{'Print'|i18n}} <b class="caret"></b>
-</a>
+  <form [formGroup]="form" >          
+        <div *ngFor="let param of params ">
+
+          <div class="ui-grid-row" *ngIf="param.paramName == 'workEffortId'">
+              <router-outlet></router-outlet>
+          </div>
+
+          <div class="ui-grid-row" *ngIf="param.paramType == 'LIST' && param.paramName != 'workEffortId'">
+            <div class="ui-grid-col-3">
+              <label for="{{param.paramName}}">{{param.paramName|i18n}} <label *ngIf="param.mandatory">*</label></label>
+            </div>
+            <div class="ui-grid-col-4" >
+              <p-dropdown [options]="paramsSelectItem[param.paramName+'SelectItem']" formControlName="{{param.paramName}}"  [(ngModel)]="paramsValue[param.paramName]"  [autoWidth]="false" [style]="{'width':'100%'}">
+              </p-dropdown>
+            </div>
+            <div class="ui-grid-col-5" *ngIf="param.mandatory">
+              <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls[param.paramName].valid&amp;&amp;form.controls[param.paramName].dirty">
+                <i class="fa fa-times"></i>
+                {{param.paramName|i18n}} {{'is required'|i18n}}
+              </div>
+            </div>
+        </div>
+
+
+
+          <div class="ui-grid-row" *ngIf="param.paramType == 'DATE'">
+              <div class="ui-grid-col-3">
+                <label for="{{param.paramName}}">{{param.paramName|i18n}}<label *ngIf="param.mandatory">*</label></label>
+              </div>
+              <div class="ui-grid-col-4">
+                  <p-calendar formControlName="{{param.paramName}}" styleClass="calendar-icon" [locale]="i18nService.getCalendarLocale()" [(ngModel)]="paramsValue[param.paramName]" dateFormat="{{'date-short-pcalendar'|i18nDate}}" name="{{param.paramName}}" [showIcon]="true"></p-calendar>  
+              </div>
+            <div class="ui-grid-col-5" *ngIf="param.mandatory">
+                <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls[param.paramName].valid&amp;&amp;form.controls[param.paramName].dirty">
+                  <i class="fa fa-times"></i>
+                  {{param.paramName|i18n}} {{'is required'|i18n}}
+                </div> 
+              </div>
+          </div>
+
+          <div class="ui-grid-row" *ngIf="param.paramType == 'BOOLEAN'">
+              <div class="ui-grid-col-3">
+                <label  for="{{param.paramName}}">{{param.paramName|i18n}}</label>
+              </div>
+              <div class="ui-grid-col-4">
+                  <p-inputSwitch formControlName="{{param.paramName}}" [(ngModel)]="paramsValue[param.paramName]" defa></p-inputSwitch>        
+              </div>        
+          </div> 
+          
+          <div class="ui-grid-row" *ngIf="param.paramType == 'INPUT'">
+            <div class="ui-grid-col-3">
+              <label  for="{{param.paramName}}">{{param.paramName|i18n}}</label>
+            </div>
+            <div class="ui-grid-col-4">
+                <input formControlName="{{param.paramName}}" [(ngModel)]="paramsValue[param.paramName]" />        
+            </div> 
+          </div>           
+        </div>
+
+
+        <p-footer>
+          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" (click)="print()" pButton icon="fa-print" label="{{'Print'|i18n}}" [disabled]="!form.valid"></button>
+          </div>
+        </p-footer>
+     
+</form> 
+
+
+
+
+
