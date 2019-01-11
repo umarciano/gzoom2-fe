@@ -20,11 +20,11 @@ export class ReportResolver implements Resolve<void | Report> {
     private readonly lockoutService: LockoutService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | Report> {
-    var parentTypeId = route.paramMap.get('parentTypeId');
-    var reportContentId = route.paramMap.get('reportContentId');
+    var parentTypeId = route.parent.params.parentTypeId;
+    var reportContentId = route.params.reportContentId;
     console.log('resolve report for ' + parentTypeId + 'and' + reportContentId);
     return this.reportService
-      .report('CTX_PR', reportContentId)
+      .report(parentTypeId, reportContentId)
       .toPromise()
       .then(report => { return report; })
       .catch(err => {

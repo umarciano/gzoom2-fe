@@ -8,7 +8,6 @@ import { ApiClientService } from './client.service';
 
 import { Report } from '../report/report';
 import { ReportStatus } from '../report/report-status';
-import { WorkEffort } from '../report/report';
 
 
 import * as moment from 'moment';
@@ -100,13 +99,4 @@ export class ReportService {
     else return null;
   }
 
-
-  workEfforts(parentTypeId:string, reportContentId:string, workEffortTypeId: string): Observable<WorkEffort[]> {
-    console.log('search workEffort list');
-    return this.client
-      .get(`report/${parentTypeId}/${reportContentId}/${workEffortTypeId}`).pipe(
-        map(json => json.results as WorkEffort[])
-      );
-  }
-  
 }

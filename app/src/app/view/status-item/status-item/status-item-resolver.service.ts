@@ -19,10 +19,8 @@ export class StatusItemResolverService {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | StatusItem[]> {
     console.log('resolve Status Item');
-    var parentTypeId = String(route.parent.url); //TODO
-    console.log('resolve statusItem for parentTypeId = ' + parentTypeId );
     return this.statusItemService
-      .statusItems(parentTypeId)
+      .statusItems('CTX_PR')
       .toPromise()
       .then(statusItems => { return statusItems; })
       .catch(err => { 

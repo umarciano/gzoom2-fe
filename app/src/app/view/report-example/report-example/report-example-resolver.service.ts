@@ -20,9 +20,10 @@ export class ReportExampleResolver implements Resolve<void | Report[]> {
     private readonly lockoutService: LockoutService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | Report[]> {
+    var parentTypeId = route.params.parentTypeId;
     console.log('resolve reports');
     return this.reportService
-      .reports('CTX_PR')
+      .reports(parentTypeId)
       .toPromise()
       .then(reports => { return reports; })
       .catch(err => {

@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { URLSearchParams } from '@angular/http'
-
 
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
@@ -18,7 +16,7 @@ export class StatusItemService {
   statusItems(parentTypeId: string): Observable<StatusItem[]> {
     console.log('search statusItem with '+ parentTypeId);
     return this.client
-      .get(`statusItems/${parentTypeId}`).pipe(
+      .get(`status-items/${parentTypeId}`).pipe(
         map(json => json.results as StatusItem[])
       );
   }

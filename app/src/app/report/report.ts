@@ -15,10 +15,6 @@ export class WorkEffortType {
   constructor(public workEffortTypeId?: string, public description?: string ) {};
 }
 
-export class WorkEffort {
-  constructor(public workEffortId?: string, public workEffortName?: string ) {};
-}
-
 export class Report {
   constructor(public reportContentId?: string, 
     public reportName?: string, 

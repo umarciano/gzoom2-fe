@@ -38,22 +38,7 @@ export class ReportExampleComponent implements OnInit {
     private readonly router: Router,
     private readonly i18nService: I18NService,
     private readonly reportService: ReportService,
-    private fb: FormBuilder, http: HttpClient) {
-      // concatMap if request longer more 5 sec
-      /*this.pollingData = Observable.interval(5000).startWith(0)
-       .switchMap(() => http.get('http://jsonplaceholder.typicode.com/users/'))
-       .pipe(
-        map(json => json)
-      ).subscribe((data: any[]) => {
-         this.doctors=data; 
-         console.log(data);// see console you get output every 5 sec
-      });*/
-      /*  map((data) => data.json())
-        ).subscribe((data) => {
-             this.doctors=data; 
-              console.log(data);// see console you get output every 5 sec
-           });*/
-  }
+    private fb: FormBuilder, http: HttpClient) {}
 
   ngOnInit() {    
 
@@ -61,18 +46,11 @@ export class ReportExampleComponent implements OnInit {
       map((data: { reports: Report[] }) => data.reports)      
     );
       
-    reportObs.pipe(first())
+    reportObs.pipe()
     .subscribe((reports) => {
       this.reports = reports;
       this.onRowSelect(reports[0]);
     });
-
-    /*reportObs.subscribe((data) => {
-      this.reports = data;
-      this.selectedReport = data[0];
-      this.router.navigate([this.selectedReport.reportContentId], { relativeTo: this.route });
-    });*/
-
   }
 
   onRowSelect(data) {

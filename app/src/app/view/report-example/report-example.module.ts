@@ -25,15 +25,17 @@ import { ReportExampleResolver } from './report-example/report-example-resolver.
 import { ReportExampleRoutingModule } from './report-example-routing.module';
 import { ReportExampleComponent } from './report-example/report-example.component';
 import { ReportResolver } from '../../report/report/report-resolver.service';
-import { ReportWorkefforttypeResolverService } from '../../report/report/report-workefforttype/report-workefforttype-resolver.service';
 import { ReportDownloadComponent } from '../../report/report-download/report-download.component';
 import { ReportComponent } from '../../report/report/report.component';
-import { ReportWorkefforttypeComponent } from '../../report/report/report-workefforttype/report-workefforttype.component';
 import { PartyService } from 'app/api/party.service';
 import { PartyResolver } from 'app/view/party/party/party-resolver.service';
 import { OrgUnitResolver } from 'app/view/party/party/org-unit-resolver.service';
 import { StatusItemService } from 'app/api/status-item.service';
 import { StatusItemResolverService } from 'app/view/status-item/status-item/status-item-resolver.service';
+import { RoleTypeService } from 'app/api/role-type.service';
+import { RoleTypeResolverService } from 'app/view/role-type/role-type/role-type-resolver.service';
+import { WorkEffortService } from 'app/api/work-effort.service';
+import { WorkEffortResolverService } from 'app/view/work-effort/work-effort/work-effort-resolver.service';
 
 @NgModule({
   imports: [
@@ -62,20 +64,22 @@ import { StatusItemResolverService } from 'app/view/status-item/status-item/stat
   declarations: [
     ReportExampleComponent,
     ReportDownloadComponent,
-    ReportComponent,
-    ReportWorkefforttypeComponent
+    ReportComponent
   ],
   providers: [
     ReportService,
     PartyService,
     StatusItemService,
+    RoleTypeService,
+    WorkEffortService,
     ConfirmationService,
     ReportExampleResolver,
     ReportResolver,
-    ReportWorkefforttypeResolverService,
     PartyResolver,
     OrgUnitResolver,
-    StatusItemResolverService
+    StatusItemResolverService,
+    RoleTypeResolverService,
+    WorkEffortResolverService
   ]
 })
 
