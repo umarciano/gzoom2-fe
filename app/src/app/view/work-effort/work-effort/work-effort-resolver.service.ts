@@ -19,7 +19,7 @@ export class WorkEffortResolverService {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | WorkEffort[]> {
     console.log('resolve workEffort');
     return this.workEffortService
-      .workEfforts()
+      .workEfforts('_NA_')
       .toPromise()
       .then(workEfforts => { return workEfforts; })
       .catch(err => { 

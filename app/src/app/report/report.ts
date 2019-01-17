@@ -1,4 +1,3 @@
-
 export class Params {
   constructor(public name?: string, public value?: any, public mandatory?:boolean ) {};
 }

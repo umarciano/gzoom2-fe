@@ -30,6 +30,13 @@ export class PartyService {
       );
   }
 
+  roleTypePartys(roleTypeId: string): Observable<Party[]> {
+    console.log('search party whit roleTypeId='+roleTypeId);
+    return this.client
+      .get(`party/roleType/${roleTypeId}`).pipe(
+        map(json => json.results as Party[])
+      );
+  }
 
 
 }

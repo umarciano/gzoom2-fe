@@ -11,20 +11,27 @@ export class WorkEffortService {
 
   constructor(private client: ApiClientService) { }
 
-  workEfforts(): Observable<WorkEffort[]> {
+  /*workEfforts(): Observable<WorkEffort[]> {
     console.log('search workEffort list');
     return this.client
       .get(`work-effort`).pipe(
         map(json => json.results as WorkEffort[])
       );
-  }
+  }*/
 
-  /*workEfforts(workEffortTypeId: string): Observable<WorkEffort[]> {
-    console.log('search workEffort list');
+  workEfforts(workEffortTypeId: string): Observable<WorkEffort[]> {
+    console.log('search workEffort list with workEffortTypeId='+ workEffortTypeId);
     return this.client
       .get(`work-effort/${workEffortTypeId}`).pipe(
         map(json => json.results as WorkEffort[])
       );
-  }*/
+  }
 
+  workEffortParents(workEffortParentId: string): Observable<WorkEffort[]> {
+    console.log('search workEffort list with workEffortParentId='+ workEffortParentId);
+    return this.client
+      .get(`work-effort/work-effort-parent/${workEffortParentId}`).pipe(
+        map(json => json.results as WorkEffort[])
+      );
+  }
 }

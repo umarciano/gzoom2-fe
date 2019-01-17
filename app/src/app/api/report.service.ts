@@ -54,15 +54,7 @@ export class ReportService {
         map(json => json as ReportStatus)
       );
   }
-
-  stream(activityId) {
-    console.log('stream ');
-    return this.client
-      .get(`report/${activityId}/stream`).pipe(
-        map(json => json as ReportStatus)
-      );
-  }
-
+  
   delete(contentId) {
     console.log('delete ');
     return this.client
