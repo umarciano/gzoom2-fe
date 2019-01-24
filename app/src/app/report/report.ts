@@ -11,7 +11,7 @@ export class ReportType {
 }
 
 export class WorkEffortType {
-  constructor(public workEffortTypeId?: string, public description?: string ) {};
+  constructor(public workEffortTypeId?: string, public description?: string, public workEffortTypeName?:  string,) {};
 }
 
 export class Report {
@@ -22,5 +22,7 @@ export class Report {
     public workEffortTypeId?: string,    
     public outputFormats?: ReportType[],
     public params?: Params[],
-    public paramsValue?: {},) {}
+    public paramsValue?: {},
+    public analysis? : boolean,
+    public useFilter? : boolean) {}
 }

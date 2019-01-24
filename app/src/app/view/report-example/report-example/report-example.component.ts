@@ -18,6 +18,16 @@ import { ReportService } from '../../../api/report.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/Rx';
 
+/** Convert from WorkEffortType[] to SelectItem[] */
+function reportSelectItems(report: Report[]): SelectItem[] {
+  if (report == null){
+    return [];
+  }
+  return report.map((p:Report) => {
+    return {label: p.reportName, value: {reportContentId: p.reportContentId, reportName:p.reportName, analysis: p.analysis}};
+  });
+}
+
 @Component({
   selector: 'app-report-example',
   templateUrl: './report-example.component.html',
@@ -34,6 +44,10 @@ export class ReportExampleComponent implements OnInit {
   /** Selected report*/
   selectedReport: Report;
 
+  reportSelectItems: SelectItem[];
+
+  form: FormGroup;
+
   constructor(private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly i18nService: I18NService,
@@ -46,18 +60,27 @@ export class ReportExampleComponent implements OnInit {
       map((data: { reports: Report[] }) => data.reports)      
     );
       
-    reportObs.pipe()
+    reportObs.pipe(
+    //  map(reportSelectItems)
+    )
     .subscribe((reports) => {
       this.reports = reports;
+      //this.reportSelectItems = reports;
       this.onRowSelect(reports[0]);
     });
+
+    // Form Validator
+    this.form = this.fb.group({
+      'reportContentId': new FormControl('', Validators.required)
+  });
+
   }
 
   onRowSelect(data) {
     console.log('report ', data);
-    this.selectedReport = data;
+    this.selectedReport = data; // data.value;
     if (this.selectedReport) {
-      this.router.navigate([this.selectedReport.reportContentId], { relativeTo: this.route });
+        this.router.navigate([this.selectedReport.reportContentId, this.selectedReport.reportName, this.selectedReport.analysis], { relativeTo: this.route });
     }
   }
  

@@ -22,10 +22,10 @@ export class PartyService {
       );
   }
 
-  orgUnits(): Observable<Party[]> {
+  orgUnits(parentTypeId: string): Observable<Party[]> {
     console.log('search orgUnits');
     return this.client
-      .get('orgUnits').pipe(
+      .get(`orgUnits/${parentTypeId}`).pipe(
         map(json => json.results as Party[])
       );
   }

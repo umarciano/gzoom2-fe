@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'report-download/:activityId', component: ReportDownloadComponent},
   { path: ':parentTypeId', component: ReportExampleComponent, resolve: { reports: ReportExampleResolver},
     children: [
-      { path: ':reportContentId', component: ReportComponent, resolve: { report: ReportResolver,  
+      { path: ':reportContentId/:reportName/:analysis', component: ReportComponent, resolve: { report: ReportResolver,  
                                                                          orgUnits: OrgUnitResolver,
                                                                          statusItems: StatusItemResolverService,
                                                                          roleTypes: RoleTypeResolverService },

@@ -14,6 +14,7 @@ import { ConfirmDialogModule, ConfirmationService, SpinnerModule, CalendarModule
 import { GrowlModule } from 'primeng/primeng';
 import { TooltipModule } from 'primeng/primeng';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { ListboxModule } from 'primeng/listbox';
 
 import { CommonsModule } from '../../commons/commons.module';
 import { ApiModule } from '../../api/api.module';
@@ -58,6 +59,7 @@ import { WorkEffortResolverService } from 'app/view/work-effort/work-effort/work
     GrowlModule,
     DropdownModule,
     RadioButtonModule,
+    ListboxModule,
     InputSwitchModule,
     TooltipModule
   ],

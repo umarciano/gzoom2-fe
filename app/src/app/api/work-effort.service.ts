@@ -19,10 +19,12 @@ export class WorkEffortService {
       );
   }*/
 
-  workEfforts(workEffortTypeId: string): Observable<WorkEffort[]> {
+  workEfforts(parentTypeId: string, workEffortTypeId: string, useFilter?: boolean): Observable<WorkEffort[]> {
     console.log('search workEffort list with workEffortTypeId='+ workEffortTypeId);
+    if (useFilter == undefined) 
+      useFilter = true;
     return this.client
-      .get(`work-effort/${workEffortTypeId}`).pipe(
+      .get(`work-effort/${parentTypeId}/${workEffortTypeId}/${useFilter}`).pipe(
         map(json => json.results as WorkEffort[])
       );
   }

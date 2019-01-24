@@ -17,9 +17,10 @@ export class WorkEffortResolverService {
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | WorkEffort[]> {
-    console.log('resolve workEffort');
+    var parentTypeId = route.parent.params.parentTypeId;
+    console.log('resolve workEffort parentTypeId='+parentTypeId);
     return this.workEffortService
-      .workEfforts('_NA_')
+      .workEfforts(parentTypeId, '_NA_', true)
       .toPromise()
       .then(workEfforts => { return workEfforts; })
       .catch(err => { 

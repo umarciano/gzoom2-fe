@@ -27,10 +27,10 @@ export class ReportService {
       );
   }
 
-  report(parentTypeId: string, reportContentId: string): Observable<Report> {
-    console.log('search report with ' + reportContentId);
+  report(parentTypeId: string, reportContentId: string, reportName: string, analysis: boolean): Observable<Report> {
+    console.log('search report with ' + reportContentId + " reportName "+ reportName + " analysis " + analysis );
     return this.client
-      .get(`report/${parentTypeId}/${reportContentId}`).pipe(
+      .get(`report/${parentTypeId}/${reportContentId}/${reportName}/${analysis}`).pipe(
         map(json => json as Report)
       );
   }

@@ -1,46 +1,53 @@
 <p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
 
+<form [formGroup]="form" >  
 
+  <div class="ui-grid-row">
+    <div class="ui-grid-col-3">
+      <label for="workEffortTypeId">{{'Tipologia'|i18n}}*</label>
+    </div>
+    <div class="ui-grid-col-4" *ngIf="!selectedReport.analysis">
+      <!-- Se sono in un analisi mostra la lista altrimento il radio button -->
+      <p-dataTable [value]="workEffortTypes" [(selection)]="workEffortType" (onRowSelect)="onRowSelectWorkEffortType($event.data)" dataKey="workEffortTypeId">
+        <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
+        <p-column field="workEffortTypeId">
+          <ng-template let-workEffortType="rowData" pTemplate="body">
+            <span pTooltip="{{workEffortType.workEffortTypeId}}">{{workEffortType.workEffortTypeName}} </span>
+          </ng-template>
+        </p-column>
+      </p-dataTable>      
+    </div>
+    <div class="ui-grid-col-4" *ngIf="selectedReport.analysis">
+        <p-dropdown filter="true" [options]="workEffortTypeSelectItem" formControlName="workEffortTypeId"  [(ngModel)]="workEffortType.workEffortTypeId"  [autoWidth]="false" [style]="{'width':'100%'}">
+        </p-dropdown>
+      </div>
+    <div class="ui-grid-col-5">
+      <!-- <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['workEffortTypeId'].valid&amp;&amp;form.controls['workEffortTypeId'].dirty">
+        <i class="fa fa-times"></i>
+        {{'Report Content Id is required'|i18n}}
+      </div> -->
+    </div>
+  </div>
 
-<div class="ui-grid-row">
-  <div class="ui-grid-col-3">
-    <label for="workEffortTypeId">{{'Tipologia'|i18n}}*</label>
+  <div class="ui-grid-row">
+    <div class="ui-grid-col-3">
+      <label for="outputFormat">{{'Seleziona il formato'|i18n}}*</label>
+    </div>
+    <div class="ui-grid-col-4">
+     <!-- <p-listbox formControlName="outputFormat" [options]="outputFormatSelectItem" [(ngModel)]="outputFormat">          
+      </p-listbox> -->
+     <p-dataTable [value]="outputFormats" [(selection)]="outputFormat" dataKey="mimeTypeId"  >
+        <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
+        <p-column field="outputFormat">
+          <ng-template let-reportType="rowData" pTemplate="body">
+            <span pTooltip="{{reportType.mimeTypeId}}">{{reportType.description}}</span>
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+    </div>  
   </div>
-  <div class="ui-grid-col-4">
-    <p-dataTable [value]="workEffortTypes" [(selection)]="workEffortType" (onRowSelect)="onRowSelectWorkEffortType($event.data)" dataKey="workEffortTypeId">
-      <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
-      <p-column field="workEffortTypeId">
-        <ng-template let-workEffortType="rowData" pTemplate="body">
-          <span pTooltip="{{workEffortType.workEffortTypeId}}">{{workEffortType.description}}</span>
-        </ng-template>
-      </p-column>
-    </p-dataTable>
-  </div>
-  <div class="ui-grid-col-5">
-    <!-- <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['reportContentId'].valid&amp;&amp;form.controls['reportContentId'].dirty">
-      <i class="fa fa-times"></i>
-      {{'Report Content Id is required'|i18n}}
-    </div> -->
-  </div>
-</div>
-
-<div class="ui-grid-row">
-  <div class="ui-grid-col-3">
-    <label for="outputFormat">{{'Seleziona il formato'|i18n}}*</label>
-  </div>
-  <div class="ui-grid-col-4">
-    <p-dataTable [value]="outputFormats" [(selection)]="outputFormat" dataKey="mimeTypeId"  >
-      <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
-      <p-column field="outputFormat">
-        <ng-template let-reportType="rowData" pTemplate="body">
-          <span pTooltip="{{reportType.mimeTypeId}}">{{reportType.description}}</span>
-        </ng-template>
-      </p-column>
-    </p-dataTable>
-  </div>  
-</div>
   
-<form [formGroup]="form" >   
+ 
   <div *ngFor="let param of params ">
 
     <div class="ui-grid-row" *ngIf="param.paramType == 'LIST'">

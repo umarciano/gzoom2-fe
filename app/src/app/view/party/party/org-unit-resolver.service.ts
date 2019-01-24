@@ -19,9 +19,10 @@ export class OrgUnitResolver implements Resolve<void | Party[]> {
     private readonly lockoutService: LockoutService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | Party[]> {
-    console.log('resolve orgUnits');
+    var parentTypeId = route.parent.params.parentTypeId;
+    console.log('resolve orgUnits parentTypeId='+parentTypeId);
     return this.partyService
-      .orgUnits()
+      .orgUnits(parentTypeId)
       .toPromise()
       .then(orgUnits => { return orgUnits; })
       .catch(err => { 
