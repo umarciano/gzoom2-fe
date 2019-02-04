@@ -21,7 +21,9 @@ const routes: Routes = [
       { path: ':reportContentId/:reportName/:analysis', component: ReportComponent, resolve: { report: ReportResolver,  
                                                                          orgUnits: OrgUnitResolver,
                                                                          statusItems: StatusItemResolverService,
-                                                                         roleTypes: RoleTypeResolverService },
+                                                                         roleTypes: RoleTypeResolverService,
+                                                                         //workEfforts: WorkEffortResolverService
+                                                                          },
     //  children: [
     //    { path: ':workEffortTypeId', component: ReportWorkefforttypeComponent, resolve: { workEfforts: ReportWorkefforttypeResolverService }}        
     //  ]

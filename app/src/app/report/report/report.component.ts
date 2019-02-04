@@ -31,7 +31,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/Rx';
 
 /** Convert from WorkEffort[] to SelectItem[] */
-function workEfforts2SelectItems(types: WorkEffort[]): SelectItem[] {
+  function workEfforts2SelectItems(types: WorkEffort[]): SelectItem[] {
   if (types == null){
     return [];
   } 
@@ -156,17 +156,10 @@ export class ReportComponent implements OnInit {
 
   ngOnInit() {
 
-   // this.route.paramMap('');
+    // this.route.paramMap('');
     console.log('ngOnInit Report component ');
     //let reloadedReport = this._reload;    
-    const reportObs = this.route.data.pipe(
-       map((data: { report: Report }) => data.report)       
-    );
-    reportObs
-    .subscribe((data) => {
-      console.log('ngOnInit subscribe report ' + data);
-      this.onRowSelect(data);
-    });
+    
 
     var parentTypeId = this.route.snapshot.parent.params.parentTypeId;
     var reportContentId = this.route.snapshot.params.reportContentId;
@@ -178,7 +171,7 @@ export class ReportComponent implements OnInit {
       map(orgUnit2SelectItems)
     ).subscribe((data) => {
       this.orgUnitIdSelectItem = data;
-      this.orgUnitIdSelectItem.push({label: this.i18nService.translate('Select Unit Organization'), value:null});
+      this.orgUnitIdSelectItem.push({label: this.i18nService.translate('Select orgUnitId'), value:null});
       this.paramsSelectItem['orgUnitIdSelectItem'] = this.orgUnitIdSelectItem;
 
     });
@@ -191,7 +184,7 @@ export class ReportComponent implements OnInit {
       map(statusItem2SelectItems)
     ).subscribe((data) => {
       this.currentStatusNameSelectItem = data;
-      this.currentStatusNameSelectItem.push({label: this.i18nService.translate('Select Status Item'), value:null});
+      this.currentStatusNameSelectItem.push({label: this.i18nService.translate('Select statusItem'), value:null});
       this.paramsSelectItem['currentStatusNameSelectItem'] = this.currentStatusNameSelectItem;
 
     });
@@ -204,7 +197,7 @@ export class ReportComponent implements OnInit {
       map(roleType2SelectItems)
     ).subscribe((data) => {
       this.roleTypeIdSelectItem = data;
-      this.roleTypeIdSelectItem.push({label: this.i18nService.translate('Select role type'), value:null});
+      this.roleTypeIdSelectItem.push({label: this.i18nService.translate('Select roleType'), value:null});
       this.paramsSelectItem['roleTypeIdSelectItem'] = this.roleTypeIdSelectItem;
 
     });
@@ -220,7 +213,6 @@ export class ReportComponent implements OnInit {
       this.paramsSelectItem['partyIdSelectItem'] = this.partyIdSelectItem;
 
     });
-
    
     const reloadedWorkEffort = this._reload.switchMap(params => (params.workEffortTypeId ? this.workEffortService.workEfforts(parentTypeId, params.workEffortTypeId, this.selectedReport.useFilter) : reloadedWorkEffort));
     const workEffortObs = this.route.data.pipe(
@@ -240,10 +232,19 @@ export class ReportComponent implements OnInit {
        map(workEfforts2SelectItems)
     ).subscribe((data) => {
       this.workEffortIdChildSelectItem = data;      
-      this.workEffortIdChildSelectItem.push({label: this.i18nService.translate('Select WorkEffort child'), value:null});
+      this.workEffortIdChildSelectItem.push({label: this.i18nService.translate('Select WorkEffortChild'), value:null});
       this.paramsSelectItem['workEffortIdChildSelectItem'] = this.workEffortIdChildSelectItem;
     });
     
+
+    const reportObs = this.route.data.pipe(
+      map((data: { report: Report }) => data.report)       
+    );
+    reportObs
+    .subscribe((data) => {
+      console.log('ngOnInit subscribe report ' + data);
+      this.onRowSelect(data);
+    });
     
   }
   //********* END ngOnInit */
@@ -282,9 +283,8 @@ export class ReportComponent implements OnInit {
     //aggiungo 
 
     paramForm["outputFormat"] = new FormControl('', Validators.required);
-    
-    if ( this.selectedReport.analysis)
-      paramForm["workEffortTypeId"] = new FormControl('', Validators.required);
+    paramForm["workEffortTypeId"] = new FormControl('', Validators.required);    
+   
    
     this.form = this.fb.group(paramForm);
 
@@ -303,54 +303,41 @@ export class ReportComponent implements OnInit {
     this.workEffortTypeSelectItem = workEffortType2SelectItems(this.workEffortTypes);
     console.log('onRowSelect workEffortTypes ', this.workEffortTypes);
    
-    this.workEffortType = data.workEffortTypes[0];
-    console.log('onRowSelect workEffortTypeId ', this.workEffortType);
-    this.filterWorkEffort(this.workEffortType.workEffortTypeId);
-    
-    //this.routerWorkEffortType();
+    //this.workEffortType = data.workEffortTypes[0];
+    //console.log('onRowSelect workEffortTypeId ', this.workEffortType);
+    this.onRowSelectWorkEffortType(data.workEffortTypes[0]);
+
   }
 
   onRowSelectWorkEffortType(data) {
-    console.log('onRowSelectWorkEffortType workEffortTypeId ', data);
+    console.log('onRowSelectWorkEffortType workEffortTypeId ', data.workEffortTypeId);
     this.workEffortType = data;
-    this.filterWorkEffort(this.workEffortType.workEffortTypeId);
-   //TOLTO this.routerWorkEffortType();
+    //this.filterWorkEffort(this.workEffortType.workEffortTypeId);
+    this._reload.next({workEffortTypeId: this.workEffortType.workEffortTypeId});
   }
 
-  filterWorkEffort(workEffortTypeId) {
+ /* filterWorkEffort(workEffortTypeId) {
     console.log('filterWorkEffort-->'+workEffortTypeId);    
     this._reload.next({workEffortTypeId});
-      
-  }
+ }*/
 
-/*  routerWorkEffortType() {    
-    if (this.workEffortType) {
-      this.router.navigate([this.workEffortType.workEffortTypeId], { relativeTo: this.route });
-    }
-  }*/
-
-
-  print() { 
-    console.log('print report ');
+  setDataReport() {
+    console.log('setDataReport');
     this.selectedReport.outputFormat = this.outputFormat.mimeTypeId;
     this.selectedReport.workEffortTypeId = this.workEffortType.workEffortTypeId;
 
     //CONVERTO I DATI
     this.params.forEach((element) => {      
-      if (element.paramType == 'DATE') {
-       // TODO
-       // this.paramsValue[element.paramName] = this.reportService.getDate(this.paramsValue[element.paramName]); 
-      } else if(element.paramType == "BOOLEAN") {        		
-          var value = this.paramsValue[element.paramName];
-          if (value) {
-            this.paramsValue[element.paramName] = "Y";
-          } else {
-            this.paramsValue[element.paramName] = "N";
-          }
-        }
+      if (element.paramType == 'DATE') {       
+        this.paramsValue[element.paramName] = this.reportService.getDate(this.paramsValue[element.paramName]); 
+      } 
     });
-
     this.selectedReport.paramsValue = this.paramsValue;
+
+  } 
+
+  print() { 
+    console.log('print report ');
 
     this.reportService
       .add(this.selectedReport)
@@ -364,7 +351,12 @@ export class ReportComponent implements OnInit {
       });
   }
 
+  mail() {
+    console.log('send mail ');
+  }
+
 }
+
 
 
 export interface ReloadParams {

@@ -43,8 +43,7 @@ export class ReportExampleComponent implements OnInit {
   
   /** Selected report*/
   selectedReport: Report;
-
-  reportSelectItems: SelectItem[];
+  reportContentIdreportName: String;
 
   form: FormGroup;
 
@@ -65,13 +64,12 @@ export class ReportExampleComponent implements OnInit {
     )
     .subscribe((reports) => {
       this.reports = reports;
-      //this.reportSelectItems = reports;
       this.onRowSelect(reports[0]);
     });
 
     // Form Validator
     this.form = this.fb.group({
-      'reportContentId': new FormControl('', Validators.required)
+      'reportContentId': new FormControl('')
   });
 
   }
@@ -79,6 +77,7 @@ export class ReportExampleComponent implements OnInit {
   onRowSelect(data) {
     console.log('report ', data);
     this.selectedReport = data; // data.value;
+    this.reportContentIdreportName = data.reportContentId + "_" + data.reportName;    
     if (this.selectedReport) {
         this.router.navigate([this.selectedReport.reportContentId, this.selectedReport.reportName, this.selectedReport.analysis], { relativeTo: this.route });
     }

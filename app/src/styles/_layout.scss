@@ -157,6 +157,43 @@ body {
     }
   }
 
+  .ui-dropdown .ui-dropdown-label,
+  .ui-dropdown .ui-dropdown-trigger,
+  .ui-dropdown-filter-container {
+    background: map-get($app-colors, background-cl);
+  }
+  
+
+  /*----------------------------------------------------------------------------*/
+   /* radiobutton                                                               */
+   /*----------------------------------------------------------------------------*/
+   .ui-radiobutton-label {   
+    color:  map-get($app-colors, default-cl); 
+    font-family: "Trebuchet MS";
+    font-size: 0.75rem;
+    margin-bottom: 0rem
+  }
+  p-radiobutton .ui-label-active {
+    font-weight: bold;
+    font-size: 0.85rem;
+  }
+  .ui-radiobutton .ui-radiobutton-box.ui-state-active {    
+    border: 1px solid map-get($app-colors, navbar-bg);
+    background-color: map-get($app-colors, navbar-bg);  
+  }
+
+  /*----------------------------------------------------------------------------*/
+   /* inputswitch                                                               */
+   /*----------------------------------------------------------------------------*/
+  .ui-inputswitch {
+    background-color: map-get($app-colors, navbar-bg);    
+  }
+
+  .ui-inputswitch .ui-inputswitch-on, 
+  .ui-inputswitch .ui-inputswitch-off {
+    color:  map-get($app-colors, default-cl); 
+  }
+
   /*----------------------------------------------------------------------------*/
   /* Autocomplete                                                               */
   /*----------------------------------------------------------------------------*/
@@ -204,11 +241,25 @@ body {
     padding: 0em;
   }
 
+  p-calendar.form-control-report {
+    width: 12em;
+  }
+
+  form-control-report
+
   p-calendar span {
     padding-right: 0.5em;
   }
 
   p-autocomplete.form-control {
+    padding: 0em;
+  }
+
+  p-dropdown.form-control {
+    padding: 0em;
+  }
+
+  input.form-control {
     padding: 0em;
   }
 
