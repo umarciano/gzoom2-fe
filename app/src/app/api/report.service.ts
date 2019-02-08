@@ -63,27 +63,16 @@ export class ReportService {
       );
   }
 
-  //Bodifier methods
-  saveReportBodifier(report) {
-    return {
-      reportName: (report) ? report.reportName : null,
-      reportLocale: (report) ? report.reportLocale : null, // TODO "it_IT"
-      params: {
-        "date3112": this.getDate(report.date3112),
-        "langLocale": "",
-        "outputFormat": "pdf",
-        "workEffortTypeId": "15AP0PPC",
-        "exposeReleaseDate": "Y",
-        "exposePaginator": "Y",
-        "reportContentId": "REPORT_CATALOGO",
-        "userLoginId": "admin",
-        "userProfile": "MGR_ADMIN",
-        "birtOutputFileName": "CatalogoTreLivelli",
-        "localDispatcherName": "corperf",
-        "defaultOrganizationPartyId": "Company",
-        
-        }
-    };
+  mail(report) {
+    console.log('mail ', report);
+    return this.client
+    .post('report/mail', report)
+    .toPromise()
+    .then(response => response)
+    .catch(response => {
+      console.error(`Error while creating in: ${response}`);
+      return Promise.reject(response.json() || response);
+    });
   }
 
   getDate(date) {

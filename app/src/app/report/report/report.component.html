@@ -118,7 +118,8 @@
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
       <button type="button" (click)="print()" pButton icon="fa-print" label="{{'Print'|i18n}}" [disabled]="!form.valid"></button>
-      <button type="button" (click)="mail()" pButton icon="fa-envelope" label="{{'Mail'|i18n}}" [disabled]="!form.valid"></button>
+      <!--<button type="button" (click)="mail()" pButton icon="fa-envelope" label="{{'Mail'|i18n}}" [disabled]="!form.valid" [hidden]="hiddenMail"></button>-->
+      <button type="button" (click)="mail()" pButton icon="fa-envelope" label="{{'Mail'|i18n}}" [disabled]="!form.valid" ></button>
     </div>
   </p-footer>
      

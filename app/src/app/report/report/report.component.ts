@@ -141,6 +141,9 @@ export class ReportComponent implements OnInit {
   paramsValue: any = {};
   paramsSelectItem: any = {};
 
+
+  hiddenMail: boolean;
+
   constructor(private readonly route: ActivatedRoute,
   private readonly router: Router,
   private readonly i18nService: I18NService,
@@ -265,6 +268,9 @@ export class ReportComponent implements OnInit {
   onRowSelect(data) {
     console.log('report ', data);
     this.selectedReport = data;
+
+    this.hiddenMail = (this.selectedReport.reportContentId.indexOf('REMINDER') < 0 ); 
+
     //TODO param
     this.params = data.params;
     console.log('onRowSelect params ',  this.params);
@@ -338,7 +344,7 @@ export class ReportComponent implements OnInit {
 
   print() { 
     console.log('print report ');
-
+    this.setDataReport();
     this.reportService
       .add(this.selectedReport)
       .then(contentId => {        
@@ -353,6 +359,14 @@ export class ReportComponent implements OnInit {
 
   mail() {
     console.log('send mail ');
+    this.setDataReport();
+    this.reportService
+      .mail(this.selectedReport)     
+      .catch((error) => {
+        console.log('error' , error.message);
+        this.error = this.i18nService.translate(error.message) || error;
+      });
+    
   }
 
 }
