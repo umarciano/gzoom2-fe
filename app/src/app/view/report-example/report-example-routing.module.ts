@@ -6,7 +6,6 @@ import { ReportExampleResolver } from './report-example/report-example-resolver.
 import { ReportResolver } from '../../report/report/report-resolver.service';
 import { ReportExampleComponent } from './report-example/report-example.component';
 import { ReportComponent } from '../../report/report/report.component';
-import { ReportDownloadComponent } from '../../report/report-download/report-download.component';
 
 import { OrgUnitResolver } from '../party/party/org-unit-resolver.service';
 import { UomResolver } from '../uom/uom/uom-resolver.service';
@@ -15,7 +14,6 @@ import { RoleTypeResolverService } from '../role-type/role-type/role-type-resolv
 import { WorkEffortResolverService } from '../work-effort/work-effort/work-effort-resolver.service';
 
 const routes: Routes = [
-  { path: 'report-download/:activityId', component: ReportDownloadComponent},
   { path: ':parentTypeId', component: ReportExampleComponent, resolve: { reports: ReportExampleResolver},
     children: [
       { path: ':reportContentId/:reportName/:analysis', component: ReportComponent, resolve: { report: ReportResolver,  

@@ -141,8 +141,9 @@ export class ReportComponent implements OnInit {
   paramsValue: any = {};
   paramsSelectItem: any = {};
 
-
   hiddenMail: boolean;
+
+  msgs: Message[] = [];
 
   constructor(private readonly route: ActivatedRoute,
   private readonly router: Router,
@@ -347,10 +348,9 @@ export class ReportComponent implements OnInit {
     this.setDataReport();
     this.reportService
       .add(this.selectedReport)
-      .then(contentId => {        
-        console.log(" contentId " + contentId);
-        var newWindow = window.open('/c/report-example-1/report-download/' + contentId);
-      })
+      .then((activityId) => {
+        this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Print'), detail:this.i18nService.translate('Esecuzione stampa '+ this.selectedReport.reportName)}];
+      })           
       .catch((error) => {
         console.log('error' , error.message);
         this.error = this.i18nService.translate(error.message) || error;
@@ -361,11 +361,14 @@ export class ReportComponent implements OnInit {
     console.log('send mail ');
     this.setDataReport();
     this.reportService
-      .mail(this.selectedReport)     
+      .mail(this.selectedReport)
+      .then(() => {
+        this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Send Email'), detail:this.i18nService.translate('Invio mail in esequzione ')}];
+      })     
       .catch((error) => {
         console.log('error' , error.message);
         this.error = this.i18nService.translate(error.message) || error;
-      });
+       });
     
   }
 

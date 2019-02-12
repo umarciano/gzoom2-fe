@@ -7,8 +7,6 @@ import { map } from 'rxjs/operators';
 import { ApiClientService } from './client.service';
 
 import { Report } from '../report/report';
-import { ReportStatus } from '../report/report-status';
-
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -45,22 +43,6 @@ export class ReportService {
       console.error(`Error while creating in: ${response}`);
       return Promise.reject(response.json() || response);
     });
-  }
-
-  status(activityId) {
-    console.log('status ');
-    return this.client
-      .get(`report/${activityId}/status`).pipe(
-        map(json => json as ReportStatus)
-      );
-  }
-  
-  delete(contentId) {
-    console.log('delete ');
-    return this.client
-      .delete(`report/${contentId}`).pipe(
-        map(json => json as Report)
-      );
   }
 
   mail(report) {

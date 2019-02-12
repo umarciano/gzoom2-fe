@@ -26,7 +26,6 @@ import { ReportExampleResolver } from './report-example/report-example-resolver.
 import { ReportExampleRoutingModule } from './report-example-routing.module';
 import { ReportExampleComponent } from './report-example/report-example.component';
 import { ReportResolver } from '../../report/report/report-resolver.service';
-import { ReportDownloadComponent } from '../../report/report-download/report-download.component';
 import { ReportComponent } from '../../report/report/report.component';
 import { PartyService } from 'app/api/party.service';
 import { PartyResolver } from 'app/view/party/party/party-resolver.service';
@@ -65,7 +64,6 @@ import { WorkEffortResolverService } from 'app/view/work-effort/work-effort/work
   ],
   declarations: [
     ReportExampleComponent,
-    ReportDownloadComponent,
     ReportComponent
   ],
   providers: [

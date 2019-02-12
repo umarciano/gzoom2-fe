@@ -14,9 +14,13 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { FolderMenuComponent } from './sidebar/folder-menu/folder-menu.component';
 import { LeafMenuComponent } from './sidebar/leaf-menu/leaf-menu.component';
+import { ReportDownloadComponent } from './report-download/report-download.component';
 
-import { ButtonModule } from 'primeng/primeng';
-import { DialogModule } from 'primeng/primeng';
+import { ReportDownloadService } from '../api/report-download.service';
+
+import { DataTableModule, ButtonModule, DialogModule } from 'primeng/primeng';
+import { TableModule} from 'primeng/table';
+import { ProgressSpinnerModule} from 'primeng/progressspinner';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -31,6 +35,9 @@ import { EqualValidator } from '../commons/equal-validator.directive';
     SharedModule,
     NgbModule,
     DialogModule,
+    DataTableModule,
+    TableModule,
+    ProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
     ButtonModule,
@@ -43,7 +50,11 @@ import { EqualValidator } from '../commons/equal-validator.directive';
     HeaderComponent,
     FolderMenuComponent,
     LeafMenuComponent,
+    ReportDownloadComponent,
     EqualValidator
+  ],
+  providers: [
+    ReportDownloadService
   ]
 })
 export class LayoutModule { }

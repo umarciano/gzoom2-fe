@@ -1,0 +1,40 @@
+<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    <ul class="navbar-nav ml-auto mt-2 mt-md-0">  
+        <div class="nav-item dropdown" ngbDropdown placement="bottom-right">
+            <a href="javascript:void(0)" class="nav-link dropdown-toggle" ngbDropdownToggle>
+                <i class="fa fa-download"></i> &nbsp; {{'Download'|i18n}} <b class="caret"></b>
+            </a>
+            <div ngbDropdownMenu style="min-width: 20rem;">                    
+                <p-dataTable [value]="reports" [scrollable]="true" scrollHeight="200px">                
+                    <p-column field="contentName">
+                        <ng-template let-report="rowData" pTemplate="body">
+                            <div *ngIf="report.status =='DONE'">
+                                <a target="_blank" href="rest/report-download/{{report.activityId}}/stream?token={{token}}">{{report.contentName}}</a>
+                            </div>
+                            <div *ngIf="report.status !='DONE'">
+                                <span>{{report.contentName}}</span>
+                            </div>
+                        </ng-template>
+                    </p-column>
+                    <p-column [style]="{'width':'25%'}" field="status">
+                        <ng-template let-report="rowData" pTemplate="body">
+                            <div *ngIf="report.status =='RUNNING'">
+                                <p-progressSpinner [style]="{width: '20px', height: '20px'}" ></p-progressSpinner>
+                            </div>
+                            <div *ngIf="report.status !='RUNNING'">
+                                <span>{{report.status|i18n}}</span>
+                            </div>
+                        </ng-template>
+                    </p-column>
+                    <p-column [style]="{'width':'10%'}" styleClass="col-button">                        
+                        <ng-template let-report="rowData" pTemplate="body">
+                            <button placement="top" ngbTooltip="{{'Remove'|i18n}}" container="body" type="button" pButton icon="fa-times" (click)="onDeleteSelect(report)"></button>
+                         </ng-template>
+                    </p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </ul>
+</div>
+
+

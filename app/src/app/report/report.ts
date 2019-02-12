@@ -26,3 +26,9 @@ export class Report {
     public analysis? : boolean,
     public useFilter? : boolean) {}
 }
+
+
+export class ReportActivity {
+  constructor(public activityId?: string, public status?: string, public contentName?:  string,) {};
+}
+
