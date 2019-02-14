@@ -107,7 +107,7 @@ export class ReportDownloadComponent implements OnInit {
   }
 
   onClick(reportDownload) {
-    if (reportDownload.isOpen()) 
-      this.polling();
+  //  if (reportDownload.isOpen()) 
+    //  this.polling();
   }
 }
