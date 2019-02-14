@@ -39,37 +39,11 @@ export class ReportDownloadComponent implements OnInit {
     private readonly i18nService: I18NService, http: HttpClient) {
       this._reload = new Subject<void>();
       this.token = authService.token();
-
-      this.pollingData = Observable.interval(9000)
-      .switchMap((params) => {
-        return this.reportDownloadService.reportDownloads();
-      })
-      .subscribe((data) => { 
-        this.reports = data;
-       /* if(this.reportStatus.activityStatus == 'DONE') {
-          //dovrei fare il downloadd 
-          console.log('selectedActivityId=', this.selectedActivityId);
-          window.open('rest/report/'+ this.selectedActivityId +'/stream?token=' + authService.token());
-          
-          this.ngOnDestroy();
-        }
-        if(this.reportStatus.activityStatus != 'RUNNING') { 
-          this.ngOnDestroy();
-        }
-        console.log('reportStatus', this.reportStatus);*/
-      });
-
-      this.route.paramMap
-      .switchMap((params) => {
-        return this.reportDownloadService.reportDownloads();
-      })
-      .subscribe((data) => { 
-        this.reports = data;
-      });
-      
     }
 
   ngOnInit() {
+    this.polling();
+
     /*console.log('reportDownloads ngOnInit');
     const reloaded = this._reload.switchMap(() => this.reportDownloadService.reportDownloads());
     const reportObs = this.route.data.pipe(
@@ -80,15 +54,60 @@ export class ReportDownloadComponent implements OnInit {
     });
 
     this._reload.next();*/
+/*
+    this.route.paramMap
+      .switchMap((params) => {
+        return this.reportDownloadService.reportDownloads();
+      })
+      .subscribe((data) => { 
+        this.reports = data;
+      });*/
+  }
+
+  polling() {
+    this.pollingData = Observable.interval(9000)
+      .switchMap((params) => {
+        return this.reportDownloadService.reportDownloads();
+      })
+      .subscribe((data) => { 
+        this.reports = data;
+        var running = false;
+        this.reports.forEach((element) => {
+          if (element.status == 'RUNNING') {
+            running = true;
+          }
+        });
+        if (!running) {
+          //this.ngOnDestroy();
+        }
+       /* if(this.reportStatus.activityStatus == 'DONE') {
+          //dovrei fare il downloadd 
+          console.log('selectedActivityId=', this.selectedActivityId);
+          window.open('rest/report/'+ this.selectedActivityId +'/stream?token=' + authService.token());
+          
+          this.ngOnDestroy();
+        }
+        if(this.reportStatus.activityStatus != 'RUNNING') { 
+          this.ngOnDestroy();
+        }
+        console.log('reportStatus', this.reportStatus);*/       
+
+      });
   }
 
   onDeleteSelect(data: ReportActivity) {    
     console.log('onDeleteSelect');
     this.reportDownloadService
-      .delete(data.activityId);    
+      .delete(data.activityId);   
+       
   }
 
   ngOnDestroy() {
     this.pollingData.unsubscribe();
+  }
+
+  onClick(reportDownload) {
+    if (reportDownload.isOpen()) 
+      this.polling();
   }
 }

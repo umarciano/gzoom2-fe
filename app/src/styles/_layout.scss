@@ -281,6 +281,11 @@ body {
     color:map-get($app-colors, active-cl);
   }
 
+  p-footer .ui-button-text {
+    border: 1px solid map-get($app-colors, grey);
+    border-radius: 5px;
+  }
+  
   /*----------------------------------------------------------------------------*/
   /* Filtro Generale su DataTable                                                            */
   /*----------------------------------------------------------------------------*/

@@ -35,10 +35,14 @@ export class ReportDownloadService {
   
   delete(activityId) {
     console.log('delete activityId='+activityId);
-    return this.client
-      .delete(`report-download/${activityId}`).pipe(
-        map(json => json as boolean)
-      );
+    return this.client      
+      .delete(`report-download/${activityId}`)
+      .toPromise()
+      .then(response => response)
+      .catch((response: any) => {
+        console.error(`Error while deleting in: ${response}`);
+        return Promise.reject(response.json() || response);
+      });
   }
 
 }

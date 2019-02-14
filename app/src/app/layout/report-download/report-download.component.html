@@ -1,7 +1,7 @@
 <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
     <ul class="navbar-nav ml-auto mt-2 mt-md-0">  
-        <div class="nav-item dropdown" ngbDropdown placement="bottom-right">
-            <a href="javascript:void(0)" class="nav-link dropdown-toggle" ngbDropdownToggle>
+        <div class="nav-item dropdown" #reportDownload="ngbDropdown" autoClose="false" ngbDropdown placement="bottom-right" >
+            <a (click)="onClick(reportDownload)" class="nav-link dropdown-toggle" ngbDropdownToggle>
                 <i class="fa fa-download"></i> &nbsp; {{'Download'|i18n}} <b class="caret"></b>
             </a>
             <div ngbDropdownMenu style="min-width: 20rem;">                    
@@ -28,7 +28,8 @@
                     </p-column>
                     <p-column [style]="{'width':'10%'}" styleClass="col-button">                        
                         <ng-template let-report="rowData" pTemplate="body">
-                            <button placement="top" ngbTooltip="{{'Remove'|i18n}}" container="body" type="button" pButton icon="fa-times" (click)="onDeleteSelect(report)"></button>
+                            <!-- hidden="report.status =='RUNNING'" !-->
+                            <button hidden="report.status =='RUNNING'" placement="top" ngbTooltip="{{'Remove'|i18n}}" container="body" type="button" pButton icon="fa-times" (click)="onDeleteSelect(report)"></button>
                          </ng-template>
                     </p-column>
                 </p-dataTable>
