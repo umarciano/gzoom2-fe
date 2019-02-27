@@ -363,6 +363,24 @@ body {
   }
 
   /*----------------------------------------------------------------------------*/
+  /* Datatable   class - datatable-list                                        */
+  /*----------------------------------------------------------------------------*/
+  .datatable-list {
+
+    .ui-datatable .ui-datatable-thead>tr>th,
+    .ui-datatable .ui-datatable-tfoot>tr>td,
+    .ui-datatable .ui-datatable-data>tr>td {
+      padding: 0em 0em;
+    }
+    .ui-button.ui-state-default {
+      font-size: 1em;
+    }
+    .ui-widget-header {
+      visibility: collapse;
+    }
+  }
+
+  /*----------------------------------------------------------------------------*/
   /* Sidebar                                                                    */
   /*----------------------------------------------------------------------------*/
 

@@ -1,11 +1,11 @@
 <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
     <ul class="navbar-nav ml-auto mt-2 mt-md-0">  
-        <div class="nav-item dropdown" #reportDownload="ngbDropdown" autoClose="false" ngbDropdown placement="bottom-right" >
+        <div class="nav-item dropdown"  #reportDownload="ngbDropdown" autoClose="false" ngbDropdown placement="bottom-right" >
             <a (click)="onClick(reportDownload)" class="nav-link dropdown-toggle" ngbDropdownToggle>
                 <i class="fa fa-download"></i> &nbsp; {{'Download'|i18n}} <b class="caret"></b>
             </a>
             <div ngbDropdownMenu style="min-width: 20rem;">                    
-                <p-dataTable [value]="reports" [scrollable]="true" scrollHeight="200px">                
+                <p-dataTable class="datatable-list" [value]="reports" [scrollable]="true" scrollHeight="200px">                
                     <p-column field="contentName">
                         <ng-template let-report="rowData" pTemplate="body">
                             <div *ngIf="report.status =='DONE'">
@@ -25,11 +25,11 @@
                                 <span>{{report.status|i18n}}</span>
                             </div>
                         </ng-template>
-                    </p-column>
+                    </p-column>                    
                     <p-column [style]="{'width':'10%'}" styleClass="col-button">                        
                         <ng-template let-report="rowData" pTemplate="body">
                             <!-- hidden="report.status =='RUNNING'" !-->
-                            <button hidden="report.status =='RUNNING'" placement="top" ngbTooltip="{{'Remove'|i18n}}" container="body" type="button" pButton icon="fa-times" (click)="onDeleteSelect(report)"></button>
+                            <button placement="top" ngbTooltip="{{'Remove'|i18n}}" container="body" type="button" pButton icon="fa-times" (click)="onDeleteSelect(report)"></button>
                          </ng-template>
                     </p-column>
                 </p-dataTable>

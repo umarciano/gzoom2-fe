@@ -29,6 +29,6 @@ export class Report {
 
 
 export class ReportActivity {
-  constructor(public activityId?: string, public status?: string, public contentName?:  string,) {};
+  constructor(public activityId?: string, public status?: string, public contentName?:  string, public completedStamp?: Date,) {};
 }
 

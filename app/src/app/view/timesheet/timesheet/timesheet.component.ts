@@ -103,8 +103,7 @@ export class TimesheetComponent implements OnInit {
     ).subscribe(data => this.timesheets = data);
 
    
-
-    const reloadedParty = this._reload.switchMap(() => this.partyService.partys());
+    const reloadedParty = this._reload.switchMap(() => this.partyService.partys('CTX_PR'));
     const reloadedTimesheets = this._reload.switchMap(() => this.timesheetService.timesheets());
 
     const partyObs = this.route.data.pipe(
@@ -194,7 +193,7 @@ export class TimesheetComponent implements OnInit {
     this.selectedPartyId = data.partyId;    
     this.displayDialog = true;
   }
-
+/*
   filterActivitiesParty(event) {
     this.filteredActivitiesParty = [];
     for(let i = 0; i < this.partySelectItem.length; i++) {      
@@ -214,7 +213,7 @@ export class TimesheetComponent implements OnInit {
             this.selectedPartyId = record.value;
           }
      }
-  }
+  }*/
 
   _cloneTimesheet(t: Timesheet): Timesheet {
     let timesheet = new PrimeTimesheet();

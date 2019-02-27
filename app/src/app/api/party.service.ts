@@ -14,10 +14,10 @@ export class PartyService {
 
   constructor(private client: ApiClientService) { }
 
-  partys(): Observable<Party[]> {
+  partys(parentTypeId: string): Observable<Party[]> {
     console.log('search party');
     return this.client
-      .get('party').pipe(
+      .get(`party/${parentTypeId}`).pipe(
         map(json => json.results as Party[])
       );
   }

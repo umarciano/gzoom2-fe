@@ -6,7 +6,7 @@ import 'rxjs/add/operator/toPromise';
 
 import { LockoutService } from '../../../commons/lockout.service';
 import { ReportService } from '../../../api/report.service';
-import { Report } from '../../../report/report';
+import { Report } from '../report';
 
 import { DatePipe } from '@angular/common';
 /**

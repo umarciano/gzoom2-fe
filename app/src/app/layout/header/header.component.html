@@ -1,3 +1,6 @@
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+
 <div class="pos-f-t fixed-top header">
     <nav class="navbar navbar-expand-sm navbar-toggleable-md fixed-top">
         <button class="navbar-toggler navbar-toggler-right" (click)="toggleSidebar()">
@@ -15,6 +18,7 @@
                     </a>
                     <div ngbDropdownMenu>
                         <a class="dropdown-item" href="jvascript:void(0)"><i class="fa fa-fw fa-user"></i> {{'Profile'|i18n}}</a>
+                        <a class="dropdown-item" (click)="changeTheme()"><i class="fa fa-fw fa-power-user"></i> {{'Tema'|i18n}}</a>
                         <a class="dropdown-item" (click)="changePasswordDialog()"><i class="fa fa-fw fa-key"></i> {{'Change password'|i18n}}</a>
                         <a class="dropdown-item" (click)="logout()"><i class="fa fa-fw fa-power-off"></i> {{'Logout'|i18n}}</a>
                     </div>
@@ -29,17 +33,17 @@
 
 
 <p-dialog header="{{'Change password'|i18n}}" width="900" [(visible)]="displayChangePassword" [responsive]="true" showEffect="fade" [modal]="true">
-    <form [formGroup]="form" novalidate (ngSubmit)="save()">
+    <form [formGroup]="form" novalidate (ngSubmit)="changePassword()">
       <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px" *ngIf="user">        
         <div class="ui-grid-row">
           <div class="ui-grid-col-3">
-            <label for="currentPasswordVerify">{{'Current Password'|i18n}}*:</label>
+            <label for="currentPassword">{{'Current Password'|i18n}}*:</label>
           </div>
           <div class="ui-grid-col-4">
-            <input pPassword type="password" [(ngModel)]="currentPasswordVerify" formControlName="currentPasswordVerify"/>       
+            <input pPassword type="password" [(ngModel)]="currentPassword" formControlName="currentPassword"/>       
           </div>
           <div class="ui-grid-col-5">
-            <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['currentPasswordVerify'].valid&amp;&amp;form.controls['currentPasswordVerify'].dirty">
+            <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['currentPassword'].valid&amp;&amp;form.controls['currentPassword'].dirty">
               <i class="fa fa-times"></i>
               {{'Current Password is required'|i18n}}
             </div>

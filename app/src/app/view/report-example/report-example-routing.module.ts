@@ -3,9 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 
 import { ReportExampleResolver } from './report-example/report-example-resolver.service';
-import { ReportResolver } from '../../report/report/report-resolver.service';
+import { ReportResolver } from './report/report-resolver.service';
 import { ReportExampleComponent } from './report-example/report-example.component';
-import { ReportComponent } from '../../report/report/report.component';
+import { ReportComponent } from './report/report.component';
 
 import { OrgUnitResolver } from '../party/party/org-unit-resolver.service';
 import { UomResolver } from '../uom/uom/uom-resolver.service';

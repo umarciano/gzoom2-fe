@@ -4,9 +4,9 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 
-import { LockoutService } from '../../commons/lockout.service';
-import { ReportService } from '../../api/report.service';
-import { Report } from '../../report/report';
+import { LockoutService } from '../../../commons/lockout.service';
+import { ReportService } from '../../../api/report.service';
+import { Report } from '../report';
 
 import { DatePipe } from '@angular/common';
 /**

@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 
 import { ApiClientService } from './client.service';
 
-import { Report } from '../report/report';
+import { Report } from '../view/report-example/report';
 
 import * as moment from 'moment';
 import * as _ from 'lodash';

@@ -20,8 +20,10 @@ export class PartyResolver implements Resolve<void | Party[]> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | Party[]> {
     console.log('resolve partys');
+    var parentTypeId = 'CTX_PR'; //TODO
+    console.log('resolve orgUnits parentTypeId='+parentTypeId);
     return this.partyService
-      .partys()
+      .partys(parentTypeId)
       .toPromise()
       .then(partys => { return partys; })
       .catch(err => { // TODO devo fare il lockout?

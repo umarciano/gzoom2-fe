@@ -12,7 +12,7 @@ import { SelectItem } from '../../../commons/selectitem';
 import { I18NService } from '../../../commons/i18n.service';
 import { Message } from '../../../commons/message';
 
-import { Report } from '../../../report/report';
+import { Report } from '../report';
 import { ReportService } from '../../../api/report.service';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';

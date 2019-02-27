@@ -4,18 +4,22 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { ApiConfig } from './api-config';
+import { ApiClientService } from './client.service';
 
 import 'rxjs/add/operator/toPromise';
 
 const LOGIN_ENDPOINT = 'login';
+const CHANGE_PASS_ENDPOINT = 'change-password';
 const HTTP_HEADERS = new HttpHeaders();
 
 @Injectable()
 export class LoginService {
   private readonly loginUrl: string;
+  private readonly changePassUrl: string;
 
-  constructor(private http: HttpClient, private apiConfig: ApiConfig) {
+  constructor(private http: HttpClient, private apiConfig: ApiConfig, private client: ApiClientService) {
     this.loginUrl = `${apiConfig.rootPath}/${LOGIN_ENDPOINT}`;
+    this.changePassUrl = `${apiConfig.rootPath}/${CHANGE_PASS_ENDPOINT}`;
   }
 
   /**
@@ -53,4 +57,35 @@ export class LoginService {
       });*/
   }
 
+
+  changePassword(username: string, password: String, newPassword: String): void {
+    const body = JSON.stringify({ username: username, password: password, newPassword: newPassword });
+    this.http
+      .post(this.changePassUrl, body, {
+        headers: HTTP_HEADERS.set('Content-Type', 'application/json'),
+      }).subscribe(
+        (data: any) => {
+            //this.userStatus = data;
+        },
+        err => console.log(err), // error
+        () => console.log('change password Complete') // complete
+    );
+  }
+
+ /*
+  changePassword(username: string, password: String, newPassword: String) {
+    console.log('changePassword2 ');    
+    const body = JSON.stringify({ username: username, password: password, newPassord: newPassword });
+    return this.client
+    .post(this.changePassUrl, body)
+    .toPromise()
+    .then(response => response)
+    .catch(response => {
+      console.error(`Error while creating in: ${response}`);
+      return Promise.reject(response.json() || response);
+    });*/
+  }
+
+
+  
 }

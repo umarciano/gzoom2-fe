@@ -17,7 +17,7 @@ import 'rxjs/Rx';
 import { Output } from '@angular/compiler/src/core';
 
 import { ReportDownloadService } from '../../api/report-download.service';
-import { ReportActivity } from 'app/report/report';
+import { ReportActivity } from '../../view/report-example/report';
 
 @Component({
   selector: 'app-report-download',
@@ -29,6 +29,7 @@ export class ReportDownloadComponent implements OnInit {
 
   doctors = [];
   pollingData: any;
+  isPolling : boolean;
   token: string;
 
   reports: ReportActivity[];
@@ -65,20 +66,40 @@ export class ReportDownloadComponent implements OnInit {
   }
 
   polling() {
-    this.pollingData = Observable.interval(9000)
-      .switchMap((params) => {
-        return this.reportDownloadService.reportDownloads();
-      })
+    console.log('reportDownloads polling');
+
+    this.isPolling = true;
+    var runElement = [];
+/*
+    this.route.paramMap
+      .switchMap(() => this.reportDownloadService.reportDownloads())      
       .subscribe((data) => { 
         this.reports = data;
-        var running = false;
+        this.reports.forEach((element) => {
+          if (element.status == 'RUNNING') {
+            runElement.push(element.activityId);        
+          }
+        });
+      });*/
+    
+
+    this.pollingData = Observable.interval(1000)
+      .switchMap(() => this.reportDownloadService.reportDownloads())      
+      .subscribe((data) => { 
+        this.reports = data;
+        var running = false;       
         this.reports.forEach((element) => {
           if (element.status == 'RUNNING') {
             running = true;
+            runElement.push(element.activityId);  
+            console.log('............ runElement'+ element.activityId);       
+          } else if (element.status == 'DONE' && runElement.indexOf(element.activityId) >= 0 ) {
+            //  window.open('rest/report/'+ element.activityId +'/stream?token=' + this.token); 
+              //runElement.
           }
         });
         if (!running) {
-          //this.ngOnDestroy();
+          this.ngOnDestroy();
         }
        /* if(this.reportStatus.activityStatus == 'DONE') {
           //dovrei fare il downloadd 
@@ -104,10 +125,11 @@ export class ReportDownloadComponent implements OnInit {
 
   ngOnDestroy() {
     this.pollingData.unsubscribe();
+    this.isPolling = false;
   }
 
   onClick(reportDownload) {
-  //  if (reportDownload.isOpen()) 
-    //  this.polling();
+    if (reportDownload.isOpen() && !this.isPolling) 
+      this.polling();    
   }
 }

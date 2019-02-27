@@ -9,23 +9,23 @@ import { Subject } from 'rxjs/Subject';
 import { first, map, merge, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { SelectItem } from '../../commons/selectitem';
-import { I18NService } from '../../commons/i18n.service';
-import { Message } from '../../commons/message';
+import { SelectItem } from '../../../commons/selectitem';
+import { I18NService } from '../../../commons/i18n.service';
+import { Message } from '../../../commons/message';
 
-import { Report } from '../../report/report';
-import { ReportParam } from '../../report/report';
-import { ReportType } from '../../report/report';
-import { WorkEffortType } from '../../report/report';
-import { ReportService } from '../../api/report.service';
-import { Party } from '../../view/party/party/party';
-import { PartyService } from '../../api/party.service';
-import { StatusItem } from '../../view/status-item/status-item/status-item';
-import { StatusItemService } from '../../api/status-item.service';
-import { RoleType } from '../../view/role-type/role-type/role-type';
-import { RoleTypeService } from '../../api/role-type.service';
-import { WorkEffort } from '../../view/work-effort/work-effort/work-effort';
-import { WorkEffortService } from '../../api/work-effort.service';
+import { Report } from '../report';
+import { ReportParam } from '../report';
+import { ReportType } from '../report';
+import { WorkEffortType } from '../report';
+import { ReportService } from '../../../api/report.service';
+import { Party } from '../../../view/party/party/party';
+import { PartyService } from '../../../api/party.service';
+import { StatusItem } from '../../../view/status-item/status-item/status-item';
+import { StatusItemService } from '../../../api/status-item.service';
+import { RoleType } from '../../../view/role-type/role-type/role-type';
+import { RoleTypeService } from '../../../api/role-type.service';
+import { WorkEffort } from '../../../view/work-effort/work-effort/work-effort';
+import { WorkEffortService } from '../../../api/work-effort.service';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/Rx';
@@ -334,12 +334,14 @@ export class ReportComponent implements OnInit {
     this.selectedReport.workEffortTypeId = this.workEffortType.workEffortTypeId;
 
     //CONVERTO I DATI
+    this.selectedReport.paramsValue = this.paramsValue;
+    
     this.params.forEach((element) => {      
       if (element.paramType == 'DATE') {       
-        this.paramsValue[element.paramName] = this.reportService.getDate(this.paramsValue[element.paramName]); 
+        this.selectedReport.paramsValue[element.paramName] = this.reportService.getDate(this.paramsValue[element.paramName]); 
       } 
     });
-    this.selectedReport.paramsValue = this.paramsValue;
+    
 
   } 
 
