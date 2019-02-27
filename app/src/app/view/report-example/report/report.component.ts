@@ -27,6 +27,9 @@ import { RoleTypeService } from '../../../api/role-type.service';
 import { WorkEffort } from '../../../view/work-effort/work-effort/work-effort';
 import { WorkEffortService } from '../../../api/work-effort.service';
 
+
+import { ReportDownloadComponent } from '../../../layout/report-download/report-download.component';
+
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/Rx';
 
@@ -153,6 +156,7 @@ export class ReportComponent implements OnInit {
   private readonly statusItemService: StatusItemService,
   private readonly roleTypeService: RoleTypeService,
   private readonly workEffortService: WorkEffortService,
+  private readonly reportDownloadComponent: ReportDownloadComponent,
   private fb: FormBuilder, 
   http: HttpClient,) {
     this._reload = new Subject<ReloadParams>(); 
@@ -351,6 +355,7 @@ export class ReportComponent implements OnInit {
     this.reportService
       .add(this.selectedReport)
       .then((activityId) => {
+        this.reportDownloadComponent.openDownload(activityId);
         this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Print'), detail:this.i18nService.translate('Esecuzione stampa '+ this.selectedReport.reportName)}];
       })           
       .catch((error) => {

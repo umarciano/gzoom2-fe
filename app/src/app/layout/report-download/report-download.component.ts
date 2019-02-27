@@ -19,6 +19,7 @@ import { Output } from '@angular/compiler/src/core';
 import { ReportDownloadService } from '../../api/report-download.service';
 import { ReportActivity } from '../../view/report-example/report';
 
+
 @Component({
   selector: 'app-report-download',
   templateUrl: './report-download.component.html',
@@ -33,6 +34,7 @@ export class ReportDownloadComponent implements OnInit {
   token: string;
 
   reports: ReportActivity[];
+  runElement = [];
 
   constructor(private readonly route: ActivatedRoute,
     private readonly reportDownloadService: ReportDownloadService,
@@ -67,21 +69,7 @@ export class ReportDownloadComponent implements OnInit {
 
   polling() {
     console.log('reportDownloads polling');
-
-    this.isPolling = true;
-    var runElement = [];
-/*
-    this.route.paramMap
-      .switchMap(() => this.reportDownloadService.reportDownloads())      
-      .subscribe((data) => { 
-        this.reports = data;
-        this.reports.forEach((element) => {
-          if (element.status == 'RUNNING') {
-            runElement.push(element.activityId);        
-          }
-        });
-      });*/
-    
+    this.isPolling = true;       
 
     this.pollingData = Observable.interval(1000)
       .switchMap(() => this.reportDownloadService.reportDownloads())      
@@ -90,28 +78,15 @@ export class ReportDownloadComponent implements OnInit {
         var running = false;       
         this.reports.forEach((element) => {
           if (element.status == 'RUNNING') {
-            running = true;
-            runElement.push(element.activityId);  
-            console.log('............ runElement'+ element.activityId);       
-          } else if (element.status == 'DONE' && runElement.indexOf(element.activityId) >= 0 ) {
-            //  window.open('rest/report/'+ element.activityId +'/stream?token=' + this.token); 
-              //runElement.
+            running = true;                 
+          } else if (element.status == 'DONE' && this.runElement.indexOf(element.activityId) >= 0 ) {
+              window.open('rest/report-download/'+ element.activityId +'/stream?token=' + this.token);               
+              this.runElement.splice(this.runElement.indexOf(element.activityId), 1);
           }
         });
         if (!running) {
           this.ngOnDestroy();
         }
-       /* if(this.reportStatus.activityStatus == 'DONE') {
-          //dovrei fare il downloadd 
-          console.log('selectedActivityId=', this.selectedActivityId);
-          window.open('rest/report/'+ this.selectedActivityId +'/stream?token=' + authService.token());
-          
-          this.ngOnDestroy();
-        }
-        if(this.reportStatus.activityStatus != 'RUNNING') { 
-          this.ngOnDestroy();
-        }
-        console.log('reportStatus', this.reportStatus);*/       
 
       });
   }
@@ -119,8 +94,7 @@ export class ReportDownloadComponent implements OnInit {
   onDeleteSelect(data: ReportActivity) {    
     console.log('onDeleteSelect');
     this.reportDownloadService
-      .delete(data.activityId);   
-       
+      .delete(data.activityId);  
   }
 
   ngOnDestroy() {
@@ -128,8 +102,15 @@ export class ReportDownloadComponent implements OnInit {
     this.isPolling = false;
   }
 
-  onClick(reportDownload) {
+  onClick(reportDownload) {    
     if (reportDownload.isOpen() && !this.isPolling) 
+      this.polling();    
+  }
+
+  openDownload(activityId) {
+    console.log("openDownload");
+    this.runElement.push(activityId);
+    if(!this.isPolling)
       this.polling();    
   }
 }

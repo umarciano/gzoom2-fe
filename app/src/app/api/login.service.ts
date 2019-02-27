@@ -72,7 +72,8 @@ export class LoginService {
     );
   }
 
- /*
+ 
+  /*
   changePassword(username: string, password: String, newPassword: String) {
     console.log('changePassword2 ');    
     const body = JSON.stringify({ username: username, password: password, newPassord: newPassword });
@@ -83,8 +84,8 @@ export class LoginService {
     .catch(response => {
       console.error(`Error while creating in: ${response}`);
       return Promise.reject(response.json() || response);
-    });*/
-  }
+    });
+  }*/
 
 
   
