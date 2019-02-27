@@ -338,10 +338,11 @@ export class ReportComponent implements OnInit {
     this.selectedReport.workEffortTypeId = this.workEffortType.workEffortTypeId;
 
     //CONVERTO I DATI
-    this.selectedReport.paramsValue = this.paramsValue;
-    
+    //this.selectedReport.paramsValue = this.paramsValue;
+    this.selectedReport.paramsValue  = Object.assign({}, this.paramsValue);
+
     this.params.forEach((element) => {      
-      if (element.paramType == 'DATE') {       
+      if (element.paramType == 'DATE') { 
         this.selectedReport.paramsValue[element.paramName] = this.reportService.getDate(this.paramsValue[element.paramName]); 
       } 
     });
