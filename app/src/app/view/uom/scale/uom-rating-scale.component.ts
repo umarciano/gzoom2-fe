@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable ,  Subject } from 'rxjs';
 import { map, merge, switchMap } from 'rxjs/operators';
 
 import { ConfirmDialogModule, ConfirmationService, TooltipModule } from 'primeng/primeng';
@@ -67,13 +66,13 @@ export class UomRatingScaleComponent implements OnInit {
 
     console.log('ngOnInit UomRatingScale ' + this.selectedUomId);
     let reloadedUomRatingScales = this._reload
-      .switchMap(() => this.uomService.uomRatingScales(this.selectedUomId));;
+      .pipe(switchMap(() => this.uomService.uomRatingScales(this.selectedUomId)));
 
     this.route.paramMap
-      .switchMap((params) => {
+      .pipe(switchMap((params) => {
         this.selectedUomId = params.get('id');
         return this.uomService.uom(this.selectedUomId);
-      })
+      }))
       .subscribe((data) => {
         this.uom = data;
         this.isRatingScale = (RATING_SCALE == data.uomType.uomTypeId);

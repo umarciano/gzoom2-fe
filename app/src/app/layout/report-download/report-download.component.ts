@@ -1,20 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
-import { SelectItem } from '../../commons/selectitem';
 import { I18NService } from '../../commons/i18n.service';
-import { Message } from '../../commons/message';
 import { AuthService } from '../../commons/auth.service';
 
+import { Observable ,  Subject, interval } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { first, map, merge, switchMap } from 'rxjs/operators';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/Rx';
-import { Output } from '@angular/compiler/src/core';
 
 import { ReportDownloadService } from '../../api/report-download.service';
 import { ReportActivity } from '../../view/report-example/report';
@@ -71,8 +66,8 @@ export class ReportDownloadComponent implements OnInit {
     console.log('reportDownloads polling');
     this.isPolling = true;       
 
-    this.pollingData = Observable.interval(1000)
-      .switchMap(() => this.reportDownloadService.reportDownloads())      
+    this.pollingData = interval(1000)
+      .pipe(switchMap(() => this.reportDownloadService.reportDownloads()) )
       .subscribe((data) => { 
         this.reports = data;
         var running = false;       

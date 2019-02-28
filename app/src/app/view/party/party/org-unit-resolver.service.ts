@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs';
+
 
 import { LockoutService } from '../../../commons/lockout.service';
 import { PartyService } from '../../../api/party.service';
@@ -20,7 +20,7 @@ export class OrgUnitResolver implements Resolve<void | Party[]> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | Party[]> {
     var parentTypeId = route.parent.params.parentTypeId;
-    console.log('resolve orgUnits parentTypeId='+parentTypeId);
+    console.log('resolve orgUnits parentTypeId=' + parentTypeId);
     return this.partyService
       .orgUnits(parentTypeId)
       .toPromise()

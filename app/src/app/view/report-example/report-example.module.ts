@@ -6,11 +6,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AccordionModule } from 'primeng/primeng';     //accordion and accordion tab
 import { DropdownModule } from 'primeng/primeng';
-import { MenuItem } from 'primeng/primeng';
 import { DialogModule } from 'primeng/primeng';
 import { DataTableModule, SharedModule } from 'primeng/primeng';
 import { ButtonModule } from 'primeng/primeng';
-import { ConfirmDialogModule, ConfirmationService, SpinnerModule, CalendarModule, InputSwitchModule } from 'primeng/primeng';
+import { ConfirmDialogModule, ConfirmationService, SpinnerModule, CalendarModule, InputSwitchModule, ToggleButtonModule } from 'primeng/primeng';
 import { GrowlModule } from 'primeng/primeng';
 import { TooltipModule } from 'primeng/primeng';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -60,6 +59,7 @@ import { WorkEffortResolverService } from 'app/view/work-effort/work-effort/work
     RadioButtonModule,
     ListboxModule,
     InputSwitchModule,
+    ToggleButtonModule,
     TooltipModule
   ],
   declarations: [

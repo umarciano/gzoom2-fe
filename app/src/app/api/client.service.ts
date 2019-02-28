@@ -1,17 +1,20 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
 import { Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Response } from '@angular/http';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
 
 import { ApiConfig } from './api-config';
 import { behead, untail } from '../commons/commons';
 import { AuthService } from '../commons/auth.service';
 import { LockoutService } from '../commons/lockout.service';
+
+import 'rxjs/add/operator/catch';
 
 /**
  * A client that performs athenticated requests and exchanges JSON data.
@@ -39,7 +42,9 @@ export class ApiClientService {
 
     return this.http
       .get(url, opts)
-      .catch(this.onAuthError(this));
+      .pipe(
+        catchError(this.onAuthError(this)) // then handle the error
+      );
   }
 
   /**
@@ -60,7 +65,7 @@ export class ApiClientService {
       .post(url, msg, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
       })
-      .catch(this.onAuthError(this));
+      .pipe(catchError(this.onAuthError(this)));
   }
 
   put(path: string, body?: any): Observable<any> {
@@ -72,7 +77,7 @@ export class ApiClientService {
       .put(url, msg, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
       })
-      .catch(this.onAuthError(this));
+      .pipe(catchError(this.onAuthError(this)));
   }
 
   delete(path: string): Observable<any> {
@@ -83,7 +88,7 @@ export class ApiClientService {
       .delete(url, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
       })
-      .catch(this.onAuthError(this));
+      .pipe(catchError(this.onAuthError(this)));
   }
 
   private makeOptions(hasBody = false): any {
@@ -126,7 +131,7 @@ export class ApiClientService {
         console.error(`Unauthorized request to ${res.url}, locking user out!`);
         self.lockout.lockout();
       }
-      return Observable.throw(res);
+      return observableThrowError(res);
     };
   }
 }

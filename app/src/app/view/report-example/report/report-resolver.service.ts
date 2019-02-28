@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs';
+
 
 import { LockoutService } from '../../../commons/lockout.service';
 import { ReportService } from '../../../api/report.service';
@@ -20,10 +20,10 @@ export class ReportResolver implements Resolve<void | Report> {
     private readonly lockoutService: LockoutService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | Report> {
-    var parentTypeId = route.parent.params.parentTypeId;
-    var reportContentId = route.params.reportContentId;
-    var reportName = route.params.reportName;
-    var analysis = route.params.analysis;
+    let parentTypeId = route.parent.params.parentTypeId;
+    let reportContentId = route.params.reportContentId;
+    let reportName = route.params.reportName;
+    let analysis = route.params.analysis;
     console.log('resolve report for ' + parentTypeId + 'reportContentId=' + reportContentId + ' reportName='+reportName+ ' analysis='+analysis);
     //TODO come faccio?
     return this.reportService

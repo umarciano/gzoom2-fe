@@ -1,5 +1,5 @@
 /**
- * Model of a hero.
+ * Model of a TimeEntry.
  */
 export class TimeEntry {
   constructor(public timeEntryId?: string, public workEffortId?: string,

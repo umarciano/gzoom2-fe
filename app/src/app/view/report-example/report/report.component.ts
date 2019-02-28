@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ActivatedRoute, Router, Params } from '@angular/router';
-import { Validators, FormControl, FormArray, FormGroup, FormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { first, map, merge, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { map, merge, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { SelectItem } from '../../../commons/selectitem';
@@ -30,7 +29,7 @@ import { WorkEffortService } from '../../../api/work-effort.service';
 
 import { ReportDownloadComponent } from '../../../layout/report-download/report-download.component';
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/Rx';
 
 /** Convert from WorkEffort[] to SelectItem[] */
@@ -172,7 +171,7 @@ export class ReportComponent implements OnInit {
     var parentTypeId = this.route.snapshot.parent.params.parentTypeId;
     var reportContentId = this.route.snapshot.params.reportContentId;
    
-    const reloadedOrgUnit = this._reload.switchMap(() => this.partyService.orgUnits(parentTypeId));
+    const reloadedOrgUnit = this._reload.pipe(switchMap(() => this.partyService.orgUnits(parentTypeId)));
     const reloadedOrgUnitObs = this.route.data.pipe(
       map((data: { orgUnits: Party[] }) => data.orgUnits),
       merge(reloadedOrgUnit),
@@ -185,7 +184,7 @@ export class ReportComponent implements OnInit {
     });
 
     
-    const reloadedStatus = this._reload.switchMap(() => this.statusItemService.statusItems(parentTypeId));
+    const reloadedStatus = this._reload.pipe(switchMap(() => this.statusItemService.statusItems(parentTypeId)));
     const reloadedStatusObs = this.route.data.pipe(
       map((data: { statusItems: StatusItem[] }) => data.statusItems),
       merge(reloadedStatus),
@@ -198,7 +197,7 @@ export class ReportComponent implements OnInit {
     });
 
 
-    const reloadedRoleType = this._reload.switchMap(() => this.roleTypeService.roleTypes());
+    const reloadedRoleType = this._reload.pipe(switchMap(() => this.roleTypeService.roleTypes()));
     const reloadedRoleTypeObs = this.route.data.pipe(
       map((data: { roleTypes: RoleType[] }) => data.roleTypes),
       merge(reloadedRoleType),
@@ -210,7 +209,7 @@ export class ReportComponent implements OnInit {
 
     });
 
-    const reloadedParty = this._reload.switchMap(params => (params.roleTypeId ? this.partyService.roleTypePartys(params.roleTypeId) : reloadedParty));
+    const reloadedParty = this._reload.pipe(switchMap(params => (params.roleTypeId ? this.partyService.roleTypePartys(params.roleTypeId) : reloadedParty)));
     const reloadedPartyObs = this.route.data.pipe(
       map((data: { partys: Party[] }) => data.partys),
       merge(reloadedParty),
@@ -222,7 +221,7 @@ export class ReportComponent implements OnInit {
 
     });
    
-    const reloadedWorkEffort = this._reload.switchMap(params => (params.workEffortTypeId ? this.workEffortService.workEfforts(parentTypeId, params.workEffortTypeId, this.selectedReport.useFilter) : reloadedWorkEffort));
+    const reloadedWorkEffort = this._reload.pipe(switchMap(params => (params.workEffortTypeId ? this.workEffortService.workEfforts(parentTypeId, params.workEffortTypeId, this.selectedReport.useFilter) : reloadedWorkEffort)));
     const workEffortObs = this.route.data.pipe(
        map((data: { workEfforts: WorkEffort[] }) => data.workEfforts),   
        merge(reloadedWorkEffort),        
@@ -233,7 +232,7 @@ export class ReportComponent implements OnInit {
       this.paramsSelectItem['workEffortIdSelectItem'] = this.workEffortIdSelectItem;
     });
     
-    const reloadedWorkEffortChild = this._reload.switchMap(params => (params.workEffortId ? this.workEffortService.workEffortParents(params.workEffortId) : reloadedWorkEffortChild));
+    const reloadedWorkEffortChild = this._reload.pipe(switchMap(params => (params.workEffortId ? this.workEffortService.workEffortParents(params.workEffortId) : reloadedWorkEffortChild)));
     const workEffortChildObs = this.route.data.pipe(
        map((data: { workEfforts: WorkEffort[] }) => data.workEfforts),   
        merge(reloadedWorkEffortChild),        

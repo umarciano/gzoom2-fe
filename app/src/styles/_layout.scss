@@ -73,7 +73,7 @@ body {
   border: none;
 }
 
-.focuslayout-container input.form-control, {
+.focuslayout-container input.form-control {
   color: map-get($app-colors, grey);
   background-color: map-get($app-colors, background-cl);
 }
@@ -126,8 +126,8 @@ body {
     border-left: 5px solid #a94442; /* red */
   }
 
-  p-calendar.ng-invalid {
-    border-left: 5px solid #a94442; /* red */
+  p-dropdown .fa-caret-down::before {
+    content: "\f13a";
   }
 
   /*----------------------------------------------------------------------------*/
@@ -195,6 +195,16 @@ body {
   }
 
   /*----------------------------------------------------------------------------*/
+   /* toggleButton                                                               */
+   /*----------------------------------------------------------------------------*/
+  
+  .ui-togglebutton:not(.ui-state-disabled).ui-state-active,
+  .ui-togglebutton:not(.ui-state-disabled):not(.ui-state-active):hover {
+    color:  map-get($app-colors, default-cl); 
+    background-color:  map-get($app-colors, navbar-bg); 
+  }
+
+  /*----------------------------------------------------------------------------*/
   /* Autocomplete                                                               */
   /*----------------------------------------------------------------------------*/
 
@@ -248,7 +258,10 @@ body {
   p-calendar span {
     padding-right: 0.5em;
   }
-
+  p-calendar.ng-invalid {
+    border-left: 5px solid #a94442; /* red */
+  }
+ 
   p-autocomplete.form-control {
     padding: 0em;
   }

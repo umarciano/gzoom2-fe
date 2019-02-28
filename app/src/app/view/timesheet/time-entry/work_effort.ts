@@ -1,5 +1,5 @@
 /**
- * Model of a hero.
+ * Model of a WorkEffort.
  */
 export class WorkEffort {
   constructor(public attivitaLiv1 ?: string, public attivitaLiv2?: string,

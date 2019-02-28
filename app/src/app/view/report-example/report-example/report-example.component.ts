@@ -1,21 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ActivatedRoute, Router, Params } from '@angular/router';
-import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import {  FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { first, map, merge, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { SelectItem } from '../../../commons/selectitem';
 import { I18NService } from '../../../commons/i18n.service';
-import { Message } from '../../../commons/message';
+
 
 import { Report } from '../report';
 import { ReportService } from '../../../api/report.service';
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/Rx';
 
 /** Convert from WorkEffortType[] to SelectItem[] */

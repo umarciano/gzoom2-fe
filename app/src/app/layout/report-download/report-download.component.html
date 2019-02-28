@@ -29,7 +29,7 @@
                     <p-column [style]="{'width':'10%'}" styleClass="col-button">                        
                         <ng-template let-report="rowData" pTemplate="body">
                             <!-- hidden="report.status =='RUNNING'" !-->
-                            <button hidden="report.status =='RUNNING'" placement="top" ngbTooltip="{{'Remove'|i18n}}" container="body" type="button" pButton icon="fa-times" (click)="onDeleteSelect(report)"></button>
+                            <button hidden="report.status =='RUNNING'" placement="top" ngbTooltip="{{'Remove'|i18n}}" container="body" type="button" pButton icon="fa fa-times" (click)="onDeleteSelect(report)"></button>
                          </ng-template>
                     </p-column>
                 </p-dataTable>

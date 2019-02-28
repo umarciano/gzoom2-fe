@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { map, merge } from 'rxjs/operators';
+import { Observable ,  Subject } from 'rxjs';
+import { map, merge, switchMap } from 'rxjs/operators';
 
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 
@@ -52,7 +51,7 @@ export class UomTypeComponent implements OnInit {
             'description': new FormControl('', Validators.compose([Validators.required, Validators.maxLength(255)]))
         });
 
-    const reloadedUomTypes = this._reload.switchMap(() => this.uomService.uomTypes());
+    const reloadedUomTypes = this._reload.pipe(switchMap(() => this.uomService.uomTypes()));
 
     this.route.data.pipe(
       map((data: { uomTypes: UomType[] }) => data.uomTypes),

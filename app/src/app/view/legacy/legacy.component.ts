@@ -1,11 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/observable/of';
+import { Observable, fromEvent, of, merge } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import * as $ from 'jquery';
 
@@ -26,7 +23,7 @@ export class LegacyComponent implements OnInit {
 
   ngOnInit() {
     this.route.params
-      .switchMap((params: Params) => Observable.of(params['id']))
+      .pipe(switchMap((params: Params) => of(params['id'])))      
       .subscribe((id: string) => this.url = this.resService.iframeUrl(id));
 
     // Beware that component might be reused and iframe url is simply changed
@@ -42,10 +39,11 @@ export class LegacyComponent implements OnInit {
     };
 
     // whenever the iframe is loaded or the window is resized, update the iframe height
-    Observable.merge(
-      Observable.fromEvent(window, 'resize'),
-      Observable.fromEvent(iframe.contentWindow, 'resize'),
-      Observable.fromEvent(iframe, 'load')
+    //TODO
+    merge(
+      fromEvent(window, 'resize'),
+      fromEvent(iframe.contentWindow, 'resize'),
+      fromEvent(iframe, 'load')
     ).subscribe(() => this.resizeIframe(iframe));
   }
 

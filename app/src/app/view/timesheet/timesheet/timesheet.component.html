@@ -42,12 +42,12 @@
 
     <p-column [style]="{'width':'10%'}" styleClass="col-button">
         <ng-template pTemplate="header">
-            <button placement="top" ngbTooltip="{{'Add'|i18n}}" container="body"  type="button" pButton icon="fa-plus" (click)="showDialogToAdd()"></button>
-            <button placement="top" ngbTooltip="{{'Export'|i18n}}" container="body" type="button" pButton icon="far fa-file" (click)="dt.exportCSV()" ></button>
+            <button placement="top" ngbTooltip="{{'Add'|i18n}}" container="body"  type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()"></button>
+            <button placement="top" ngbTooltip="{{'Export'|i18n}}" container="body" type="button" pButton icon="fa far fa-file" (click)="dt.exportCSV()" ></button>
         </ng-template>
           <ng-template let-timesheet="rowData" pTemplate="body">
-            <button placement="top" ngbTooltip="{{'Detail'|i18n}}" container="body" type="button" pButton icon="fa-chevron-right" (click)="onRowSelect(timesheet)"></button>
-            <button placement="top" ngbTooltip="{{'Modify'|i18n}}" container="body" type="button" pButton icon="fa-pencil-alt" (click)="selectTimesheet(timesheet)"></button>
+            <button placement="top" ngbTooltip="{{'Detail'|i18n}}" container="body" type="button" pButton icon="fa fa-chevron-right" (click)="onRowSelect(timesheet)"></button>
+            <button placement="top" ngbTooltip="{{'Modify'|i18n}}" container="body" type="button" pButton icon="fa fa-pencil-alt" (click)="selectTimesheet(timesheet)"></button>
         </ng-template>
     </p-column>
 </p-dataTable>
@@ -91,7 +91,7 @@
           <label for="fromDate">{{'From Date'|i18n}}*</label>
         </div>
         <div class="ui-grid-col-4">
-          <p-calendar class="form-control" styleClass="calendar-icon" [locale]="i18nService.getCalendarLocale()" formControlName="fromDate" [(ngModel)]="timesheet.fromDate" dateFormat="{{'date-short-pcalendar'|i18nDate}}" name="fromDate" required [showIcon]="true"></p-calendar>
+          <p-calendar class="form-control" styleClass="calendar-icon" [locale]="i18nService.getCalendarLocale()" formControlName="fromDate" [(ngModel)]="timesheet.fromDate" dateFormat="{{'date-short-pcalendar'|i18nDate}}" name="fromDate" required [showIcon]="true" icon="fa fa-calendar"></p-calendar>
         </div>
       </div>
       <!-- Thru date -->
@@ -100,7 +100,7 @@
           <label for="thruDate">{{'Thru Date'|i18n}}*</label>
         </div>
         <div class="ui-grid-col-4">
-          <p-calendar class="form-control" styleClass="calendar-icon" [locale]="i18nService.getCalendarLocale()" formControlName="thruDate" [(ngModel)]="timesheet.thruDate" dateFormat="{{'date-short-pcalendar'|i18nDate}}" name="thruDate" required [showIcon]="true"></p-calendar>
+          <p-calendar class="form-control" styleClass="calendar-icon" [locale]="i18nService.getCalendarLocale()" formControlName="thruDate" [(ngModel)]="timesheet.thruDate" dateFormat="{{'date-short-pcalendar'|i18nDate}}" name="thruDate" required [showIcon]="true" icon="fa fa-calendar"></p-calendar>
         </div>
       </div>
       <!-- contractHours -->
@@ -146,8 +146,8 @@
   </div>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <button *ngIf="!newTimesheet" type="button" pButton icon="fa-trash-alt" (click)="confirm()" label="{{'Delete'|i18n}}"></button>
-        <button type="submit" pButton icon="fa-check" label="{{'Save'|i18n}}" [disabled]="!form.valid"></button>
+        <button *ngIf="!newTimesheet" type="button" pButton icon="fa fa-trash-alt" (click)="confirm()" label="{{'Delete'|i18n}}"></button>
+        <button type="submit" pButton icon="fa fa-check" label="{{'Save'|i18n}}" [disabled]="!form.valid"></button>
       </div>
     </p-footer>
   </form>

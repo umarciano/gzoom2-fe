@@ -4,8 +4,7 @@ import { DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable ,  Subject } from 'rxjs';
 import { first, map, merge, switchMap } from 'rxjs/operators';
 
 import { ConfirmDialogModule, ConfirmationService, SpinnerModule, TooltipModule } from 'primeng/primeng';
@@ -90,7 +89,7 @@ export class TimesheetComponent implements OnInit {
 
      /**Carico il mio uom */
      this.route.paramMap
-     .switchMap((params) => { return this.uomService.uom("OTH_100"); })
+     .pipe(switchMap((params) => { return this.uomService.uom("OTH_100"); }))     
      .subscribe((data) => { 
        this.uom = data;
        this.formatNumber = this.uomService.formatNumber(data); 
@@ -103,8 +102,8 @@ export class TimesheetComponent implements OnInit {
     ).subscribe(data => this.timesheets = data);
 
    
-    const reloadedParty = this._reload.switchMap(() => this.partyService.partys('CTX_PR'));
-    const reloadedTimesheets = this._reload.switchMap(() => this.timesheetService.timesheets());
+    const reloadedParty = this._reload.pipe(switchMap(() => this.partyService.partys('CTX_PR')));
+    const reloadedTimesheets = this._reload.pipe(switchMap(() => this.timesheetService.timesheets()));
 
     const partyObs = this.route.data.pipe(
       map((data: { partys: Party[] }) => data.partys),

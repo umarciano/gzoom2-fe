@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable ,  Subject } from 'rxjs';
 import { first, map, merge, switchMap } from 'rxjs/operators';
 
 import { ConfirmDialogModule, ConfirmationService, SpinnerModule, TooltipModule } from 'primeng/primeng';
@@ -41,7 +40,7 @@ export class UomComponent implements OnInit {
   /** Info message in Toast*/
   msgs: Message[] = [];
   /** whether create or update */
-  newUom: boolean;
+  newUom: boolean = false;
   /** Row index selected for uomRatingScale*/
   selectedIndex = -1;
   /** Selected uom in Dialog*/
@@ -77,8 +76,8 @@ export class UomComponent implements OnInit {
         });
 
     // Manage Reload
-    const reloadedUomTypes = this._reload.switchMap(() => this.uomService.uomTypes());
-    const reloadedUoms = this._reload.switchMap(() => this.uomService.uoms());
+    const reloadedUomTypes = this._reload.pipe(switchMap(() => this.uomService.uomTypes()));
+    const reloadedUoms = this._reload.pipe(switchMap(() => this.uomService.uoms()));
 
     const uomTypesObs = this.route.data.pipe(
       map((data: { uomTypes: UomType[] }) => data.uomTypes),
@@ -182,8 +181,8 @@ export class UomComponent implements OnInit {
   }
 
   _cloneUom(u: Uom): Uom {
-    let uom = new PrimeUom();
-    for(let prop in uom) {
+    const uom = new PrimeUom();
+    for (const prop in uom) {
       uom[prop] = u[prop];
     }
     return uom;
@@ -202,8 +201,6 @@ export class UomComponent implements OnInit {
       this.error = this.i18nService.translate(error.message) || error;
     });
   }
-
-
 }
 
 class PrimeUom implements Uom {

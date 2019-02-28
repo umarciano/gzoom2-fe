@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { I18NService } from './commons/i18n.service';
+import { filter } from 'rxjs/operators';
 
-import 'rxjs/add/operator/filter';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
     // if / url is hitten; seems like there's no other way to do this
     this.router
       .events
-      .filter(event => event instanceof NavigationEnd)
+      .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         // console.log('NavigationEnd', event);
         if (event.url === '/') {

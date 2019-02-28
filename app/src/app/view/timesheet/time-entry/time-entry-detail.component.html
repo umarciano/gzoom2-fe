@@ -56,12 +56,12 @@
       </p-column>
       <p-column [style]="{'width':'10%'}" styleClass="col-button">
         <ng-template pTemplate="header">
-            <button placement="top" ngbTooltip="{{'Add'|i18n}}" container="body" type="button" pButton icon="fa-plus" (click)="addRow()"></button>
-            <button placement="top" ngbTooltip="{{'Salva'|i18n}}" container="body" type="submit" pButton icon="fa-check"></button>
+            <button placement="top" ngbTooltip="{{'Add'|i18n}}" container="body" type="button" pButton icon="fa fa-plus" (click)="addRow()"></button>
+            <button placement="top" ngbTooltip="{{'Salva'|i18n}}" container="body" type="submit" pButton icon="fa fa-check"></button>
             <button placement="top" ngbTooltip="{{'Export'|i18n}}" container="body" type="button" pButton icon="far fa-file" (click)="dt.exportCSV()" ></button>
         </ng-template>
         <ng-template let-timeEntry="rowData" pTemplate="body">
-          <button placement="top" ngbTooltip="{{'Delete'|i18n}}" container="body" type="button" pButton icon="fa-trash-alt" (click)="confirmDeleteTimeEntry(timeEntry)"></button>
+          <button placement="top" ngbTooltip="{{'Delete'|i18n}}" container="body" type="button" pButton icon="fa fa-trash-alt" (click)="confirmDeleteTimeEntry(timeEntry)"></button>
         </ng-template>
       </p-column>
       

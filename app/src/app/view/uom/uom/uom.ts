@@ -1,7 +1,7 @@
 import { UomType } from '../uom-type/uom_type';
 
 /**
- * Model of a hero.
+ * Model of a Uom.
  */
 export class Uom {
   constructor(public uomId?: string, public uomTypeId?: string, public uomType?: UomType, public abbreviation?: string, public description?: string,

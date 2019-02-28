@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { ApiConfig } from './api-config';
 import { ApiClientService } from './client.service';
 
-import 'rxjs/add/operator/toPromise';
+
 
 const LOGIN_ENDPOINT = 'login';
 const CHANGE_PASS_ENDPOINT = 'change-password';

@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { first, map, merge, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { map, merge } from 'rxjs/operators';
+
+import { switchMap } from 'rxjs/operators';
 
 import { ConfirmDialogModule, ConfirmationService, InputTextModule, SpinnerModule, TooltipModule } from 'primeng/primeng';
 
@@ -20,7 +21,7 @@ import { TimesheetService } from '../../../api/timesheet.service';
 import {AutoCompleteModule} from 'primeng/primeng';
 import { isBlank } from 'app/commons/commons';
 import { summaryForJitFileName } from '@angular/compiler/src/aot/util';
-import { isNumber } from '@ng-bootstrap/ng-bootstrap/util/util';
+//import { isNumber } from '@ng-bootstrap/ng-bootstrap/util/util'; TODO
 
 import { Uom } from '../../uom/uom/uom';
 import { UomService } from '../../../api/uom.service';
@@ -70,16 +71,16 @@ export class TimeEntryDetailComponent implements OnInit {
   ngOnInit() {
     console.log(" - ngOnInit ");
 
-    const reloadedWorkEffort = this._reload.switchMap(() => this.timesheetService.workEfforts(this.selectedTimesheetId));
-    const reloadedTimeEntries = this._reload.switchMap(() => this.timesheetService.timeEntries(this.selectedTimesheetId));
-    const reloadedTimesheet = this._reload.switchMap(() => this.timesheetService.timesheet(this.selectedTimesheetId));
+    const reloadedWorkEffort = this._reload.pipe(switchMap(() => this.timesheetService.workEfforts(this.selectedTimesheetId)));
+    const reloadedTimeEntries = this._reload.pipe(switchMap(() => this.timesheetService.timeEntries(this.selectedTimesheetId)));
+    const reloadedTimesheet = this._reload.pipe(switchMap(() => this.timesheetService.timesheet(this.selectedTimesheetId)));
 
     this.route.paramMap
-      .switchMap((params) => {
+      .pipe(switchMap((params) => {
         this.selectedTimesheetId = params.get('id');
         console.log(" - this.selectedTimesheetId " + this.selectedTimesheetId);
         return this.timesheetService.timesheet(this.selectedTimesheetId);
-      })
+      }))
       .subscribe((data) => {
         console.log(" - paramMap data " + data);
         this.timesheet = data;
@@ -87,7 +88,7 @@ export class TimeEntryDetailComponent implements OnInit {
 
     /**Carico il mio uom */
     this.route.paramMap
-    .switchMap((params) => { return this.uomService.uom("OTH_100"); })
+    .pipe(switchMap((params) => { return this.uomService.uom("OTH_100"); }))
     .subscribe((data) => { 
       this.uom = data;
       this.formatNumber = this.uomService.formatNumber(data); 
@@ -98,11 +99,11 @@ export class TimeEntryDetailComponent implements OnInit {
 
 
     this.route.paramMap
-      .switchMap((params) => {
+      .pipe(switchMap((params) => {
         this.selectedTimesheetId = params.get('id');
         console.log(" - this.selectedTimesheetId " + this.selectedTimesheetId);
         return this.timesheetService.timeEntries(this.selectedTimesheetId);
-      })
+      }))
       .subscribe((data) => {
         console.log(" - paramMap data " + data);
         console.log(" - paramMap this.selectedTimesheetId " + this.selectedTimesheetId);
@@ -124,7 +125,7 @@ export class TimeEntryDetailComponent implements OnInit {
 
       //aggiornare totale
       this.totalPercentage = 0;
-      this.timeEntries.forEach(c => this.totalPercentage +=  isNumber(c.percentage) ?  +c.percentage : +0);
+      this.timeEntries.forEach(c => this.totalPercentage +=  (c.percentage) ?  +c.percentage : +0);
       console.log(" - totalPercentage " + this.totalPercentage);
       
     });
@@ -151,7 +152,7 @@ export class TimeEntryDetailComponent implements OnInit {
 
     //aggiornare totale
     this.totalPercentage = 0;
-    this.timeEntries.forEach(c => this.totalPercentage +=  isNumber(c.percentage) ?  +c.percentage : +0);
+    this.timeEntries.forEach(c => this.totalPercentage += (c.percentage) ?  + c.percentage : +0); 
     console.log(" - totalPercentage " + this.totalPercentage);
     if (this.totalPercentage > 100) {
       this.error = this.i18nService.translate("The percentage can not be greater than 100");
