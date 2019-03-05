@@ -29,8 +29,23 @@
               "node_modules/@fortawesome/fontawesome-free-webfonts/css/fa-brands.css",
               "node_modules/@fortawesome/fontawesome-free-webfonts/css/fa-regular.css",
               "node_modules/@fortawesome/fontawesome-free-webfonts/css/fa-solid.css",
-              "node_modules/@fortawesome/fontawesome-free-webfonts/css/fontawesome.css",
-              "src/styles/app.scss"
+              "node_modules/@fortawesome/fontawesome-free-webfonts/css/fontawesome.css",              
+              {
+                "input": "src/styles/green.scss",
+                "lazy": true,
+                "bundleName": "assets/green"
+              },
+              {
+                "input": "src/styles/blue.scss",
+                "lazy": true,
+                "bundleName": "assets/blue"
+              },
+              {
+                "input": "src/styles/violet.scss",
+                "lazy": true,
+                "bundleName": "assets/violet"
+              }             
+              
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
@@ -40,10 +55,15 @@
               "node_modules/moment-timezone/builds/moment-timezone-with-data.js",
               "node_modules/fullcalendar/dist/fullcalendar.min.js",
               "node_modules/fullcalendar/dist/locale-all.js",
-              "node_modules/chart.js/dist/Chart.js"
+              "node_modules/chart.js/dist/Chart.js",
+              "src/js/style-switcher.js",
+              "src/js/style-local-storage.js"
             ]
           },
           "configurations": {
+            "dev": {
+              "extractCss": true
+            },
             "production": {
               "optimization": true,
               "outputHashing": "all",
@@ -69,6 +89,9 @@
             "browserTarget": "gzoom2:build"
           },
           "configurations": {
+            "dev": {
+              "browserTarget": "gzoom2:build:dev"
+            },
             "production": {
               "browserTarget": "gzoom2:build:production"
             }
@@ -107,7 +130,21 @@
               "node_modules/@fortawesome/fontawesome-free-webfonts/css/fa-regular.css",
               "node_modules/@fortawesome/fontawesome-free-webfonts/css/fa-solid.css",
               "node_modules/@fortawesome/fontawesome-free-webfonts/css/fontawesome.css",
-              "src/styles/app.scss"
+              {
+                "input": "src/styles/green.scss",
+                "lazy": true,
+                "bundleName": "assets/green"
+              },
+              {
+                "input": "src/styles/blue.scss",
+                "lazy": true,
+                "bundleName": "assets/blue"
+              },
+              {
+                "input": "src/styles/violet.scss",
+                "lazy": true,
+                "bundleName": "assets/violet"
+              }
             ],
             "assets": [
               "src/assets",

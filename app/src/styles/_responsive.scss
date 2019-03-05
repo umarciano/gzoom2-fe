@@ -7,3 +7,16 @@
         }
     }
 }
+
+@media screen and (max-width: 992px) {
+    .contentlayout-container {
+        margin-left: 0px !important;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .sidebar {
+      top: $header-height;
+      left: 0px;
+    }
+  }

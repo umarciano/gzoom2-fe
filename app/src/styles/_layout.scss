@@ -1,10 +1,9 @@
 /*----------------------------------------------------------------------------*/
 /* Layout styles                                                              */
 /*----------------------------------------------------------------------------*/
-@import "~styles/_colors";
 @import "~styles/_measures";
 
-body {
+body .contentlayout {
   background-color: map-get($app-colors, background-cl);
 
   .ui-widget,
@@ -66,17 +65,17 @@ body {
     border: none;
   }
   
-.btn-primary.disabled,
-.btn-primary:disabled {
-  background: map-get($app-colors, navbar-fg);
-  color: map-get($app-colors, disabled);
-  border: none;
-}
+  .btn-primary.disabled,
+  .btn-primary:disabled {
+    background: map-get($app-colors, navbar-fg);
+    color: map-get($app-colors, disabled);
+    border: none;
+  }
 
-.focuslayout-container input.form-control {
-  color: map-get($app-colors, grey);
-  background-color: map-get($app-colors, background-cl);
-}
+  .focuslayout-container input.form-control {
+    color: map-get($app-colors, grey);
+    background-color: map-get($app-colors, background-cl);
+  }
 
   /*----------------------------------------------------------------------------*/
   /* Valid / Invalid                                                            */
@@ -601,9 +600,186 @@ body {
   }
 }
 
-
-
 .tooltip-inner { 
   background : map-get($app-colors, default-cl); 
   color: map-get($app-colors, background-cl);
+}
+
+
+ /*----------------------------------------------------------------------------*/
+ /* Sidebar                                                                   */
+ /*---------------------------------------------------------------------------*/
+
+.sidebar {
+  border-radius: 0;
+  position: fixed;
+  z-index: 1000;
+  top: $header-height;
+  left: $sidebar-width;
+  width: $sidebar-width;
+  margin-left: -$sidebar-width;
+  border: none;
+  border-radius: 0;
+  overflow-y: auto;
+  background-color: map-get($sidebar-colors, tab-sel-bg);
+  bottom: 0;
+  overflow-x: hidden;
+  padding-bottom: 40px;
+  // padding-top: 20px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+
+
+.topnav {
+  border-radius: 0;
+  background-color: map-get($app-colors, navbar-bg);
+  padding: 6px;
+  z-index: 2;
+
+  .text-center {
+    text-align: center;
+    padding-left: 0;
+    cursor: pointer;
+  }
+
+  .top-right-nav {
+    .buy-now {
+      a {
+        color: map-get($app-colors, navbar-fg);
+      }
+    }
+
+    .dropdown-menu {
+      top: 40px;
+      right: -5px;
+      left: auto;
+
+      .message-preview {
+        .media {
+          .media-body {
+            .media-heading {
+              font-size: 14px;
+              font-weight: bold;
+              margin-bottom: 0;
+            }
+
+            p {
+              margin: 0;
+            }
+
+            p.last {
+              font-size: 13px;
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+
+      hr {
+        margin-top: 1px;
+        margin-bottom: 4px;
+      }
+    }
+  }
+}
+
+.messages {
+  width: 300px;
+
+  .media {
+    border-bottom: 1px solid #DDD;
+    padding: 5px 10px;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .media-body {
+    h5 {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .small {
+      margin: 0;
+    }
+
+    .last {
+      font-size: 12px;
+      margin: 0;
+    }
+  }
+}
+
+.header .navbar {
+  background: map-get($app-colors, navbar-bg) !important;
+}
+
+ /*----------------------------------------------------------------------------*/
+ /*Focus                                                                       */
+ /*----------------------------------------------------------------------------*/
+
+.focuslayout {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  // padding-top: 200px;
+  background-color: map-get($app-colors, background-cl);
+  background-size: cover;
+  color: map-get($app-colors, default-cl);
+
+  > .container, > .container-fluid,
+  > .container > .row, > .container-fluid > .row {
+    height: 100%;
+  }
+
+  .focuslayout-container {
+    position: relative;
+    text-align: center;
+    margin: 0;
+    background-color: map-get($app-colors, navbar-bg);
+    padding: 10% 3%;
+    border: 1px solid map-get($app-colors, grey);
+    border-radius: 5px;
+
+    input, span {
+      color: map-get($app-colors, grey);
+      background-color: map-get($app-colors, background-cl);
+    }
+
+    h1 small {
+      color: white;
+    }
+
+    .input-group-addon {
+      background-color: map-get($inspinia-colors, primary);
+      border-color: map-get($inspinia-colors, primary);
+    }
+
+    .input-group-addon .fa {
+      color: white;
+    }
+
+    .link-inverse {
+      color: #b3f5fa;
+      text-decoration: underline;
+    }
+  }
+
+  .focuslayout-footer {
+    color: map-get($app-colors, grey);
+    position: absolute;
+    bottom: -2rem;
+    left: 0;
+    width: 100%;
+  }
 }

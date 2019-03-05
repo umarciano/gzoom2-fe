@@ -3,27 +3,31 @@
 /*----------------------------------------------------------------------------*/
 
 $inspinia-colors: (
-  primary: #18A689
+  primary: #c98ae9
 );
+
+//#d0b4de
+//#DFCCFF 
+//#F6F0FA
 
 /*----------------------------------------------------------------------------*/
 /* Other colors                                                               */
 /*----------------------------------------------------------------------------*/
 
 $app-colors: (
-  background-cl: #ECF5EC /*#e1e7e9*/,
-  alt-cl: #dee7d1,
+  background-cl: #F6F0FA /*#e1e7e9*/,
+  alt-cl: #d0b4de,
   default-bg: transparent,
   default-cl: gray,
   active-cl:#232323,
-  title-bg:  #c2ddc0,
+  title-bg:  #DFCCFF,
   title-bd-cl: #cccccc,
   light: white,
   disabled: #cccccc,
   error: #ED5565,
   navbar-hl: #FFF,
   navbar-fg: #999,
-  navbar-bg: #B6C5B5,
+  navbar-bg: #d0b4de,
   overlay: rgba(0, 0, 0, 0.6)
 );
 
@@ -31,6 +35,8 @@ $sidebar-colors: (
   tab-fg: white,
   tab-cl: #232323,
   tab-bg: map-get($app-colors, navbar-bg),
-  tab-sel-bg:  #C2DDC0,
+  tab-sel-bg:  #DFCCFF,
   tab-border: lighten(map-get($app-colors, navbar-bg), 30%)
 );
+
+@import "default";

@@ -26,7 +26,8 @@ const HTTP_HEADERS = new HttpHeaders();
 })
 export class HeaderComponent {
   user: UserProfile;
-  displayChangePassword: boolean;
+  displayChangePassword: boolean = false;
+  displayChangeTheme: boolean  = false;
   form: FormGroup;
   error = '';
 
@@ -37,7 +38,6 @@ export class HeaderComponent {
   newPasswordVerify: String;
 
   private readonly changePassUrl: string;
-  
 
   constructor(private readonly authSrv: AuthService,
               private readonly lockoutSrv: LockoutService,
@@ -61,6 +61,7 @@ export class HeaderComponent {
     });
 
     this.displayChangePassword = false;
+    this.displayChangeTheme = false;
   }
 
   toggleSidebar() {
@@ -78,6 +79,18 @@ export class HeaderComponent {
     this.displayChangePassword = true;
   }
 
+  changeThemeDialog() {  
+    this.displayChangeTheme = true;
+  }
+
+  changeTheme(theme) { 
+    window['switchStyle'](theme);
+    localStorage.setItem('app-root', theme);
+    console.log('theme=' + theme);
+    this.displayChangeTheme = false;
+
+    //TODO
+  }
   
   changePassword() {
     console.log("changePassword");   
@@ -117,9 +130,5 @@ export class HeaderComponent {
           this.newPasswordVerify = "";
           this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Change password'), detail:this.i18nService.translate('Cambio password eseguito con successo ')}]; 
       }); // complete   
-  }
-
-  changeTheme() {
-    
-  }
+  }  
 }

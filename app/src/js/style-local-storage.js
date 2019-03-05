@@ -1,0 +1,1 @@
+switchStyle(localStorage.getItem('app-root')); // same key as in app.component.ts

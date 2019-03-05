@@ -9,7 +9,7 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.config.json",
+    "start": "ng serve --proxy-config proxy.config.json --configuration=dev",
     "mock": "ng serve --proxy-config proxy.config.mock.json",
     "build": "ng build --aot -prod",
     "test": "ng test",
@@ -56,7 +56,6 @@
     "@types/jasmine": "2.8.6",
     "@types/lodash": "^4.14.62",
     "@types/node": "~9.4.0",
-    "codelyzer": "~4.1.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.0",
