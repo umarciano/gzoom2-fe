@@ -359,8 +359,8 @@ export class ReportComponent implements OnInit {
         this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Print'), detail:this.i18nService.translate('Esecuzione stampa '+ this.selectedReport.reportName)}];
       })           
       .catch((error) => {
-        console.log('error' , error.message);
-        this.error = this.i18nService.translate(error.message) || error;
+        console.log('error.message' , error);
+        this.error = this.i18nService.translate(error) || error;
       });
   }
 
@@ -373,8 +373,8 @@ export class ReportComponent implements OnInit {
         this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Send Email'), detail:this.i18nService.translate('Invio mail in esequzione ')}];
       })     
       .catch((error) => {
-        console.log('error' , error.message);
-        this.error = this.i18nService.translate(error.message) || error;
+        console.log('error' , error);
+        this.error = this.i18nService.translate(error) || error;
        });
     
   }

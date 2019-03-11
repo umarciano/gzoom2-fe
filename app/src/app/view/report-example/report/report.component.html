@@ -1,6 +1,4 @@
 <p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
-<div *ngIf="error" class="alert alert-danger">{{error}}</div>
-
 <form [formGroup]="form" >  
 
   <div class="ui-grid-row" style="margin-bottom: 1em">
@@ -129,7 +127,4 @@
      
 </form> 
 
-
-
-
-
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>

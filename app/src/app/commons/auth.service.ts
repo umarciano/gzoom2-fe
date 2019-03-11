@@ -12,6 +12,7 @@ export class UserProfile {
   lastName: string;
   username: string;
   email: string;
+  userPrefValue?: string;
   externalLoginKey: string;
 }
 

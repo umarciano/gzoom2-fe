@@ -22,10 +22,15 @@ export class ReportDownloadService {
     return this.client
       .get(`report-download`).pipe(
         map(json => json.results as ReportActivity[])
+      ).catch((response: any) => {
+        console.error(`Error while report-download: ${response}`);
+        return Promise.reject(response.json() || response);
+      }
+
       );
   }
 
-  status(activityId) {
+  status(activityId: String) {
     console.log('status activityId='+activityId);
     return this.client
       .get(`report-download/${activityId}/status`).pipe(
@@ -33,7 +38,7 @@ export class ReportDownloadService {
       );
   }
   
-  delete(activityId) {
+  delete(activityId: String) {
     console.log('delete activityId='+activityId);
     return this.client      
       .delete(`report-download/${activityId}`)
@@ -41,7 +46,7 @@ export class ReportDownloadService {
       .then(response => response)
       .catch((response: any) => {
         console.error(`Error while deleting in: ${response}`);
-        return Promise.reject(response.json() || response);
+        return Promise.reject(response.message || response);
       });
   }
 }

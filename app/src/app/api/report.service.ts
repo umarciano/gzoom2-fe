@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { URLSearchParams } from '@angular/http';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -33,31 +32,35 @@ export class ReportService {
       );
   }
 
-  add(report) {
+  async add(report: Report):  Promise<String> {
     console.log('add ', report);
-    return this.client
-    .post('report/add', report)
-    .toPromise()
-    .then(response => response)
-    .catch(response => {
-      console.error(`Error while creating in: ${response}`);
-      return Promise.reject(response.json() || response);
-    });
+    try {
+      const response = await this.client
+        .post('report/add', report)
+        .toPromise();
+      return response;
+    }
+    catch (response_1) {
+      console.error(`Error report add : ${response_1}`);
+      return Promise.reject(response_1.message || response_1);
+    }
   }
 
-  mail(report) {
+  async mail(report: Report):  Promise<String> {
     console.log('mail ', report);
-    return this.client
-    .post('report/mail', report)
-    .toPromise()
-    .then(response => response)
-    .catch(response => {
-      console.error(`Error while creating in: ${response}`);
-      return Promise.reject(response.json() || response);
-    });
+    try {
+      const response = await this.client
+        .post('report/mail', report)
+        .toPromise();
+      return response;
+    }
+    catch (response_1) {
+      console.error(`Error report mail: ${response_1}`);
+      return Promise.reject(response_1.message || response_1);
+    }
   }
 
-  getDate(date) {
+  getDate(date: Date) {
     if (date) return moment(date).format("YYYY-MM-DD");
     else return null;
   }

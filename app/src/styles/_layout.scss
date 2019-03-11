@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 @import "~styles/_measures";
 
-body .contentlayout {
+body.bodylayout {
   background-color: map-get($app-colors, background-cl);
 
   .ui-widget,
@@ -271,6 +271,10 @@ body .contentlayout {
 
   input.form-control {
     padding: 0em;
+  }
+
+  .ui-datepicker-next::before {
+    content: "\f00d";
   }
 
   /*----------------------------------------------------------------------------*/
@@ -584,6 +588,8 @@ body .contentlayout {
   /* Dialog                                                                     */
   /*----------------------------------------------------------------------------*/
   .ui-dialog {
+    background-color: map-get($app-colors, background-cl);
+
     .ui-widget-content {
       background-color: map-get($app-colors, background-cl);
     }
