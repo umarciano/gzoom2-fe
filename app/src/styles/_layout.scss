@@ -273,10 +273,6 @@ body.bodylayout {
     padding: 0em;
   }
 
-  .ui-datepicker-next::before {
-    content: "\f00d";
-  }
-
   /*----------------------------------------------------------------------------*/
   /* Button                                                                     */
   /*----------------------------------------------------------------------------*/
@@ -788,4 +784,9 @@ body.bodylayout {
     left: 0;
     width: 100%;
   }
+}
+
+
+.legacy-container {
+  background-color: map-get($app-colors, background-cl);
 }

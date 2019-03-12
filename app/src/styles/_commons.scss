@@ -125,6 +125,12 @@ $commons-sizes: (
   font-weight: 900;
 }
 
+.pi-caret-down::before {
+  content: "\f0d7";
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}
+
 /*----------------------------------------------------------------------------*/
 /* input number right                                                         */
 /*----------------------------------------------------------------------------*/
