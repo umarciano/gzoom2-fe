@@ -87,6 +87,26 @@ export class LoginService {
     });
   }*/
 
-
+  updateUserPreference(userPreference: UserPreference):  Promise<UserPreference> {
+    console.log('update Timesheet');
+    return this.client
+      .put(`user-preference/`, userPreference)
+      .toPromise()
+      .then(response => response)
+      .catch((response: any) => {
+        console.error(`Error while updating in: ${response}`);
+        return Promise.reject(response.json() || response);
+      });
+  }
   
+}
+
+/**
+ * UserPreference
+ */
+export class UserPreference {
+  constructor(
+    public userLoginId?: string, 
+    public userPrefTypeId?: string, 
+    public userPrefValue?:  string) {};
 }

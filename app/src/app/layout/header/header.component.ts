@@ -6,6 +6,8 @@ import { AuthService, UserProfile } from '../../commons/auth.service';
 import { LockoutService } from '../../commons/lockout.service';
 import { LogoutService } from '../../api/logout.service';
 import { LoginService } from '../../api/login.service';
+import { UserPreference } from '../../api/login.service';
+
 import { ApiConfig } from '../../api/api-config';
 
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
@@ -39,6 +41,11 @@ export class HeaderComponent {
 
   private readonly changePassUrl: string;
 
+  THEME_GREEN: String = 'GPLUS_GREEN_ACC';
+  THEME_BLUE: String = 'GPLUS_BLUE_ACC';
+  THEME_VIOLET: String = 'GPLUS_VIOLET_ACC'; 
+  userPreference: UserPreference = new UserPreference();         
+
   constructor(private readonly authSrv: AuthService,
               private readonly lockoutSrv: LockoutService,
               private readonly logoutSrv: LogoutService,
@@ -49,6 +56,7 @@ export class HeaderComponent {
               private authService: AuthService,
               private fb: FormBuilder) {
     this.user = authSrv.userProfile();
+    this.changeTheme(this.user.userPrefValue);
     this.changePassUrl = `${apiConfig.rootPath}/${CHANGE_PASS_ENDPOINT}`;
   }
 
@@ -62,6 +70,7 @@ export class HeaderComponent {
 
     this.displayChangePassword = false;
     this.displayChangeTheme = false;
+   
   }
 
   toggleSidebar() {
@@ -88,8 +97,24 @@ export class HeaderComponent {
     localStorage.setItem('app-root', theme);
     console.log('theme=' + theme);
     this.displayChangeTheme = false;
+  
+  }
 
-    //TODO
+  saveChangeTheme(theme) {     
+ 
+    this.userPreference.userLoginId = this.user.username;
+    this.userPreference.userPrefTypeId = "VISUAL_THEME";
+    this.userPreference.userPrefValue = theme;
+    this.loginSrv
+      .updateUserPreference(this.userPreference)
+      .then(() => {
+        this.changeTheme(theme);
+      })             
+      .catch((error) => {
+        console.log('error.message' , error);
+        this.error = this.i18nService.translate(error) || error;
+      });
+    
   }
   
   changePassword() {

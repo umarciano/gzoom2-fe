@@ -90,9 +90,9 @@
 <p-dialog header="{{'Change theme'|i18n}}" width="900" [(visible)]="displayChangeTheme" [responsive]="true" showEffect="fade" [modal]="true" >
   <form [formGroup]="form" novalidate (ngSubmit)="changeTheme()">
     <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px" *ngIf="user">        
-      <div class="ui-grid-col-4"><button type="button" style="background-color: #B6C5B5" class="btn btn-green" (click)="changeTheme('Green')">{{'Green'|i18n}}</button></div>
-      <div class="ui-grid-col-4"><button type="button" style="background-color: #86abde" class="btn btn-blue" (click)="changeTheme('Blue')">{{'Blue'|i18n}}</button></div>
-      <div class="ui-grid-col-4"><button type="button" style="background-color: #d0b4de" class="btn btn-violet" (click)="changeTheme('Violet')">{{'Violet'|i18n}}</button> </div>
+      <div class="ui-grid-col-4"><button type="button" style="background-color: #B6C5B5" class="btn btn-green" (click)="saveChangeTheme(THEME_GREEN)">{{'Green'|i18n}}</button></div>
+      <div class="ui-grid-col-4"><button type="button" style="background-color: #86abde" class="btn btn-blue" (click)="saveChangeTheme(THEME_BLUE)">{{'Blue'|i18n}}</button></div>
+      <div class="ui-grid-col-4"><button type="button" style="background-color: #d0b4de" class="btn btn-violet" (click)="saveChangeTheme(THEME_VIOLET)">{{'Violet'|i18n}}</button> </div>
     </div>    
   </form>  
   <div *ngIf="error" class="alert alert-danger">{{error}}</div>
