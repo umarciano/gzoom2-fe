@@ -10,6 +10,7 @@ export class RoleTypeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('ngOnInit');
   }
 
 }
