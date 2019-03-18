@@ -13,7 +13,7 @@ import { DatePipe } from '@angular/common';
  * Retrieves the menus to be shown or locks the user out if something wrong happens.
  */
 @Injectable()
-export class ReportExampleResolver implements Resolve<void | Report[]> {
+export class ReportPrintResolver implements Resolve<void | Report[]> {
 
   constructor(
     private readonly reportService: ReportService,

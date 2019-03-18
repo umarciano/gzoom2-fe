@@ -12,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import 'rxjs/Rx';
 
 import { ReportDownloadService } from '../../api/report-download.service';
-import { ReportActivity } from '../../view/report-example/report';
+import { ReportActivity } from '../../view/report-print/report';
 
 
 @Component({

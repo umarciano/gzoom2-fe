@@ -22,7 +22,8 @@ const REFURBISHED_PAGES = {
   'GP_MENU_00332': ['uom/value'],
   'GP_MENU_00334': ['timesheet'], // 'GP_MENU_00334': ['timesheet/timesheet'],
   'GP_MENU_00347': ['uom/type'],
-  'GP_MENU_00999': ['report-example-1'] // 'GP_MENU_00999': ['timesheet/timesheet-report/CTX_PR']
+  'GP_MENU_00444': ['report-print/CTX_CO'],
+  'GP_MENU_00999': ['report-print'] // 'GP_MENU_00999': ['timesheet/timesheet-report/CTX_PR']
 };
 
 @Injectable()
