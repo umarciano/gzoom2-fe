@@ -4,7 +4,7 @@
             <a (click)="onClick(reportDownload)" class="nav-link dropdown-toggle" ngbDropdownToggle>
                 <i class="fa fa-download"></i> &nbsp; {{'Download'|i18n}} <b class="caret"></b>
             </a>
-            <div ngbDropdownMenu style="min-width: 20rem;">                    
+            <div ngbDropdownMenu style="min-width: 27rem;">                    
                 <p-dataTable class="datatable-list" [value]="reports" [scrollable]="true" scrollHeight="200px">                
                     <p-column field="contentName">
                         <ng-template let-report="rowData" pTemplate="body">
@@ -16,7 +16,7 @@
                             </div>
                         </ng-template>
                     </p-column>
-                    <p-column [style]="{'width':'25%'}" field="status">
+                    <p-column [style]="{'width':'20%'}" field="status">
                         <ng-template let-report="rowData" pTemplate="body">
                             <div *ngIf="report.status =='RUNNING'">
                                 <p-progressSpinner [style]="{width: '20px', height: '20px'}" ></p-progressSpinner>

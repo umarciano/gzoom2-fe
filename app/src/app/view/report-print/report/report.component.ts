@@ -137,7 +137,7 @@ export class ReportComponent implements OnInit {
   roleTypeIdSelectItem: SelectItem[] = [];
   partyIdSelectItem: SelectItem[] = [];
   workEffortIdChildSelectItem: SelectItem[] = [];
-
+  uomRangeValuesIdSelectItem: SelectItem[] = [];
   form: FormGroup;
 
   paramsValue: any = {};
@@ -182,6 +182,19 @@ export class ReportComponent implements OnInit {
       this.paramsSelectItem['orgUnitIdSelectItem'] = this.orgUnitIdSelectItem;
 
     });
+
+/* TODO
+    const reloadedUomRangeValues = this._reload.pipe(switchMap(() => this.partyService.orgUnits(parentTypeId)));
+    const reloadedUomRangeValuesObs = this.route.data.pipe(
+      map((data: { uomRangeValues: UomRangeValues[] }) => data.uomRangeValues),
+      merge(reloadedUomRangeValues),
+      map(orgUnit2SelectItems)
+    ).subscribe((data) => {
+      this.uomRangeValuesIdSelectItem = data;
+      this.uomRangeValuesIdSelectItem.push({label: this.i18nService.translate('Select uomRangeValuesId'), value:null});
+      this.paramsSelectItem['uomRangeValuesIdSelectItem'] = this.uomRangeValuesIdSelectItem;
+
+    });*/
 
     
     const reloadedStatus = this._reload.pipe(switchMap(() => this.statusItemService.statusItems(parentTypeId)));
