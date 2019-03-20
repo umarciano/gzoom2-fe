@@ -8,6 +8,7 @@ import { ApiClientService } from './client.service';
 
 import { UomType } from '../view/uom/uom-type/uom_type';
 import { Uom } from '../view/uom/uom/uom';
+import { UomRangeValues } from '../view/uom/range-values/uom-range-values';
 import { UomRatingScale } from '../view/uom/scale/uom_rating_scale';
 import { forEach } from '@angular/router/src/utils/collection';
 
@@ -179,4 +180,14 @@ export class UomService {
       });
   }
 
+  /**
+   * uomRangeValues
+   */
+  uomRangeValues(uomRangeId: string): Observable<UomRangeValues[]> {
+    console.log('search uomRangeValues');
+    return this.client
+      .get(`uom-range-values/${uomRangeId}`).pipe(
+        map(json => json.results as UomRangeValues[])
+      );
+  }  
 }

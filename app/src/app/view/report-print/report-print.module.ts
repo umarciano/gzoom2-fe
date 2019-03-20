@@ -20,6 +20,7 @@ import { ApiModule } from '../../api/api.module';
 import { LayoutModule } from '../../layout/layout.module';
 
 import { ReportService } from '../../api/report.service';
+import { UomService } from '../../api/uom.service';
 
 import { ReportPrintResolver } from './report-print/report-print-resolver.service';
 import { ReportPrintRoutingModule } from './report-print-routing.module';
@@ -73,6 +74,7 @@ import { WorkEffortResolverService } from 'app/view/work-effort/work-effort/work
     RoleTypeService,
     WorkEffortService,
     ConfirmationService,
+    UomService,
     ReportPrintResolver,
     ReportResolver,
     PartyResolver,

@@ -19,12 +19,14 @@ import { WorkEffortType } from '../report';
 import { ReportService } from '../../../api/report.service';
 import { Party } from '../../../view/party/party/party';
 import { PartyService } from '../../../api/party.service';
+import { UomService } from '../../../api/uom.service';
 import { StatusItem } from '../../../view/status-item/status-item/status-item';
 import { StatusItemService } from '../../../api/status-item.service';
 import { RoleType } from '../../../view/role-type/role-type/role-type';
 import { RoleTypeService } from '../../../api/role-type.service';
 import { WorkEffort } from '../../../view/work-effort/work-effort/work-effort';
 import { WorkEffortService } from '../../../api/work-effort.service';
+import { UomRangeValues } from '../../../view/uom/range-values/uom-range-values';
 
 
 import { ReportDownloadComponent } from '../../../layout/report-download/report-download.component';
@@ -39,6 +41,17 @@ import 'rxjs/Rx';
   } 
   return types.map((wt: WorkEffort) => {
     return {label: ( wt.sourceReferenceId != null ? wt.sourceReferenceId + " - " + wt.workEffortName: wt.workEffortName), value: wt.workEffortId};
+  });
+}
+
+
+/** Convert from UomRangeValues[] to SelectItem[] */
+function uomRangeValues2SelectItems(uomRangeValues: UomRangeValues[]): SelectItem[] {
+  if (uomRangeValues == null){
+    return [];
+  }
+  return uomRangeValues.map((p:UomRangeValues) => {
+    return {label: p.comments, value: p.uomRangeValuesId};
   });
 }
 
@@ -152,6 +165,7 @@ export class ReportComponent implements OnInit {
   private readonly i18nService: I18NService,
   private readonly reportService: ReportService,
   private readonly partyService: PartyService,
+  private readonly uomService: UomService,
   private readonly statusItemService: StatusItemService,
   private readonly roleTypeService: RoleTypeService,
   private readonly workEffortService: WorkEffortService,
@@ -182,19 +196,6 @@ export class ReportComponent implements OnInit {
       this.paramsSelectItem['orgUnitIdSelectItem'] = this.orgUnitIdSelectItem;
 
     });
-
-/* TODO
-    const reloadedUomRangeValues = this._reload.pipe(switchMap(() => this.partyService.orgUnits(parentTypeId)));
-    const reloadedUomRangeValuesObs = this.route.data.pipe(
-      map((data: { uomRangeValues: UomRangeValues[] }) => data.uomRangeValues),
-      merge(reloadedUomRangeValues),
-      map(orgUnit2SelectItems)
-    ).subscribe((data) => {
-      this.uomRangeValuesIdSelectItem = data;
-      this.uomRangeValuesIdSelectItem.push({label: this.i18nService.translate('Select uomRangeValuesId'), value:null});
-      this.paramsSelectItem['uomRangeValuesIdSelectItem'] = this.uomRangeValuesIdSelectItem;
-
-    });*/
 
     
     const reloadedStatus = this._reload.pipe(switchMap(() => this.statusItemService.statusItems(parentTypeId)));
@@ -255,7 +256,21 @@ export class ReportComponent implements OnInit {
       this.workEffortIdChildSelectItem.push({label: this.i18nService.translate('Select WorkEffortChild'), value:null});
       this.paramsSelectItem['workEffortIdChildSelectItem'] = this.workEffortIdChildSelectItem;
     });
-    
+
+    //TODO SBAGLIATO
+    //const reloadedUomRangeValues = this._reload.pipe(switchMap(params => (params.uomRangeId ? this.uomService.uomRangeValues(params.uomRangeId) : reloadedUomRangeValues)));
+    const reloadedUomRangeValues = this._reload.pipe(switchMap(() => this.uomService.uomRangeValues('CORRIS')));
+    const reloadedUomRangeValuesObs = this.route.data.pipe(
+      map((data: { uomRangeValues: UomRangeValues[] }) => data.uomRangeValues),
+      merge(reloadedUomRangeValues),
+      map(uomRangeValues2SelectItems)
+    ).subscribe((data) => {
+      this.uomRangeValuesIdSelectItem = data;
+      this.uomRangeValuesIdSelectItem.push({label: this.i18nService.translate('Select uomRangeValuesId'), value:null});
+      this.paramsSelectItem['uomRangeValuesIdSelectItem'] = this.uomRangeValuesIdSelectItem;
+
+    });
+   
 
     const reportObs = this.route.data.pipe(
       map((data: { report: Report }) => data.report)       
@@ -277,8 +292,7 @@ export class ReportComponent implements OnInit {
       this._reload.next({roleTypeId: value});
     } else if (paramName == 'workEffortId') {
       this._reload.next({workEffortId: value});
-    }
-    
+    }    
   }
 
 
@@ -294,27 +308,29 @@ export class ReportComponent implements OnInit {
 
     var paramForm = {};    
     this.params.forEach((element) => {
+      //gestione required
       var controller = new FormControl('');
       if (element.mandatory)
         controller = new FormControl('', Validators.required);
       paramForm[element.paramName] = controller;
+      this.paramsValue[element.paramName] = element.paramDefault;
+      
+      //Lista di elementi per il caricamento di altre drop List
+      if (element.paramName == 'uomRangeId') {
+        //carico al lista TODO
+        //this._reload.next({uomRangeId: element.paramDefault});
+      }
 
-      //setto i defaultValue    TODO capire come gestire i boolean?????  
-      this.paramsValue[element.paramName] = element.paramDefault;      
     });
 
     //aggiungo 
-
     paramForm["outputFormat"] = new FormControl('', Validators.required);
-    paramForm["workEffortTypeId"] = new FormControl('', Validators.required);    
-   
-   
+    paramForm["workEffortTypeId"] = new FormControl('', Validators.required);  
     this.form = this.fb.group(paramForm);
 
      
     this.outputFormats = data.outputFormats;
     this.outputFormatSelectItem = outputFormat2SelectItems(this.workEffortTypes);
-    console.log('onRowSelect outputFormats ', this.outputFormats);
     this.outputFormat = data.outputFormats[0];
     console.log('onRowSelect outputFormat ',  this.outputFormat);
 
@@ -401,4 +417,5 @@ export interface ReloadParams {
   useFilter?: string;
   roleTypeId?: string;
   workEffortId?: string;
+  uomRangeId?: string;
 }

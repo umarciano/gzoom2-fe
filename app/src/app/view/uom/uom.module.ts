@@ -26,7 +26,7 @@ import { UomRoutingModule } from './uom-routing.module';
 import { UomTypeComponent } from './uom-type/uom-type.component';
 import { UomComponent } from './uom/uom.component';
 import { UomRatingScaleComponent } from './scale/uom-rating-scale.component';
-
+import { UomRangeValuesComponent } from './range-values/uom-range-values.component';
 
 @NgModule({
   imports: [
@@ -52,7 +52,8 @@ import { UomRatingScaleComponent } from './scale/uom-rating-scale.component';
   declarations: [
     UomTypeComponent,
     UomComponent,
-    UomRatingScaleComponent
+    UomRatingScaleComponent,
+    UomRangeValuesComponent
   ],
   providers: [
     UomService,
