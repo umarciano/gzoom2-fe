@@ -20,10 +20,11 @@ import { ApiModule } from '../../api/api.module';
 import { LayoutModule } from '../../layout/layout.module';
 
 import { ReportService } from '../../api/report.service';
+import { UomService } from '../../api/uom.service';
 
-import { ReportExampleResolver } from './report-example/report-example-resolver.service';
-import { ReportExampleRoutingModule } from './report-example-routing.module';
-import { ReportExampleComponent } from './report-example/report-example.component';
+import { ReportPrintResolver } from './report-print/report-print-resolver.service';
+import { ReportPrintRoutingModule } from './report-print-routing.module';
+import { ReportPrintComponent } from './report-print/report-print.component';
 import { ReportResolver } from './report/report-resolver.service';
 import { ReportComponent } from './report/report.component';
 import { PartyService } from 'app/api/party.service';
@@ -46,7 +47,7 @@ import { WorkEffortResolverService } from 'app/view/work-effort/work-effort/work
     CalendarModule,
     ApiModule,
     LayoutModule,
-    ReportExampleRoutingModule,
+    ReportPrintRoutingModule,
     AccordionModule,
     DataTableModule,
     DialogModule,
@@ -63,7 +64,7 @@ import { WorkEffortResolverService } from 'app/view/work-effort/work-effort/work
     TooltipModule
   ],
   declarations: [
-    ReportExampleComponent,
+    ReportPrintComponent,
     ReportComponent
   ],
   providers: [
@@ -73,7 +74,8 @@ import { WorkEffortResolverService } from 'app/view/work-effort/work-effort/work
     RoleTypeService,
     WorkEffortService,
     ConfirmationService,
-    ReportExampleResolver,
+    UomService,
+    ReportPrintResolver,
     ReportResolver,
     PartyResolver,
     OrgUnitResolver,
@@ -83,4 +85,4 @@ import { WorkEffortResolverService } from 'app/view/work-effort/work-effort/work
   ]
 })
 
-export class ReportExampleModule { }
+export class ReportPrintModule { }

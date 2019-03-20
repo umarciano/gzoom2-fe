@@ -27,12 +27,12 @@ function reportSelectItems(report: Report[]): SelectItem[] {
 }
 
 @Component({
-  selector: 'app-report-example',
-  templateUrl: './report-example.component.html',
-  styleUrls: ['./report-example.component.css']
+  selector: 'app-report-print',
+  templateUrl: './report-print.component.html',
+  styleUrls: ['./report-print.component.css']
 })
 
-export class ReportExampleComponent implements OnInit {
+export class ReportPrintComponent implements OnInit {
   /** Error message from be*/
   error = '';
 
@@ -61,8 +61,13 @@ export class ReportExampleComponent implements OnInit {
     //  map(reportSelectItems)
     )
     .subscribe((reports) => {
+      console.log("reports:",reports);
       this.reports = reports;
-      this.onRowSelect(reports[0]);
+
+      if (reports.length > 0) {        
+        this.onRowSelect(reports[0]);
+      }
+      
     });
 
     // Form Validator

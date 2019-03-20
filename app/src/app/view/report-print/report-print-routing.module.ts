@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 
-import { ReportExampleResolver } from './report-example/report-example-resolver.service';
+import { ReportPrintResolver } from './report-print/report-print-resolver.service';
 import { ReportResolver } from './report/report-resolver.service';
-import { ReportExampleComponent } from './report-example/report-example.component';
+import { ReportPrintComponent } from './report-print/report-print.component';
 import { ReportComponent } from './report/report.component';
 
 import { OrgUnitResolver } from '../party/party/org-unit-resolver.service';
@@ -14,7 +14,7 @@ import { RoleTypeResolverService } from '../role-type/role-type/role-type-resolv
 import { WorkEffortResolverService } from '../work-effort/work-effort/work-effort-resolver.service';
 
 const routes: Routes = [
-  { path: ':parentTypeId', component: ReportExampleComponent, resolve: { reports: ReportExampleResolver},
+  { path: ':parentTypeId', component: ReportPrintComponent, resolve: { reports: ReportPrintResolver},
     children: [
       { path: ':reportContentId/:reportName/:analysis', component: ReportComponent, resolve: { report: ReportResolver,  
                                                                          orgUnits: OrgUnitResolver,
@@ -33,4 +33,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ReportExampleRoutingModule { }
+export class ReportPrintRoutingModule { }
