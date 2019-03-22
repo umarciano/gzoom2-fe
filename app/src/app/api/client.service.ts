@@ -91,18 +91,23 @@ export class ApiClientService {
       .pipe(catchError(this.onAuthError(this)));
   }
 
+  /**
+ * 
+ * @param path of rest service
+ * @returns complete rest url
+ */
+makeUrl(path: string): string {
+  const rootUrl = untail(this.apiConfig.rootPath, '/');
+  const relUrl = behead(path, '/');
+  return rootUrl + '/' + relUrl;
+}
+
   private makeOptions(hasBody = false): any {
     let headers = new HttpHeaders();
     if (hasBody) {
       headers.set('Content-Type', 'application/json');
     }
     return headers;
-  }
-
-  private makeUrl(path: string): string {
-    const rootUrl = untail(this.apiConfig.rootPath, '/');
-    const relUrl = behead(path, '/');
-    return rootUrl + '/' + relUrl;
   }
 
   /**

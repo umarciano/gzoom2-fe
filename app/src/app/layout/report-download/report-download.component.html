@@ -9,7 +9,7 @@
                     <p-column field="contentName">
                         <ng-template let-report="rowData" pTemplate="body">
                             <div *ngIf="report.status =='DONE'">
-                                <a target="_blank" href="rest/report-download/{{report.activityId}}/stream?token={{token}}">{{report.contentName}}</a>
+                                <a target="_blank" href="{{reportUrl(report)}}">{{report.contentName}}</a>
                             </div>
                             <div *ngIf="report.status !='DONE'">
                                 <span>{{report.contentName}}</span>

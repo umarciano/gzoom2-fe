@@ -21,7 +21,10 @@ export class ReportService {
     return this.client
       .get(`report/${parentTypeId}`).pipe(
         map(json => json.results as Report[])
-      );
+      ).catch((response: any) => {
+        console.error(`Error get all reports: ${response}`);
+        return Promise.reject(response.json() || response);
+      });
   }
 
   report(parentTypeId: string, reportContentId: string, reportName: string, analysis: boolean): Observable<Report> {
@@ -29,7 +32,10 @@ export class ReportService {
     return this.client
       .get(`report/${parentTypeId}/${reportContentId}/${reportName}/${analysis}`).pipe(
         map(json => json as Report)
-      );
+      ).catch((response: any) => {
+        console.error(`Error get report: ${response}`);
+        return Promise.reject(response.json() || response);
+      });
   }
 
   async add(report: Report):  Promise<String> {
@@ -64,5 +70,4 @@ export class ReportService {
     if (date) return moment(date).format("YYYY-MM-DD");
     else return null;
   }
-
 }

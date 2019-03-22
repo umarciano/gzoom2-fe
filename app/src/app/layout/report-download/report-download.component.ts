@@ -13,6 +13,7 @@ import 'rxjs/Rx';
 
 import { ReportDownloadService } from '../../api/report-download.service';
 import { ReportActivity } from '../../view/report-print/report';
+import { ApiClientService } from 'app/api/client.service';
 
 
 @Component({
@@ -34,7 +35,8 @@ export class ReportDownloadComponent implements OnInit {
   constructor(private readonly route: ActivatedRoute,
     private readonly reportDownloadService: ReportDownloadService,
     private readonly authService: AuthService,
-    private readonly i18nService: I18NService, http: HttpClient) {
+    private readonly i18nService: I18NService, http: HttpClient,
+    private readonly clientService :ApiClientService) {
       this._reload = new Subject<void>();
       this.token = authService.token();
     }
@@ -75,7 +77,7 @@ export class ReportDownloadComponent implements OnInit {
           if (element.status == 'RUNNING') {
             running = true;                 
           } else if (element.status == 'DONE' && this.runElement.indexOf(element.activityId) >= 0 ) {
-              window.open('rest/report-download/'+ element.activityId +'/stream?token=' + this.token);               
+              window.open(this.reportUrl(element));               
               this.runElement.splice(this.runElement.indexOf(element.activityId), 1);
           }
         });
@@ -108,4 +110,9 @@ export class ReportDownloadComponent implements OnInit {
     if(!this.isPolling)
       this.polling();    
   }
+
+  reportUrl(report:ReportActivity):string{
+    return this.clientService.makeUrl(`report-download/${report.activityId}/stream?token=${this.token}`);
+  }
+
 }
