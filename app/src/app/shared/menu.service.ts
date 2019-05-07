@@ -23,6 +23,9 @@ const REFURBISHED_PAGES = {
   'GP_MENU_00334': ['timesheet'], // 'GP_MENU_00334': ['timesheet/timesheet'],
   'GP_MENU_00347': ['uom/type'],
   'GP_MENU_00444': ['report-print/CTX_CO'],
+  'GP_MENU_00445': ['report-print/CTX_BS'],
+  'GP_MENU_00446': ['report-print/CTX_OR'],
+  'GP_MENU_00447': ['report-print/CTX_EP'],
   'GP_MENU_00999': ['report-print'] // 'GP_MENU_00999': ['timesheet/timesheet-report/CTX_PR']
 };
 
