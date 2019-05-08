@@ -280,6 +280,13 @@ export class ReportComponent implements OnInit {
       console.log('ngOnInit subscribe report ' + data);
       this.onRowSelect(data);
     });
+
+    //STATIC VALUE
+    const orientation = [
+      { value: "LANDSCAPE", label: 'Orizontale' },
+      { value: "PORTRAIT", label: 'Verticale' }
+    ]
+    this.paramsSelectItem['orientationSelectItem'] = orientation;
     
   }
   //********* END ngOnInit */
