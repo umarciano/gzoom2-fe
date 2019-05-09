@@ -113,7 +113,7 @@ makeUrl(path: string): string {
   /**
    * Sets the JSON content type.
    *
-   * @param  {Headers} headers The headers
+   * @param  {HttpHeaders} headers The headers
    */
   private addJsonHeader(headers: HttpHeaders) {
     headers.set('Content-Type', 'application/json');

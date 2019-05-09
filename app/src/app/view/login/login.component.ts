@@ -9,7 +9,6 @@ import { LoginService } from '../../api/login.service';
 import { ApiConfig } from '../../api/api-config';
 
 const LOGIN_ENDPOINT = 'login';
-const HTTP_HEADERS = new Headers();
 
 @Component({
   selector: 'app-login',
