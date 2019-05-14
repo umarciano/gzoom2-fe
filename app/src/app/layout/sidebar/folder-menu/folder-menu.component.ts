@@ -9,8 +9,8 @@ import {
 import { LeafMenu } from '../../../api/dto';
 import { FolderMenu } from '../../../api/dto';
 
-const OPEN_ICON = 'fa-folder-open-o';
-const CLOSE_ICON = 'fa-folder-o';
+const OPEN_ICON = 'fa-folder-open';
+const CLOSE_ICON = 'fa-folder';
 
 @Component({
   selector: 'app-folder-menu',
@@ -20,7 +20,7 @@ const CLOSE_ICON = 'fa-folder-o';
 export class FolderMenuComponent implements OnInit, OnChanges {
   @Input() menu: FolderMenu;
   classes: string[];
-  expanded = false;
+  expanded = true;
 
   constructor() { }
 

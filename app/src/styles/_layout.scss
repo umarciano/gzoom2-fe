@@ -459,6 +459,7 @@ body.bodylayout {
         border-radius: 0;
         color: map-get($app-colors, navbar-cl);
         text-decoration: none;
+        padding: 0.05rem 0.25rem;
       }
 
       a:not([href]):not([tabindex]) {
@@ -558,7 +559,6 @@ body.bodylayout {
           height: auto;
           li {
             a {
-              padding: 10px;
               display: block;
             }
           }
