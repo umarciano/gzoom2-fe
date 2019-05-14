@@ -16,7 +16,7 @@ $app-colors: (
   default-bg: transparent,
   default-cl: gray,
   active-cl:#232323,
-  title-bg:  #c2ddc0,
+  title-bg: #ECF5EC /* #c2ddc0*/,
   title-bd-cl: #cccccc,
   light: white,
   disabled: #cccccc,
@@ -31,7 +31,7 @@ $sidebar-colors: (
   tab-fg: white,
   tab-cl: #232323,
   tab-bg: map-get($app-colors, navbar-bg),
-  tab-sel-bg:  #C2DDC0,
+  tab-sel-bg: #ECF5EC /* #C2DDC0*/,
   tab-border: lighten(map-get($app-colors, navbar-bg), 30%)
 );
 
