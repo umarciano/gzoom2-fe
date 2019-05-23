@@ -6,7 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AccordionModule } from 'primeng/primeng';     //accordion and accordion tab
 import { DropdownModule } from 'primeng/primeng';
-import { MenuItem } from 'primeng/primeng';
+
 import { DialogModule } from 'primeng/primeng';
 import { DataTableModule, SharedModule } from 'primeng/primeng';
 import { ButtonModule } from 'primeng/primeng';

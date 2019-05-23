@@ -6,8 +6,10 @@ import { ApiModule } from '../api/api.module';
 
 import { AuthorizationService } from './authorization.service';
 import { MenuService } from './menu.service';
+import { NodeService } from './node.service';
 import { PermissionsResolver } from './permissions-resolver.service';
 import { MenuResolver } from './menu-resolver.service';
+import { NodeResolver } from './node-resolver.service';
 import { SafeResPipe } from './safe-res.pipe';
 import { SafeIdentifierGuard } from './safe-identifier.guard';
 
@@ -33,8 +35,10 @@ export class SharedModule {
       providers: [
         AuthorizationService,
         MenuService,
+        NodeService,
         PermissionsResolver,
         MenuResolver,
+        NodeResolver,
         SafeIdentifierGuard
       ]
     };

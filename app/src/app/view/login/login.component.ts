@@ -1,3 +1,5 @@
+import { map } from 'rxjs/operators';
+
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -5,7 +7,6 @@ import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 
 import { AuthService } from '../../commons/auth.service';
-import { LoginService } from '../../api/login.service';
 import { ApiConfig } from '../../api/api-config';
 
 const LOGIN_ENDPOINT = 'login';
@@ -22,6 +23,9 @@ export class LoginComponent implements OnInit {
   returnUrl: string;
   private readonly loginUrl: string;
 
+  nodes: Node[];
+  node: Node;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -36,6 +40,11 @@ export class LoginComponent implements OnInit {
     const qru = this.route.snapshot.queryParams['returnUrl'];
     this.returnUrl = qru && qru !== 'login' && qru !== '/login' ? qru : '/';
 
+    this.route.data.pipe(
+      map((data: { node: Node }) => data.node),
+    ).subscribe((data) => {
+      this.node = data;
+    });
     // if already logged in then skip this state
     if (this.authService.isLoggedIn()) {
       this.router.navigate([this.returnUrl]);

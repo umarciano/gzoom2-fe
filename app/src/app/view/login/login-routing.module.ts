@@ -3,9 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { FocusComponent } from '../../layout/focus/focus.component';
 import { LoginComponent } from './login.component';
+import { NodeResolver } from '../../shared/node-resolver.service';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent }
+  { path: '', component: LoginComponent, resolve: { node: NodeResolver }}
 ];
 
 @NgModule({

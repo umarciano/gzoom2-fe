@@ -4,6 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { AuthGuard } from '../commons/guard.service';
 import { PermissionsResolver } from '../shared/permissions-resolver.service';
 import { MenuResolver } from '../shared/menu-resolver.service';
+import { NodeResolver } from '../shared/node-resolver.service';
 import { FocusComponent } from '../layout/focus/focus.component';
 import { ContentComponent } from '../layout/content/content.component';
 
@@ -22,7 +23,8 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     resolve: {
       permissions: PermissionsResolver,
-      menu: MenuResolver
+      menu: MenuResolver,
+      node: NodeResolver 
     },
     children: [
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },

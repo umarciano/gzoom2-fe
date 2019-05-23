@@ -6,6 +6,8 @@ import { ApiModule } from '../../api/api.module';
 import { LayoutModule } from '../../layout/layout.module';
 import { LoginRoutingModule } from './login-routing.module';
 
+import { NodeResolver } from '../../shared/node-resolver.service';
+import { NodeService } from '../../shared/node.service';
 import { LoginComponent } from './login.component';
 
 @NgModule({
@@ -16,6 +18,10 @@ import { LoginComponent } from './login.component';
     ApiModule,
     LayoutModule,
     LoginRoutingModule
+  ],
+  providers: [    
+    NodeResolver,
+    NodeService
   ],
   declarations: [
     LoginComponent

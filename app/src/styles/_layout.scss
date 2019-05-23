@@ -5,6 +5,7 @@
 
 body.bodylayout {
   background-color: map-get($app-colors, background-cl);
+  color: map-get($app-colors, default-cl);
 
   .ui-widget,
   .ui-widget .ui-widget,
@@ -429,6 +430,10 @@ body.bodylayout {
       color: map-get($app-colors, navbar-fg);
     }
 
+    .nav-item {
+      display: contents;
+    }
+    
     .nav-tabs .nav-item.show .nav-link,
     .nav-tabs .nav-link.active,
     .nav-tabs .nav-link.active:focus,
@@ -446,6 +451,7 @@ body.bodylayout {
       background-color: map-get($sidebar-colors, tab-bg);
       border-color: map-get($sidebar-colors, tab-border);
     }
+
 
     .nav-item span{
       font-size: 1.2em;
@@ -616,6 +622,9 @@ body.bodylayout {
  /*----------------------------------------------------------------------------*/
  /* Sidebar                                                                   */
  /*---------------------------------------------------------------------------*/
+.sidebar-brand {
+  width: $sidebar-width;
+}
 
 .sidebar {
   border-radius: 0;
@@ -623,7 +632,6 @@ body.bodylayout {
   z-index: 1000;
   top: $header-height;
   left: $sidebar-width;
-  width: $sidebar-width;
   margin-left: -$sidebar-width;
   border: none;
   border-radius: 0;

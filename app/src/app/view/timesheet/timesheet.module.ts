@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AccordionModule } from 'primeng/primeng';     //accordion and accordion tab
 import { DropdownModule, AutoCompleteModule } from 'primeng/primeng';
-import { MenuItem } from 'primeng/primeng';
 import { DialogModule } from 'primeng/primeng';
 import { DataTableModule, SharedModule } from 'primeng/primeng';
 import { ButtonModule } from 'primeng/primeng';

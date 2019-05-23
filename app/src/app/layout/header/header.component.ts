@@ -1,8 +1,11 @@
+import { map } from 'rxjs/operators';
+
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 
 import { AuthService, UserProfile } from '../../commons/auth.service';
+import { Router, ActivatedRoute } from '@angular/router';
 import { LockoutService } from '../../commons/lockout.service';
 import { LogoutService } from '../../api/logout.service';
 import { LoginService } from '../../api/login.service';
@@ -28,6 +31,8 @@ const HTTP_HEADERS = new HttpHeaders();
 })
 export class HeaderComponent {
   user: UserProfile;
+  node: Node;
+
   displayChangePassword: boolean = false;
   displayChangeTheme: boolean  = false;
   form: FormGroup;
@@ -46,7 +51,8 @@ export class HeaderComponent {
   THEME_VIOLET: String = 'GPLUS_VIOLET_ACC'; 
   userPreference: UserPreference = new UserPreference();         
 
-  constructor(private readonly authSrv: AuthService,
+  constructor(private route: ActivatedRoute,
+              private readonly authSrv: AuthService,
               private readonly lockoutSrv: LockoutService,
               private readonly logoutSrv: LogoutService,
               private readonly loginSrv: LoginService,
@@ -61,6 +67,11 @@ export class HeaderComponent {
   }
 
   ngOnInit() {
+    this.route.data.pipe(
+      map((data: { node: Node }) => data.node),
+    ).subscribe((data) => {
+      this.node = data;
+      });
 
     this.form = this.fb.group({
       'currentPassword': new FormControl('', Validators.required),
