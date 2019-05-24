@@ -19,7 +19,7 @@ import { DialogModule } from 'primeng/primeng';
 
 import { I18NService } from '../../commons/i18n.service';
 import { Message } from '../../commons/message';
-
+import { Node } from '../../view/node/node';
 
 const CHANGE_PASS_ENDPOINT = 'change-password';
 const HTTP_HEADERS = new HttpHeaders();

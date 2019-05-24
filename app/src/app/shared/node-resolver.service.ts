@@ -26,7 +26,7 @@ export class NodeResolver implements Resolve<void | Node> {
       .then(node => { return node; })
       .catch(err => {
         console.error('Cannot retrieve node', err);
-        this.lockoutService.lockout();
+        //this.lockoutService.lockout(); cancella tutta la sessione e ti rimanda all'homepage
       });
   }
 }

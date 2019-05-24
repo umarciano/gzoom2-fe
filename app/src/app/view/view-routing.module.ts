@@ -12,6 +12,9 @@ const routes: Routes = [
   {
     path: '',
     component: FocusComponent,
+    resolve: {
+     node: NodeResolver 
+    },
     children: [
       { path: 'login', loadChildren: './login/login.module#LoginModule' }
     ]

@@ -8,8 +8,10 @@ import { HttpClient } from '@angular/common/http';
 
 import { AuthService } from '../../commons/auth.service';
 import { ApiConfig } from '../../api/api-config';
+import { Node } from '../../view/node/node';
 
 const LOGIN_ENDPOINT = 'login';
+// TODO const NODE_ENDPOINT = 'node/logo';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +25,6 @@ export class LoginComponent implements OnInit {
   returnUrl: string;
   private readonly loginUrl: string;
 
-  nodes: Node[];
   node: Node;
 
   constructor(
@@ -33,6 +34,7 @@ export class LoginComponent implements OnInit {
     // private loginService: LoginService,
     private http: HttpClient, private apiConfig: ApiConfig) { 
       this.loginUrl = `${apiConfig.rootPath}/${LOGIN_ENDPOINT}`;
+      // this.logoLogin = `${apiConfig.rootPath}/${LOGIN_ENDPOINT}`;
     }
 
   ngOnInit() {
