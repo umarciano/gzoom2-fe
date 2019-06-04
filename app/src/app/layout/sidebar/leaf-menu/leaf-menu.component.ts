@@ -31,6 +31,13 @@ export class LeafMenuComponent implements OnInit, OnChanges {
     this.init();
   }
 
+  toggleSidebar() {
+    const dom: any = document.querySelector('body');
+    dom.classList.toggle('push-right');
+    const menu: any = document.querySelector('#sidebar');
+    menu.classList.toggle('collapse');
+  }
+
   private init() {
     this.classes = this.classesOf(this.menu);
     this.link = this.menuService.stateFor(this.menu);
