@@ -79,7 +79,8 @@ app.configure(function() {
     secret: SECRET,
     getToken: getToken,
     isRevoked: isRevoked
-  }).unless({path: ['/rest/login', '/rest/profile/i18n', '/legacy/*']}));
+  }).unless({path: ['/rest/login', '/rest/profile/i18n', '/rest/node/configuration/Company'
+                  , '/rest/node/logo/Company/ICON', '/rest/node/logo/Company/LOGO', '/rest/node/logo/Company/LOGO_LOGIN']})); // TODO use RegExp
 
   app.use(express.favicon());
   app.use(express.json());
@@ -154,6 +155,26 @@ app.post('/rest/login', function(req, res) {
   }
 });
 
+app.get('/rest/node/configuration/:partyId', function(req, res) {
+  const partyId = req.param('partyId');
+  log.debug('Looking up configuration for ' + partyId);
+  setTimeout(function() {
+    res.json({
+      "partyId": partyId,
+      "noteId": null,
+      "noteData": {
+        "noteInfo": 'Sistema delle Performance'
+      }
+    });
+  }, _.random(200, 1000));
+});
+
+app.get('/rest/node/logo/:partyId/:parentTypeId', function(req, res) {
+  const partyId = req.param('partyId');
+  const parentTypeId = req.param('parentTypeId');
+  log.debug('Looking up logo for ' + partyId + ' and ' + parentTypeId);
+});
+
 /**
  * Logs user out of the server.
  *
@@ -199,19 +220,6 @@ app.get('/rest/account/permissions', function(req, res) {
   log.debug('Retrieving permissions for user', req.user.username);
   setTimeout(function() {
     res.json(data.permissions(user));
-  }, _.random(200, 1000));
-});
-
-app.get('/rest/heroes', function(req, res) {
-  var hh = data.heroes(),
-      unauth = trueOrFalse(1, 5);
-  log.debug('Looking up heroes', {unauthorized: unauth});
-  setTimeout(function() {
-    if (unauth) {
-      res.json(401, {message: 'Invalid username or password'});
-    } else {
-      res.json({ results: hh, total: 100 });
-    }
   }, _.random(200, 1000));
 });
 
