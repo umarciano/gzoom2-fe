@@ -175,10 +175,6 @@ module.exports = {
     return tokens[username] === undefined;
   },
 
-  heroes: function() {
-    return HEROES;
-  },
-
   permissions: function(username) {
     return  {
       permissions: {
