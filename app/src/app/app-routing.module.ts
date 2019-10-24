@@ -5,7 +5,7 @@ import { AuthGuard } from './commons/guard.service';
 
 
 const routes: Routes = [
-  { path: '', loadChildren: './view/view.module#ViewModule' },
+  { path: '', loadChildren: './view/view.module#ViewModule' }, // modul ocaricato i nmaniera lazy
   { path: '**', redirectTo: '/c/dashboard' }
 ];
 

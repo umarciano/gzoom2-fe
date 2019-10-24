@@ -66,10 +66,15 @@ export class CommonsModule {
         { provide: AuthServiceConfig, useValue: config.authService },
         { provide: LockoutConfig, useValue: config.lockout },
         { provide: I18NConfig, useValue: config.i18n },
+        // oppure ApplicationConfig viene fornita usando il valore contenuto in useValue
         { provide: ApplicationConfig, useValue: config.application },
         /* next line loads the i18n configuration from server during bootstrap */
+        // serve la mappa appena l'utente entra
+        // APP_INITIALIZER e' un injectionToken, token che angular fornisce per indicare dei passaggi 
+        // dell'inizializzazione in cui devi fare delle apllicatzioni
+        // load e' una funzione che prende le dipendenze di cu ihai bisogno
         { provide: APP_INITIALIZER, useFactory: load, deps: [HttpClient, I18NConfig], multi: true },
-        AuthService,
+        AuthService, // nome classe funziona come placeholder e quindi lo istanzia
         LockoutService,
         AuthGuard,
         I18NService

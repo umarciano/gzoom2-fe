@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
 import { Observable ,  Subject } from 'rxjs';
-import { first, map, merge, switchMap } from 'rxjs/operators';
+import { first, map, merge, mergeMap } from 'rxjs/operators';
 
 import { ConfirmDialogModule, ConfirmationService, SpinnerModule, TooltipModule } from 'primeng/primeng';
 
@@ -60,6 +60,8 @@ export class UomComponent implements OnInit {
               private readonly router: Router,
               private readonly i18nService: I18NService,
               private fb: FormBuilder) {
+    // remember that a subject is also an observable seen from the consumer side
+    // instanzio un subject che e' un observable che posso controllare            
     this._reload = new Subject<void>();
   }
 
@@ -76,8 +78,14 @@ export class UomComponent implements OnInit {
         });
 
     // Manage Reload
-    const reloadedUomTypes = this._reload.pipe(switchMap(() => this.uomService.uomTypes()));
-    const reloadedUoms = this._reload.pipe(switchMap(() => this.uomService.uoms()));
+    const reloadedUomTypes = this._reload.pipe(mergeMap(() => this.uomService.uomTypes()));
+    const reloadedUoms = this._reload.pipe(mergeMap(() => this.uomService.uoms()));
+
+    // mergeMap e' il flatMap di un array
+    // invece switchMap, a differenza di mergeMap chiude anche la sottoscrizione al primo observable di partenza
+    // quindi dopo il primo valore chiude e non avrai piu la sottoscrizione a quell'observable
+    
+    // Qui ho 2 observe e li unisco
 
     const uomTypesObs = this.route.data.pipe(
       map((data: { uomTypes: UomType[] }) => data.uomTypes),
