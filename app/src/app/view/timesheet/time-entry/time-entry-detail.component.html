@@ -23,10 +23,11 @@
           <div>
             <p-dropdown name="workEffortId_o_{{ri}}" appendTo="body" [(ngModel)]="row[col.field]" [options]="workEffortSelectItem" [autoWidth]="false" [style]="{'width':'100%'}" required="true"></p-dropdown>
           </div>
-        </ng-template> -->          
+        </ng-template> -->
+        <!-- (onDropdownClick) = "onDropdownClick($event)" -->          
         <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="body">
           <p-autoComplete name="workEffortId_o_{{ri}}" [(ngModel)]="row[col.field]" [suggestions]="filteredActivities" 
-          (onDropdownClick) = "onDropdownClick($event)" (onSelect)="onSelect($event, ri)" (completeMethod)="filterActivities($event)"
+           (onSelect)="onSelect($event, ri)" (completeMethod)="filterActivities($event)"
             [minLength]="1" placeholder="Inizia a scrivere..." [dropdown]="true" appendTo="body" [style]="{'width':'95%'}" [inputStyle]="{'width':'95%'}">
             <ng-template let-record pTemplate="item">
                 <div class="ui-helper-clearfix">

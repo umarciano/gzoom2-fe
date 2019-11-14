@@ -7,7 +7,7 @@ import { map, merge, switchMap } from 'rxjs/operators';
 
 import { ConfirmDialogModule, ConfirmationService, TooltipModule } from 'primeng/primeng';
 
-import { I18NService } from '../../../commons/i18n.service';
+import { I18NService } from '../../../i18n/i18n.service';
 import { Message } from '../../../commons/message';
 import { SelectItem } from '../../../commons/selectitem';
 import { Uom } from '../uom/uom';

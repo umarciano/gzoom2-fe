@@ -35,6 +35,7 @@ const routes: Routes = [
       { path: 'uom', loadChildren: './uom/uom.module#UomModule' },
       { path: 'timesheet', loadChildren: './timesheet/timesheet.module#TimesheetModule' },
       { path: 'report-print', loadChildren: './report-print/report-print.module#ReportPrintModule' },
+      { path: 'visitor', loadChildren: './visitor/visitor.module#VisitorModule' },
       //{ path: 'work-effort-type-report', loadChildren: './work-effort-type-report/work-effort-type-report.module#WorkEffortTypeReportModule' },
       { path: '', pathMatch: 'full', redirectTo: '/c/dashboard' }
     ]

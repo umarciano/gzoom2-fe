@@ -25,6 +25,7 @@ import { ProgressSpinnerModule} from 'primeng/progressspinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { EqualValidator } from '../commons/equal-validator.directive';
+import { I18nModule } from 'app/i18n/i18n.module';
 
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ import { EqualValidator } from '../commons/equal-validator.directive';
     FormsModule,
     ReactiveFormsModule,
     ButtonModule,
+    I18nModule
   ],
   declarations: [
     FocusComponent,

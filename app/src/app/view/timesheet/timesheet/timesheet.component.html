@@ -19,12 +19,12 @@
     <p-column [filter]="true" filterPlaceholder="{{'Search...'|i18n}}" filterMatchMode="contains" [style]="{'width':'30%'}" field="partyName" header="{{'Party'|i18n}}" [sortable]="true"></p-column>
     <p-column [filter]="true" filterPlaceholder="{{'Search...'|i18n}}" filterMatchMode="contains" [style]="{'width':'15%'}" field="fromDate" header="{{'From Date'|i18n}}" [sortable]="true">
         <ng-template let-col let-row="rowData" pTemplate>
-            <span>{{row[col.field] | date:i18nService.getFormat('date-short')}}</span>
+            <span>{{row[col.field] | i18nDate}}</span>
         </ng-template>
     </p-column>
     <p-column [filter]="true" filterPlaceholder="{{'Search...'|i18n}}" filterMatchMode="contains" [style]="{'width':'15%'}" field="thruDate" header="{{'Thru Date'|i18n}}" [sortable]="true">
         <ng-template let-col let-row="rowData" pTemplate>
-          <span>{{row[col.field] | date:i18nService.getFormat('date-short')}}</span>
+          <span>{{row[col.field] | i18nDate}}</span>
         </ng-template>
     </p-column>
 
@@ -91,7 +91,7 @@
           <label for="fromDate">{{'From Date'|i18n}}*</label>
         </div>
         <div class="ui-grid-col-4">
-          <p-calendar class="form-control" styleClass="calendar-icon" [locale]="i18nService.getCalendarLocale()" formControlName="fromDate" [(ngModel)]="timesheet.fromDate" dateFormat="{{'date-short-pcalendar'|i18nDate}}" name="fromDate" required [showIcon]="true" icon="fa fa-calendar"></p-calendar>
+          <p-calendar class="form-control" styleClass="calendar-icon" formControlName="fromDate" [(ngModel)]="timesheet.fromDate" [locale]="i18nService.getCalendarLocale()" [dateFormat]="i18nService.getFormat('date-short-pcalendar')" name="fromDate" required [showIcon]="true" icon="fa fa-calendar"></p-calendar>
         </div>
       </div>
       <!-- Thru date -->
@@ -99,8 +99,8 @@
         <div class="ui-grid-col-3">
           <label for="thruDate">{{'Thru Date'|i18n}}*</label>
         </div>
-        <div class="ui-grid-col-4">
-          <p-calendar class="form-control" styleClass="calendar-icon" [locale]="i18nService.getCalendarLocale()" formControlName="thruDate" [(ngModel)]="timesheet.thruDate" dateFormat="{{'date-short-pcalendar'|i18nDate}}" name="thruDate" required [showIcon]="true" icon="fa fa-calendar"></p-calendar>
+        <div class="ui-grid-col-4"> <!--{{'date-short-pcalendar'|i18nDate}}-->
+          <p-calendar class="form-control" styleClass="calendar-icon" formControlName="thruDate" [(ngModel)]="timesheet.thruDate" [locale]="i18nService.getCalendarLocale()" [dateFormat]="i18nService.getFormat('date-short-pcalendar')" name="thruDate" required [showIcon]="true" icon="fa fa-calendar"></p-calendar>
         </div>
       </div>
       <!-- contractHours -->

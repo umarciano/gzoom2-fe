@@ -22,6 +22,7 @@ const REFURBISHED_PAGES = {
   'GP_MENU_00332': ['uom/value'],
   'GP_MENU_00334': ['timesheet'], // 'GP_MENU_00334': ['timesheet/timesheet'],
   'GP_MENU_00347': ['uom/type'],
+  'GP_MENU_00348': ['visitor'],
   'GP_MENU_00444': ['report-print/CTX_CO'],
   'GP_MENU_00445': ['report-print/CTX_BS'],
   'GP_MENU_00446': ['report-print/CTX_OR'],

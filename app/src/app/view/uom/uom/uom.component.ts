@@ -9,7 +9,7 @@ import { ConfirmDialogModule, ConfirmationService, SpinnerModule, TooltipModule 
 
 import { SelectItem } from '../../../commons/selectitem';
 import { Message } from '../../../commons/message';
-import { I18NService } from '../../../commons/i18n.service';
+import { I18NService } from '../../../i18n/i18n.service';
 import { Uom } from './uom';
 import { UomRatingScale } from '../scale/uom_rating_scale';
 import { UomType } from '../uom-type/uom_type';

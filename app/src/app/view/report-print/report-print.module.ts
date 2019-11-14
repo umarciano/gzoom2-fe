@@ -37,6 +37,9 @@ import { RoleTypeResolverService } from 'app/view/role-type/role-type/role-type-
 import { WorkEffortService } from 'app/api/work-effort.service';
 import { WorkEffortResolverService } from 'app/view/work-effort/work-effort/work-effort-resolver.service';
 
+
+import { I18nModule } from 'app/i18n/i18n.module';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -61,7 +64,8 @@ import { WorkEffortResolverService } from 'app/view/work-effort/work-effort/work
     ListboxModule,
     InputSwitchModule,
     ToggleButtonModule,
-    TooltipModule
+    TooltipModule,
+    I18nModule
   ],
   declarations: [
     ReportPrintComponent,

@@ -1,0 +1,44 @@
+<h3 class="first">{{'GP_MENU_00348'|i18n}}</h3>
+
+<p-dataTable [value]="visits"
+            [rows]="5"
+            scrollable="true"
+            scrollHeight="260px"
+            sortMode="multiple"
+            [responsive]="true"
+            #dt exportFilename="visitors"
+            resizableColumns="true"
+            columnResizeMode="expand"
+            dataKey="visitorId">
+    <p-column field="userLoginId" header="{{'User Login'|i18n}}"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}"
+    [sortable]="true">
+    </p-column>
+    <p-column field="parentRoleCode" header="{{'Parent Role Code'|i18n}}"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}"
+    [sortable]="true">
+    </p-column>
+    <p-column field="firstName" header="{{'First Name'|i18n}}"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'...'|i18n}}"
+    [sortable]="true">
+    </p-column>
+    <p-column field="lastName" header="{{'Last Name'|i18n}}"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'...'|i18n}}"
+    [sortable]="true"></p-column>
+    <p-column field="minFromDate" header="{{'From Date'|i18n}}" [sortable]="true">
+        <ng-template let-col let-row="rowData" pTemplate>
+            <span>{{row[col.field] | i18nDateTime}}</span>
+        </ng-template>
+    </p-column>
+    <p-column field="maxThruDate" header="{{'Thru Date'|i18n}}" [sortable]="true">
+        <ng-template let-col let-row="rowData" pTemplate>
+            <span>{{row[col.field] | i18nDateTime}}</span>
+        </ng-template>
+    </p-column>
+    <p-column styleClass="col-button">
+        <ng-template pTemplate="header">
+            <button placement="top" ngbTooltip="{{'Export'|i18n}}" container="body" type="button" pButton icon="fa fa-file" (click)="dt.exportCSV()"></button>
+        </ng-template>
+    </p-column>
+</p-dataTable>
+

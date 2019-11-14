@@ -10,6 +10,8 @@ import { NodeResolver } from '../../shared/node-resolver.service';
 import { NodeService } from '../../shared/node.service';
 import { LoginComponent } from './login.component';
 
+import { I18nModule } from 'app/i18n/i18n.module';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -17,7 +19,8 @@ import { LoginComponent } from './login.component';
     CommonsModule,
     ApiModule,
     LayoutModule,
-    LoginRoutingModule
+    LoginRoutingModule,
+    I18nModule
   ],
   providers: [    
     NodeResolver,

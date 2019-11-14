@@ -17,7 +17,7 @@ import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms'
 
 import { DialogModule } from 'primeng/primeng';
 
-import { I18NService } from '../../commons/i18n.service';
+import { I18NService } from '../../i18n/i18n.service';
 import { Message } from '../../commons/message';
 import { Node } from '../../view/node/node';
 

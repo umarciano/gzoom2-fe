@@ -36,6 +36,8 @@ import { NumberDecimalDirective } from './../../commons/number.directive';
 import { NumberDecimalAccessor } from './../../commons/number.accessor';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { I18nModule } from 'app/i18n/i18n.module';
+
 
 @NgModule({
   imports: [
@@ -58,7 +60,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     DropdownModule,
     AutoCompleteModule,
     TooltipModule,
-    TimesheetRoutingModule
+    TimesheetRoutingModule,
+    I18nModule
   ],
   declarations: [
     TimesheetComponent,

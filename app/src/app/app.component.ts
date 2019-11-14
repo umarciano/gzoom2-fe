@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { I18NService } from './commons/i18n.service';
+import { I18NService } from './i18n/i18n.service';
 import { filter } from 'rxjs/operators';
 
 

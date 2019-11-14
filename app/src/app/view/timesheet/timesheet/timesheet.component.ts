@@ -11,9 +11,10 @@ import { ConfirmDialogModule, ConfirmationService, SpinnerModule, TooltipModule 
 
 import * as moment from 'moment';
 
+import {dtoToDateTime} from '../../../api/utils';
+
 import { SelectItem } from '../../../commons/selectitem';
-import { I18NService } from '../../../commons/i18n.service';
-import { i18NDatePipe } from '../../../commons/i18nDate.pipe';
+import { I18NService } from '../../../i18n/i18n.service';
 import { Message } from '../../../commons/message';
 import { Timesheet } from './timesheet';
 import { TimesheetService } from '../../../api/timesheet.service';
@@ -71,7 +72,7 @@ export class TimesheetComponent implements OnInit {
     private readonly confirmationService: ConfirmationService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly i18nService: I18NService,
+    public readonly i18nService: I18NService,
     private fb: FormBuilder) {
 
     this._reload = new Subject<void>();
@@ -184,8 +185,14 @@ export class TimesheetComponent implements OnInit {
   selectTimesheet(data: Timesheet) {
     this.error = '';
     this.selectedTimesheet = data;
+    
+    console.log(" this.selectedTimesheet.fromDate " + this.selectedTimesheet.fromDate);
     if(this.selectedTimesheet.fromDate)this.selectedTimesheet.fromDate=moment(this.selectedTimesheet.fromDate).toDate();
-    if(this.selectedTimesheet.thruDate)this.selectedTimesheet.thruDate=moment(this.selectedTimesheet.thruDate).toDate();
+    console.log(" this.selectedTimesheet.fromDate " + this.selectedTimesheet.fromDate);
+    if(data.fromDate) this.selectedTimesheet.fromDate=dtoToDateTime(data.fromDate);
+    console.log(" this.selectedTimesheet.fromDate " + this.selectedTimesheet.fromDate);
+    // if(this.selectedTimesheet.fromDate)this.selectedTimesheet.fromDate=moment(this.selectedTimesheet.fromDate).toDate();
+    if(this.selectedTimesheet.thruDate) this.selectedTimesheet.thruDate=dtoToDateTime(data.fromDate);
 
     this.newTimesheet = false;
     this.timesheet = this._cloneTimesheet(data);

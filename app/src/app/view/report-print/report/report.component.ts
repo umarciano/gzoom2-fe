@@ -9,7 +9,7 @@ import { map, merge, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { SelectItem } from '../../../commons/selectitem';
-import { I18NService } from '../../../commons/i18n.service';
+import { I18NService } from '../../../i18n/i18n.service';
 import { Message } from '../../../commons/message';
 
 import { Report } from '../report';

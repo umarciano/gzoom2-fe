@@ -118,7 +118,7 @@
     "date-long": "d MMM yyyy",
     "date-range-short": "%d - %d",
     "date-range-long": "Dal %D al %D",
-    "date-time-short": "dd-MM-yyyy, LT",
+    "date-time-short": "DD-MM-YYYY, LT",
     "date-time-long": "d MMMM yyyy - LT",
     "date-short-pcalendar": "dd/mm/yy",
     "date-MMMM-YYYY": "MMMM yyyy"

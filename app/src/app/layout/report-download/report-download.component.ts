@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
-import { I18NService } from '../../commons/i18n.service';
+import { I18NService } from '../../i18n/i18n.service';
 import { AuthService } from '../../commons/auth.service';
 
 import { Observable ,  Subject, interval } from 'rxjs';
