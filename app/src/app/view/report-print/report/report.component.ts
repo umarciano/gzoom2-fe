@@ -38,7 +38,7 @@ import 'rxjs/Rx';
   function workEfforts2SelectItems(types: WorkEffort[]): SelectItem[] {
   if (types == null){
     return [];
-  } 
+  }
   return types.map((wt: WorkEffort) => {
     return {label: ( wt.sourceReferenceId != null ? wt.sourceReferenceId + " - " + wt.workEffortName: wt.workEffortName), value: wt.workEffortId};
   });
@@ -138,8 +138,8 @@ export class ReportComponent implements OnInit {
   workEffortType: WorkEffortType;
   workEffortTypes: WorkEffortType[];
   workEffortTypeSelectItem: SelectItem[] = [];
-  params: ReportParam[];    
-  
+  params: ReportParam[];
+
   workEffort: WorkEffort;
   workEfforts: WorkEffort[] = [];
   workEffortId: String;
@@ -162,7 +162,7 @@ export class ReportComponent implements OnInit {
 
   constructor(private readonly route: ActivatedRoute,
   private readonly router: Router,
-  private readonly i18nService: I18NService,
+  public readonly i18nService: I18NService,
   private readonly reportService: ReportService,
   private readonly partyService: PartyService,
   private readonly uomService: UomService,
@@ -170,21 +170,21 @@ export class ReportComponent implements OnInit {
   private readonly roleTypeService: RoleTypeService,
   private readonly workEffortService: WorkEffortService,
   private readonly reportDownloadComponent: ReportDownloadComponent,
-  private fb: FormBuilder, 
+  private fb: FormBuilder,
   http: HttpClient,) {
-    this._reload = new Subject<ReloadParams>(); 
+    this._reload = new Subject<ReloadParams>();
   }
 
   ngOnInit() {
 
     // this.route.paramMap('');
     console.log('ngOnInit Report component ');
-    //let reloadedReport = this._reload;    
-    
+    //let reloadedReport = this._reload;
+
 
     var parentTypeId = this.route.snapshot.parent.params.parentTypeId;
     var reportContentId = this.route.snapshot.params.reportContentId;
-   
+
     const reloadedOrgUnit = this._reload.pipe(switchMap(() => this.partyService.orgUnits(parentTypeId)));
     const reloadedOrgUnitObs = this.route.data.pipe(
       map((data: { orgUnits: Party[] }) => data.orgUnits),
@@ -197,7 +197,7 @@ export class ReportComponent implements OnInit {
 
     });
 
-    
+
     const reloadedStatus = this._reload.pipe(switchMap(() => this.statusItemService.statusItems(parentTypeId)));
     const reloadedStatusObs = this.route.data.pipe(
       map((data: { statusItems: StatusItem[] }) => data.statusItems),
@@ -234,25 +234,25 @@ export class ReportComponent implements OnInit {
       this.paramsSelectItem['partyIdSelectItem'] = this.partyIdSelectItem;
 
     });
-   
+
     const reloadedWorkEffort = this._reload.pipe(switchMap(params => (params.workEffortTypeId ? this.workEffortService.workEfforts(parentTypeId, params.workEffortTypeId, this.selectedReport.useFilter) : reloadedWorkEffort)));
     const workEffortObs = this.route.data.pipe(
-       map((data: { workEfforts: WorkEffort[] }) => data.workEfforts),   
-       merge(reloadedWorkEffort),        
+       map((data: { workEfforts: WorkEffort[] }) => data.workEfforts),
+       merge(reloadedWorkEffort),
        map(workEfforts2SelectItems)
     ).subscribe((data) => {
-      this.workEffortIdSelectItem = data;      
+      this.workEffortIdSelectItem = data;
       this.workEffortIdSelectItem.push({label: this.i18nService.translate('Select WorkEffort'), value:null});
       this.paramsSelectItem['workEffortIdSelectItem'] = this.workEffortIdSelectItem;
     });
-    
+
     const reloadedWorkEffortChild = this._reload.pipe(switchMap(params => (params.workEffortId ? this.workEffortService.workEffortParents(params.workEffortId) : reloadedWorkEffortChild)));
     const workEffortChildObs = this.route.data.pipe(
-       map((data: { workEfforts: WorkEffort[] }) => data.workEfforts),   
-       merge(reloadedWorkEffortChild),        
+       map((data: { workEfforts: WorkEffort[] }) => data.workEfforts),
+       merge(reloadedWorkEffortChild),
        map(workEfforts2SelectItems)
     ).subscribe((data) => {
-      this.workEffortIdChildSelectItem = data;      
+      this.workEffortIdChildSelectItem = data;
       this.workEffortIdChildSelectItem.push({label: this.i18nService.translate('Select WorkEffortChild'), value:null});
       this.paramsSelectItem['workEffortIdChildSelectItem'] = this.workEffortIdChildSelectItem;
     });
@@ -270,10 +270,10 @@ export class ReportComponent implements OnInit {
       this.paramsSelectItem['uomRangeValuesIdSelectItem'] = this.uomRangeValuesIdSelectItem;
 
     });
-   
+
 
     const reportObs = this.route.data.pipe(
-      map((data: { report: Report }) => data.report)       
+      map((data: { report: Report }) => data.report)
     );
     reportObs
     .subscribe((data) => {
@@ -287,11 +287,11 @@ export class ReportComponent implements OnInit {
       { value: "PORTRAIT", label: 'Verticale' }
     ]
     this.paramsSelectItem['orientationSelectItem'] = orientation;
-    
+
   }
   //********* END ngOnInit */
 
-  
+
 
   onChangeAll(value, paramName) {
     console.log('onChangeAll paramName= ' + paramName + ' value=', value);
@@ -299,7 +299,7 @@ export class ReportComponent implements OnInit {
       this._reload.next({roleTypeId: value});
     } else if (paramName == 'workEffortId') {
       this._reload.next({workEffortId: value});
-    }    
+    }
   }
 
 
@@ -307,13 +307,13 @@ export class ReportComponent implements OnInit {
     console.log('report ', data);
     this.selectedReport = data;
 
-    this.hiddenMail = (this.selectedReport.reportContentId.indexOf('REMINDER') < 0 ); 
+    this.hiddenMail = (this.selectedReport.reportContentId.indexOf('REMINDER') < 0 );
 
     //TODO param
     this.params = data.params;
     console.log('onRowSelect params ',  this.params);
 
-    var paramForm = {};    
+    var paramForm = {};
     this.params.forEach((element) => {
       //gestione required
       var controller = new FormControl('');
@@ -321,7 +321,7 @@ export class ReportComponent implements OnInit {
         controller = new FormControl('', Validators.required);
       paramForm[element.paramName] = controller;
       this.paramsValue[element.paramName] = element.paramDefault;
-      
+
       //Lista di elementi per il caricamento di altre drop List
       if (element.paramName == 'uomRangeId') {
         //carico al lista TODO
@@ -330,12 +330,12 @@ export class ReportComponent implements OnInit {
 
     });
 
-    //aggiungo 
+    //aggiungo
     paramForm["outputFormat"] = new FormControl('', Validators.required);
-    paramForm["workEffortTypeId"] = new FormControl('', Validators.required);  
+    paramForm["workEffortTypeId"] = new FormControl('', Validators.required);
     this.form = this.fb.group(paramForm);
 
-     
+
     this.outputFormats = data.outputFormats;
     this.outputFormatSelectItem = outputFormat2SelectItems(this.workEffortTypes);
     this.outputFormat = data.outputFormats[0];
@@ -348,7 +348,7 @@ export class ReportComponent implements OnInit {
     this.workEffortTypes = data.workEffortTypes;
     this.workEffortTypeSelectItem = workEffortType2SelectItems(this.workEffortTypes);
     console.log('onRowSelect workEffortTypes ', this.workEffortTypes);
-   
+
     //this.workEffortType = data.workEffortTypes[0];
     //console.log('onRowSelect workEffortTypeId ', this.workEffortType);
     this.onRowSelectWorkEffortType(data.workEffortTypes[0]);
@@ -363,7 +363,7 @@ export class ReportComponent implements OnInit {
   }
 
  /* filterWorkEffort(workEffortTypeId) {
-    console.log('filterWorkEffort-->'+workEffortTypeId);    
+    console.log('filterWorkEffort-->'+workEffortTypeId);
     this._reload.next({workEffortTypeId});
  }*/
 
@@ -376,16 +376,16 @@ export class ReportComponent implements OnInit {
     //this.selectedReport.paramsValue = this.paramsValue;
     this.selectedReport.paramsValue  = Object.assign({}, this.paramsValue);
 
-    this.params.forEach((element) => {      
-      if (element.paramType == 'DATE') { 
-        this.selectedReport.paramsValue[element.paramName] = this.reportService.getDate(this.paramsValue[element.paramName]); 
-      } 
+    this.params.forEach((element) => {
+      if (element.paramType == 'DATE') {
+        this.selectedReport.paramsValue[element.paramName] = this.reportService.getDate(this.paramsValue[element.paramName]);
+      }
     });
-    
 
-  } 
 
-  print() { 
+  }
+
+  print() {
     console.log('print report ');
     this.setDataReport();
     this.reportService
@@ -393,7 +393,7 @@ export class ReportComponent implements OnInit {
       .then((activityId) => {
         this.reportDownloadComponent.openDownload(activityId);
         this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Print'), detail:this.i18nService.translate('Esecuzione stampa '+ this.selectedReport.reportName)}];
-      })           
+      })
       .catch((error) => {
         console.log('error.message' , error);
         this.error = this.i18nService.translate(error) || error;
@@ -407,12 +407,12 @@ export class ReportComponent implements OnInit {
       .mail(this.selectedReport)
       .then(() => {
         this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Send Email'), detail:this.i18nService.translate('Invio mail in esequzione ')}];
-      })     
+      })
       .catch((error) => {
         console.log('error' , error);
         this.error = this.i18nService.translate(error) || error;
        });
-    
+
   }
 
 }

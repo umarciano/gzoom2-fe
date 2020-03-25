@@ -1,12 +1,12 @@
 <p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
-<form [formGroup]="form" >  
+<form [formGroup]="form" >
 
   <div class="ui-grid-row" style="margin-bottom: 1em">
     <div class="ui-grid-col-3">
       <label for="workEffortTypeId">{{'Tipologia'|i18n}}*</label>
     </div>
     <!--<div class="ui-grid-col-4" *ngIf="!selectedReport.analysis">
-       Se sono in un analisi mostra la lista altrimento il radio button 
+       Se sono in un analisi mostra la lista altrimento il radio button
       <p-dataTable [value]="workEffortTypes" [(selection)]="workEffortType" (onRowSelect)="onRowSelectWorkEffortType($event.data)" dataKey="workEffortTypeId">
         <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
         <p-column field="workEffortTypeId">
@@ -14,7 +14,7 @@
             <span pTooltip="{{workEffortType.workEffortTypeId}}">{{workEffortType.workEffortTypeName}} </span>
           </ng-template>
         </p-column>
-      </p-dataTable>      
+      </p-dataTable>
     </div>-->
     <div class="ui-grid-col-4" *ngIf="!selectedReport.analysis">
       <div *ngFor="let wt of workEffortTypes">
@@ -37,8 +37,8 @@
     <div class="ui-grid-col-3">
       <label for="outputFormat">{{'Seleziona il formato'|i18n}}*</label>
     </div>
-     <!-- <p-listbox formControlName="outputFormat" [options]="outputFormatSelectItem" [(ngModel)]="outputFormat">          
-      </p-listbox> 
+     <!-- <p-listbox formControlName="outputFormat" [options]="outputFormatSelectItem" [(ngModel)]="outputFormat">
+      </p-listbox>
      <p-dataTable [value]="outputFormats" [(selection)]="outputFormat" dataKey="mimeTypeId"  >
         <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
         <p-column field="outputFormat">
@@ -59,14 +59,14 @@
         </div>
       </div>
   </div>
-  
- 
+
+
   <div *ngFor="let param of params ">
 
     <div class="ui-grid-row" *ngIf="param.paramType == 'LIST'">
       <div class="ui-grid-col-3">
         <label for="{{param.paramName}}">{{param.paramName|i18n}} <label *ngIf="param.mandatory">*</label></label>
-      </div>     
+      </div>
       <div class="ui-grid-col-4" *ngIf="param.mandatory">
           <p-dropdown required class="form-control" appendTo="body" filter="true" (onChange)="onChangeAll($event.value, param.paramName)" [options]="paramsSelectItem[param.paramName+'SelectItem']" formControlName="{{param.paramName}}"  [(ngModel)]="paramsValue[param.paramName]"  [autoWidth]="false" [style]="{'width':'100%'}">
           </p-dropdown>
@@ -88,16 +88,16 @@
         <label for="{{param.paramName}}">{{param.paramName|i18n}}<label *ngIf="param.mandatory">*</label></label>
       </div>
       <div class="ui-grid-col-4" *ngIf="param.mandatory">
-          <p-calendar required class="form-control form-control-report" styleClass="calendar-icon" formControlName="{{param.paramName}}" [locale]="i18nService.getCalendarLocale()" [(ngModel)]="paramsValue[param.paramName]" dateFormat="{{'date-short-pcalendar'|i18nDate}}" name="{{param.paramName}}" [showIcon]="true" icon="fa fa-calendar"></p-calendar>  
+          <p-calendar required class="form-control form-control-report" styleClass="calendar-icon" formControlName="{{param.paramName}}" [locale]="i18nService.getCalendarLocale()" [(ngModel)]="paramsValue[param.paramName]" [dateFormat]="i18nService.getFormat('date-short-pcalendar')" name="{{param.paramName}}" [showIcon]="true" icon="fa fa-calendar"></p-calendar>
       </div>
       <div class="ui-grid-col-4" *ngIf="!param.mandatory">
-          <p-calendar class="form-control form-control-report" styleClass="calendar-icon" formControlName="{{param.paramName}}" [locale]="i18nService.getCalendarLocale()" [(ngModel)]="paramsValue[param.paramName]" dateFormat="{{'date-short-pcalendar'|i18nDate}}" name="{{param.paramName}}" [showIcon]="true" icon="fa fa-calendar"></p-calendar>  
+        <p-calendar class="form-control form-control-report" styleClass="calendar-icon" formControlName="{{param.paramName}}" [locale]="i18nService.getCalendarLocale()" [(ngModel)]="paramsValue[param.paramName]" [dateFormat]="i18nService.getFormat('date-short-pcalendar')" name="{{param.paramName}}" [showIcon]="true" icon="fa fa-calendar"></p-calendar>
       </div>
       <div class="ui-grid-col-5" *ngIf="param.mandatory">
         <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls[param.paramName].valid&amp;&amp;form.controls[param.paramName].dirty">
           <i class="fa fa-times"></i>
           {{param.paramName|i18n}} {{'is required'|i18n}}
-        </div> 
+        </div>
       </div>
     </div>
 
@@ -106,18 +106,18 @@
         <label  for="{{param.paramName}}">{{param.paramName|i18n}}</label>
       </div>
       <div class="ui-grid-col-4">
-          <p-toggleButton onLabel="{{'SI'|i18n}}" offLabel="{{'NO'|i18n}}" formControlName="{{param.paramName}}" [(ngModel)]="paramsValue[param.paramName]" defa></p-toggleButton>        
-      </div>        
-    </div> 
-          
+          <p-toggleButton onLabel="{{'SI'|i18n}}" offLabel="{{'NO'|i18n}}" formControlName="{{param.paramName}}" [(ngModel)]="paramsValue[param.paramName]" defa></p-toggleButton>
+      </div>
+    </div>
+
     <div class="ui-grid-row" *ngIf="param.paramType == 'INPUT'">
       <div class="ui-grid-col-3">
         <label  for="{{param.paramName}}">{{param.paramName|i18n}}</label>
       </div>
       <div class="ui-grid-col-4">
-          <input class="form-control" formControlName="{{param.paramName}}" [(ngModel)]="paramsValue[param.paramName]" />        
-      </div> 
-    </div>           
+          <input class="form-control" formControlName="{{param.paramName}}" [(ngModel)]="paramsValue[param.paramName]" />
+      </div>
+    </div>
   </div>
 
 
@@ -128,7 +128,7 @@
       <!--<button type="button" (click)="mail()" pButton icon="fa-envelope" label="{{'Mail'|i18n}}" [disabled]="!form.valid" ></button>-->
     </div>
   </p-footer>
-     
-</form> 
+
+</form>
 
 <div *ngIf="error" class="alert alert-danger">{{error}}</div>
