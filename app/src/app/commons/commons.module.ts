@@ -7,6 +7,8 @@ import { AuthGuard } from './guard.service';
 import { LockoutService, LockoutConfig } from './lockout.service';
 import { ApplicationConfig } from './config';
 import { FullnamePipe, AsIdPipe, AsClassPipe } from './commons.pipe';
+import { EnumerationService } from './enumeration.service';
+
 import {
   ApplicationVersionDirective,
   ApplicationNameDirective,
@@ -58,6 +60,7 @@ export class CommonsModule {
         { provide: ApplicationConfig, useValue: config.application },
         AuthService, // nome classe funziona come placeholder e quindi lo istanzia
         LockoutService,
+        EnumerationService,
         AuthGuard
       ]
     };

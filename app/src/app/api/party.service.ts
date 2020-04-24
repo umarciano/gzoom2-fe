@@ -38,5 +38,29 @@ export class PartyService {
       );
   }
 
+  roleTypePartysBetween(roleTypeId: string): Observable<Party[]> {
+    console.log('search party whit roleTypeId='+roleTypeId);
+    return this.client
+      .get(`party/roleType/between/${roleTypeId}`).pipe(
+        map(json => json.results as Party[])
+      );
+  }
+
+  roleTypePartysIn(roleTypeId: string): Observable<Party[]> {
+    console.log('search party whit roleTypeId='+roleTypeId);
+    return this.client
+      .get(`party/roleType/in/${roleTypeId}`).pipe(
+        map(json => json.results as Party[])
+      );
+  }
+
+  roleTypePartysNotIn(roleTypeId: string): Observable<Party[]> {
+    console.log('search party whit roleTypeId='+roleTypeId);
+    return this.client
+      .get(`party/roleType/notin/${roleTypeId}`).pipe(
+        map(json => json.results as Party[])
+      );
+  }
+
 
 }

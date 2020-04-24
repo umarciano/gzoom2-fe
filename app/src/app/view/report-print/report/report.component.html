@@ -68,7 +68,12 @@
         <label for="{{param.paramName}}">{{param.paramName|i18n}} <label *ngIf="param.mandatory">*</label></label>
       </div>
       <div class="ui-grid-col-4" *ngIf="param.mandatory">
-          <p-dropdown required class="form-control" appendTo="body" filter="true" (onChange)="onChangeAll($event.value, param.paramName)" [options]="paramsSelectItem[param.paramName+'SelectItem']" formControlName="{{param.paramName}}"  [(ngModel)]="paramsValue[param.paramName]"  [autoWidth]="false" [style]="{'width':'100%'}">
+          <p-dropdown required class="form-control" appendTo="body" filter="true"
+           (onChange)="onChangeAll($event.value, param.paramName)"
+           [options]="paramsSelectItem[param.paramName+'SelectItem']"
+           formControlName="{{param.paramName}}"
+            [(ngModel)]="paramsValue[param.paramName]"
+            [autoWidth]="false" [style]="{'width':'100%'}">
           </p-dropdown>
       </div>
       <div class="ui-grid-col-4" *ngIf="!param.mandatory">

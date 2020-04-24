@@ -33,6 +33,9 @@ import { ReportDownloadComponent } from '../../../layout/report-download/report-
 
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/Rx';
+import { EnumerationService } from 'app/commons/enumeration.service';
+import { Enumeration } from 'app/commons/enumeration';
+import { WorkEffortTypeService } from 'app/api/work-effort-type.service';
 
 /** Convert from WorkEffort[] to SelectItem[] */
   function workEfforts2SelectItems(types: WorkEffort[]): SelectItem[] {
@@ -41,6 +44,26 @@ import 'rxjs/Rx';
   }
   return types.map((wt: WorkEffort) => {
     return {label: ( wt.sourceReferenceId != null ? wt.sourceReferenceId + " - " + wt.workEffortName: wt.workEffortName), value: wt.workEffortId};
+  });
+}
+
+/** Convert from WorkEffortId20R20P20D[] to SelectItem[] */
+function workEffortId20R20P20D2SelectItems(types: WorkEffort[]): SelectItem[] {
+  if (types == null){
+    return [];
+  }
+  return types.map((wt: WorkEffort) => {
+    return {label: ( wt.sourceReferenceId != null ? wt.sourceReferenceId + " - " + wt.workEffortName: wt.workEffortName), value: wt.workEffortId};
+  });
+}
+
+/** Convert from WorkEffortType[] to SelectItem[] */
+function workEffortTypes20R20P20D2SelectItems(types: WorkEffortType[]): SelectItem[] {
+  if (types == null){
+    return [];
+  }
+  return types.map((wt: WorkEffortType) => {
+    return {label: ( wt.description), value: wt.workEffortTypeId};
   });
 }
 
@@ -54,23 +77,32 @@ function uomRangeValues2SelectItems(uomRangeValues: UomRangeValues[]): SelectIte
     return {label: p.comments, value: p.uomRangeValuesId};
   });
 }
+/** Convert from Enumeration[] to SelectItem[] */
+function enumeration2SelectItems(enumeration: Enumeration[]): SelectItem[] {
+  if(enumeration == null){
+    return [];
+  }
+  return enumeration.map((p:Enumeration) => {
+    return {label: p.description, value: p.enumId};
+  });
+}
 
 /** Convert from Party[] to SelectItem[] */
 function party2SelectItems(party: Party[]): SelectItem[] {
-  if (party == null){
+  if (party == null) {
     return [];
   }
-  return party.map((p:Party) => {
+  return party.map((p: Party) => {
     return {label: p.partyName, value: p.partyId};
   });
 }
 
 /** Convert from Party[] to SelectItem[] */
 function orgUnit2SelectItems(party: Party[]): SelectItem[] {
-  if (party == null){
+  if (party == null) {
     return [];
   }
-  return party.map((p:Party) => {
+  return party.map((p: Party) => {
     return {label: p.partyParentRole.parentRoleCode + " - " + p.partyName, value: p.partyId};
   });
 }
@@ -153,6 +185,12 @@ export class ReportComponent implements OnInit {
   uomRangeValuesIdSelectItem: SelectItem[] = [];
   form: FormGroup;
 
+  personIdSelectItem: SelectItem[] = [];
+  workEffortTypeId20R20P20DSelectItem: SelectItem[] = [];
+  workEffortId20R20P20DSelectItem: SelectItem[] = [];
+  politicianRoleTypeIdSelectItem: SelectItem[] = [];
+  assessorsSelectItem: SelectItem[] = [];
+
   paramsValue: any = {};
   paramsSelectItem: any = {};
 
@@ -169,7 +207,9 @@ export class ReportComponent implements OnInit {
   private readonly statusItemService: StatusItemService,
   private readonly roleTypeService: RoleTypeService,
   private readonly workEffortService: WorkEffortService,
+  private readonly workEffortTypeService: WorkEffortTypeService,
   private readonly reportDownloadComponent: ReportDownloadComponent,
+  private readonly enumerationService: EnumerationService,
   private fb: FormBuilder,
   http: HttpClient,) {
     this._reload = new Subject<ReloadParams>();
@@ -182,8 +222,8 @@ export class ReportComponent implements OnInit {
     //let reloadedReport = this._reload;
 
 
-    var parentTypeId = this.route.snapshot.parent.params.parentTypeId;
-    var reportContentId = this.route.snapshot.params.reportContentId;
+    let parentTypeId = this.route.snapshot.parent.params.parentTypeId;
+    let reportContentId = this.route.snapshot.params.reportContentId;
 
     const reloadedOrgUnit = this._reload.pipe(switchMap(() => this.partyService.orgUnits(parentTypeId)));
     const reloadedOrgUnitObs = this.route.data.pipe(
@@ -235,7 +275,10 @@ export class ReportComponent implements OnInit {
 
     });
 
-    const reloadedWorkEffort = this._reload.pipe(switchMap(params => (params.workEffortTypeId ? this.workEffortService.workEfforts(parentTypeId, params.workEffortTypeId, this.selectedReport.useFilter) : reloadedWorkEffort)));
+    const reloadedWorkEffort = this._reload.pipe(
+      switchMap(params =>
+      (params.workEffortTypeId ? this.workEffortService.workEfforts(parentTypeId, params.workEffortTypeId, this.selectedReport.useFilter)
+       : reloadedWorkEffort)));
     const workEffortObs = this.route.data.pipe(
        map((data: { workEfforts: WorkEffort[] }) => data.workEfforts),
        merge(reloadedWorkEffort),
@@ -246,6 +289,64 @@ export class ReportComponent implements OnInit {
       this.paramsSelectItem['workEffortIdSelectItem'] = this.workEffortIdSelectItem;
     });
 
+    const reloadedPerson = this._reload.pipe(switchMap(() => this.partyService.roleTypePartys('EMPLOYEE')));
+    const reloadedPersonObs = this.route.data.pipe(
+      map((data: { partys: Party[] }) => data.partys),
+      merge(reloadedPerson),
+      map(party2SelectItems)
+    ).subscribe((data) => {
+      let emptyPersonIdSelectItem = [];
+      emptyPersonIdSelectItem.push({label: this.i18nService.translate('Select party'), value: null});
+      this.personIdSelectItem = emptyPersonIdSelectItem.concat(data);
+      this.paramsSelectItem['personIdSelectItem'] = this.personIdSelectItem;
+    });
+
+    const reloadedPoliticianTypeId = this._reload.pipe(switchMap(() => this.partyService.roleTypePartysBetween('WEM_P1,WEM_P99')));
+    const reloadPoliticianTypeIdObs = this.route.data.pipe(
+      map((data: { partys: Party[] }) => data.partys),
+      merge(reloadedPoliticianTypeId),
+      map(party2SelectItems)
+    ).subscribe((data) => {
+      this.politicianRoleTypeIdSelectItem = data;
+      this.politicianRoleTypeIdSelectItem.unshift({label: this.i18nService.translate('Select party'), value: null});
+      this.paramsSelectItem['politicianRoleTypeIdSelectItem'] = this.politicianRoleTypeIdSelectItem;
+    });
+
+    const reloadedAssessors = this._reload.pipe(switchMap(() => this.enumerationService.enumerations('ASSESSORS')));
+    const reloadedAssessorsObs = this.route.data.pipe(
+      map((data: {enumerations: Enumeration[]}) => data.enumerations),
+      merge(reloadedAssessors),
+      map(enumeration2SelectItems)
+    ).subscribe((data) => {
+      this.assessorsSelectItem = data;
+      this.assessorsSelectItem.unshift({label: this.i18nService.translate('Select statusItem'), value: null});
+      this.paramsSelectItem['assessorsSelectItem'] = this.assessorsSelectItem;
+    });
+
+    const reloadedWorkEffortTypeId20R20P20D = this._reload.pipe(switchMap(() => this.workEffortTypeService.workEffortTypes('20R%25,20P%25,20D%25')));
+    const workEffortTypeId20R20P20DObs = this.route.data.pipe(
+       map((data: { workEffortTypes: WorkEffortType[] }) => data.workEffortTypes),
+       merge(reloadedWorkEffortTypeId20R20P20D),
+       map(workEffortTypes20R20P20D2SelectItems)
+    ).subscribe((data) => {
+      this.workEffortTypeId20R20P20DSelectItem = data;
+      this.workEffortTypeId20R20P20DSelectItem.unshift({label: this.i18nService.translate('Select WorkEffort'), value:null});
+      this.paramsSelectItem['workEffortTypeId20R20P20DSelectItem'] = this.workEffortTypeId20R20P20DSelectItem;
+    });
+
+    const reloadedWorkEffortId20R20P20D = this._reload.pipe(
+      switchMap(params =>(params.workEffortTypeId20R20P20D? this.workEffortService.workEfforts(parentTypeId, params.workEffortTypeId20R20P20D, this.selectedReport.useFilter)
+       : reloadedWorkEffortId20R20P20D)));
+    const reloadedWorkEffortId20R20P20DObs = this.route.data.pipe(
+       map((data: { workEfforts: WorkEffort[] }) => data.workEfforts),
+       merge(reloadedWorkEffortId20R20P20D),
+       map(workEffortId20R20P20D2SelectItems)
+    ).subscribe((data) => {
+      this.workEffortId20R20P20DSelectItem = data;
+      this.workEffortId20R20P20DSelectItem.unshift({label: this.i18nService.translate('Select WorkEffort'), value:null});
+      this.paramsSelectItem['workEffortId20R20P20DSelectItem'] = this.workEffortId20R20P20DSelectItem;
+    });
+
     const reloadedWorkEffortChild = this._reload.pipe(switchMap(params => (params.workEffortId ? this.workEffortService.workEffortParents(params.workEffortId) : reloadedWorkEffortChild)));
     const workEffortChildObs = this.route.data.pipe(
        map((data: { workEfforts: WorkEffort[] }) => data.workEfforts),
@@ -253,7 +354,7 @@ export class ReportComponent implements OnInit {
        map(workEfforts2SelectItems)
     ).subscribe((data) => {
       this.workEffortIdChildSelectItem = data;
-      this.workEffortIdChildSelectItem.push({label: this.i18nService.translate('Select WorkEffortChild'), value:null});
+      this.workEffortIdChildSelectItem.unshift({label: this.i18nService.translate('Select WorkEffortChild'), value:null});
       this.paramsSelectItem['workEffortIdChildSelectItem'] = this.workEffortIdChildSelectItem;
     });
 
@@ -425,4 +526,5 @@ export interface ReloadParams {
   roleTypeId?: string;
   workEffortId?: string;
   uomRangeId?: string;
+  workEffortTypeId20R20P20D?: string;
 }
