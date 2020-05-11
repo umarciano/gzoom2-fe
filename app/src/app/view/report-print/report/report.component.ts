@@ -39,7 +39,7 @@ import { WorkEffortTypeService } from 'app/api/work-effort-type.service';
 
 /** Convert from WorkEffort[] to SelectItem[] */
   function workEfforts2SelectItems(types: WorkEffort[]): SelectItem[] {
-  if (types == null){
+  if (types == null) {
     return [];
   }
   return types.map((wt: WorkEffort) => {
@@ -49,7 +49,17 @@ import { WorkEffortTypeService } from 'app/api/work-effort-type.service';
 
 /** Convert from WorkEffortId20R20P20D[] to SelectItem[] */
 function workEffortId20R20P20D2SelectItems(types: WorkEffort[]): SelectItem[] {
-  if (types == null){
+  if (types == null) {
+    return [];
+  }
+  return types.map((wt: WorkEffort) => {
+    return {label: ( wt.sourceReferenceId != null ? wt.sourceReferenceId + " - " + wt.workEffortName: wt.workEffortName), value: wt.workEffortId};
+  });
+}
+
+/** Convert from workEffortId20D6[] to SelectItem[] */
+function workEffortId20D62SelectItems(types: WorkEffortType[]): SelectItem[] {
+  if (types == null) {
     return [];
   }
   return types.map((wt: WorkEffort) => {
@@ -59,13 +69,25 @@ function workEffortId20R20P20D2SelectItems(types: WorkEffort[]): SelectItem[] {
 
 /** Convert from WorkEffortType[] to SelectItem[] */
 function workEffortTypes20R20P20D2SelectItems(types: WorkEffortType[]): SelectItem[] {
-  if (types == null){
+  if (types == null) {
     return [];
   }
   return types.map((wt: WorkEffortType) => {
     return {label: ( wt.description), value: wt.workEffortTypeId};
   });
 }
+
+/** Convert from workEffortTypeId20D6[] to SelectItem[] */
+function workEffortTypeId20D62SelectItems(types: WorkEffortType[]): SelectItem[] {
+  if (types == null) {
+    return [];
+  }
+  return types.map((wt: WorkEffortType) => {
+    return {label: (wt.description), value: wt.workEffortTypeId};
+  });
+}
+
+
 
 
 /** Convert from UomRangeValues[] to SelectItem[] */
@@ -187,7 +209,9 @@ export class ReportComponent implements OnInit {
 
   personIdSelectItem: SelectItem[] = [];
   workEffortTypeId20R20P20DSelectItem: SelectItem[] = [];
+  workEffortTypeId20D6SelectItem: SelectItem[] = [];
   workEffortId20R20P20DSelectItem: SelectItem[] = [];
+  workEffortId20D6SelectItem: SelectItem[] = [];
   politicianRoleTypeIdSelectItem: SelectItem[] = [];
   assessorsSelectItem: SelectItem[] = [];
 
@@ -330,12 +354,13 @@ export class ReportComponent implements OnInit {
        map(workEffortTypes20R20P20D2SelectItems)
     ).subscribe((data) => {
       this.workEffortTypeId20R20P20DSelectItem = data;
-      this.workEffortTypeId20R20P20DSelectItem.unshift({label: this.i18nService.translate('Select WorkEffort'), value:null});
+      this.workEffortTypeId20R20P20DSelectItem.unshift({label: this.i18nService.translate('Select WorkEffortType'), value:null});
       this.paramsSelectItem['workEffortTypeId20R20P20DSelectItem'] = this.workEffortTypeId20R20P20DSelectItem;
     });
 
     const reloadedWorkEffortId20R20P20D = this._reload.pipe(
-      switchMap(params =>(params.workEffortTypeId20R20P20D? this.workEffortService.workEfforts(parentTypeId, params.workEffortTypeId20R20P20D, this.selectedReport.useFilter)
+      switchMap(params => (params.workEffortTypeId20R20P20D?
+       this.workEffortService.workEfforts(parentTypeId, params.workEffortTypeId20R20P20D, this.selectedReport.useFilter)
        : reloadedWorkEffortId20R20P20D)));
     const reloadedWorkEffortId20R20P20DObs = this.route.data.pipe(
        map((data: { workEfforts: WorkEffort[] }) => data.workEfforts),
@@ -345,6 +370,30 @@ export class ReportComponent implements OnInit {
       this.workEffortId20R20P20DSelectItem = data;
       this.workEffortId20R20P20DSelectItem.unshift({label: this.i18nService.translate('Select WorkEffort'), value:null});
       this.paramsSelectItem['workEffortId20R20P20DSelectItem'] = this.workEffortId20R20P20DSelectItem;
+    });
+
+    const reloadedWorkEffortTypeId20D6 = this._reload.pipe(switchMap(() => this.workEffortTypeService.workEffortTypes('20D66%25,20D68%25,20D64%25,20D62%25,20D22%25,20D24%25')));
+    const workEffortTypeId20D6Obs = this.route.data.pipe(
+       map((data: { workEffortTypes: WorkEffortType[] }) => data.workEffortTypes),
+       merge(reloadedWorkEffortTypeId20D6),
+       map(workEffortTypeId20D62SelectItems)
+    ).subscribe((data) => {
+      this.workEffortTypeId20D6SelectItem = data;
+      this.workEffortTypeId20D6SelectItem.unshift({label: this.i18nService.translate('Select WorkEffortType'), value:null});
+      this.paramsSelectItem['workEffortTypeId20D6SelectItem'] = this.workEffortTypeId20D6SelectItem;
+    });
+
+    const reloadedWorkEffortId20D6 = this._reload.pipe(
+      switchMap(params =>(params.workEffortTypeId20D6? this.workEffortService.workEfforts(parentTypeId, params.workEffortTypeId20D6, this.selectedReport.useFilter)
+       : reloadedWorkEffortId20D6)));
+    const reloadedWorkEffortId20D6Obs = this.route.data.pipe(
+       map((data: { workEfforts: WorkEffort[] }) => data.workEfforts),
+       merge(reloadedWorkEffortId20D6),
+       map(workEffortId20D62SelectItems)
+    ).subscribe((data) => {
+      this.workEffortId20D6SelectItem = data;
+      this.workEffortId20D6SelectItem.unshift({label: this.i18nService.translate('Select WorkEffort'), value: null});
+      this.paramsSelectItem['workEffortId20D6SelectItem'] = this.workEffortId20D6SelectItem;
     });
 
     const reloadedWorkEffortChild = this._reload.pipe(switchMap(params => (params.workEffortId ? this.workEffortService.workEffortParents(params.workEffortId) : reloadedWorkEffortChild)));
@@ -400,6 +449,10 @@ export class ReportComponent implements OnInit {
       this._reload.next({roleTypeId: value});
     } else if (paramName == 'workEffortId') {
       this._reload.next({workEffortId: value});
+    } else if (paramName == 'workEffortTypeId20D6') {
+      this._reload.next({workEffortTypeId20D6: value});
+    } else if (paramName == 'workEffortTypeId20R20P20D') {
+      this._reload.next({workEffortTypeId20R20P20D: value});
     }
   }
 
@@ -527,4 +580,5 @@ export interface ReloadParams {
   workEffortId?: string;
   uomRangeId?: string;
   workEffortTypeId20R20P20D?: string;
+  workEffortTypeId20D6?: string;
 }
