@@ -3,7 +3,12 @@ export class Params {
 }
 
 export class ReportParam {
-  constructor(public paramName?: string, public paramDefault?: any, public paramType?: string, public mandatory?:boolean ) {};
+  constructor(
+     public paramName?: string,
+     public paramDefault?: any,
+     public paramType?: string,
+     public mandatory?: boolean,
+     public display?: boolean ) {};
 }
 
 export class ReportType {
@@ -15,15 +20,17 @@ export class WorkEffortType {
 }
 
 export class Report {
-  constructor(public reportContentId?: string, 
-    public reportName?: string, 
+  constructor(public reportContentId?: string,
+    public reportName?: string,
+    public contentName?: string,
     public parentTypeId?: string,
     public outputFormat?: string,
-    public workEffortTypeId?: string,    
+    public workEffortTypeId?: string,
     public outputFormats?: ReportType[],
     public params?: Params[],
     public paramsValue?: {},
     public analysis? : boolean,
+    public resourceName?: string,
     public useFilter? : boolean) {}
 }
 

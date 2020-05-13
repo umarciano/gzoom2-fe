@@ -16,14 +16,14 @@ import { WorkEffortResolverService } from '../work-effort/work-effort/work-effor
 const routes: Routes = [
   { path: ':parentTypeId', component: ReportPrintComponent, resolve: { reports: ReportPrintResolver},
     children: [
-      { path: ':reportContentId/:reportName/:analysis', component: ReportComponent, resolve: { report: ReportResolver,  
+      { path: ':reportContentId/:resourceName/:analysis', component: ReportComponent, resolve: { report: ReportResolver,
                                                                          orgUnits: OrgUnitResolver,
                                                                          statusItems: StatusItemResolverService,
                                                                          roleTypes: RoleTypeResolverService,
                                                                          //workEfforts: WorkEffortResolverService
                                                                           },
     //  children: [
-    //    { path: ':workEffortTypeId', component: ReportWorkefforttypeComponent, resolve: { workEfforts: ReportWorkefforttypeResolverService }}        
+    //    { path: ':workEffortTypeId', component: ReportWorkefforttypeComponent, resolve: { workEfforts: ReportWorkefforttypeResolverService }}
     //  ]
     }
     ]}

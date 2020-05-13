@@ -38,10 +38,10 @@ export class ReportPrintComponent implements OnInit {
 
   /** List of Report */
   reports: Report[];
-  
+
   /** Selected report*/
   selectedReport: Report;
-  reportContentIdreportName: String;
+  resourceName: String;
 
   form: FormGroup;
 
@@ -51,12 +51,12 @@ export class ReportPrintComponent implements OnInit {
     private readonly reportService: ReportService,
     private fb: FormBuilder, http: HttpClient) {}
 
-  ngOnInit() {    
+  ngOnInit() {
 
     const reportObs = this.route.data.pipe(
-      map((data: { reports: Report[] }) => data.reports)      
+      map((data: { reports: Report[] }) => data.reports)
     );
-      
+
     reportObs.pipe(
     //  map(reportSelectItems)
     )
@@ -64,10 +64,10 @@ export class ReportPrintComponent implements OnInit {
       console.log("reports:",reports);
       this.reports = reports;
 
-      if (reports.length > 0) {        
+      if (reports.length > 0) {
         this.onRowSelect(reports[0]);
       }
-      
+
     });
 
     // Form Validator
@@ -80,10 +80,10 @@ export class ReportPrintComponent implements OnInit {
   onRowSelect(data) {
     console.log('report ', data);
     this.selectedReport = data; // data.value;
-    this.reportContentIdreportName = data.reportContentId + "_" + data.reportName;    
+    this.resourceName = data.resourceName;
     if (this.selectedReport) {
-        this.router.navigate([this.selectedReport.reportContentId, this.selectedReport.reportName, this.selectedReport.analysis], { relativeTo: this.route });
+        this.router.navigate([this.selectedReport.reportContentId, this.selectedReport.resourceName, this.selectedReport.analysis], { relativeTo: this.route });
     }
   }
- 
+
 }

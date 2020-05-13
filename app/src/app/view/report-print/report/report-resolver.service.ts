@@ -22,12 +22,12 @@ export class ReportResolver implements Resolve<void | Report> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | Report> {
     let parentTypeId = route.parent.params.parentTypeId;
     let reportContentId = route.params.reportContentId;
-    let reportName = route.params.reportName;
     let analysis = route.params.analysis;
-    console.log('resolve report for ' + parentTypeId + 'reportContentId=' + reportContentId + ' reportName='+reportName+ ' analysis='+analysis);
+    let resourceName = route.params.resourceName;
+    console.log('resolve report for ' + parentTypeId + 'reportContentId=' + reportContentId + ' resourceName='+resourceName+ ' analysis='+analysis);
     //TODO come faccio?
     return this.reportService
-      .report(parentTypeId, reportContentId, reportName, analysis)
+      .report(parentTypeId, reportContentId, resourceName, analysis)
       .toPromise()
       .then(report => { return report; })
       .catch(err => {

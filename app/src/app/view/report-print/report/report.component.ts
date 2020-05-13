@@ -12,7 +12,7 @@ import { SelectItem } from '../../../commons/selectitem';
 import { I18NService } from '../../../i18n/i18n.service';
 import { Message } from '../../../commons/message';
 
-import { Report } from '../report';
+import { Report, Params } from '../report';
 import { ReportParam } from '../report';
 import { ReportType } from '../report';
 import { WorkEffortType } from '../report';
@@ -237,6 +237,10 @@ export class ReportComponent implements OnInit {
   private fb: FormBuilder,
   http: HttpClient,) {
     this._reload = new Subject<ReloadParams>();
+  }
+
+  filterDisplay(param: ReportParam) {
+    return param.display;
   }
 
   ngOnInit() {

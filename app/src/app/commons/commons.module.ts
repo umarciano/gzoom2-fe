@@ -14,6 +14,7 @@ import {
   ApplicationNameDirective,
   FromYearDirective
 } from './commons.directive';
+import { CallbackPipe } from './callback.pipe';
 
 export interface CommonsConfig {
   /* mandatory attributes */
@@ -31,7 +32,8 @@ export interface CommonsConfig {
     AsClassPipe,
     ApplicationVersionDirective,
     ApplicationNameDirective,
-    FromYearDirective
+    FromYearDirective,
+    CallbackPipe
   ],
   exports: [
     FullnamePipe,
@@ -39,7 +41,8 @@ export interface CommonsConfig {
     AsClassPipe,
     ApplicationVersionDirective,
     ApplicationNameDirective,
-    FromYearDirective
+    FromYearDirective,
+    CallbackPipe
   ]
 })
 export class CommonsModule {
