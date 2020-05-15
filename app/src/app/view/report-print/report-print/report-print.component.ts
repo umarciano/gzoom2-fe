@@ -41,7 +41,7 @@ export class ReportPrintComponent implements OnInit {
 
   /** Selected report*/
   selectedReport: Report;
-  resourceName: String;
+  contentIdContentName: String;
 
   form: FormGroup;
 
@@ -80,7 +80,7 @@ export class ReportPrintComponent implements OnInit {
   onRowSelect(data) {
     console.log('report ', data);
     this.selectedReport = data; // data.value;
-    this.resourceName = data.resourceName;
+    this.contentIdContentName = data.reportContentId+"_"+data.contentName;
     if (this.selectedReport) {
         this.router.navigate([this.selectedReport.reportContentId, this.selectedReport.resourceName, this.selectedReport.analysis], { relativeTo: this.route });
     }

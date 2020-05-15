@@ -464,6 +464,7 @@ export class ReportComponent implements OnInit {
   onRowSelect(data) {
     console.log('report ', data);
     this.selectedReport = data;
+    this.paramsValue = {};
 
     this.hiddenMail = (this.selectedReport.reportContentId.indexOf('REMINDER') < 0 );
 
@@ -526,7 +527,8 @@ export class ReportComponent implements OnInit {
  }*/
 
   setDataReport() {
-    console.log('setDataReport');
+    console.log('setDataReport' + this.selectedReport );
+    console.log('dopo selectedReport' + this.selectedReport);
     this.selectedReport.outputFormat = this.outputFormat.mimeTypeId;
     this.selectedReport.workEffortTypeId = this.workEffortType.workEffortTypeId;
 

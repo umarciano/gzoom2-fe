@@ -29,7 +29,7 @@
       </div>-->
       <div class="ui-grid-col-4">
         <div *ngFor="let report of reports">
-            <p-radioButton formControlName="reportContentId" name="reportContentId" value="{{report.reportContentId}}_{{report.reportName}}" label="{{report.reportName}}" [(ngModel)]="resourceName" (onClick)="onRowSelect(report)"></p-radioButton>
+            <p-radioButton formControlName="reportContentId" name="reportContentId" value="{{report.reportContentId}}_{{report.contentName}}" label="{{report.reportName}}" [(ngModel)]="contentIdContentName" (onClick)="onRowSelect(report)"></p-radioButton>
         </div>
       </div>
       <div class="ui-grid-col-5">
