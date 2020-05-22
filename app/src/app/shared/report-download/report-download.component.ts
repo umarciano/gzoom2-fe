@@ -5,8 +5,8 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 import { I18NService } from '../../i18n/i18n.service';
 import { AuthService } from '../../commons/auth.service';
 
-import { Observable ,  Subject, interval } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable ,  Subject, interval, BehaviorSubject } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/Rx';
@@ -31,20 +31,24 @@ export class ReportDownloadComponent implements OnInit {
   token: string;
   reports: ReportActivity[];
   runElement = [];
-  activities: Observable<DownloadActivityService>;
+  activities: Subject<boolean> = new Subject<boolean>();
 
   constructor(private readonly route: ActivatedRoute,
     private readonly reportDownloadService: ReportDownloadService,
     private readonly authService: AuthService,
     public readonly downloadActivityService: DownloadActivityService,
     private readonly i18nService: I18NService, http: HttpClient,
-    private readonly clientService :ApiClientService) {
+    private readonly clientService: ApiClientService) {
       this._reload = new Subject<void>();
       this.token = authService.token();
     }
 
   ngOnInit() {
     this.polling();
+    this.downloadActivityService.getActivities().subscribe(
+     (x) => this.activities.next(x)
+    );
+
     //this.dropdown.open();
     /*console.log('reportDownloads ngOnInit');
     const reloaded = this._reload.switchMap(() => this.reportDownloadService.reportDownloads());
@@ -110,7 +114,8 @@ export class ReportDownloadComponent implements OnInit {
     console.log("openDownload");
     this.runElement.push(activityId);
     if(!this.isPolling)
-      this.polling();
+       this.polling();
+    this.downloadActivityService.openDownload();
   }
 
   reportUrl(report:ReportActivity):string{
