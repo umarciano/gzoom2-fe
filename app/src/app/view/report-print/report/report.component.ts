@@ -29,13 +29,14 @@ import { WorkEffortService } from '../../../api/work-effort.service';
 import { UomRangeValues } from '../../../view/uom/range-values/uom-range-values';
 
 
-import { ReportDownloadComponent } from '../../../layout/report-download/report-download.component';
+import { ReportDownloadComponent } from '../../../shared/report-download/report-download.component';
 
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/Rx';
 import { EnumerationService } from 'app/commons/enumeration.service';
 import { Enumeration } from 'app/commons/enumeration';
 import { WorkEffortTypeService } from 'app/api/work-effort-type.service';
+import { DownloadActivityService } from 'app/shared/report-download/download-activity.service';
 
 /** Convert from WorkEffort[] to SelectItem[] */
   function workEfforts2SelectItems(types: WorkEffort[]): SelectItem[] {
@@ -234,6 +235,7 @@ export class ReportComponent implements OnInit {
   private readonly workEffortTypeService: WorkEffortTypeService,
   private readonly reportDownloadComponent: ReportDownloadComponent,
   private readonly enumerationService: EnumerationService,
+  private readonly downloadActivityService: DownloadActivityService,
   private fb: FormBuilder,
   http: HttpClient,) {
     this._reload = new Subject<ReloadParams>();
@@ -550,9 +552,10 @@ export class ReportComponent implements OnInit {
     this.setDataReport();
     this.reportService
       .add(this.selectedReport)
-      .then((activityId) => {
-        this.reportDownloadComponent.openDownload(activityId);
-        this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Print'), detail:this.i18nService.translate('Esecuzione stampa '+ this.selectedReport.reportName)}];
+      .then((activityId: string) => {
+        //this.reportDownloadComponent.openDownload(activityId);
+        this.downloadActivityService.openDownload(activityId);
+        //this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Print'), detail:this.i18nService.translate('Esecuzione stampa '+ this.selectedReport.reportName)}];
       })
       .catch((error) => {
         console.log('error.message' , error);

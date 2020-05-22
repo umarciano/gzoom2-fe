@@ -14,7 +14,7 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { FolderMenuComponent } from './sidebar/folder-menu/folder-menu.component';
 import { LeafMenuComponent } from './sidebar/leaf-menu/leaf-menu.component';
-import { ReportDownloadComponent } from './report-download/report-download.component';
+import { ReportDownloadComponent } from '../shared/report-download/report-download.component';
 
 import { ReportDownloadService } from '../api/report-download.service';
 

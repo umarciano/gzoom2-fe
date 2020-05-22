@@ -12,6 +12,7 @@ import { MenuResolver } from './menu-resolver.service';
 import { NodeResolver } from './node-resolver.service';
 import { SafeResPipe } from './safe-res.pipe';
 import { SafeIdentifierGuard } from './safe-identifier.guard';
+import { DownloadActivityService } from './report-download/download-activity.service';
 
 @NgModule({
   imports: [
@@ -39,7 +40,8 @@ export class SharedModule {
         PermissionsResolver,
         MenuResolver,
         NodeResolver,
-        SafeIdentifierGuard
+        SafeIdentifierGuard,
+        DownloadActivityService,
       ]
     };
   }
