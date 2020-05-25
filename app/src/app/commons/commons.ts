@@ -252,8 +252,7 @@ export function upsert<T>(arr: T[], pred, val: T) {
 /**
  * Finds an element that satisfies one of the selectors
  *
- * @param {jQueryElement} elem A jQuery element
- * @param {string} sels  Other arguments are expected to be selector strings
+ * 
  */
 export function findFirst(elem: any, ...sels: string[]): any {
   let match;

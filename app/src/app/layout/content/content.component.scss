@@ -1,7 +1,7 @@
 @import "~styles/_measures";
 
 .contentlayout-container{
-    margin-top: 60px;
+    margin-top: $header-height;
     margin-left: $sidebar-width;
     padding: 1.5em 1em;
     -ms-overflow-x: hidden;
@@ -10,4 +10,3 @@
     position: relative;
     overflow: hidden;
 }
-

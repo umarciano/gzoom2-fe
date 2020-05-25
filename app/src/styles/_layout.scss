@@ -733,8 +733,17 @@ body.bodylayout {
 }
 
 .header .navbar {
+  height: $header-height;
   background: map-get($app-colors, navbar-bg) !important;
 }
+
+.navbar-brand {
+  height: $header-height;
+  img {
+    height: 100%;
+  }
+}
+
 
  /*----------------------------------------------------------------------------*/
  /*Focus                                                                       */

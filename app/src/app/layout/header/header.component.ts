@@ -71,7 +71,7 @@ export class HeaderComponent {
       map((data: { node: Node }) => data.node),
     ).subscribe((data) => {
       this.node = data;
-      });
+    });
 
     this.form = this.fb.group({
       'currentPassword': new FormControl('', Validators.required),
