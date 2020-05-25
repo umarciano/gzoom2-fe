@@ -3,15 +3,17 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class DownloadActivityService {
-  public readonly activities: BehaviorSubject<boolean>;
+  public readonly activities: BehaviorSubject<string>;
   constructor() {
-      this.activities = new BehaviorSubject(false);
+      this.activities = new BehaviorSubject(null);
   }
-  openDownload() {
-      this.activities.next(true);
+  openDownload(activityId: string) {
+    console.log("service openDownload activityId " + activityId);
+    this.activities.next(activityId);
   }
 
-  getActivities(): Observable<boolean> {
+  getActivities(): Observable<string> {
+    console.log("service getActivities ");
     return this.activities.asObservable();
   }
 }

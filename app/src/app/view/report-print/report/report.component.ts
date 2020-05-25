@@ -550,11 +550,13 @@ export class ReportComponent implements OnInit {
   print() {
     console.log('print report ');
     this.setDataReport();
-    //this.downloadActivityService.openDownload();
+    // this.downloadActivityService.openDownload(null);
     this.reportService
       .add(this.selectedReport)
       .then((activityId: string) => {
-        this.reportDownloadComponent.openDownload(activityId);
+        console.log('activityId ' + activityId);
+        this.downloadActivityService.openDownload(activityId);
+        // this.reportDownloadComponent.openDownload(activityId);
         //this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Print'), detail:this.i18nService.translate('Esecuzione stampa '+ this.selectedReport.reportName)}];
       })
       .catch((error) => {

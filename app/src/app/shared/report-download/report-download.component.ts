@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
@@ -15,6 +15,7 @@ import { ReportDownloadService } from '../../api/report-download.service';
 import { ReportActivity } from '../../view/report-print/report';
 import { ApiClientService } from 'app/api/client.service';
 import { DownloadActivityService } from './download-activity.service';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -31,13 +32,14 @@ export class ReportDownloadComponent implements OnInit {
   token: string;
   reports: ReportActivity[];
   runElement = [];
-  activities: Subject<boolean> = new Subject<boolean>();
+  activities: Subject<string> = new Subject<string>();
+
+  @ViewChild('reportDownload') reportDownload: NgbDropdown;
 
   constructor(private readonly route: ActivatedRoute,
     private readonly reportDownloadService: ReportDownloadService,
     private readonly authService: AuthService,
     public readonly downloadActivityService: DownloadActivityService,
-    private readonly i18nService: I18NService, http: HttpClient,
     private readonly clientService: ApiClientService) {
       this._reload = new Subject<void>();
       this.token = authService.token();
@@ -46,34 +48,20 @@ export class ReportDownloadComponent implements OnInit {
   ngOnInit() {
     this.polling();
     this.downloadActivityService.getActivities().subscribe(
-     (x) => this.activities.next(x)
+     (activityId) => {
+       if (activityId != null) {
+        this.reportDownload.open(); 
+       }
+       this.activities.next(activityId);
+       this.runElement.push(activityId);
+       if(!this.isPolling)
+         this.polling();
+     }
     );
-
-    //this.dropdown.open();
-    /*console.log('reportDownloads ngOnInit');
-    const reloaded = this._reload.switchMap(() => this.reportDownloadService.reportDownloads());
-    const reportObs = this.route.data.pipe(
-      map((data: { reportActivitys: ReportActivity[] }) => data.reportActivitys),
-      merge(reloaded),
-    ).subscribe((data) => {
-       this.reports = data;
-    });
-
-    this._reload.next();*/
-/*
-    this.route.paramMap
-      .switchMap((params) => {
-        return this.reportDownloadService.reportDownloads();
-      })
-      .subscribe((data) => {
-        this.reports = data;
-      });*/
   }
 
   polling() {
-    console.log('reportDownloads polling');
     this.isPolling = true;
-
     this.pollingData = interval(1000)
       .pipe(switchMap(() => this.reportDownloadService.reportDownloads()) )
       .subscribe((data) => {
@@ -90,12 +78,10 @@ export class ReportDownloadComponent implements OnInit {
         if (!running) {
           this.ngOnDestroy();
         }
-
       });
   }
 
   onDeleteSelect(data: ReportActivity) {
-    console.log('onDeleteSelect');
     this.reportDownloadService
       .delete(data.activityId);
   }
@@ -108,14 +94,6 @@ export class ReportDownloadComponent implements OnInit {
   onClick(reportDownload) {
     if (reportDownload.isOpen() && !this.isPolling)
       this.polling();
-  }
-
-  openDownload(activityId) {
-    console.log("openDownload");
-    this.runElement.push(activityId);
-    if(!this.isPolling)
-       this.polling();
-    this.downloadActivityService.openDownload();
   }
 
   reportUrl(report:ReportActivity):string{
