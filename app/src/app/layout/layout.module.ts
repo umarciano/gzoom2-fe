@@ -12,6 +12,7 @@ import { ContentComponent } from './content/content.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
+import { LoaderComponent } from '../shared/loader/loader.component';
 import { FolderMenuComponent } from './sidebar/folder-menu/folder-menu.component';
 import { LeafMenuComponent } from './sidebar/leaf-menu/leaf-menu.component';
 import { ReportDownloadComponent } from '../shared/report-download/report-download.component';
@@ -20,8 +21,8 @@ import { ReportDownloadService } from '../api/report-download.service';
 
 import { DataTableModule, ButtonModule, DialogModule } from 'primeng/primeng';
 import { TableModule} from 'primeng/table';
-import { ProgressSpinnerModule} from 'primeng/progressspinner';
 
+import {ProgressSpinnerModule} from 'primeng/primeng';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { EqualValidator } from '../commons/equal-validator.directive';
@@ -50,6 +51,7 @@ import { I18nModule } from 'app/i18n/i18n.module';
     SidebarComponent,
     FooterComponent,
     HeaderComponent,
+    LoaderComponent,
     FolderMenuComponent,
     LeafMenuComponent,
     ReportDownloadComponent,

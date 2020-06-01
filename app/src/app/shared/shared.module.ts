@@ -7,6 +7,7 @@ import { ApiModule } from '../api/api.module';
 import { AuthorizationService } from './authorization.service';
 import { MenuService } from './menu.service';
 import { NodeService } from './node.service';
+import { LoaderService } from './loader/loader.service';
 import { PermissionsResolver } from './permissions-resolver.service';
 import { MenuResolver } from './menu-resolver.service';
 import { NodeResolver } from './node-resolver.service';
@@ -40,6 +41,7 @@ export class SharedModule {
         PermissionsResolver,
         MenuResolver,
         NodeResolver,
+        LoaderService,
         SafeIdentifierGuard,
         DownloadActivityService,
       ]
