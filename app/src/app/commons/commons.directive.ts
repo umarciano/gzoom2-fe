@@ -10,7 +10,7 @@ import * as moment from 'moment';
  */
 @Directive({ selector: '[appVersion]' })
 export class ApplicationVersionDirective implements AfterContentInit {
-  private readonly version: string | number;
+  private readonly version: string;
 
   constructor(private readonly el: ElementRef, private readonly conf: ApplicationConfig) {
     this.version = conf.version;
@@ -55,6 +55,26 @@ export class FromYearDirective implements AfterContentInit {
       const now = moment().year();
       const text = this.year !== now ? this.year + ' - ' + now : now;
       $(this.el.nativeElement).text(text);
+    }
+  }
+}
+
+/**
+ * Prints the be version as text element.
+ */
+@Directive({ selector: '[appMajorMinorVersion]' })
+export class ApplicationMajorMinorVersionDirective implements AfterContentInit {
+  private readonly version: string;
+
+  constructor(private readonly el: ElementRef, private readonly conf: ApplicationConfig) {
+    let s = conf.version;
+    s = s.substr(0, 3);
+    this.version = s;
+  }
+
+  ngAfterContentInit() {
+    if (this.el.nativeElement && this.version) {
+      $(this.el.nativeElement).text(this.version);
     }
   }
 }

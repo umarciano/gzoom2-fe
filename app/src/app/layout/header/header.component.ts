@@ -11,6 +11,8 @@ import { LogoutService } from '../../api/logout.service';
 import { LoginService } from '../../api/login.service';
 import { UserPreference } from '../../api/login.service';
 
+import { NodeService } from '../../shared/node.service';
+
 import { ApiConfig } from '../../api/api-config';
 
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
@@ -32,7 +34,8 @@ const HTTP_HEADERS = new HttpHeaders();
 export class HeaderComponent {
   user: UserProfile;
   node: Node;
-
+  legacyAppVersions: String;
+  restVersions: String;
   displayChangePassword: boolean = false;
   displayChangeTheme: boolean  = false;
   form: FormGroup;
@@ -51,11 +54,13 @@ export class HeaderComponent {
   THEME_VIOLET: String = 'GPLUS_VIOLET_ACC'; 
   userPreference: UserPreference = new UserPreference();         
 
-  constructor(private route: ActivatedRoute,
+  constructor(private router: Router,
+              private route: ActivatedRoute,
               private readonly authSrv: AuthService,
               private readonly lockoutSrv: LockoutService,
               private readonly logoutSrv: LogoutService,
               private readonly loginSrv: LoginService,
+              private readonly nodeService: NodeService,
               private readonly i18nService: I18NService,
               private http: HttpClient,
               private apiConfig: ApiConfig,
@@ -82,6 +87,17 @@ export class HeaderComponent {
     this.displayChangePassword = false;
     this.displayChangeTheme = false;
    
+    this.nodeService.nodeLegacyVersions().subscribe(
+      (legacyVersions: string) => {
+        this.legacyAppVersions = legacyVersions;
+      }
+    );
+
+    this.nodeService.nodeRestVersions().subscribe(
+      (restVersions: string) => {
+        this.restVersions = restVersions;
+      }
+    );
   }
 
   toggleSidebar() {
@@ -110,7 +126,7 @@ export class HeaderComponent {
     localStorage.setItem('app-root', theme);
     console.log('theme=' + theme);
     this.displayChangeTheme = false;
-  
+    this.router.navigate(['/c/dashboard']);
   }
 
   saveChangeTheme(theme) {     
@@ -131,23 +147,6 @@ export class HeaderComponent {
   }
   
   changePassword() {
-    console.log("changePassword");   
-    //this.loginSrv
-     // .changePassword( this.user.username, this.currentPassword, this.newPassword );
-      /*
-      .then(() => {
-        this.displayChangePassword = false; 
-        this.currentPassword = "";
-        this.newPassword = "";
-        this.newPasswordVerify = "";
-        this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Change password'), detail:this.i18nService.translate('Cambio password eseguito con successo ')}];         
-      })     
-      .catch((error) => {
-        console.log('error' , error.message);
-        this.error = this.i18nService.translate(error.message) || error;
-       });    */
-
-
     const body = JSON.stringify({ username: this.user.username, password: this.currentPassword, newPassword: this.newPassword });
     this.http
       .post(this.changePassUrl, body, {

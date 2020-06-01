@@ -138,33 +138,37 @@ body.bodylayout {
   /*----------------------------------------------------------------------------*/
   /* Dropdown                                                                   */
   /*----------------------------------------------------------------------------*/
-  .ui-dropdown-label {
+  .dropdown-label {
     background: map-get($app-colors, title-bg);
     color:  map-get($app-colors, gray);
   }
 
-  .ui-dropdown-items {
+  .dropdown-menu {
     background: map-get($app-colors, background-cl);
     color: map-get($app-colors, default-cl);
   }
 
-  .ui-dropdown-items:not(.ui-state-highlight):hover {
+  .dropdown-menu:not(.ui-state-highlight):hover {
     background: map-get($app-colors, background-cl);
   }
 
-  .ui-dropdown-panel {
+  .dropdown-item:not(.ui-state-highlight):active {
+    background: map-get($app-colors, background-cl);
+  }
+
+  .dropdown-panel {
     max-width: 50em;
 
-    .ui-dropdown-item:not(.ui-state-highlight):hover {
+    .dropdown-menu:not(.ui-state-highlight):hover {
       border: none;
       background: map-get($app-colors, title-bg);
       color: map-get($app-colors, default-cl);
     }
   }
 
-  .ui-dropdown .ui-dropdown-label,
-  .ui-dropdown .ui-dropdown-trigger,
-  .ui-dropdown-filter-container {
+  .dropdown .dropdown-label,
+  .dropdown .dropdown-trigger,
+  .dropdown-filter-container {
     background: map-get($app-colors, background-cl);
   }
   

@@ -35,13 +35,18 @@
           </div>
         </li>
         <li class="nav-item">
-          <div class="nav-item dropdown" ngbDropdown placement="bottom-right">
+          <div class="nav-item dropdown" [autoClose]="'outside'" ngbDropdown placement="bottom-right">
             <a href="javascript:void(0)" class="nav-link dropdown-toggle" ngbDropdownToggle>
               <i class="fa fa-info"></i> &nbsp; {{'Info'|i18n}}
             </a>
             <div ngbDropdownMenu>
               <a class="dropdown-item">
-                <span appName></span> <span appVersion></span>
+                <div>
+                  <span appName></span>&nbsp;<span appVersion></span> <span>/{{restVersions}}</span>
+                </div>
+                <div>
+                  <span>{{legacyAppVersions}}</span>
+                </div>
               </a>
             </div>
           </div>

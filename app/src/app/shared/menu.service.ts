@@ -35,10 +35,6 @@ const REFURBISHED_PAGES = {
 @Injectable()
 export class MenuService {
   constructor() { 
-    /*library.add(faTachometerAlt);
-    library.add(faTasks);
-    library.add(faChartLine);
-    library.add(faCogs);*/
   }
 
   stateFor(menu: LeafMenu): string[] {

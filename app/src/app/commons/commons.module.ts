@@ -11,6 +11,7 @@ import { EnumerationService } from './enumeration.service';
 
 import {
   ApplicationVersionDirective,
+  ApplicationMajorMinorVersionDirective,
   ApplicationNameDirective,
   FromYearDirective
 } from './commons.directive';
@@ -31,6 +32,7 @@ export interface CommonsConfig {
     AsIdPipe,
     AsClassPipe,
     ApplicationVersionDirective,
+    ApplicationMajorMinorVersionDirective,
     ApplicationNameDirective,
     FromYearDirective,
     CallbackPipe
@@ -40,6 +42,7 @@ export interface CommonsConfig {
     AsIdPipe,
     AsClassPipe,
     ApplicationVersionDirective,
+    ApplicationMajorMinorVersionDirective,
     ApplicationNameDirective,
     FromYearDirective,
     CallbackPipe

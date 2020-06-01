@@ -30,5 +30,14 @@ export class NodeService {
       );
   }
 
+  
+  nodeLegacyVersions(): Observable<void | string> {
+    return this.client.get(`node/version/legacy`);
+  }
+
+  nodeRestVersions(): Observable<void | string> {
+    return this.client.get(`node/version/rest`);
+  }
+
 }
 

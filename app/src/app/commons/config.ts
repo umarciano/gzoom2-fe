@@ -3,5 +3,5 @@
  */
 export class ApplicationConfig {
   name: string;
-  version: string|number;
+  version: string;
 }
