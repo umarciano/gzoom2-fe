@@ -18,4 +18,12 @@ export class WorkEffortTypeService {
         map(json => json.results as WorkEffortType[])
       );
   }
+
+  workEffortTypesParametric(workEffortTypeId: string): Observable<WorkEffortType[]> {
+    console.log('search workEffortType list with workEffortTypeId='+ workEffortTypeId);
+    return this.client
+      .get(`work-effort-type/parametric/${workEffortTypeId}`).pipe(
+        map(json => json.results as WorkEffortType[])
+      );
+  }
 }

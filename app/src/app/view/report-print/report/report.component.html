@@ -63,6 +63,38 @@
 
   <div *ngFor="let param of params">
 
+    <div [hidden]="!param.display" class="ui-grid-row" *ngIf="param.paramType == 'MULTILIST'">
+      <div class="ui-grid-col-3">
+        <label for="{{param.paramName}}">{{param.paramName|i18n}} <label *ngIf="param.mandatory">*</label></label>
+      </div>
+      <div class="ui-grid-col-4" *ngIf="param.mandatory">
+        <p-multiSelect  required class="form-control" appendTo="body" filter="true"
+         (onChange)="onChangeAll($event.value, param.paramName)"
+         [defaultLabel]="this.i18nService.translate('Select WorkEffort')"
+         [options]="paramsSelectItem[param.paramName+'SelectItem']"
+         formControlName="{{param.paramName}}"
+          [(ngModel)]="paramsValue[param.paramName]"
+          [style]="{'width':'100%'}">
+        </p-multiSelect>
+      </div>
+      <div class="ui-grid-col-4" *ngIf="!param.mandatory">
+        <p-multiSelect class="form-control" appendTo="body" filter="true"
+          (onChange)="onChangeAll($event.value, param.paramName)"
+          [options]="paramsSelectItem[param.paramName+'SelectItem']"
+          [defaultLabel]="this.i18nService.translate('Select WorkEffort')"
+          formControlName="{{param.paramName}}"
+          [(ngModel)]="paramsValue[param.paramName]"
+          [style]="{'width':'100%'}">
+        </p-multiSelect>
+      </div>
+      <div class="ui-grid-col-5" *ngIf="param.mandatory">
+        <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls[param.paramName].valid&amp;&amp;form.controls[param.paramName].dirty">
+          <i class="fa fa-times"></i>
+          {{param.paramName|i18n}} {{'is required'|i18n}}
+        </div>
+      </div>
+    </div>
+
     <div [hidden]="!param.display" class="ui-grid-row" *ngIf="param.paramType == 'LIST'">
       <div class="ui-grid-col-3">
         <label for="{{param.paramName}}">{{param.paramName|i18n}} <label *ngIf="param.mandatory">*</label></label>

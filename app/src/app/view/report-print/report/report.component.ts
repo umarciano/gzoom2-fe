@@ -78,6 +78,66 @@ function workEffortTypes20R20P20D2SelectItems(types: WorkEffortType[]): SelectIt
   });
 }
 
+/** convert workEffortTypeIdParametric to SelectItem[] */
+function workEffortTypeIdParametricSelectItems(types: WorkEffortType[]): SelectItem[] {
+  if (types == null) {
+    return [];
+  }
+  return types.map((wt: WorkEffortType) => {
+    return {label: ( wt.description), value: wt.workEffortTypeId};
+  });
+}
+
+/** convert workEffortTypeIdParametric2 to SelectItem[] */
+function workEffortTypeIdParametric2SelectItems(types: WorkEffortType[]): SelectItem[] {
+  if (types == null) {
+    return [];
+  }
+  return types.map((wt: WorkEffortType) => {
+    return {label: ( wt.description), value: wt.workEffortTypeId};
+  });
+}
+
+/** convert workEffortTypeIdParametric3 to SelectItem[] */
+function workEffortTypeIdParametric3SelectItems(types: WorkEffortType[]): SelectItem[] {
+  if (types == null) {
+    return [];
+  }
+  return types.map((wt: WorkEffortType) => {
+    return {label: ( wt.description), value: wt.workEffortTypeId};
+  });
+}
+
+/** Convert from workEffortIdParametric[] to SelectItem[] */
+function workEffortIdParametricSelectItems(types: WorkEffort[]): SelectItem[] {
+  if (types == null) {
+    return [];
+  }
+  return types.map((wt: WorkEffort) => {
+    return {label: ( wt.sourceReferenceId != null ? wt.sourceReferenceId + " - " + wt.workEffortName: wt.workEffortName), value: wt.workEffortId};
+  });
+}
+
+/** Convert from workEffortIdParametric2[] to SelectItem[] */
+function workEffortIdParametric2SelectItems(types: WorkEffort[]): SelectItem[] {
+  if (types == null) {
+    return [];
+  }
+  return types.map((wt: WorkEffort) => {
+    return {label: ( wt.sourceReferenceId != null ? wt.sourceReferenceId + " - " + wt.workEffortName: wt.workEffortName), value: wt.workEffortId};
+  });
+}
+
+/** Convert from workEffortIdParametric3[] to SelectItem[] */
+function workEffortIdParametric3SelectItems(types: WorkEffort[]): SelectItem[] {
+  if (types == null) {
+    return [];
+  }
+  return types.map((wt: WorkEffort) => {
+    return {label: ( wt.sourceReferenceId != null ? wt.sourceReferenceId + " - " + wt.workEffortName: wt.workEffortName), value: wt.workEffortId};
+  });
+}
+
 /** Convert from workEffortTypeId20D6[] to SelectItem[] */
 function workEffortTypeId20D62SelectItems(types: WorkEffortType[]): SelectItem[] {
   if (types == null) {
@@ -209,6 +269,12 @@ export class ReportComponent implements OnInit {
   form: FormGroup;
 
   personIdSelectItem: SelectItem[] = [];
+  workEffortTypeIdParametricSelectItem: SelectItem[] = [];
+  workEffortIdParametricSelectItem: SelectItem[] = [];
+  workEffortTypeIdParametric2SelectItem: SelectItem[] = [];
+  workEffortIdParametric2SelectItem: SelectItem[] = [];
+  workEffortTypeIdParametric3SelectItem: SelectItem[] = [];
+  workEffortIdParametric3SelectItem: SelectItem[] = [];
   workEffortTypeId20R20P20DSelectItem: SelectItem[] = [];
   workEffortTypeId20D6SelectItem: SelectItem[] = [];
   workEffortId20R20P20DSelectItem: SelectItem[] = [];
@@ -353,7 +419,85 @@ export class ReportComponent implements OnInit {
       this.paramsSelectItem['assessorsSelectItem'] = this.assessorsSelectItem;
     });
 
-    const reloadedWorkEffortTypeId20R20P20D = this._reload.pipe(switchMap(() => this.workEffortTypeService.workEffortTypes('20R%25,20P%25,20D%25')));
+    const reloadedWorkEffortTypeIdParametric = this._reload.pipe(
+      switchMap(() => this.workEffortTypeService.workEffortTypesParametric(this.workEffortType.workEffortTypeId))); //'20P92STM'
+    const workEffortTypeIdParametricObs = this.route.data.pipe(
+       map((data: { workEffortTypes: WorkEffortType[] }) => data.workEffortTypes),
+       merge(reloadedWorkEffortTypeIdParametric),
+       map(workEffortTypeIdParametricSelectItems)
+    ).subscribe((data) => {
+      this.workEffortTypeIdParametricSelectItem = data;
+      this.workEffortTypeIdParametricSelectItem.unshift({label: this.i18nService.translate('Select WorkEffortType'), value:null});
+      this.paramsSelectItem['workEffortTypeIdParametricSelectItem'] = this.workEffortTypeIdParametricSelectItem;
+    });
+
+    const reloadedWorkEffortIdParametric = this._reload.pipe(
+      switchMap(params => (params.workEffortTypeIdParametric?
+       this.workEffortService.workEfforts(parentTypeId, params.workEffortTypeIdParametric, this.selectedReport.useFilter)
+       : reloadedWorkEffortIdParametric)));
+    const reloadedWorkEffortIdParametricObs = this.route.data.pipe(
+       map((data: { workEfforts: WorkEffort[] }) => data.workEfforts),
+       merge(reloadedWorkEffortIdParametric),
+       map(workEffortIdParametricSelectItems)
+    ).subscribe((data) => {
+      this.workEffortIdParametricSelectItem = data;
+     // this.workEffortIdParametricSelectItem.unshift({label: this.i18nService.translate('Select WorkEffort'), value:null});
+      this.paramsSelectItem['workEffortIdParametricSelectItem'] = this.workEffortIdParametricSelectItem;
+    });
+
+    const reloadedWorkEffortTypeIdParametric2 = this._reload.pipe(
+      switchMap(() => this.workEffortTypeService.workEffortTypesParametric(this.workEffortType.workEffortTypeId)));
+    const workEffortTypeIdParametricObs2 = this.route.data.pipe(
+       map((data: { workEffortTypes: WorkEffortType[] }) => data.workEffortTypes),
+       merge(reloadedWorkEffortTypeIdParametric2),
+       map(workEffortTypeIdParametric2SelectItems)
+    ).subscribe((data) => {
+      this.workEffortTypeIdParametric2SelectItem = data;
+      this.workEffortTypeIdParametric2SelectItem.unshift({label: this.i18nService.translate('Select WorkEffortType'), value:null});
+      this.paramsSelectItem['workEffortTypeIdParametric2SelectItem'] = this.workEffortTypeIdParametric2SelectItem;
+    });
+
+    const reloadedWorkEffortIdParametric2 = this._reload.pipe(
+      switchMap(params => (params.workEffortTypeIdParametric2?
+       this.workEffortService.workEfforts(parentTypeId, params.workEffortTypeIdParametric2, this.selectedReport.useFilter)
+       : reloadedWorkEffortIdParametric2)));
+    const reloadedWorkEffortIdParametricObs2 = this.route.data.pipe(
+       map((data: { workEfforts: WorkEffort[] }) => data.workEfforts),
+       merge(reloadedWorkEffortIdParametric2),
+       map(workEffortIdParametric2SelectItems)
+    ).subscribe((data) => {
+      this.workEffortIdParametric2SelectItem = data;
+     // this.workEffortIdParametric2SelectItem.unshift({label: this.i18nService.translate('Select WorkEffort'), value:null});
+      this.paramsSelectItem['workEffortIdParametric2SelectItem'] = this.workEffortIdParametric2SelectItem;
+    });
+
+    const reloadedWorkEffortTypeIdParametric3 = this._reload.pipe(
+      switchMap(() => this.workEffortTypeService.workEffortTypesParametric(this.workEffortType.workEffortTypeId)));
+    const workEffortTypeIdParametricObs3 = this.route.data.pipe(
+       map((data: { workEffortTypes: WorkEffortType[] }) => data.workEffortTypes),
+       merge(reloadedWorkEffortTypeIdParametric3),
+       map(workEffortTypeIdParametric3SelectItems)
+    ).subscribe((data) => {
+      this.workEffortTypeIdParametric3SelectItem = data;
+      this.workEffortTypeIdParametric3SelectItem.unshift({label: this.i18nService.translate('Select WorkEffortType'), value:null});
+      this.paramsSelectItem['workEffortTypeIdParametric3SelectItem'] = this.workEffortTypeIdParametric3SelectItem;
+    });
+
+    const reloadedWorkEffortIdParametric3 = this._reload.pipe(
+      switchMap(params => (params.workEffortTypeIdParametric3?
+       this.workEffortService.workEfforts(parentTypeId, params.workEffortTypeIdParametric3, this.selectedReport.useFilter)
+       : reloadedWorkEffortIdParametric3)));
+    const reloadedWorkEffortIdParametricObs3 = this.route.data.pipe(
+       map((data: { workEfforts: WorkEffort[] }) => data.workEfforts),
+       merge(reloadedWorkEffortIdParametric3),
+       map(workEffortIdParametric3SelectItems)
+    ).subscribe((data) => {
+      this.workEffortIdParametric3SelectItem = data;
+     // this.workEffortIdParametric3SelectItem.unshift({label: this.i18nService.translate('Select WorkEffort'), value:null});
+      this.paramsSelectItem['workEffortIdParametric3SelectItem'] = this.workEffortIdParametric3SelectItem;
+    });
+
+    const reloadedWorkEffortTypeId20R20P20D = this._reload.pipe(switchMap(() => this.workEffortTypeService.workEffortTypesParametric(this.workEffortType.workEffortTypeId))); //'20P92STM'
     const workEffortTypeId20R20P20DObs = this.route.data.pipe(
        map((data: { workEffortTypes: WorkEffortType[] }) => data.workEffortTypes),
        merge(reloadedWorkEffortTypeId20R20P20D),
@@ -459,6 +603,12 @@ export class ReportComponent implements OnInit {
       this._reload.next({workEffortTypeId20D6: value});
     } else if (paramName == 'workEffortTypeId20R20P20D') {
       this._reload.next({workEffortTypeId20R20P20D: value});
+    } else if (paramName == 'workEffortTypeIdParametric') {
+      this._reload.next({workEffortTypeIdParametric: value});
+    } else if (paramName == 'workEffortTypeIdParametric2') {
+      this._reload.next({workEffortTypeIdParametric2: value});
+    } else if (paramName == 'workEffortTypeIdParametric3') {
+      this._reload.next({workEffortTypeIdParametric3: value});
     }
   }
 
@@ -592,4 +742,7 @@ export interface ReloadParams {
   uomRangeId?: string;
   workEffortTypeId20R20P20D?: string;
   workEffortTypeId20D6?: string;
+  workEffortTypeIdParametric?: string;
+  workEffortTypeIdParametric2?: string;
+  workEffortTypeIdParametric3?: string;
 }
