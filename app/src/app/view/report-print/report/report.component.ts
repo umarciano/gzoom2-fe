@@ -166,7 +166,7 @@ function enumeration2SelectItems(enumeration: Enumeration[]): SelectItem[] {
     return [];
   }
   return enumeration.map((p:Enumeration) => {
-    return {label: p.description, value: p.enumId};
+    return {label: p.description, value: p.enumCode};
   });
 }
 

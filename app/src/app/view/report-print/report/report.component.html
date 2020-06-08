@@ -155,6 +155,15 @@
           <input class="form-control" formControlName="{{param.paramName}}" [(ngModel)]="paramsValue[param.paramName]" />
       </div>
     </div>
+
+    <div [hidden]="!param.display" class="ui-grid-row" *ngIf="param.paramType == 'TEXTAREA'">
+      <div class="ui-grid-col-3">
+        <label  for="{{param.paramName}}">{{param.paramName|i18n}}</label>
+      </div>
+      <div class="ui-grid-col-4">
+          <textarea [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize" class="form-control" formControlName="{{param.paramName}}" [(ngModel)]="paramsValue[param.paramName]"></textarea>
+      </div>
+    </div>
   </div>
 
 

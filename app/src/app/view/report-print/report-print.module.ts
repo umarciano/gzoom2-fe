@@ -15,6 +15,7 @@ import { TooltipModule } from 'primeng/primeng';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ListboxModule } from 'primeng/listbox';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 import { CommonsModule } from '../../commons/commons.module';
 import { ApiModule } from '../../api/api.module';
@@ -67,6 +68,7 @@ import { I18nModule } from 'app/i18n/i18n.module';
     ToggleButtonModule,
     TooltipModule,
     MultiSelectModule,
+    InputTextareaModule,
     I18nModule
   ],
   declarations: [
