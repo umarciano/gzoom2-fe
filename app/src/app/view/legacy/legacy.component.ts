@@ -8,6 +8,7 @@ import * as $ from 'jquery';
 import { ResourceService } from '../../api/resource.service';
 import { LoaderService } from '../../shared/loader/loader.service';
 
+
 @Component({
   selector: 'app-legacy',
   templateUrl: './legacy.component.html',
@@ -39,7 +40,7 @@ export class LegacyComponent implements OnInit {
     const iframe: any = $(this.cont.nativeElement).find('iframe')[0];
 
     window.onmessage = s => {
-      console.log("INTERNAL IFRAME RESIZED: " + s.data);
+        console.log("INTERNAL IFRAME RESIZED: s.data", s.data);
         this.resizeIframe(iframe);
     };
 

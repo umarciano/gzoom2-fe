@@ -1,4 +1,8 @@
 
+.loader {
+  background: map-get($app-colors, background-cl);
+}
+
 .loading {
   opacity: 0;
   transition: opacity .8s ease-in-out;
@@ -7,7 +11,7 @@
   width: 100%;
   top: 0;
   left: 0;
-  background: map-get($app-colors, background-cl);
+  background: map-get($app-colors, navbar-bg);
   z-index: -1;
 }
 

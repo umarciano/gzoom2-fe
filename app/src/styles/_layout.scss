@@ -26,13 +26,13 @@ body.bodylayout {
   }
 
   .ui-state-default {
-    border: none;
+    // border: none;
     background: map-get($app-colors, default-bg);
     color: map-get($app-colors, default-cl);
   }
 
   .ui-state-active {
-    border: none;
+    // border: none;
     background: map-get($app-colors, default-bg);
     color: map-get($app-colors, default-cl);
   }
@@ -133,6 +133,18 @@ body.bodylayout {
 
   p-dropdown .fa-caret-down::before {
     content: "\f13a";
+  }
+
+  p-multiselect .ui-state-default {
+    border: none;
+  }
+
+  p-dropdown .ui-state-default {
+    border: none;
+  }
+
+  p-calendar .ui-state-default {
+    border: none;
   }
 
   /*----------------------------------------------------------------------------*/
