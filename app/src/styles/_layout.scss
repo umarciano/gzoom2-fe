@@ -25,6 +25,10 @@ body.bodylayout {
     }
   }
 
+  .ui-widget-header {
+    border: none;
+  }
+
   .ui-state-default {
     // border: none;
     background: map-get($app-colors, default-bg);
@@ -139,7 +143,10 @@ body.bodylayout {
     border: none;
   }
 
-  p-dropdown .ui-state-default {
+  p-dropdown .ui-dropdown, 
+  p-dropdown .ui-state-default, 
+  p-dropdown .ui-dropdown-label {
+    background-color: map-get($app-colors, background-cl);
     border: none;
   }
 
@@ -156,16 +163,20 @@ body.bodylayout {
   }
 
   .dropdown-menu {
-    background: map-get($app-colors, background-cl);
+    .ui-widget-content {
+      background: map-get($app-colors, navbar-bg);
+    }
+
+    background: map-get($app-colors, navbar-bg);
     color: map-get($app-colors, default-cl);
   }
 
   .dropdown-menu:not(.ui-state-highlight):hover {
-    background: map-get($app-colors, background-cl);
+    background: map-get($app-colors, navbar-bg);
   }
 
   .dropdown-item:not(.ui-state-highlight):active {
-    background: map-get($app-colors, background-cl);
+    background: map-get($app-colors, navbar-bg);
   }
 
   .dropdown-panel {
@@ -291,6 +302,13 @@ body.bodylayout {
     padding: 0em;
   }
 
+  p-dialog {
+    .ui-widget-header { 
+      background: map-get($app-colors, title-bg);
+      color: map-get($app-colors, default-cl);
+    }
+  }
+
   input.form-control {
     padding: 0em;
   }
@@ -323,7 +341,7 @@ body.bodylayout {
   /*----------------------------------------------------------------------------*/
   /* Filtro Generale su DataTable                                                            */
   /*----------------------------------------------------------------------------*/
-  .ui-widget-header { 
+  .global-filter {
     background: map-get($app-colors, title-bg);
     color: map-get($app-colors, default-cl);
 
@@ -332,6 +350,7 @@ body.bodylayout {
       background: map-get($app-colors, title-bg);
     }
   }
+
 
   /*----------------------------------------------------------------------------*/
   /* Datatable                                                            */
@@ -361,6 +380,14 @@ body.bodylayout {
         background: map-get($app-colors, title-bg);
         color: map-get($app-colors, default-cl);
       }
+
+      
+      .ui-dropdown {
+        .ui-dropdown-label {
+          background: map-get($app-colors, title-bg);
+        }
+      }
+
 
       .ui-state-active {
         background: map-get($app-colors, title-bg);

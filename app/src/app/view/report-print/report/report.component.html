@@ -37,16 +37,6 @@
     <div class="ui-grid-col-3">
       <label for="outputFormat">{{'Seleziona il formato'|i18n}}*</label>
     </div>
-     <!-- <p-listbox formControlName="outputFormat" [options]="outputFormatSelectItem" [(ngModel)]="outputFormat">
-      </p-listbox>
-     <p-dataTable [value]="outputFormats" [(selection)]="outputFormat" dataKey="mimeTypeId"  >
-        <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
-        <p-column field="outputFormat">
-          <ng-template let-reportType="rowData" pTemplate="body">
-            <span pTooltip="{{reportType.mimeTypeId}}">{{reportType.description}}</span>
-          </ng-template>
-        </p-column>
-      </p-dataTable>-->
     <div class="ui-grid-col-4">
       <div *ngFor="let output of outputFormats">
           <p-radioButton formControlName="outputFormat"  name="outputFormat" value="{{output.mimeTypeId}}" label="{{output.description}}" [(ngModel)]="outputFormat.mimeTypeId" ></p-radioButton>
@@ -63,12 +53,12 @@
 
   <div *ngFor="let param of params">
 
-    <div [hidden]="!param.display" class="ui-grid-row" *ngIf="param.paramType == 'MULTILIST'">
+    <div [hidden]="!param.display" class="ui-grid-row m-b-xs" *ngIf="param.paramType == 'MULTILIST'">
       <div class="ui-grid-col-3">
-        <label for="{{param.paramName}}">{{param.paramName|i18n}} <label *ngIf="param.mandatory">*</label></label>
+        <label class="no-m-b" for="{{param.paramName}}">{{param.paramName|i18n}} <label *ngIf="param.mandatory">*</label></label>
       </div>
       <div class="ui-grid-col-4" *ngIf="param.mandatory">
-        <p-multiSelect  required class="form-control" appendTo="body" filter="true"
+        <p-multiSelect required class="form-control" appendTo="body" filter="true"
          (onChange)="onChangeAll($event.value, param.paramName)"
          [defaultLabel]="this.i18nService.translate('Select WorkEffort')"
          [options]="paramsSelectItem[param.paramName+'SelectItem']"
@@ -95,9 +85,9 @@
       </div>
     </div>
 
-    <div [hidden]="!param.display" class="ui-grid-row" *ngIf="param.paramType == 'LIST'">
+    <div [hidden]="!param.display" class="ui-grid-row m-b-xs" *ngIf="param.paramType == 'LIST'">
       <div class="ui-grid-col-3">
-        <label for="{{param.paramName}}">{{param.paramName|i18n}} <label *ngIf="param.mandatory">*</label></label>
+        <label class="no-m-b" for="{{param.paramName}}">{{param.paramName|i18n}} <label *ngIf="param.mandatory">*</label></label>
       </div>
       <div class="ui-grid-col-4" *ngIf="param.mandatory">
           <p-dropdown required class="form-control" appendTo="body" filter="true"
@@ -120,9 +110,9 @@
       </div>
     </div>
 
-    <div [hidden]="!param.display" class="ui-grid-row" *ngIf="param.paramType == 'DATE'">
+    <div [hidden]="!param.display" class="ui-grid-row m-b-xs" *ngIf="param.paramType == 'DATE'">
       <div class="ui-grid-col-3">
-        <label for="{{param.paramName}}">{{param.paramName|i18n}}<label *ngIf="param.mandatory">*</label></label>
+        <label class="no-m-b" for="{{param.paramName}}">{{param.paramName|i18n}}<label *ngIf="param.mandatory">*</label></label>
       </div>
       <div class="ui-grid-col-4" *ngIf="param.mandatory">
           <p-calendar required class="form-control form-control-report" styleClass="calendar-icon" formControlName="{{param.paramName}}" [locale]="i18nService.getCalendarLocale()" [(ngModel)]="paramsValue[param.paramName]" [dateFormat]="i18nService.getFormat('date-short-pcalendar')" name="{{param.paramName}}" [showIcon]="true" icon="fa fa-calendar"></p-calendar>
@@ -138,27 +128,27 @@
       </div>
     </div>
 
-    <div [hidden]="!param.display" class="ui-grid-row" *ngIf="param.paramType == 'BOOLEAN'">
+    <div [hidden]="!param.display" class="ui-grid-row m-b-xs" *ngIf="param.paramType == 'BOOLEAN'">
       <div class="ui-grid-col-3">
-        <label  for="{{param.paramName}}">{{param.paramName|i18n}}</label>
+        <label class="no-m-b" for="{{param.paramName}}">{{param.paramName|i18n}}</label>
       </div>
       <div class="ui-grid-col-4">
           <p-toggleButton onLabel="{{'SI'|i18n}}" offLabel="{{'NO'|i18n}}" formControlName="{{param.paramName}}" [(ngModel)]="paramsValue[param.paramName]" defa></p-toggleButton>
       </div>
     </div>
 
-    <div [hidden]="!param.display" class="ui-grid-row" *ngIf="param.paramType == 'INPUT'">
+    <div [hidden]="!param.display" class="ui-grid-row m-b-xs" *ngIf="param.paramType == 'INPUT'">
       <div class="ui-grid-col-3">
-        <label  for="{{param.paramName}}">{{param.paramName|i18n}}</label>
+        <label class="no-m-b" for="{{param.paramName}}">{{param.paramName|i18n}}</label>
       </div>
       <div class="ui-grid-col-4">
           <input class="form-control" formControlName="{{param.paramName}}" [(ngModel)]="paramsValue[param.paramName]" />
       </div>
     </div>
 
-    <div [hidden]="!param.display" class="ui-grid-row" *ngIf="param.paramType == 'TEXTAREA'">
+    <div [hidden]="!param.display" class="ui-grid-row m-b-xs" *ngIf="param.paramType == 'TEXTAREA'">
       <div class="ui-grid-col-3">
-        <label  for="{{param.paramName}}">{{param.paramName|i18n}}</label>
+        <label class="no-m-b" for="{{param.paramName}}">{{param.paramName|i18n}}</label>
       </div>
       <div class="ui-grid-col-4">
           <textarea [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize" class="form-control" formControlName="{{param.paramName}}" [(ngModel)]="paramsValue[param.paramName]"></textarea>
