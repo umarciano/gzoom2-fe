@@ -31,11 +31,6 @@
               "node_modules/@fortawesome/fontawesome-free-webfonts/css/fa-solid.css",
               "node_modules/@fortawesome/fontawesome-free-webfonts/css/fontawesome.css",              
               {
-                "input": "src/styles/green.scss",
-                "lazy": true,
-                "bundleName": "assets/green"
-              },
-              {
                 "input": "src/styles/blue.scss",
                 "lazy": true,
                 "bundleName": "assets/blue"
@@ -44,7 +39,12 @@
                 "input": "src/styles/violet.scss",
                 "lazy": true,
                 "bundleName": "assets/violet"
-              }             
+              },            
+              {
+                "input": "src/styles/green.scss",
+                "lazy": true,
+                "bundleName": "assets/green"
+              }
               
             ],
             "scripts": [
