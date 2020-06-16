@@ -281,6 +281,7 @@ export class ReportComponent implements OnInit {
   workEffortId20D6SelectItem: SelectItem[] = [];
   politicianRoleTypeIdSelectItem: SelectItem[] = [];
   assessorsSelectItem: SelectItem[] = [];
+  scorePreviewSelectItem: SelectItem[] = [];
 
   paramsValue: any = {};
   paramsSelectItem: any = {};
@@ -417,6 +418,17 @@ export class ReportComponent implements OnInit {
       this.assessorsSelectItem = data;
       this.assessorsSelectItem.unshift({label: this.i18nService.translate('Select statusItem'), value: null});
       this.paramsSelectItem['assessorsSelectItem'] = this.assessorsSelectItem;
+    });
+
+    const reloadedScorePreview = this._reload.pipe(switchMap(() => this.enumerationService.enumerations('SCOREPREVIEW')));
+    const reloadedScorePreviewObs = this.route.data.pipe(
+      map((data: {enumerations: Enumeration[]}) => data.enumerations),
+      merge(reloadedScorePreview),
+      map(enumeration2SelectItems)
+    ).subscribe((data) => {
+      this.scorePreviewSelectItem = data;
+      this.scorePreviewSelectItem.unshift({label: this.i18nService.translate('Select statusItem'), value: null});
+      this.paramsSelectItem['scorePreviewSelectItem'] = this.scorePreviewSelectItem;
     });
 
     const reloadedWorkEffortTypeIdParametric = this._reload.pipe(
