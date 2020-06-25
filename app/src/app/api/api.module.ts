@@ -15,6 +15,7 @@ import { AccountService } from './account.service';
 import { MenuService } from './menu.service';
 import { ResourceService } from './resource.service';
 import { WorkEffortTypeService } from './work-effort-type.service';
+import { WorkEffortRevisionService } from './work-effort-revision.service';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ export class ApiModule {
         AccountService,
         MenuService,
         ResourceService,
-        WorkEffortTypeService
+        WorkEffortTypeService,
+        WorkEffortRevisionService
       ]
     };
   }

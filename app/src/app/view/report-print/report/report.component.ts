@@ -36,7 +36,9 @@ import 'rxjs/Rx';
 import { EnumerationService } from 'app/commons/enumeration.service';
 import { Enumeration } from 'app/commons/enumeration';
 import { WorkEffortTypeService } from 'app/api/work-effort-type.service';
+import { WorkEffortRevisionService } from 'app/api/work-effort-revision.service';
 import { DownloadActivityService } from 'app/shared/report-download/download-activity.service';
+import { WorkEffortRevision } from 'app/commons/workEffortRevision';
 
 /** Convert from WorkEffort[] to SelectItem[] */
   function workEfforts2SelectItems(types: WorkEffort[]): SelectItem[] {
@@ -46,6 +48,16 @@ import { DownloadActivityService } from 'app/shared/report-download/download-act
   return types.map((wt: WorkEffort) => {
     return {label: ( wt.sourceReferenceId != null ? wt.sourceReferenceId + " - " + wt.workEffortName: wt.workEffortName), value: wt.workEffortId};
   });
+}
+
+/** Convert from workEffortRevision[] to SelectItems[] */
+function workEffortRevision2SelectItems(types: WorkEffortRevision[]): SelectItem[] {
+  if (types == null) {
+    return [];
+  }
+  return types.map((wt: WorkEffortRevision) => {
+    return {label: ( wt.description), value: wt.workEffortRevisionId};
+    });
 }
 
 /** Convert from WorkEffortId20R20P20D[] to SelectItem[] */
@@ -252,6 +264,7 @@ export class ReportComponent implements OnInit {
   outputFormatSelectItem: SelectItem[] = [];
   workEffortType: WorkEffortType;
   workEffortTypes: WorkEffortType[];
+  workEffortRevision: WorkEffortRevision[];
   workEffortTypeSelectItem: SelectItem[] = [];
   params: ReportParam[];
 
@@ -282,6 +295,7 @@ export class ReportComponent implements OnInit {
   politicianRoleTypeIdSelectItem: SelectItem[] = [];
   assessorsSelectItem: SelectItem[] = [];
   scorePreviewSelectItem: SelectItem[] = [];
+  workEffortRevisionSelectItem: SelectItem[] = [];
 
   paramsValue: any = {};
   paramsSelectItem: any = {};
@@ -300,6 +314,7 @@ export class ReportComponent implements OnInit {
   private readonly roleTypeService: RoleTypeService,
   private readonly workEffortService: WorkEffortService,
   private readonly workEffortTypeService: WorkEffortTypeService,
+  private readonly workEffortRevisionService: WorkEffortRevisionService,
   private readonly reportDownloadComponent: ReportDownloadComponent,
   private readonly enumerationService: EnumerationService,
   private readonly downloadActivityService: DownloadActivityService,
@@ -567,6 +582,18 @@ export class ReportComponent implements OnInit {
       this.workEffortIdChildSelectItem = data;
       this.workEffortIdChildSelectItem.unshift({label: this.i18nService.translate('Select WorkEffortChild'), value:null});
       this.paramsSelectItem['workEffortIdChildSelectItem'] = this.workEffortIdChildSelectItem;
+    });
+
+    const reloadWorkEffortRevision = this._reload.pipe(
+      switchMap(() => this.workEffortRevisionService.workEffortRevisions(parentTypeId)));
+    const workEffortRevisionObs = this.route.data.pipe(
+      map((data: {workEffortRevision: WorkEffortRevision[]}) => data.workEffortRevision),
+      merge(reloadWorkEffortRevision),
+      map(workEffortRevision2SelectItems)
+    ).subscribe((data) => {
+      this.workEffortRevisionSelectItem = data;
+      this.workEffortRevisionSelectItem.unshift({label: this.i18nService.translate('Select revision'), value: null});
+      this.paramsSelectItem['workEffortRevisionSelectItem'] = this.workEffortRevisionSelectItem;
     });
 
     //TODO SBAGLIATO
