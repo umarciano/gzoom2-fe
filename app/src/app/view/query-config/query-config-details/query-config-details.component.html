@@ -1,0 +1,129 @@
+<form [formGroup]="form" novalidate (ngSubmit)="esporta(queryConfig)">
+<p-accordion>
+  <p-accordionTab header=" " [selected]="true">
+    <div class="ui-g">
+      <div class="ui-g-3">
+        <label>{{'Nome'|i18n}}</label>
+      </div>
+      <div class="ui-g-4">
+        <label>{{'Istruzioni'|i18n}}</label>
+      </div>
+      <div class="ui-g-5">
+        <label>{{'Condizioni'|i18n}}</label>
+      </div>
+    </div>
+
+
+    <div class="ui-g" *ngIf="queryConfig.cond0Name">
+      <div class="ui-g-3">
+      {{queryConfig.cond0Name}}
+     </div>
+      <div class="ui-g-4">
+        {{queryConfig.cond0Comm}}
+      </div>
+      <div class="ui-g-5">
+        <input pInputText id="cond0Info" formControlName="cond0Info" class="form-control" required [(ngModel)]="queryConfig.cond0Info"/>
+      </div>
+    </div>
+    <div class="ui-g" *ngIf="queryConfig.cond1Name">
+      <div class="ui-g-3">
+      {{queryConfig.cond1Name}}
+     </div>
+      <div class="ui-g-4">
+        {{queryConfig.cond1Comm}}
+      </div>
+      <div class="ui-g-5">
+        <input pInputText id="cond1Info" formControlName="cond1Info" class="form-control" required [(ngModel)]="queryConfig.cond1Info"/>
+      </div>
+    </div>
+    <div class="ui-g" *ngIf="queryConfig.cond2Name">
+      <div class="ui-g-3">
+      {{queryConfig.cond2Name}}
+     </div>
+      <div class="ui-g-4">
+        {{queryConfig.cond2Comm}}
+      </div>
+      <div class="ui-g-5">
+        <input pInputText id="cond2Info" formControlName="cond2Info" class="form-control" required [(ngModel)]="queryConfig.cond2Info"/>
+      </div>
+    </div>
+    <div class="ui-g" *ngIf="queryConfig.cond3Name">
+      <div class="ui-g-3">
+      {{queryConfig.cond3Name}}
+     </div>
+      <div class="ui-g-4">
+        {{queryConfig.cond3Comm}}
+      </div>
+      <div class="ui-g-5">
+        <input pInputText id="cond3Info" formControlName="cond3Info" class="form-control" required [(ngModel)]="queryConfig.cond3Info"/>
+      </div>
+    </div>
+    <div class="ui-g" *ngIf="queryConfig.cond4Name">
+      <div class="ui-g-3">
+      {{queryConfig.cond4Name}}
+     </div>
+      <div class="ui-g-4">
+        {{queryConfig.cond4Comm}}
+      </div>
+      <div class="ui-g-5">
+        <input pInputText id="cond4Info" formControlName="cond4Info" class="form-control" required [(ngModel)]="queryConfig.cond4Info"/>
+      </div>
+    </div>
+    <div class="ui-g" *ngIf="queryConfig.cond5Name">
+      <div class="ui-g-3">
+      {{queryConfig.cond5Name}}
+     </div>
+      <div class="ui-g-4">
+        {{queryConfig.cond5Comm}}
+      </div>
+      <div class="ui-g-5">
+        <input pInputText id="cond5Info" formControlName="cond5Info" class="form-control" required [(ngModel)]="queryConfig.cond5Info"/>
+      </div>
+    </div>
+    <div class="ui-g" *ngIf="queryConfig.cond6Name">
+      <div class="ui-g-3">
+      {{queryConfig.cond6Name}}
+     </div>
+      <div class="ui-g-4">
+        {{queryConfig.cond6Comm}}
+      </div>
+      <div class="ui-g-5">
+        <input pInputText id="cond6Info" formControlName="cond6Info" class="form-control" required [(ngModel)]="queryConfig.cond6Info"/>
+      </div>
+    </div>
+    <div class="ui-g" *ngIf="queryConfig.cond7Name">
+      <div class="ui-g-3">
+      {{queryConfig.cond7Name}}
+     </div>
+      <div class="ui-g-4">
+        {{queryConfig.cond7Comm}}
+      </div>
+      <div class="ui-g-5">
+        <input pInputText id="cond7Info" formControlName="cond7Info" class="form-control" required [(ngModel)]="queryConfig.cond7Info"/>
+      </div>
+    </div>
+    <div class="ui-g" *ngIf="queryConfig.cond8Name">
+      <div class="ui-g-3">
+      {{queryConfig.cond8Name}}
+     </div>
+      <div class="ui-g-4">
+        {{queryConfig.cond8Comm}}
+      </div>
+      <div class="ui-g-5">
+        <input pInputText id="cond8Info" formControlName="cond8Info" class="form-control" required [(ngModel)]="queryConfig.cond8Info"/>
+      </div>
+    </div>
+  </p-accordionTab>
+</p-accordion>
+<p-footer>
+  <div class="ui-dialog-buttonpanel ui-helper-clearfix">
+    <button type="button" (click)="showPreview(queryConfig)" pButton icon="fa fa-eye" label="{{'Preview'|i18n}}" style="float: right;"></button>
+    <button type="submit" pButton icon="fa fa-download" label="{{'Export'|i18n}}" [disabled]="!form.valid" style="float: right;"></button>
+  </div>
+</p-footer>
+</form>
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+<p-dialog header="{{'Query Config Preview'|i18n}}" width="900" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+  <p>{{this.queryPreview}}</p>
+</p-dialog>

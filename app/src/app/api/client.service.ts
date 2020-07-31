@@ -47,6 +47,23 @@ export class ApiClientService {
       );
   }
 
+    /**
+   * Performs an HTTP POST call with return blob file.
+   *
+   * @param  {string}             path    The path relative to ApiConfig.rootPath
+   * @param  {RequestOptionsArgs} options Additional options
+   * @return {Observable<any>}            An Observable of the outcome
+   */
+  postBlob(path: string, body?: any): Observable<any> {
+    const url = this.makeUrl(path);
+    const msg = body ? (typeof body === 'string') ? body : JSON.stringify(body) : undefined;
+    return this.http
+      .post(url, body, {headers: new HttpHeaders().set('Content-Type', 'application/json'), responseType: 'blob'})
+      .pipe(
+        catchError(this.onAuthError(this)) // then handle the error
+      );
+  }
+
   /**
    * Performs an HTTP POST call.
    *
@@ -92,7 +109,7 @@ export class ApiClientService {
   }
 
   /**
- * 
+ *
  * @param path of rest service
  * @returns complete rest url
  */

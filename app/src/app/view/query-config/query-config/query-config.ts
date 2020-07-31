@@ -1,0 +1,41 @@
+
+
+export class QueryConfig {
+  constructor(public queryId?: string,
+    public queryCode?: string,
+    public queryName?: string,
+    public queryComm?: string,
+    public queryType?: string,
+    public queryCTX?: string,
+    public queryPublic?: string,
+    public queryInfo?: string,
+    public cond0Name?: string,
+    public cond0Comm?: string,
+    public cond0Info?: string,
+    public cond1Name?: string,
+    public cond1Comm?: string,
+    public cond1Info?: string,
+    public cond2Name?: string,
+    public cond2Comm?: string,
+    public cond2Info?: string,
+    public cond3Name?: string,
+    public cond3Comm?: string,
+    public cond3Info?: string,
+    public cond4Name?: string,
+    public cond4Comm?: string,
+    public cond4Info?: string,
+    public cond5Name?: string,
+    public cond5Comm?: string,
+    public cond5Info?: string,
+    public cond6Name?: string,
+    public cond6Comm?: string,
+    public cond6Info?: string,
+    public cond7Name?: string,
+    public cond7Comm?: string,
+    public cond7Info?: string,
+    public cond8Name?: string,
+    public cond8Comm?: string,
+    public cond8Info?: string
+    )
+   {}
+}

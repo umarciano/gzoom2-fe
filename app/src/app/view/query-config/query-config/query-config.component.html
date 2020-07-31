@@ -1,0 +1,58 @@
+<h3 class="first">{{'GP_MENU_00486'|i18n}}</h3>
+
+<p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
+
+<div class="global-filter" style="padding:4px 10px;border-bottom: 0 none">
+    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+    <input #gb type="text" pInputText size="50" placeholder="{{'Global Filter'|i18n}}">
+</div>
+
+<p-dataTable [value]="queryConfigs"
+            [rows]="5"
+            scrollable="true"
+            scrollHeight="260px"
+            sortMode="multiple"
+            [responsive]="true"
+            [globalFilter]="gb" #dt
+            exportFilename="querys"
+            resizableColumns="true"
+            columnResizeMode="expand"
+            dataKey="queryId">
+      <p-column styleClass="col-button" [style]="{'width':'5%'}">
+        <ng-template let-queryConfig="rowData" let-ri="rowIndex" pTemplate="body">
+          <button *ngIf="ri == selectedIndex" type="button" pButton (click)="closeRow()" icon="fa fa-chevron-down"></button>
+          <button *ngIf="ri != selectedIndex" type="button" pButton (click)="onRowSelect([queryConfig], ri)" icon="fa fa-chevron-right"></button>
+        </ng-template>
+    </p-column>
+    <p-column [style]="{'width':'20%'}" field="queryId" header="{{'Query Id'|i18n}}"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}"
+    [sortable]="true">
+    </p-column>
+    <p-column [style]="{'width':'20%'}" field="queryName" header="{{'Name'|i18n}}"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}"
+    [sortable]="true">
+    </p-column>
+    <p-column [style]="{'width':'30%'}" field="queryComm" header="{{'Description'|i18n}}"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}"
+    [sortable]="true">
+    </p-column>
+    <p-column [style]="{'width':'10%'}" field="queryType" header="{{'Tipologia'|i18n}}"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}"
+    [sortable]="true">
+    </p-column>
+    <p-column [style]="{'width':'10%'}" field="queryCtx" header="{{'Contesto'|i18n}}"
+    [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}"
+    [sortable]="true">
+    </p-column>
+    <p-column [style]="{'width':'10%'}" styleClass="col-button">
+      <ng-template let-queryConfig="rowData" let-ri="rowIndex" pTemplate="body">
+        <button placement="top" ngbTooltip="{{'Show query'|i18n}}" container="body" type="button" pButton icon="fa fa-file" (click)="showDialog(ri)"></button>
+      </ng-template>
+  </p-column>
+</p-dataTable>
+
+<p-dialog header="{{'Query Config Detail'|i18n}}" width="900" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+  <p>{{this.queryConfig.queryInfo}}</p>
+</p-dialog>
+
+<router-outlet></router-outlet>

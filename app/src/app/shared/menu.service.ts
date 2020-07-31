@@ -29,12 +29,13 @@ const REFURBISHED_PAGES = {
   'GP_MENU_00447': ['report-print/CTX_EP'],
   'GP_MENU_00448': ['report-print/CTX_GD'],
   'GP_MENU_00449': ['report-print/CTX_TR'],
+  'GP_MENU_00486': ['queryconfig'],
   'GP_MENU_00999': ['report-print'] // 'GP_MENU_00999': ['timesheet/timesheet-report/CTX_PR']
 };
 
 @Injectable()
 export class MenuService {
-  constructor() { 
+  constructor() {
   }
 
   stateFor(menu: LeafMenu): string[] {

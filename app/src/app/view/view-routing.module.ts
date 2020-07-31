@@ -13,7 +13,7 @@ const routes: Routes = [
     path: '',
     component: FocusComponent,
     resolve: {
-     node: NodeResolver 
+     node: NodeResolver
     },
     children: [
       { path: 'login', loadChildren: './login/login.module#LoginModule' }
@@ -27,7 +27,7 @@ const routes: Routes = [
     resolve: {
       permissions: PermissionsResolver,
       menu: MenuResolver,
-      node: NodeResolver 
+      node: NodeResolver
     },
     children: [
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
@@ -36,6 +36,7 @@ const routes: Routes = [
       { path: 'timesheet', loadChildren: './timesheet/timesheet.module#TimesheetModule' },
       { path: 'report-print', loadChildren: './report-print/report-print.module#ReportPrintModule' },
       { path: 'visitor', loadChildren: './visitor/visitor.module#VisitorModule' },
+      { path: 'queryconfig', loadChildren: './query-config/query-config.module#QueryConfigModule' },
       //{ path: 'work-effort-type-report', loadChildren: './work-effort-type-report/work-effort-type-report.module#WorkEffortTypeReportModule' },
       { path: '', pathMatch: 'full', redirectTo: '/c/dashboard' }
     ]
