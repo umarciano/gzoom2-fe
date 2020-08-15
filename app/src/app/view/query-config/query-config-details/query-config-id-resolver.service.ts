@@ -20,7 +20,7 @@ export class QueryConfigIdResolver implements Resolve<void | QueryConfig> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | QueryConfig> {
     console.log('resolve query cofig');
-    var id = route.paramMap.get('id');
+    const id = route.paramMap.get('id');
     console.log('resolver param id = ' + id);
     return this.queryConfigService
       .getQueryConfig(id)

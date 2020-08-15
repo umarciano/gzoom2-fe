@@ -47,6 +47,8 @@ export class QueryConfigComponent implements OnInit {
    /** List of QueryConfig in Select */
   queryConfigSelectItem: SelectItem[] = [];
   queryPreview: string;
+  parentTypeId: string;
+  queryType: string;
 
   constructor(private readonly confirmationService: ConfirmationService,
     private readonly queryConfigService: QueryConfigService,
@@ -59,7 +61,13 @@ export class QueryConfigComponent implements OnInit {
 
   ngOnInit() {
 
-    const reloadedQuerys = this._reload.pipe(mergeMap(() => this.queryConfigService.queryConfigs()));
+    this.route.paramMap.subscribe(paramMap => {
+      this.parentTypeId = paramMap.get('parentTypeId');
+      this.queryType = paramMap.get('queryType');
+    });
+
+    console.log("Query parameter: "+  this.parentTypeId + this.queryType);
+    const reloadedQuerys = this._reload.pipe(mergeMap(() => this.queryConfigService.queryConfigs(this.parentTypeId, this.queryType)));
 
     const queryConfigObs = this.route.data.pipe(
       map((data: { queryConfigs: QueryConfig[] }) => data.queryConfigs),
@@ -84,7 +92,11 @@ export class QueryConfigComponent implements OnInit {
 
   closeRow() {
     this.selectedIndex = -1;
+    if (this.parentTypeId && this.queryType) {
+    this.router.navigate([`../queryconfig/${this.parentTypeId}/${this.queryType}`], { relativeTo: this.route.parent });
+    } else {
     this.router.navigate(['../queryconfig'], { relativeTo: this.route.parent });
+    }
   }
 
   showDialog(ri: number) {

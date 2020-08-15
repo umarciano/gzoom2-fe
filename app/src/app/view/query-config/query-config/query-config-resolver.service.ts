@@ -19,10 +19,13 @@ export class QueryConfigResolver implements Resolve<void | QueryConfig[]> {
     private readonly lockoutService: LockoutService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | QueryConfig[]> {
-    console.log('resolve query cofig');
 
+    const parentTypeId = route.params.parentTypeId;
+    const queryType = route.params.queryType;
+
+    console.log('resolve query cofig'+ parentTypeId+ queryType );
     return this.queryConfigService
-      .queryConfigs()
+      .queryConfigs(parentTypeId, queryType)
       .toPromise()
       .then(queryConfigs => { return queryConfigs; })
       .catch(err => { // TODO serve il lockout?

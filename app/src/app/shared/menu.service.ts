@@ -30,6 +30,18 @@ const REFURBISHED_PAGES = {
   'GP_MENU_00448': ['report-print/CTX_GD'],
   'GP_MENU_00449': ['report-print/CTX_TR'],
   'GP_MENU_00486': ['queryconfig'],
+  'GP_MENU_00487': ['queryconfig/CTX_CO/E'],
+  'GP_MENU_00488': ['queryconfig/CTX_BS/E'],
+  'GP_MENU_00489': ['queryconfig/CTX_OR/E'],
+  'GP_MENU_00490': ['queryconfig/CTX_EP/E'],
+  'GP_MENU_00491': ['queryconfig/CTX_GD/E'],
+  'GP_MENU_00492': ['queryconfig/CTX_TR/E'],
+  'GP_MENU_00493': ['queryconfig/CTX_CO/U'],
+  'GP_MENU_00494': ['queryconfig/CTX_BS/U'],
+  'GP_MENU_00495': ['queryconfig/CTX_OR/U'],
+  'GP_MENU_00496': ['queryconfig/CTX_EP/U'],
+  'GP_MENU_00497': ['queryconfig/CTX_GD/U'],
+  'GP_MENU_00498': ['queryconfig/CTX_TR/U'],
   'GP_MENU_00999': ['report-print'] // 'GP_MENU_00999': ['timesheet/timesheet-report/CTX_PR']
 };
 

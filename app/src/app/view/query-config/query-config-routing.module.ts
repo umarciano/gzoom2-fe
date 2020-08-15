@@ -15,6 +15,10 @@ const routes: Routes = [
     children: [
       { path: ':id', component: QueryConfigDetailsComponent, resolve: { queryConfigs: QueryConfigIdResolver}}
   ]},
+  { path: ':parentTypeId/:queryType', component: QueryConfigComponent, resolve: { queryConfigs: QueryConfigResolver},
+    children: [
+      { path: ':id', component: QueryConfigDetailsComponent, resolve: { queryConfigs: QueryConfigIdResolver}}
+  ]}
 ];
 
 @NgModule({

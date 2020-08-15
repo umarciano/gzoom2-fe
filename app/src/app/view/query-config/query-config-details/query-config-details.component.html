@@ -1,6 +1,7 @@
 <form [formGroup]="form" novalidate (ngSubmit)="esporta(queryConfig)">
 <p-accordion>
   <p-accordionTab header=" " [selected]="true">
+    <h3 class="first">{{queryConfig.queryCode}} - {{queryConfig.queryName}}</h3>
     <div class="ui-g">
       <div class="ui-g-3">
         <label>{{'Nome'|i18n}}</label>
@@ -118,7 +119,8 @@
 <p-footer>
   <div class="ui-dialog-buttonpanel ui-helper-clearfix">
     <button type="button" (click)="showPreview(queryConfig)" pButton icon="fa fa-eye" label="{{'Preview'|i18n}}" style="float: right;"></button>
-    <button type="submit" pButton icon="fa fa-download" label="{{'Export'|i18n}}" [disabled]="!form.valid" style="float: right;"></button>
+    <button  *ngIf="queryConfig.queryType=='E'" type="submit" pButton icon="fa fa-download" label="{{'Export'|i18n}}" [disabled]="!form.valid" style="float: right;"></button>
+    <button  *ngIf="queryConfig.queryType!='E'" type="submit" pButton icon="fa fa-download" label="{{'Run'|i18n}}" [disabled]="!form.valid" style="float: right;"></button>
   </div>
 </p-footer>
 </form>
