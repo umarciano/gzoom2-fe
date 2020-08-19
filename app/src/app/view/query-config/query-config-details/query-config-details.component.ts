@@ -54,6 +54,7 @@ export class QueryConfigDetailsComponent implements OnInit {
 
     this.route.paramMap.subscribe(paramMap => {
       this.selectedQueryConfig = paramMap.get('id');
+      this.error = '';
       this._reload.next();
     });
 
@@ -69,8 +70,23 @@ export class QueryConfigDetailsComponent implements OnInit {
   }
 
   esporta(query: QueryConfig) {
-    this.queryConfigService.executeQuery(query)
-    .catch(err => {this.error = err});
+    if (query.queryType === 'E') {
+      this.queryConfigService.executeQuery(query).then(() => {
+        console.log('query eseguita');
+        this.msgs = [{severity:this.i18nService.translate('info'),
+        summary:this.i18nService.translate('Query Eseguita'),
+        detail:this.i18nService.translate('Query Eseguita con successo ')}];
+      }
+      ).catch(err => {this.error = err});
+    } else {
+      this.queryConfigService.updateQuery(query).then(() => {
+        console.log('query eseguita');
+        this.msgs = [{severity:this.i18nService.translate('info'),
+        summary:this.i18nService.translate('Query Eseguita'),
+        detail:this.i18nService.translate('Query Eseguita con successo ')}];
+      }
+      ).catch(err => {this.error = err});
+    }
   }
 
   createValidator(query: QueryConfig) {

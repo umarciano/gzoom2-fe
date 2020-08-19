@@ -39,7 +39,6 @@ export class QueryConfigService {
   }
 
   executeQuery(query: QueryConfig)  {
-    if (query.queryType === 'E') {
       return this.client
       .postBlob(`query-config/exec`, query)
       .toPromise()
@@ -48,7 +47,9 @@ export class QueryConfigService {
         console.error(`Error while deleting in: ${response}`);
         return Promise.reject(response.message || response);
       });
-   } else {
+  }
+
+  updateQuery(query: QueryConfig): Promise<QueryConfig>  {
     return this.client
     .post(`query-config/exec`, query)
     .toPromise()
@@ -59,7 +60,6 @@ export class QueryConfigService {
       return Promise.reject(_error);
     });
    }
-  }
 
   downLoadFile(query: QueryConfig, data: any, type: string) {
     let blob = new Blob([data], { type: type});

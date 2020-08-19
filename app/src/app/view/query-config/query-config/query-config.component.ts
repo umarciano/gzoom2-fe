@@ -105,8 +105,5 @@ export class QueryConfigComponent implements OnInit {
     this.queryConfig = this.queryConfigs[ri];
   }
 
-  exportQuery(querys: QueryConfig[], ri: number) {
-    this.queryConfigService.executeQuery(this.queryConfigs[ri]);
-  }
 
 }
