@@ -8,7 +8,8 @@ export class ReportParam {
      public paramDefault?: any,
      public paramType?: string,
      public mandatory?: boolean,
-     public display?: boolean ) {};
+     public display?: boolean,
+     public options?: string ) {};
 }
 
 export class ReportType {

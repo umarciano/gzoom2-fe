@@ -8,6 +8,8 @@ import { map } from 'rxjs/operators';
 import { ApiClientService } from './client.service';
 
 import { Party } from '../view/party/party/party';
+import { ReportParam } from 'app/view/report-print/report';
+import { operators } from 'rxjs/Rx';
 
 @Injectable()
 export class PartyService {
@@ -22,18 +24,26 @@ export class PartyService {
       );
   }
 
-  orgUnits(parentTypeId: string): Observable<Party[]> {
+  orgUnits(parentTypeId: string, options: string): Observable<Party[]> {
     console.log('search orgUnits');
+    let optionsURL = '';
+    if (options) {
+      optionsURL = '?roleTypeId=' + options;
+    }
     return this.client
-      .get(`orgUnits/${parentTypeId}`).pipe(
+      .get(`orgUnits/${parentTypeId}` + optionsURL).pipe(
         map(json => json.results as Party[])
       );
   }
 
-  roleTypePartys(roleTypeId: string): Observable<Party[]> {
+  roleTypePartys(roleTypeId: string, options: string): Observable<Party[]> {
     console.log('search party whit roleTypeId='+roleTypeId);
+    let optionsURL = '';
+    if (options) {
+      optionsURL = '?roleTypeIdFrom=' + options;
+    }
     return this.client
-      .get(`party/roleType/${roleTypeId}`).pipe(
+      .get(`party/roleType/${roleTypeId}` + optionsURL).pipe(
         map(json => json.results as Party[])
       );
   }

@@ -22,10 +22,10 @@ export class OrgUnitResolver implements Resolve<void | Party[]> {
     var parentTypeId = route.parent.params.parentTypeId;
     console.log('resolve orgUnits parentTypeId=' + parentTypeId);
     return this.partyService
-      .orgUnits(parentTypeId)
+      .orgUnits(parentTypeId, null)
       .toPromise()
       .then(orgUnits => { return orgUnits; })
-      .catch(err => { 
+      .catch(err => {
         console.error('Cannot retrieve party', err);
         this.lockoutService.lockout();
       });

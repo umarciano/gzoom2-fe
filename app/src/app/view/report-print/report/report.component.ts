@@ -299,6 +299,7 @@ export class ReportComponent implements OnInit {
 
   paramsValue: any = {};
   paramsSelectItem: any = {};
+  paramsOptions: any = {};
 
   hiddenMail: boolean;
 
@@ -319,7 +320,7 @@ export class ReportComponent implements OnInit {
   private readonly enumerationService: EnumerationService,
   private readonly downloadActivityService: DownloadActivityService,
   private fb: FormBuilder,
-  http: HttpClient,) {
+  http: HttpClient) {
     this._reload = new Subject<ReloadParams>();
   }
 
@@ -337,7 +338,7 @@ export class ReportComponent implements OnInit {
     let parentTypeId = this.route.snapshot.parent.params.parentTypeId;
     let reportContentId = this.route.snapshot.params.reportContentId;
 
-    const reloadedOrgUnit = this._reload.pipe(switchMap(() => this.partyService.orgUnits(parentTypeId)));
+    const reloadedOrgUnit = this._reload.pipe(switchMap(() => this.partyService.orgUnits(parentTypeId, this.paramsOptions['orgUnitId'])));
     const reloadedOrgUnitObs = this.route.data.pipe(
       map((data: { orgUnits: Party[] }) => data.orgUnits),
       merge(reloadedOrgUnit),
@@ -375,7 +376,7 @@ export class ReportComponent implements OnInit {
 
     });
 
-    const reloadedParty = this._reload.pipe(switchMap(params => (params.roleTypeId ? this.partyService.roleTypePartys(params.roleTypeId) : reloadedParty)));
+    const reloadedParty = this._reload.pipe(switchMap(params => (params.roleTypeId ? this.partyService.roleTypePartys(params.roleTypeId, this.paramsOptions['partyId']) : reloadedParty)));
     const reloadedPartyObs = this.route.data.pipe(
       map((data: { partys: Party[] }) => data.partys),
       merge(reloadedParty),
@@ -401,7 +402,7 @@ export class ReportComponent implements OnInit {
       this.paramsSelectItem['workEffortIdSelectItem'] = this.workEffortIdSelectItem;
     });
 
-    const reloadedPerson = this._reload.pipe(switchMap(() => this.partyService.roleTypePartys('EMPLOYEE')));
+    const reloadedPerson = this._reload.pipe(switchMap(() => this.partyService.roleTypePartys('EMPLOYEE', this.paramsOptions['personId'])));
     const reloadedPersonObs = this.route.data.pipe(
       map((data: { partys: Party[] }) => data.partys),
       merge(reloadedPerson),
@@ -662,7 +663,6 @@ export class ReportComponent implements OnInit {
     //TODO param
     this.params = data.params;
     console.log('onRowSelect params ',  this.params);
-
     var paramForm = {};
     this.params.forEach((element) => {
       //gestione required
@@ -671,7 +671,7 @@ export class ReportComponent implements OnInit {
         controller = new FormControl('', Validators.required);
       paramForm[element.paramName] = controller;
       this.paramsValue[element.paramName] = element.paramDefault;
-
+      this.paramsOptions[element.paramName] = element.options;
       //Lista di elementi per il caricamento di altre drop List
       if (element.paramName == 'uomRangeId') {
         //carico al lista TODO
@@ -726,7 +726,6 @@ export class ReportComponent implements OnInit {
     //CONVERTO I DATI
     //this.selectedReport.paramsValue = this.paramsValue;
     this.selectedReport.paramsValue  = Object.assign({}, this.paramsValue);
-
     this.params.forEach((element) => {
       if (element.paramType == 'DATE') {
         this.selectedReport.paramsValue[element.paramName] = this.reportService.getDate(this.paramsValue[element.paramName]);
