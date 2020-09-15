@@ -29,6 +29,11 @@
     "secure": false,
     "logLevel": "debug"
   },
+  "/dirigperf/": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "logLevel": "debug"
+  },
   "/emplperf/": {
     "target": "http://localhost:8080",
     "secure": false,
@@ -40,6 +45,11 @@
     "logLevel": "debug"
   },
   "/orgperf/": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/partperf/": {
     "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
