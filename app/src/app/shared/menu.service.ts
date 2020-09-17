@@ -29,6 +29,7 @@ const REFURBISHED_PAGES = {
   'GP_MENU_00447': ['report-print/CTX_EP'],
   'GP_MENU_00448': ['report-print/CTX_GD'],
   'GP_MENU_00449': ['report-print/CTX_TR'],
+  'GP_MENU_00499': ['report-print/CTX_PA'],
   'GP_MENU_00486': ['queryconfig'],
   'GP_MENU_00487': ['queryconfig/CTX_CO/E'],
   'GP_MENU_00488': ['queryconfig/CTX_BS/E'],
