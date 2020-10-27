@@ -46,7 +46,7 @@ const GZOOM_PATH = '/gzoom/control/box';
     // application modules
     // > libraries
     CommonsModule.forRoot({
-      application: { name: 'GZoom2', version: '2.6.7'}
+      application: { name: 'GZoom2', version: '2.6.8'}
       //, i18n: { rootPath: ROOT_PATH }
     }),
     ApiModule.forRoot({ rootPath: ROOT_PATH, gzoomPath: GZOOM_PATH }),
