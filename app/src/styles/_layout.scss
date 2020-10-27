@@ -69,7 +69,7 @@ body.bodylayout {
     color: map-get($app-colors, active-cl);
     border: none;
   }
-  
+
   .btn-primary.disabled,
   .btn-primary:disabled {
     background: map-get($app-colors, navbar-fg);
@@ -143,8 +143,12 @@ body.bodylayout {
     border: none;
   }
 
-  p-dropdown .ui-dropdown, 
-  p-dropdown .ui-state-default, 
+  .ui-multiselect-panel {
+    max-width: 50em;
+  }
+
+  p-dropdown .ui-dropdown,
+  p-dropdown .ui-state-default,
   p-dropdown .ui-dropdown-label {
     background-color: map-get($app-colors, background-cl);
     border: none;
@@ -194,13 +198,13 @@ body.bodylayout {
   .dropdown-filter-container {
     background: map-get($app-colors, background-cl);
   }
-  
+
 
   /*----------------------------------------------------------------------------*/
    /* radiobutton                                                               */
    /*----------------------------------------------------------------------------*/
-   .ui-radiobutton-label {   
-    color:  map-get($app-colors, default-cl); 
+   .ui-radiobutton-label {
+    color:  map-get($app-colors, default-cl);
     font-family: "Trebuchet MS";
     font-size: 0.75rem;
     margin-bottom: 0rem
@@ -209,31 +213,31 @@ body.bodylayout {
     font-weight: bold;
     font-size: 0.85rem;
   }
-  .ui-radiobutton .ui-radiobutton-box.ui-state-active {    
+  .ui-radiobutton .ui-radiobutton-box.ui-state-active {
     border: 1px solid map-get($app-colors, navbar-bg);
-    background-color: map-get($app-colors, navbar-bg);  
+    background-color: map-get($app-colors, navbar-bg);
   }
 
   /*----------------------------------------------------------------------------*/
    /* inputswitch                                                               */
    /*----------------------------------------------------------------------------*/
   .ui-inputswitch {
-    background-color: map-get($app-colors, navbar-bg);    
+    background-color: map-get($app-colors, navbar-bg);
   }
 
-  .ui-inputswitch .ui-inputswitch-on, 
+  .ui-inputswitch .ui-inputswitch-on,
   .ui-inputswitch .ui-inputswitch-off {
-    color:  map-get($app-colors, default-cl); 
+    color:  map-get($app-colors, default-cl);
   }
 
   /*----------------------------------------------------------------------------*/
    /* toggleButton                                                               */
    /*----------------------------------------------------------------------------*/
-  
+
   .ui-togglebutton:not(.ui-state-disabled).ui-state-active,
   .ui-togglebutton:not(.ui-state-disabled):not(.ui-state-active):hover {
-    color:  map-get($app-colors, default-cl); 
-    background-color:  map-get($app-colors, navbar-bg); 
+    color:  map-get($app-colors, default-cl);
+    background-color:  map-get($app-colors, navbar-bg);
   }
 
   /*----------------------------------------------------------------------------*/
@@ -293,7 +297,7 @@ body.bodylayout {
   p-calendar.ng-invalid {
     border-left: 5px solid #a94442; /* red */
   }
- 
+
   p-autocomplete.form-control {
     padding: 0em;
   }
@@ -303,7 +307,7 @@ body.bodylayout {
   }
 
   p-dialog {
-    .ui-widget-header { 
+    .ui-widget-header {
       background: map-get($app-colors, title-bg);
       color: map-get($app-colors, default-cl);
     }
@@ -326,7 +330,7 @@ body.bodylayout {
   .ui-button:enabled:hover{
     background: map-get($app-colors, default-bg);
     color:map-get($app-colors, active-cl);
-  } 
+  }
 
   .ui-button:enabled:active {
     background: map-get($app-colors, default-bg);
@@ -337,7 +341,7 @@ body.bodylayout {
     border: 1px solid map-get($app-colors, grey);
     border-radius: 5px;
   }
-  
+
   /*----------------------------------------------------------------------------*/
   /* Filtro Generale su DataTable                                                            */
   /*----------------------------------------------------------------------------*/
@@ -381,7 +385,7 @@ body.bodylayout {
         color: map-get($app-colors, default-cl);
       }
 
-      
+
       .ui-dropdown {
         .ui-dropdown-label {
           background: map-get($app-colors, title-bg);
@@ -476,7 +480,7 @@ body.bodylayout {
     .nav-item {
       display: contents;
     }
-    
+
     .nav-tabs .nav-item.show .nav-link,
     .nav-tabs .nav-link.active,
     .nav-tabs .nav-link.active:focus,
@@ -627,7 +631,7 @@ body.bodylayout {
       top: 100px;
       right: 20px;
       width: 20em;
-      
+
       .ui-state-highlight {
         background-color: map-get($app-colors, background-cl);
         color: map-get($app-colors, default-cl);
@@ -656,8 +660,8 @@ body.bodylayout {
   }
 }
 
-.tooltip-inner { 
-  background : map-get($app-colors, default-cl); 
+.tooltip-inner {
+  background : map-get($app-colors, default-cl);
   color: map-get($app-colors, background-cl);
 }
 
