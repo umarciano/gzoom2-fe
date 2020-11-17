@@ -80,9 +80,9 @@ export class ReportPrintComponent implements OnInit {
   onRowSelect(data) {
     console.log('report ', data);
     this.selectedReport = data; // data.value;
-    this.contentIdContentName = data.reportContentId+"_"+data.contentName;
+    this.contentIdContentName = data.reportContentId+"_"+data.contentName+"_"+data.workEffortTypeId;
     if (this.selectedReport) {
-        this.router.navigate([this.selectedReport.reportContentId, this.selectedReport.resourceName, this.selectedReport.analysis], { relativeTo: this.route });
+        this.router.navigate([this.selectedReport.reportContentId, this.selectedReport.resourceName, this.selectedReport.workEffortTypeId, this.selectedReport.analysis], { relativeTo: this.route });
     }
   }
 

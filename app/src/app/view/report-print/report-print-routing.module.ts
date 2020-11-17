@@ -16,7 +16,7 @@ import { WorkEffortResolverService } from '../work-effort/work-effort/work-effor
 const routes: Routes = [
   { path: ':parentTypeId', component: ReportPrintComponent, resolve: { reports: ReportPrintResolver},
     children: [
-      { path: ':reportContentId/:resourceName/:analysis', component: ReportComponent, resolve: { report: ReportResolver,
+      { path: ':reportContentId/:resourceName/:workEffortTypeId/:analysis', component: ReportComponent, resolve: { report: ReportResolver,
                                                                          orgUnits: OrgUnitResolver,
                                                                          statusItems: StatusItemResolverService,
                                                                          roleTypes: RoleTypeResolverService,
