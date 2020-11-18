@@ -1,7 +1,7 @@
 <div class="navbar-collapse" id="navbarTogglerDemo03">
     <ul class="navbar-nav ml-auto mt-2 mt-md-0">
-        <div class="nav-item dropdown" #reportDownload="ngbDropdown" ngbDropdown placement="bottom-right">
-          <a href="javascript:void(0)" (click)="onClick(reportDownload)" class="nav-link dropdown-toggle" ngbDropdownToggle>
+        <div class="nav-item dropdown" (openChange)="toggled($event)" #reportDownload="ngbDropdown" ngbDropdown placement="bottom-right">
+          <a href="javascript:void(0)" class="nav-link dropdown-toggle" ngbDropdownToggle>
             <i class="fa fa-download"></i> &nbsp; {{'Download'|i18n}} <b class="caret"></b>
           </a>
           <div ngbDropdownMenu style="min-width: 27rem;">

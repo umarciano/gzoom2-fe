@@ -1,14 +1,12 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
-import { I18NService } from '../../i18n/i18n.service';
 import { AuthService } from '../../commons/auth.service';
 
-import { Observable ,  Subject, interval, BehaviorSubject } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { Subject, interval } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import { HttpClient } from '@angular/common/http';
 import 'rxjs/Rx';
 
 import { ReportDownloadService } from '../../api/report-download.service';
@@ -23,17 +21,29 @@ import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './report-download.component.html',
   styleUrls: ['./report-download.component.css']
 })
-export class ReportDownloadComponent implements OnInit {
-  _reload: Subject<void>;
-
-  doctors = [];
-  pollingData: any;
-  isPolling: boolean;
+export class ReportDownloadComponent implements OnInit, OnDestroy {
+  /**
+   * Token per autenticazione utente
+   */
   token: string;
-  reports: ReportActivity[];
   runElement = [];
+  /**
+   * Lista di nuove stampe lanciate dall'utente
+   */
   activities: Subject<string> = new Subject<string>();
-
+  /**
+   * Lista di report che compare nella dropdown in alto a sinistra
+   */
+  reports: ReportActivity[];
+  /**
+   * Observable legato a reports
+   */
+  pollingData: any;
+  
+  /**
+   * usato per far riferimento alla dropdown reportDownload (nel DOM),
+   * in modo da poterla aprire quando parte una nuova stampa
+   */
   @ViewChild('reportDownload') reportDownload: NgbDropdown;
 
   constructor(private readonly route: ActivatedRoute,
@@ -41,12 +51,13 @@ export class ReportDownloadComponent implements OnInit {
     private readonly authService: AuthService,
     public readonly downloadActivityService: DownloadActivityService,
     private readonly clientService: ApiClientService) {
-      this._reload = new Subject<void>();
-      this.token = authService.token();
+      this.authService = authService;
+      this.token = this.authService.token();
     }
 
   ngOnInit() {
-    this.polling();
+    // sottoscrizione ad una lista di attivita'
+    // la lista viene aggiornata quando viene lanciata una nuova stampa con un activityId valorizzato
     this.downloadActivityService.getActivities().subscribe(
      (activityId) => {
        if (activityId != null) {
@@ -54,20 +65,24 @@ export class ReportDownloadComponent implements OnInit {
        }
        this.activities.next(activityId);
        this.runElement.push(activityId);
-       if(!this.isPolling)
-         this.polling();
      }
     );
   }
 
-  polling() {
-    this.isPolling = true;
-    this.pollingData = interval(1000)
-      .pipe(switchMap(() => this.reportDownloadService.reportDownloads()) )
+  /**
+   * Interrompe il polling e ripulisce la lista di reports
+   */
+  ngOnDestroy() {
+    this.stopPolling();
+    this.reports = [];
+  }
+
+  startPolling() {
+    this.pollingData = interval(1000).startWith(0).pipe(switchMap(() => this.reportDownloadService.reportDownloads()) )
       .subscribe((data) => {
         this.reports = data;
         var running = false;
-        this.reports.forEach((element) => {
+        data.forEach((element) => {
           if (element.status == 'RUNNING') {
             running = true;
           } else if (element.status == 'DONE' && this.runElement.indexOf(element.activityId) >= 0 ) {
@@ -75,8 +90,9 @@ export class ReportDownloadComponent implements OnInit {
               this.runElement.splice(this.runElement.indexOf(element.activityId), 1);
           }
         });
+        // se nessuna stampa e' in attesa di essere eseguita, il polling si interrompe
         if (!running) {
-          this.ngOnDestroy();
+          this.stopPolling();
         }
       });
   }
@@ -86,14 +102,20 @@ export class ReportDownloadComponent implements OnInit {
       .delete(data.activityId);
   }
 
-  ngOnDestroy() {
+  /**
+   * Interrompe il polling
+   */
+  stopPolling() {
     this.pollingData.unsubscribe();
-    this.isPolling = false;
   }
 
-  onClick(reportDownload) {
-    if (reportDownload.isOpen() && !this.isPolling)
-      this.polling();
+  toggled(event) {
+    if (event) {
+      this.startPolling();
+    } else {
+      this.stopPolling();
+      this.reports = [];
+    }
   }
 
   reportUrl(report:ReportActivity):string{
