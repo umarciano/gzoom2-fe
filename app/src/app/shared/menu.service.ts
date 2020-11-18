@@ -37,12 +37,22 @@ const REFURBISHED_PAGES = {
   'GP_MENU_00490': ['queryconfig/CTX_EP/E'],
   'GP_MENU_00491': ['queryconfig/CTX_GD/E'],
   'GP_MENU_00492': ['queryconfig/CTX_TR/E'],
+  'GP_MENU_00504': ['queryconfig/CTX_PA/E'],
+  'GP_MENU_00505': ['queryconfig/CTX_DI/E'],
+  'GP_MENU_00506': ['queryconfig/CTX_RE/E'],
+  'GP_MENU_00507': ['queryconfig/CTX_CG/E'],
+  'GP_MENU_00508': ['queryconfig/CTX_PR/E'],
   'GP_MENU_00493': ['queryconfig/CTX_CO/U'],
   'GP_MENU_00494': ['queryconfig/CTX_BS/U'],
   'GP_MENU_00495': ['queryconfig/CTX_OR/U'],
   'GP_MENU_00496': ['queryconfig/CTX_EP/U'],
   'GP_MENU_00497': ['queryconfig/CTX_GD/U'],
   'GP_MENU_00498': ['queryconfig/CTX_TR/U'],
+  'GP_MENU_00509': ['queryconfig/CTX_PA/U'],
+  'GP_MENU_00510': ['queryconfig/CTX_DI/U'],
+  'GP_MENU_00511': ['queryconfig/CTX_RE/U'],
+  'GP_MENU_00512': ['queryconfig/CTX_CG/U'],
+  'GP_MENU_00513': ['queryconfig/CTX_PR/U'],
   'GP_MENU_00999': ['report-print'] // 'GP_MENU_00999': ['timesheet/timesheet-report/CTX_PR']
 };
 
