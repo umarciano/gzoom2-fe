@@ -39,7 +39,7 @@ export class ReportDownloadComponent implements OnInit, OnDestroy {
    * Observable legato a reports
    */
   pollingData: any;
-  
+
   /**
    * usato per far riferimento alla dropdown reportDownload (nel DOM),
    * in modo da poterla aprire quando parte una nuova stampa
@@ -61,7 +61,7 @@ export class ReportDownloadComponent implements OnInit, OnDestroy {
     this.downloadActivityService.getActivities().subscribe(
      (activityId) => {
        if (activityId != null) {
-        this.reportDownload.open(); 
+        this.reportDownload.open();
        }
        this.activities.next(activityId);
        this.runElement.push(activityId);
@@ -106,7 +106,8 @@ export class ReportDownloadComponent implements OnInit, OnDestroy {
    * Interrompe il polling
    */
   stopPolling() {
-    this.pollingData.unsubscribe();
+    if(this.pollingData)
+      this.pollingData.unsubscribe();
   }
 
   toggled(event) {
