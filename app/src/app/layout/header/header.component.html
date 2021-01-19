@@ -51,6 +51,19 @@
             </div>
           </div>
         </li>
+        <li class="nav-item">
+          <div class="nav-item dropdown" [autoClose]="'outside'" ngbDropdown placement="bottom-right">
+            <a href="javascript:void(0)" class="nav-link dropdown-toggle" ngbDropdownToggle>
+              <i class="fa fa-globe" aria-hidden="true"></i>
+            </a>
+            <div ngbDropdownMenu>
+                <div *ngFor="let l of languages">
+                  <a class="dropdown-item" (click)="changeLang(l)"><span>{{l|i18n}}</span>
+                </a>
+                </div>
+              </div>
+          </div>
+        </li>
       </ul>
     </div>
   </nav>

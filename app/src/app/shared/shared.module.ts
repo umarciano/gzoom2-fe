@@ -14,6 +14,7 @@ import { NodeResolver } from './node-resolver.service';
 import { SafeResPipe } from './safe-res.pipe';
 import { SafeIdentifierGuard } from './safe-identifier.guard';
 import { DownloadActivityService } from './report-download/download-activity.service';
+import { LocalizationResolver } from './localization-resolver.service';
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ export class SharedModule {
         NodeService,
         PermissionsResolver,
         MenuResolver,
+        LocalizationResolver,
         NodeResolver,
         LoaderService,
         SafeIdentifierGuard,

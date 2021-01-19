@@ -7,6 +7,7 @@ import { MenuResolver } from '../shared/menu-resolver.service';
 import { NodeResolver } from '../shared/node-resolver.service';
 import { FocusComponent } from '../layout/focus/focus.component';
 import { ContentComponent } from '../layout/content/content.component';
+import { LocalizationResolver } from 'app/shared/localization-resolver.service';
 
 const routes: Routes = [
   {
@@ -26,6 +27,7 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     resolve: {
       permissions: PermissionsResolver,
+      locale: LocalizationResolver,
       menu: MenuResolver,
       node: NodeResolver
     },

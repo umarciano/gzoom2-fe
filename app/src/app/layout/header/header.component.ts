@@ -10,7 +10,7 @@ import { LockoutService } from '../../commons/lockout.service';
 import { LogoutService } from '../../api/logout.service';
 import { LoginService } from '../../api/login.service';
 import { UserPreference } from '../../api/login.service';
-
+import {DropdownModule} from 'primeng/dropdown';
 import { NodeService } from '../../shared/node.service';
 
 import { ApiConfig } from '../../api/api-config';
@@ -22,8 +22,10 @@ import { DialogModule } from 'primeng/primeng';
 import { I18NService } from '../../i18n/i18n.service';
 import { Message } from '../../commons/message';
 import { Node } from '../../view/node/node';
+import { ApiClientService } from 'app/api/client.service';
 
 const CHANGE_PASS_ENDPOINT = 'change-password';
+const CHANGE_LANG_ENDPOINT = 'change-language';
 const HTTP_HEADERS = new HttpHeaders();
 
 @Component({
@@ -42,17 +44,18 @@ export class HeaderComponent {
   error = '';
 
   msgs: Message[] = [];
-  
+  languages: String[] = [];
   currentPassword: String;
   newPassword: String;
   newPasswordVerify: String;
 
   private readonly changePassUrl: string;
+  private readonly changeLangUrl: string;
 
   THEME_GREEN: String = 'GPLUS_GREEN_ACC';
   THEME_BLUE: String = 'GPLUS_BLUE_ACC';
-  THEME_VIOLET: String = 'GPLUS_VIOLET_ACC'; 
-  userPreference: UserPreference = new UserPreference();         
+  THEME_VIOLET: String = 'GPLUS_VIOLET_ACC';
+  userPreference: UserPreference = new UserPreference();
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -65,10 +68,13 @@ export class HeaderComponent {
               private http: HttpClient,
               private apiConfig: ApiConfig,
               private authService: AuthService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private client: ApiClientService
+              ) {
     this.user = authSrv.userProfile();
     this.changeTheme(this.user.userPrefValue);
     this.changePassUrl = `${apiConfig.rootPath}/${CHANGE_PASS_ENDPOINT}`;
+    this.changeLangUrl = `${apiConfig.rootPath}/${CHANGE_LANG_ENDPOINT}`;
   }
 
   ngOnInit() {
@@ -76,6 +82,12 @@ export class HeaderComponent {
       map((data: { node: Node }) => data.node),
     ).subscribe((data) => {
       this.node = data;
+    });
+
+
+    this.client.get("/profile/i18n/languages").subscribe( json => {
+      this.languages = json.results as String[];
+      console.log("languages available "+this.languages);
     });
 
     this.form = this.fb.group({
@@ -86,7 +98,7 @@ export class HeaderComponent {
 
     this.displayChangePassword = false;
     this.displayChangeTheme = false;
-   
+
     this.nodeService.nodeLegacyVersions().subscribe(
       (legacyVersions: string) => {
         this.legacyAppVersions = legacyVersions;
@@ -117,15 +129,15 @@ export class HeaderComponent {
     });
   }
 
-  changePasswordDialog() {  
+  changePasswordDialog() {
     this.displayChangePassword = true;
   }
 
-  changeThemeDialog() {  
+  changeThemeDialog() {
     this.displayChangeTheme = true;
   }
 
-  changeTheme(theme) { 
+  changeTheme(theme) {
     window['switchStyle'](theme);
     localStorage.setItem('app-root', theme);
     console.log('theme=' + theme);
@@ -133,8 +145,8 @@ export class HeaderComponent {
     this.router.navigate(['/c/dashboard']);
   }
 
-  saveChangeTheme(theme) {     
- 
+  saveChangeTheme(theme) {
+
     this.userPreference.userLoginId = this.user.username;
     this.userPreference.userPrefTypeId = "VISUAL_THEME";
     this.userPreference.userPrefValue = theme;
@@ -142,14 +154,14 @@ export class HeaderComponent {
       .updateUserPreference(this.userPreference)
       .then(() => {
         this.changeTheme(theme);
-      })             
+      })
       .catch((error) => {
         console.log('error.message' , error);
         this.error = this.i18nService.translate(error) || error;
       });
-    
+
   }
-  
+
   changePassword() {
     const body = JSON.stringify({ username: this.user.username, password: this.currentPassword, newPassword: this.newPassword });
     this.http
@@ -163,13 +175,25 @@ export class HeaderComponent {
             console.log("error changePass",err);
             this.error = this.i18nService.translate(err.message) || err.message;
         }, // error
-        () => {          
+        () => {
           console.log('change password Complete');
-          this.displayChangePassword = false; 
+          this.displayChangePassword = false;
           this.currentPassword = "";
           this.newPassword = "";
           this.newPasswordVerify = "";
-          this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Change password'), detail:this.i18nService.translate('Cambio password eseguito con successo ')}]; 
-      }); // complete   
-  }  
+          this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Change password'), detail:this.i18nService.translate('Cambio password eseguito con successo ')}];
+      }); // complete
+  }
+
+  changeLang(lang: String) {
+    const body = JSON.stringify({ username: this.user.username, lang: lang});
+    this.client.post(this.changeLangUrl,body)
+      .subscribe((data:any) => {
+        console.log("change language:" + data);
+        window.location.reload();
+      },
+      err => {
+        console.log("error change language",err);
+      });
+  }
 }

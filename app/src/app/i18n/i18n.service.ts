@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
+import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import 'moment-timezone';
 
@@ -58,13 +58,12 @@ export class I18NService {
   private _t: { [x: string]: string; };
   private _f: { [x: string]: string | number | boolean; };
   private _calendarLocale: { [x: string]: any; };
-
   private static removeSuffix(text) {
     const matches = SUFFIX_RE.exec(text);
     return matches ? matches[1] : text;
   }
 
-  constructor() {}
+  constructor(private config: I18NConfig, private http: HttpClient) {}
 
   init(localizations: Localizations) {
     this._lang = localizations.language;
@@ -163,5 +162,22 @@ export class I18NService {
    */
   getCalendarLocale(): any {
     return this._calendarLocale;
+  }
+
+  changeLang(user: string): Promise<void> {
+    return this.http
+    .get(`${this.config.rootPath}/profile/i18n/${user}`)
+    .toPromise()
+    .then(json => {
+      console.log("changeLang json " + json);
+      this.config.localizations = json as Localizations;
+      this.init(this.config.localizations);
+
+    })
+    .catch(err => {
+      console.error('No way to get the localization data', err);
+      this.config.localizations = { translations: {}, formats: {}, calendarLocale: {} };
+      this.init(this.config.localizations);
+    });
   }
 }

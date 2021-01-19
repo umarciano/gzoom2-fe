@@ -21,7 +21,7 @@ import { ReportDownloadService } from '../api/report-download.service';
 
 import { DataTableModule, ButtonModule, DialogModule } from 'primeng/primeng';
 import { TableModule} from 'primeng/table';
-
+import {DropdownModule} from 'primeng/dropdown';
 import {ProgressSpinnerModule} from 'primeng/primeng';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -37,6 +37,7 @@ import { I18nModule } from 'app/i18n/i18n.module';
     SharedModule,
     NgbModule,
     DialogModule,
+    DropdownModule,
     DataTableModule,
     TableModule,
     ProgressSpinnerModule,
