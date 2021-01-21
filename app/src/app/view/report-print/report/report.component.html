@@ -47,7 +47,20 @@
           <i class="fa fa-times"></i>
           {{'output Format is required'|i18n}}
         </div>
-      </div>
+    </div>
+  </div>
+
+  <div *ngIf="langType==('BILING' || 'REPORT')" class="ui-grid-row" style="margin-bottom: 1em;">
+    <div class="ui-grid-col-3">
+      <label for="localLang">{{'Seleziona la lingua'|i18n}}</label>
+    </div>
+    <div class="ui-grid-col-4">
+      <p-dropdown class="form-control" appendTo="body" formControlName="languageSelected" filter="true"
+      [options]="languagesSelectItem"
+      [(ngModel)]="languageSelected"
+      [autoWidth]="false" [style]="{'width':'100%'}">
+      </p-dropdown>
+   </div>
   </div>
 
 

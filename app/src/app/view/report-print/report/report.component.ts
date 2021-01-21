@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { Validators, FormControl, FormGroup, FormBuilder, SelectMultipleControlValueAccessor } from '@angular/forms';
 
 
 import { Subject } from 'rxjs';
@@ -39,6 +39,7 @@ import { WorkEffortTypeService } from 'app/api/work-effort-type.service';
 import { WorkEffortRevisionService } from 'app/api/work-effort-revision.service';
 import { DownloadActivityService } from 'app/shared/report-download/download-activity.service';
 import { WorkEffortRevision } from 'app/commons/workEffortRevision';
+import { ApiClientService } from 'app/api/client.service';
 
 /** Convert from WorkEffort[] to SelectItem[] */
   function workEfforts2SelectItems(types: WorkEffort[]): SelectItem[] {
@@ -232,6 +233,16 @@ function workEffortType2SelectItems(workEffortType: WorkEffortType[]): SelectIte
   });
 }
 
+/** COnvert from languages[] to SelectItem[] */
+function languages2SelectItems(lang: string[]): SelectItem[] {
+  if(lang == null) {
+    return [];
+  }
+  return lang.map(p => {
+    return {label: this.i18nService.translate(p), value:p};
+  });
+}
+
 /** Convert from WorkEffortType[] to SelectItem[] */
 function outputFormat2SelectItems(outputFormat: ReportType[]): SelectItem[] {
   if (outputFormat == null){
@@ -304,6 +315,10 @@ export class ReportComponent implements OnInit {
   hiddenMail: boolean;
 
   msgs: Message[] = [];
+  languages: String[] = [];
+  languagesSelectItem: SelectItem[] = [];
+  languageSelected: string;
+  langType: string;
 
   constructor(private readonly route: ActivatedRoute,
   private readonly router: Router,
@@ -319,6 +334,7 @@ export class ReportComponent implements OnInit {
   private readonly reportDownloadComponent: ReportDownloadComponent,
   private readonly enumerationService: EnumerationService,
   private readonly downloadActivityService: DownloadActivityService,
+  private readonly client: ApiClientService,
   private fb: FormBuilder,
   http: HttpClient) {
     this._reload = new Subject<ReloadParams>();
@@ -333,6 +349,24 @@ export class ReportComponent implements OnInit {
     // this.route.paramMap('');
     console.log('ngOnInit Report component ');
     //let reloadedReport = this._reload;
+
+
+   this.client.get("/profile/i18n/languages").pipe(map(
+    json => json.results as String[]
+   )).subscribe(data=>{
+    this.languages = data;
+    this.languagesSelectItem = data.map(
+      (p:string) => {
+        return {label: this.i18nService.translate(p), value: p};
+      });
+    console.log("languages available report "+data);
+   });
+
+
+   this.client.get("/profile/i18n/language-type").subscribe( data => {
+    this.langType = data as string;
+    console.log("lang type "+this.langType);
+   });
 
 
     let parentTypeId = this.route.snapshot.parent.params.parentTypeId;
@@ -683,6 +717,7 @@ export class ReportComponent implements OnInit {
     //aggiungo
     paramForm["outputFormat"] = new FormControl('', Validators.required);
     paramForm["workEffortTypeId"] = new FormControl('', Validators.required);
+    paramForm["languageSelected"] = new FormControl('');
     this.form = this.fb.group(paramForm);
 
 

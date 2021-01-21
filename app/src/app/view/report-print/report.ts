@@ -32,6 +32,7 @@ export class Report {
     public paramsValue?: {},
     public analysis? : boolean,
     public resourceName?: string,
+    public langLocale?: string,
     public useFilter? : boolean) {}
 }
 

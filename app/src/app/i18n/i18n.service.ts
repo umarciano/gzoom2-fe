@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import 'moment-timezone';
 
@@ -180,4 +181,17 @@ export class I18NService {
       this.init(this.config.localizations);
     });
   }
+
+  getLanguages(): Observable<String[]>{
+    return this.http.get("/profile/i18n/languages").pipe(
+      map(json => json as String[])
+    );
+  }
+/*
+  getLanguageType(): Observable<String>{
+    return this.client.get("/profile/i18n/language-type").pipe(
+      map(json => json as String )
+    );
+  }
+*/
 }
