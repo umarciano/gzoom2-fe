@@ -184,14 +184,7 @@ function enumeration2SelectItems(enumeration: Enumeration[]): SelectItem[] {
 }
 
 /** Convert from Party[] to SelectItem[] */
-function party2SelectItems(party: Party[]): SelectItem[] {
-  if (party == null) {
-    return [];
-  }
-  return party.map((p: Party) => {
-    return {label: p.partyName, value: p.partyId};
-  });
-}
+//function
 
 /** Convert from Party[] to SelectItem[] */
 function orgUnit2SelectItems(party: Party[]): SelectItem[] {
@@ -414,7 +407,7 @@ export class ReportComponent implements OnInit {
     const reloadedPartyObs = this.route.data.pipe(
       map((data: { partys: Party[] }) => data.partys),
       merge(reloadedParty),
-      map(party2SelectItems)
+      map(ps => this.party2SelectItems(ps))
     ).subscribe((data) => {
       this.partyIdSelectItem = data;
       this.partyIdSelectItem.push({label: this.i18nService.translate('Select party'), value:null});
@@ -440,7 +433,7 @@ export class ReportComponent implements OnInit {
     const reloadedPersonObs = this.route.data.pipe(
       map((data: { partys: Party[] }) => data.partys),
       merge(reloadedPerson),
-      map(party2SelectItems)
+      map(ps => this.party2SelectItems(ps))
     ).subscribe((data) => {
       let emptyPersonIdSelectItem = [];
       emptyPersonIdSelectItem.push({label: this.i18nService.translate('Select party'), value: null});
@@ -452,7 +445,7 @@ export class ReportComponent implements OnInit {
     const reloadPoliticianTypeIdObs = this.route.data.pipe(
       map((data: { partys: Party[] }) => data.partys),
       merge(reloadedPoliticianTypeId),
-      map(party2SelectItems)
+      map(ps => this.party2SelectItems(ps))
     ).subscribe((data) => {
       this.politicianRoleTypeIdSelectItem = data;
       this.politicianRoleTypeIdSelectItem.unshift({label: this.i18nService.translate('Select party'), value: null});
@@ -665,7 +658,14 @@ export class ReportComponent implements OnInit {
   }
   //********* END ngOnInit */
 
-
+  party2SelectItems(party: Party[]): SelectItem[] {
+    if (party == null) {
+      return [];
+    }
+    return party.map((p: Party) => {
+      return {label: this.i18nService.getLanguageType()==="BILING"?"FUNZIA":p.partyName, value: p.partyId};
+    });
+  }
 
   onChangeAll(value, paramName) {
     console.log('onChangeAll paramName= ' + paramName + ' value=', value);

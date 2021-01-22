@@ -142,7 +142,7 @@ export class HeaderComponent {
     localStorage.setItem('app-root', theme);
     console.log('theme=' + theme);
     this.displayChangeTheme = false;
-    this.router.navigate(['/c/dashboard']);
+    //this.router.navigate(['/c/dashboard']);
   }
 
   saveChangeTheme(theme) {

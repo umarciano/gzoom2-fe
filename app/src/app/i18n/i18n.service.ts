@@ -59,6 +59,7 @@ export class I18NService {
   private _t: { [x: string]: string; };
   private _f: { [x: string]: string | number | boolean; };
   private _calendarLocale: { [x: string]: any; };
+  private _langType: string;
   private static removeSuffix(text) {
     const matches = SUFFIX_RE.exec(text);
     return matches ? matches[1] : text;
@@ -71,6 +72,7 @@ export class I18NService {
     this._t = localizations.translations || {};
     this._f = localizations.formats || {};
     this._calendarLocale = localizations.calendarLocale; // for p-calendar.locale
+    this.retrieveLanguageType().subscribe(data => this._langType = data);
     if (this._lang) {
       // moment.locale(this._lang);
       moment.tz().locale(this._lang);
@@ -182,16 +184,20 @@ export class I18NService {
     });
   }
 
-  getLanguages(): Observable<String[]>{
-    return this.http.get("/profile/i18n/languages").pipe(
-      map(json => json as String[])
+  getLanguageType() {
+    return this._langType;
+  }
+
+  retrieveLanguages(){
+    return this.http.get(`${this.config.rootPath}/profile/i18n/languages`).pipe(
+      map(json => json as string[])
     );
   }
-/*
-  getLanguageType(): Observable<String>{
-    return this.client.get("/profile/i18n/language-type").pipe(
-      map(json => json as String )
+
+  retrieveLanguageType(){
+    return this.http.get(`${this.config.rootPath}/profile/i18n/language-type`).pipe(
+      map(json => json as string )
     );
   }
-*/
+
 }
