@@ -298,6 +298,7 @@ export class ReportComponent implements OnInit {
   workEffortId20D6SelectItem: SelectItem[] = [];
   politicianRoleTypeIdSelectItem: SelectItem[] = [];
   assessorsSelectItem: SelectItem[] = [];
+  orderBilSelectItem: SelectItem[] = [];
   scorePreviewSelectItem: SelectItem[] = [];
   workEffortRevisionSelectItem: SelectItem[] = [];
 
@@ -461,6 +462,17 @@ export class ReportComponent implements OnInit {
       this.assessorsSelectItem = data;
       this.assessorsSelectItem.unshift({label: this.i18nService.translate('Select statusItem'), value: null});
       this.paramsSelectItem['assessorsSelectItem'] = this.assessorsSelectItem;
+    });
+
+    const reloadedOrderbil = this._reload.pipe(switchMap(() => this.enumerationService.enumerations('ORDERBIL')));
+    const reloadedOrderbilObs = this.route.data.pipe(
+      map((data: {enumerations: Enumeration[]}) => data.enumerations),
+      merge(reloadedOrderbil),
+      map(enumeration2SelectItems)
+    ).subscribe((data) => {
+      this.orderBilSelectItem = data;
+      this.orderBilSelectItem.unshift({label: this.i18nService.translate('Select order'), value: null});
+      this.paramsSelectItem['orderBilSelectItem'] = this.orderBilSelectItem;
     });
 
     const reloadedScorePreview = this._reload.pipe(switchMap(() => this.enumerationService.enumerations('SCOREPREVIEW')));
