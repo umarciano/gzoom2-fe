@@ -167,6 +167,10 @@ export class I18NService {
     return this._calendarLocale;
   }
 
+  getLang(): string {
+    return this._lang;
+  }
+
   changeLang(user: string): Promise<void> {
     return this.http
     .get(`${this.config.rootPath}/profile/i18n/${user}`)

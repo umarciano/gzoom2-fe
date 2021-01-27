@@ -2,9 +2,10 @@
  * Model of a Party.
  */
 export class Party {
-  constructor(public partyId?: string, 
-    public partyName?: string, 
-    public firstName?: string, 
+  constructor(public partyId?: string,
+    public partyName?: string,
+    public partyNameLang?: string,
+    public firstName?: string,
     public lastName?: string,
     public partyParentRole?: PartyParentRole) { }
 }

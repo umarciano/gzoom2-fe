@@ -17,7 +17,7 @@ export class ReportType {
 }
 
 export class WorkEffortType {
-  constructor(public workEffortTypeId?: string, public description?: string, public workEffortTypeName?:  string,) {};
+  constructor(public workEffortTypeId?: string, public description?: string, public workEffortTypeName?:  string, public descriptionLang?: string) {};
 }
 
 export class Report {

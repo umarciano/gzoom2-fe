@@ -183,19 +183,6 @@ function enumeration2SelectItems(enumeration: Enumeration[]): SelectItem[] {
   });
 }
 
-/** Convert from Party[] to SelectItem[] */
-//function
-
-/** Convert from Party[] to SelectItem[] */
-function orgUnit2SelectItems(party: Party[]): SelectItem[] {
-  if (party == null) {
-    return [];
-  }
-  return party.map((p: Party) => {
-    return {label: p.partyParentRole.parentRoleCode + " - " + p.partyName, value: p.partyId};
-  });
-}
-
 /** Convert from StatusItem[] to SelectItem[] */
 function statusItem2SelectItems(status: StatusItem[]): SelectItem[] {
   if (status == null){
@@ -213,16 +200,6 @@ function roleType2SelectItems(party: RoleType[]): SelectItem[] {
   }
   return party.map((p:RoleType) => {
     return {label: p.description, value: p.roleTypeId};
-  });
-}
-
-/** Convert from WorkEffortType[] to SelectItem[] */
-function workEffortType2SelectItems(workEffortType: WorkEffortType[]): SelectItem[] {
-  if (workEffortType == null){
-    return [];
-  }
-  return workEffortType.map((p:WorkEffortType) => {
-    return {label: p.workEffortTypeName, value: p.workEffortTypeId};
   });
 }
 
@@ -356,12 +333,7 @@ export class ReportComponent implements OnInit {
     console.log("languages available report "+data);
    });
 
-
-   this.client.get("/profile/i18n/language-type").subscribe( data => {
-    this.langType = data as string;
-    console.log("lang type "+this.langType);
-   });
-
+   this.langType = this.i18nService.getLanguageType();
 
     let parentTypeId = this.route.snapshot.parent.params.parentTypeId;
     let reportContentId = this.route.snapshot.params.reportContentId;
@@ -370,7 +342,7 @@ export class ReportComponent implements OnInit {
     const reloadedOrgUnitObs = this.route.data.pipe(
       map((data: { orgUnits: Party[] }) => data.orgUnits),
       merge(reloadedOrgUnit),
-      map(orgUnit2SelectItems)
+      map(ps => this.orgUnit2SelectItems(ps))
     ).subscribe((data) => {
       this.orgUnitIdSelectItem = data;
       this.orgUnitIdSelectItem.push({label: this.i18nService.translate('Select orgUnitId'), value:null});
@@ -675,10 +647,29 @@ export class ReportComponent implements OnInit {
       return [];
     }
     return party.map((p: Party) => {
-      return {label: this.i18nService.getLanguageType()==="BILING"?"FUNZIA":p.partyName, value: p.partyId};
+      return {label:this.i18nService.getLang()!=="it"?p.partyNameLang:p.partyName, value: p.partyId};
     });
   }
 
+  /** Convert from Party[] to SelectItem[] */
+ orgUnit2SelectItems(party: Party[]): SelectItem[] {
+  if (party == null) {
+    return [];
+  }
+  return party.map((p: Party) => {
+    return {label:this.i18nService.getLang()!=="it"?p.partyParentRole.parentRoleCode + " - " + p.partyNameLang:p.partyParentRole.parentRoleCode + " - " + p.partyName, value: p.partyId};
+  });
+}
+
+/** Convert from WorkEffortType[] to SelectItem[] */
+workEffortType2SelectItems(workEffortType: WorkEffortType[]): SelectItem[] {
+  if (workEffortType == null){
+    return [];
+  }
+  return workEffortType.map((p:WorkEffortType) => {
+    return {label: this.i18nService.getLang()!=="it"?p.descriptionLang:p.workEffortTypeName, value: p.workEffortTypeId};
+  });
+}
   onChangeAll(value, paramName) {
     console.log('onChangeAll paramName= ' + paramName + ' value=', value);
     if (paramName == 'roleTypeId') {
@@ -743,7 +734,7 @@ export class ReportComponent implements OnInit {
     console.log('onRowSelect parentTypetId ' + parentTypeId);
 
     this.workEffortTypes = data.workEffortTypes;
-    this.workEffortTypeSelectItem = workEffortType2SelectItems(this.workEffortTypes);
+    this.workEffortTypeSelectItem = this.workEffortType2SelectItems(this.workEffortTypes);
     console.log('onRowSelect workEffortTypes ', this.workEffortTypes);
 
     //this.workEffortType = data.workEffortTypes[0];
@@ -769,6 +760,7 @@ export class ReportComponent implements OnInit {
     console.log('dopo selectedReport' + this.selectedReport);
     this.selectedReport.outputFormat = this.outputFormat.mimeTypeId;
     this.selectedReport.workEffortTypeId = this.workEffortType.workEffortTypeId;
+    this.selectedReport.langLocale = this.languageSelected;
 
     //CONVERTO I DATI
     //this.selectedReport.paramsValue = this.paramsValue;
