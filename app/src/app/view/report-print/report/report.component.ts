@@ -286,7 +286,7 @@ export class ReportComponent implements OnInit {
   hiddenMail: boolean;
 
   msgs: Message[] = [];
-  languages: String[] = [];
+  languages: string[] = [];
   languagesSelectItem: SelectItem[] = [];
   languageSelected: string;
   langType: string;
@@ -323,9 +323,10 @@ export class ReportComponent implements OnInit {
 
 
    this.client.get("/profile/i18n/languages").pipe(map(
-    json => json.results as String[]
+    json => json.results as string[]
    )).subscribe(data=>{
     this.languages = data;
+    this.languageSelected = data[0];
     this.languagesSelectItem = data.map(
       (p:string) => {
         return {label: this.i18nService.translate(p), value: p};
@@ -720,7 +721,7 @@ workEffortType2SelectItems(workEffortType: WorkEffortType[]): SelectItem[] {
     //aggiungo
     paramForm["outputFormat"] = new FormControl('', Validators.required);
     paramForm["workEffortTypeId"] = new FormControl('', Validators.required);
-    paramForm["languageSelected"] = new FormControl('');
+    paramForm["langControlName"] = new FormControl('');
     this.form = this.fb.group(paramForm);
 
 
