@@ -186,7 +186,7 @@ export class HeaderComponent {
   }
 
   changeLang(lang: String) {
-    const body = JSON.stringify({ username: this.user.username, lang: lang});
+    const body = JSON.stringify({ username: this.user.username,externalLoginKey: this.user.externalLoginKey, lang: lang});
     this.client.post(this.changeLangUrl,body)
       .subscribe((data:any) => {
         console.log("change language:" + data);
