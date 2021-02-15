@@ -277,6 +277,7 @@ export class ReportComponent implements OnInit {
   assessorsSelectItem: SelectItem[] = [];
   orderBilSelectItem: SelectItem[] = [];
   scorePreviewSelectItem: SelectItem[] = [];
+  scoreActualSelectItem: SelectItem[] = [];
   workEffortRevisionSelectItem: SelectItem[] = [];
 
   paramsValue: any = {};
@@ -457,6 +458,17 @@ export class ReportComponent implements OnInit {
       this.scorePreviewSelectItem = data;
       this.scorePreviewSelectItem.unshift({label: this.i18nService.translate('Select statusItem'), value: null});
       this.paramsSelectItem['scorePreviewSelectItem'] = this.scorePreviewSelectItem;
+    });
+
+    const reloadedActualPreview = this._reload.pipe(switchMap(() => this.enumerationService.enumerations('SCOREACTUAL')));
+    const reloadedActualPreviewObs = this.route.data.pipe(
+      map((data: {enumerations: Enumeration[]}) => data.enumerations),
+      merge(reloadedActualPreview),
+      map(enumeration2SelectItems)
+    ).subscribe((data) => {
+      this.scoreActualSelectItem = data;
+      this.scoreActualSelectItem.unshift({label: this.i18nService.translate('Select statusItem'), value: null});
+      this.paramsSelectItem['scoreActualSelectItem'] = this.scoreActualSelectItem;
     });
 
     const reloadedWorkEffortTypeIdParametric = this._reload.pipe(
