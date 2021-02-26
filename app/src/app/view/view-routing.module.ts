@@ -4,6 +4,8 @@ import { SharedModule } from '../shared/shared.module';
 import { AuthGuard } from '../commons/guard.service';
 import { PermissionsResolver } from '../shared/permissions-resolver.service';
 import { MenuResolver } from '../shared/menu-resolver.service';
+import { VisualThemeNAResolver } from '../shared/visual-theme-na-resolver.service';
+import { VisualThemeResolver } from '../shared/visual-theme-resolver.service';
 import { NodeResolver } from '../shared/node-resolver.service';
 import { FocusComponent } from '../layout/focus/focus.component';
 import { ContentComponent } from '../layout/content/content.component';
@@ -30,6 +32,7 @@ const routes: Routes = [
       locale: LocalizationResolver,
       menu: MenuResolver,
       node: NodeResolver
+      , theme: VisualThemeResolver
     },
     children: [
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },

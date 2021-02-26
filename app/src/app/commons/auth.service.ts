@@ -11,8 +11,6 @@ export class UserProfile {
   firstName: string;
   lastName: string;
   username: string;
-  email: string;
-  userPrefValue?: string;
   externalLoginKey: string;
 }
 

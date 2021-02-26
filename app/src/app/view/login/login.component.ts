@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../commons/auth.service';
 import { ApiConfig } from '../../api/api-config';
 import { Node } from '../../view/node/node';
+import { UserPreference } from '../../shared/user-preference';
 
 const LOGIN_ENDPOINT = 'login';
 
@@ -42,7 +43,14 @@ export class LoginComponent implements OnInit {
     this.route.data.pipe(
       map((data: { node: Node }) => data.node),
     ).subscribe((data) => {
+      console.log("login data " + data);
       this.node = data;
+    });
+
+    this.route.data.pipe(
+      map((data: { theme: UserPreference }) => data.theme),
+    ).subscribe((data) => {
+      window['switchStyle'](data.userPrefValue);
     });
     // if already logged in then skip this state
     if (this.authService.isLoggedIn()) {

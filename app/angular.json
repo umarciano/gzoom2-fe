@@ -56,8 +56,8 @@
               "node_modules/fullcalendar/dist/fullcalendar.min.js",
               "node_modules/fullcalendar/dist/locale-all.js",
               "node_modules/chart.js/dist/Chart.js",
-              "src/js/style-switcher.js",
-              "src/js/style-local-storage.js"
+              "src/js/style-switcher.js"
+              
             ]
           },
           "configurations": {
