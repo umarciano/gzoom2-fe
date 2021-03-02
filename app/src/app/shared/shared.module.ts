@@ -11,6 +11,8 @@ import { LoaderService } from './loader/loader.service';
 import { PermissionsResolver } from './permissions-resolver.service';
 import { MenuResolver } from './menu-resolver.service';
 import { NodeResolver } from './node-resolver.service';
+import { VisualThemeResolver } from './visual-theme-resolver.service';
+import { VisualThemeNAResolver } from './visual-theme-na-resolver.service';
 import { SafeResPipe } from './safe-res.pipe';
 import { SafeIdentifierGuard } from './safe-identifier.guard';
 import { DownloadActivityService } from './report-download/download-activity.service';
@@ -43,6 +45,8 @@ export class SharedModule {
         MenuResolver,
         LocalizationResolver,
         NodeResolver,
+        VisualThemeNAResolver,
+        VisualThemeResolver,
         LoaderService,
         SafeIdentifierGuard,
         DownloadActivityService,

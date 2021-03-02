@@ -8,16 +8,14 @@ import { AuthService, UserProfile } from '../../commons/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LockoutService } from '../../commons/lockout.service';
 import { LogoutService } from '../../api/logout.service';
-import { LoginService } from '../../api/login.service';
-import { UserPreference } from '../../api/login.service';
-import {DropdownModule} from 'primeng/dropdown';
+
+import { UserPreferenceService } from '../../api/user-preference.service';
+import { UserPreference } from '../../shared/user-preference';
 import { NodeService } from '../../shared/node.service';
 
 import { ApiConfig } from '../../api/api-config';
 
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
-
-import { DialogModule } from 'primeng/primeng';
 
 import { I18NService } from '../../i18n/i18n.service';
 import { Message } from '../../commons/message';
@@ -62,7 +60,7 @@ export class HeaderComponent {
               private readonly authSrv: AuthService,
               private readonly lockoutSrv: LockoutService,
               private readonly logoutSrv: LogoutService,
-              private readonly loginSrv: LoginService,
+              private readonly userPreferenceService: UserPreferenceService,
               private readonly nodeService: NodeService,
               private readonly i18nService: I18NService,
               private http: HttpClient,
@@ -72,7 +70,6 @@ export class HeaderComponent {
               private client: ApiClientService
               ) {
     this.user = authSrv.userProfile();
-    this.changeTheme(this.user.userPrefValue);
     this.changePassUrl = `${apiConfig.rootPath}/${CHANGE_PASS_ENDPOINT}`;
     this.changeLangUrl = `${apiConfig.rootPath}/${CHANGE_LANG_ENDPOINT}`;
   }
@@ -82,6 +79,13 @@ export class HeaderComponent {
       map((data: { node: Node }) => data.node),
     ).subscribe((data) => {
       this.node = data;
+    });
+
+    this.route.data.pipe(
+      map((data: { theme: UserPreference }) => data.theme),
+    ).subscribe((data) => {
+      this.userPreference = data;
+      this.setTheme(this.userPreference.userPrefValue);
     });
 
 
@@ -137,29 +141,23 @@ export class HeaderComponent {
     this.displayChangeTheme = true;
   }
 
-  changeTheme(theme) {
+  setTheme(theme) {
     window['switchStyle'](theme);
-    localStorage.setItem('app-root', theme);
-    console.log('theme=' + theme);
     this.displayChangeTheme = false;
-    //this.router.navigate(['/c/dashboard']);
   }
 
   saveChangeTheme(theme) {
-
-    this.userPreference.userLoginId = this.user.username;
     this.userPreference.userPrefTypeId = "VISUAL_THEME";
     this.userPreference.userPrefValue = theme;
-    this.loginSrv
+    this.userPreferenceService
       .updateUserPreference(this.userPreference)
       .then(() => {
-        this.changeTheme(theme);
+        window.location.reload();
       })
       .catch((error) => {
         console.log('error.message' , error);
         this.error = this.i18nService.translate(error) || error;
       });
-
   }
 
   changePassword() {

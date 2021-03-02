@@ -10,6 +10,7 @@ import { ApiConfig } from './api-config';
 // api services
 import { ApiClientService } from './client.service';
 import { LoginService } from './login.service';
+import { UserPreferenceService } from './user-preference.service';
 import { LogoutService } from './logout.service';
 import { AccountService } from './account.service';
 import { MenuService } from './menu.service';
@@ -39,6 +40,7 @@ export class ApiModule {
       providers: [
         { provide: ApiConfig, useValue: config },
         LoginService,
+        UserPreferenceService,
         ApiClientService,
         LogoutService,
         AccountService,
