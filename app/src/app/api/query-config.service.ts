@@ -65,7 +65,7 @@ export class QueryConfigService {
     let blob = new Blob([data], { type: type});
     let url = window.URL.createObjectURL(blob);
     let anchor = document.createElement('a');
-    anchor.download = 'query_' + query.queryId + '.xlsx';
+    anchor.download = 'export_'+ query.queryName + '.xlsx';
     anchor.href = url;
     anchor.click();
     }
