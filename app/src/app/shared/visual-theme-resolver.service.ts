@@ -22,7 +22,7 @@ export class VisualThemeResolver implements Resolve<void | UserPreference> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | UserPreference> {
     console.log('resolve userPreference VISUAL_THEME');
     return this.userPreferenceService
-      .getUserPreference('VISUAL_THEME', null)
+      .getUserPreference('VISUAL_THEME')
       .toPromise()
       .then(userPreference => { return userPreference; })
       .catch(err => {
