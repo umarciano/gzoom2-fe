@@ -31,15 +31,16 @@ const HTTP_HEADERS = new HttpHeaders();
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   user: UserProfile;
   node: Node;
   legacyAppVersions: String;
   restVersions: String;
-  displayChangePassword: boolean = false;
-  displayChangeTheme: boolean  = false;
+  displayChangePassword = false;
+  displayChangeTheme = false;
   form: FormGroup;
   error = '';
+  langType: string;
 
   msgs: Message[] = [];
   languages: String[] = [];
@@ -88,10 +89,10 @@ export class HeaderComponent {
       this.setTheme(this.userPreference.userPrefValue);
     });
 
-
-    this.client.get("/profile/i18n/languages").subscribe( json => {
+    this.langType = this.i18nService.getLanguageType();
+    this.client.get('/profile/i18n/languages').subscribe( json => {
       this.languages = json.results as String[];
-      console.log("languages available "+this.languages);
+      console.log('languages available ' + this.languages);
     });
 
     this.form = this.fb.group({
@@ -147,7 +148,7 @@ export class HeaderComponent {
   }
 
   saveChangeTheme(theme) {
-    this.userPreference.userPrefTypeId = "VISUAL_THEME";
+    this.userPreference.userPrefTypeId = 'VISUAL_THEME';
     this.userPreference.userPrefValue = theme;
     this.userPreferenceService
       .updateUserPreference(this.userPreference)
@@ -167,31 +168,33 @@ export class HeaderComponent {
               headers: HTTP_HEADERS.set('Content-Type', 'application/json').set('Authorization', 'Bearer ' + this.authService.token()),
       }).subscribe(
         (data: any) => {
-            console.log("-changePass " + data);
+            console.log('-changePass ' + data);
         },
         err => {
-            console.log("error changePass",err);
+            console.log('error changePass', err);
             this.error = this.i18nService.translate(err.message) || err.message;
         }, // error
         () => {
           console.log('change password Complete');
           this.displayChangePassword = false;
-          this.currentPassword = "";
-          this.newPassword = "";
-          this.newPasswordVerify = "";
-          this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Change password'), detail:this.i18nService.translate('Cambio password eseguito con successo ')}];
+          this.currentPassword = '';
+          this.newPassword = '';
+          this.newPasswordVerify = '';
+          this.msgs = [{severity: this.i18nService.translate('info')
+            , summary: this.i18nService.translate('Change password')
+            , detail: this.i18nService.translate('Cambio password eseguito con successo ')}];
       }); // complete
   }
 
   changeLang(lang: String) {
-    const body = JSON.stringify({ username: this.user.username,externalLoginKey: this.user.externalLoginKey, lang: lang});
-    this.client.post(this.changeLangUrl,body)
-      .subscribe((data:any) => {
-        console.log("change language:" + data);
+    const body = JSON.stringify({ username: this.user.username, externalLoginKey: this.user.externalLoginKey, lang: lang});
+    this.client.post(this.changeLangUrl, body)
+      .subscribe((data: any) => {
+        console.log('change language:' + data);
         window.location.reload();
       },
       err => {
-        console.log("error change language",err);
+        console.log('error change language', err);
       });
   }
 }
