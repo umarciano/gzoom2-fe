@@ -173,10 +173,10 @@ export class I18NService {
 
   changeLang(user: string): Promise<void> {
     return this.http
-    .get(`${this.config.rootPath}/profile/i18n/${user}`)
+    .get(`${this.config.rootPath}/profile/i18n/${user}/`)
     .toPromise()
     .then(json => {
-      console.log("changeLang json " + json);
+      console.log('changeLang json ' + json);
       this.config.localizations = json as Localizations;
       this.init(this.config.localizations);
 
