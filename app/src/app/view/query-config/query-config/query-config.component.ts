@@ -49,6 +49,7 @@ export class QueryConfigComponent implements OnInit {
   queryPreview: string;
   parentTypeId: string;
   queryType: string;
+  classSelected: string;
 
   constructor(private readonly confirmationService: ConfirmationService,
     private readonly queryConfigService: QueryConfigService,
@@ -84,14 +85,17 @@ export class QueryConfigComponent implements OnInit {
     const query = querys && querys.length ? querys[0] : null;
     if (query) {
       this.selectedIndex = ri;
+      this.classSelected = 'rowSelected';
       this.router.navigate([query.queryId], { relativeTo: this.route });
     } else {
       this.selectedIndex = -1;
+      this.classSelected = '';
     }
   }
 
   closeRow() {
     this.selectedIndex = -1;
+    this.classSelected = '';
     if (this.parentTypeId && this.queryType) {
     this.router.navigate([`../queryconfig/${this.parentTypeId}/${this.queryType}`], { relativeTo: this.route.parent });
     } else {
@@ -104,6 +108,5 @@ export class QueryConfigComponent implements OnInit {
     this.displayDialog = true;
     this.queryConfig = this.queryConfigs[ri];
   }
-
 
 }

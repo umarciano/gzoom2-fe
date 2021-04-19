@@ -1,9 +1,8 @@
 <p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
 <form [formGroup]="form" novalidate (ngSubmit)="esporta(queryConfig)">
-<p-accordion>
-  <p-accordionTab header=" " [selected]="true">
-    <h3 class="first">{{queryConfig.queryCode}} - {{queryConfig.queryName}}</h3>
-    <div class="ui-g">
+<p-accordion class="ui-header-p-accordion" >
+  <p-accordionTab class="ui-header-p-accordion" header="{{queryConfig.queryCode}} - {{queryConfig.queryName}}" [selected]="true">
+    <div class="ui-g" *ngIf="queryConfig.cond0Name">
       <div class="ui-g-3">
         <label>{{'Nome'|i18n}}</label>
       </div>
@@ -126,7 +125,8 @@
 </p-footer>
 </form>
 <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<!-- <div *ngIf="success" class="alert alert-success">Query eseguita con successo!</div> -->
 
-<p-dialog header="{{'Query Config Preview'|i18n}}" width="900" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+<p-dialog header="{{'Query Config Preview'|i18n}}" [style]="{'white-space': 'pre-wrap'}" width="900" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
   <p>{{this.queryPreview}}</p>
 </p-dialog>

@@ -1,4 +1,4 @@
-<h3 class="first">{{'GP_MENU_00486'|i18n}}</h3>
+<!-- <h3 class="first">{{'GP_MENU_00486'|i18n}}</h3> -->
 
 <p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
 
@@ -17,16 +17,17 @@
             exportFilename="querys"
             resizableColumns="true"
             columnResizeMode="expand"
-            dataKey="queryId">
-      <p-column styleClass="col-button" [style]="{'width':'5%'}">
+            dataKey="queryId"
+            >
+    <p-column styleClass="col-button" [style]="{'width':'5%'}">
         <ng-template let-queryConfig="rowData" let-ri="rowIndex" pTemplate="body">
           <button *ngIf="ri == selectedIndex" type="button" pButton (click)="closeRow()" icon="fa fa-chevron-down"></button>
           <button *ngIf="ri != selectedIndex" type="button" pButton (click)="onRowSelect([queryConfig], ri)" icon="fa fa-chevron-right"></button>
         </ng-template>
     </p-column>
-    <p-column [style]="{'width':'10%'}" field="queryId" header="{{'Query Id'|i18n}}"
+    <p-column [style]="{'width':'10%','display':'none'}" field="queryId" header="{{'Query Id'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}"
-    [sortable]="true">
+    [sortable]="true" >
     </p-column>
     <p-column [style]="{'width':'10%'}" field="queryCode" header="{{'Code'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}"
@@ -40,15 +41,15 @@
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}"
     [sortable]="true">
     </p-column>
-    <p-column [style]="{'width':'10%'}" field="queryType" header="{{'Tipologia'|i18n}}"
+    <p-column *ngIf="!parentTypeId" [style]="{'width':'10%'}" field="queryType" header="{{'Tipologia'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}"
     [sortable]="true">
     </p-column>
-    <p-column [style]="{'width':'10%'}" field="queryCtx" header="{{'Contesto'|i18n}}"
+    <p-column *ngIf="!parentTypeId" [style]="{'width':'10%'}" field="queryCtx" header="{{'Contesto'|i18n}}"
     [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}"
     [sortable]="true">
     </p-column>
-    <p-column [style]="{'width':'5%'}" styleClass="col-button">
+    <p-column [style]="{'width':'5%', 'display':'none'}" styleClass="col-button">
       <ng-template let-queryConfig="rowData" let-ri="rowIndex" pTemplate="body">
         <button placement="top" ngbTooltip="{{'Show query'|i18n}}" container="body" type="button" pButton icon="fa fa-file" (click)="showDialog(ri)"></button>
       </ng-template>

@@ -36,6 +36,7 @@ export class QueryConfigDetailsComponent implements OnInit {
   selectedQueryConfig: string;
   queryPreview: string;
   user: UserProfile;
+  success = false;
 
   constructor(private readonly confirmationService: ConfirmationService,
     private readonly queryConfigService: QueryConfigService,
@@ -55,6 +56,7 @@ export class QueryConfigDetailsComponent implements OnInit {
     this.route.paramMap.subscribe(paramMap => {
       this.selectedQueryConfig = paramMap.get('id');
       this.error = '';
+      this.success = false;
       this._reload.next();
     });
 
@@ -84,6 +86,7 @@ export class QueryConfigDetailsComponent implements OnInit {
         this.msgs = [{severity:this.i18nService.translate('info'),
         summary:this.i18nService.translate('Query Eseguita'),
         detail:this.i18nService.translate('Query Eseguita con successo ')}];
+        this.success = true;
       }
       ).catch(err => {this.error = err});
     }

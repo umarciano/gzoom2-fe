@@ -362,6 +362,11 @@ body.bodylayout {
   /*----------------------------------------------------------------------------*/
   /* Datatable                                                            */
   /*----------------------------------------------------------------------------*/
+
+  .ui-datatable .ui-datatable-data > tr > td {
+    padding: .5em;
+  }
+
   .ui-datatable {
     .ui-datatable .ui-datatable-thead>tr>th,
     .ui-datatable .ui-datatable-tfoot>tr>td,
@@ -430,6 +435,13 @@ body.bodylayout {
     }
   }
 
+  .ui-accordion .ui-accordion-header.ui-state-active {
+    background-color: map-get($app-colors, navbar-bg);
+  }
+
+  .rowSelected {
+    background-color: map-get($app-colors, navbar-bg);
+  }
   /*----------------------------------------------------------------------------*/
   /* Datatable   class - datatable-list                                        */
   /*----------------------------------------------------------------------------*/
