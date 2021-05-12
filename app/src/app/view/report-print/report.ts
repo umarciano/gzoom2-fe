@@ -9,7 +9,8 @@ export class ReportParam {
      public paramType?: string,
      public mandatory?: boolean,
      public display?: boolean,
-     public options?: string ) {};
+     public options?: string,
+     public label?: string) {};
 }
 
 export class ReportType {
