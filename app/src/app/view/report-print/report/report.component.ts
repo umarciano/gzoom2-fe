@@ -283,6 +283,7 @@ export class ReportComponent implements OnInit {
   paramsValue: any = {};
   paramsSelectItem: any = {};
   paramsOptions: any = {};
+  paramsLabel: any = {};
 
   hiddenMail: boolean;
 
@@ -505,7 +506,7 @@ export class ReportComponent implements OnInit {
        map(workEffortTypeIdParametric2SelectItems)
     ).subscribe((data) => {
       this.workEffortTypeIdParametric2SelectItem = data;
-      this.workEffortTypeIdParametric2SelectItem.unshift({label: this.i18nService.translate('Select WorkEffortType'), value:null});
+      this.workEffortTypeIdParametric2SelectItem.unshift({label: this.i18nService.translate(this.paramsValue['label']!=null?this.paramsValue['label']:'Select WorkEffortType'), value:null});
       this.paramsSelectItem['workEffortTypeIdParametric2SelectItem'] = this.workEffortTypeIdParametric2SelectItem;
     });
 
@@ -722,6 +723,7 @@ workEffortType2SelectItems(workEffortType: WorkEffortType[]): SelectItem[] {
       paramForm[element.paramName] = controller;
       this.paramsValue[element.paramName] = element.paramDefault;
       this.paramsOptions[element.paramName] = element.options;
+      this.paramsLabel[element.paramName] = element.label;
       //Lista di elementi per il caricamento di altre drop List
       if (element.paramName == 'uomRangeId') {
         //carico al lista TODO
