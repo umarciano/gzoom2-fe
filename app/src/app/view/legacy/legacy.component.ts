@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { fromEvent, of, merge } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, mergeMap } from 'rxjs/operators';
 
 import * as $ from 'jquery';
 
 import { ResourceService } from '../../api/resource.service';
 import { LoaderService } from '../../shared/loader/loader.service';
-
+import { LockoutService } from '../../commons/lockout.service';
 
 @Component({
   selector: 'app-legacy',
@@ -21,11 +21,14 @@ export class LegacyComponent implements OnInit {
     private readonly cont: ElementRef,
     private readonly resService: ResourceService,
     private readonly loaderService: LoaderService,
-    private readonly route: ActivatedRoute) { }
+    private readonly lockout: LockoutService,
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.route.params
-      .pipe(switchMap((params: Params) => of(params['id'])))      
+    console.log(" ngOnInit this.route.params ", this.activatedRoute.params);
+    this.activatedRoute.params
+      .pipe(mergeMap((params: Params) => of(params['id'])))  //       switchMap
       .subscribe((id: string) => {
         console.log("subscribe id " + id);
         this.url = this.resService.iframeUrl(id);
@@ -40,8 +43,16 @@ export class LegacyComponent implements OnInit {
     const iframe: any = $(this.cont.nativeElement).find('iframe')[0];
 
     window.onmessage = s => {
-        console.log("INTERNAL IFRAME RESIZED: s.data", s.data);
-        this.resizeIframe(iframe);
+        console.log("INTERNAL IFRAME EVENT: s.data ", s.data);
+        if(s.data.event == 'resize') {
+          this.resizeIframe(iframe);
+        } else if(s.data.event == 'login') {
+          this.lockout.lockout();
+        } else {
+          // TODO
+          console.log("TODO ", s.data);
+          this.lockout.lockout();
+        }
     };
 
     // whenever the iframe is loaded or the window is resized, update the iframe height
@@ -69,7 +80,6 @@ export class LegacyComponent implements OnInit {
   uploadDone(): void {
     this.loaderService.hide();
   }
-
   
   showLoader(): void {
     this.loaderService.show();
