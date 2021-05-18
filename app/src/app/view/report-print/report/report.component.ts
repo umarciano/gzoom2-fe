@@ -251,7 +251,7 @@ export class ReportComponent implements OnInit {
 
   workEffort: WorkEffort;
   workEfforts: WorkEffort[] = [];
-  workEffortId: String;
+  workEffortId: string;
 
   workEffortIdSelectItem: SelectItem[] = [];
   orgUnitIdSelectItem: SelectItem[] = [];
@@ -341,7 +341,7 @@ export class ReportComponent implements OnInit {
     let parentTypeId = this.route.snapshot.parent.params.parentTypeId;
     let reportContentId = this.route.snapshot.params.reportContentId;
 
-    const reloadedOrgUnit = this._reload.pipe(switchMap(() => this.partyService.orgUnits(parentTypeId, this.paramsOptions['orgUnitId'])));
+    const reloadedOrgUnit = this._reload.pipe(switchMap(() => this.partyService.orgUnits(parentTypeId, this.paramsOptions['orgUnitId'], this.workEffortType.workEffortTypeId)));
     const reloadedOrgUnitObs = this.route.data.pipe(
       map((data: { orgUnits: Party[] }) => data.orgUnits),
       merge(reloadedOrgUnit),
@@ -379,7 +379,7 @@ export class ReportComponent implements OnInit {
 
     });
 
-    const reloadedParty = this._reload.pipe(switchMap(params => (params.roleTypeId ? this.partyService.roleTypePartys(params.roleTypeId, this.paramsOptions['partyId']) : reloadedParty)));
+    const reloadedParty = this._reload.pipe(switchMap(params => (params.roleTypeId ? this.partyService.roleTypePartys(params.roleTypeId, this.paramsOptions['partyId'], this.workEffortType.workEffortTypeId) : reloadedParty)));
     const reloadedPartyObs = this.route.data.pipe(
       map((data: { partys: Party[] }) => data.partys),
       merge(reloadedParty),
@@ -405,7 +405,7 @@ export class ReportComponent implements OnInit {
       this.paramsSelectItem['workEffortIdSelectItem'] = this.workEffortIdSelectItem;
     });
 
-    const reloadedPerson = this._reload.pipe(switchMap(() => this.partyService.roleTypePartys('EMPLOYEE', this.paramsOptions['personId'])));
+    const reloadedPerson = this._reload.pipe(switchMap(() => this.partyService.roleTypePartys('EMPLOYEE', this.paramsOptions['personId'], this.workEffortType.workEffortTypeId)));
     const reloadedPersonObs = this.route.data.pipe(
       map((data: { partys: Party[] }) => data.partys),
       merge(reloadedPerson),

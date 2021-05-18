@@ -24,11 +24,14 @@ export class PartyService {
       );
   }
 
-  orgUnits(parentTypeId: string, options: string): Observable<Party[]> {
+  orgUnits(parentTypeId: string, options: string, workEffortTypeId: string): Observable<Party[]> {
     console.log('search orgUnits');
     let optionsURL = '';
     if (options) {
       optionsURL = '?roleTypeId=' + options;
+    }
+    if (workEffortTypeId) {
+      optionsURL += optionsURL === '' ? `?workEffortTypeId=${workEffortTypeId}` : `&workEffortTypeId=${workEffortTypeId}`;
     }
     return this.client
       .get(`orgUnits/${parentTypeId}` + optionsURL).pipe(
@@ -36,11 +39,14 @@ export class PartyService {
       );
   }
 
-  roleTypePartys(roleTypeId: string, options: string): Observable<Party[]> {
-    console.log('search party whit roleTypeId='+roleTypeId);
+  roleTypePartys(roleTypeId: string, options: string, workEffortTypeId: string): Observable<Party[]> {
+    console.log('search party whit roleTypeId=' + roleTypeId );
     let optionsURL = '';
     if (options) {
       optionsURL = '?roleTypeIdFrom=' + options;
+    }
+    if (workEffortTypeId) {
+      optionsURL += optionsURL === '' ? `?workEffortTypeId=${workEffortTypeId}` : `&workEffortTypeId=${workEffortTypeId}`;
     }
     return this.client
       .get(`party/roleType/${roleTypeId}` + optionsURL).pipe(
@@ -49,7 +55,7 @@ export class PartyService {
   }
 
   roleTypePartysBetween(roleTypeId: string): Observable<Party[]> {
-    console.log('search party whit roleTypeId='+roleTypeId);
+    console.log('search party whit roleTypeId=' + roleTypeId);
     return this.client
       .get(`party/roleType/between/${roleTypeId}`).pipe(
         map(json => json.results as Party[])
@@ -57,7 +63,7 @@ export class PartyService {
   }
 
   roleTypePartysIn(roleTypeId: string): Observable<Party[]> {
-    console.log('search party whit roleTypeId='+roleTypeId);
+    console.log('search party whit roleTypeId=' + roleTypeId);
     return this.client
       .get(`party/roleType/in/${roleTypeId}`).pipe(
         map(json => json.results as Party[])
@@ -65,7 +71,7 @@ export class PartyService {
   }
 
   roleTypePartysNotIn(roleTypeId: string): Observable<Party[]> {
-    console.log('search party whit roleTypeId='+roleTypeId);
+    console.log('search party whit roleTypeId=' + roleTypeId);
     return this.client
       .get(`party/roleType/notin/${roleTypeId}`).pipe(
         map(json => json.results as Party[])
