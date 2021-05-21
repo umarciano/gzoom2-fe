@@ -43,16 +43,14 @@ export class LegacyComponent implements OnInit {
     const iframe: any = $(this.cont.nativeElement).find('iframe')[0];
 
     window.onmessage = s => {
-        console.log("INTERNAL IFRAME EVENT: s.data ", s.data);
-        if(s.data.event == 'resize') {
-          this.resizeIframe(iframe);
-        } else if(s.data.event == 'login') {
-          this.lockout.lockout();
-        } else {
-          // TODO
-          console.log("TODO ", s.data);
-          this.lockout.lockout();
-        }
+      console.log("INTERNAL IFRAME EVENT: s.data ", s.data);
+      if(s.data.event == 'login') {
+        this.lockout.lockout();
+      } else if(s.data.event == 'resize') {
+        this.resizeIframe(iframe);
+      } else {
+        this.resizeIframe(iframe);
+      }
     };
 
     // whenever the iframe is loaded or the window is resized, update the iframe height
@@ -80,7 +78,7 @@ export class LegacyComponent implements OnInit {
   uploadDone(): void {
     this.loaderService.hide();
   }
-  
+
   showLoader(): void {
     this.loaderService.show();
   }
