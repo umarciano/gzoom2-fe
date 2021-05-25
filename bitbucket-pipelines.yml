@@ -6,7 +6,7 @@ pipelines:
       - step:
           name: Building angular frontend
           script:
-            - apt update && apt install -y wget bzip2 
+            - apt update && apt install -y wget bzip2 curl
             - wget https://nodejs.org/dist/v12.14.1/node-v12.14.1-linux-x64.tar.gz -O /opt/node.tgz
             - tar -xzf /opt/node.tgz -C /opt
             - /opt/node-v12.14.1-linux-x64/bin/npm install -g @angular/cli
