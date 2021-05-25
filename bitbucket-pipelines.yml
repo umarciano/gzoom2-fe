@@ -1,0 +1,18 @@
+image: node:12-slim
+
+pipelines:
+  branches:
+    master:
+      - step:
+          name: Building angular frontend
+          script:
+            - apt update && apt install -y wget bzip2 
+            - wget https://nodejs.org/dist/v12.14.1/node-v12.14.1-linux-x64.tar.gz -O /opt
+            - tar -xzf node-v12.14.1-linux-x64.tar.gz
+            - /opt/node-v12.14.1-linux-x64/bin/npm install -g @angular/cli
+            - cd app && /opt/node-v12.14.1-linux-x64/bin/npm install
+            - ng build --base-href /gzoom2/ --prod
+            - cp package.json dist/ && tar -czf gzoom2-frontend.tgz dist/ 
+            - curl -u${mvn_artifactory_user}:${mvn_artifactory_password} https://${mvn_artifactory_host}/artifactory/api/npm/maps-js/auth/jfrog > /root/.npmrc
+            - npm publish gzoom2-frontend.tgz --registry https://${mvn_artifactory_host}/artifactory/api/npm/${publish_repo}/
+
