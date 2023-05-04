@@ -1,132 +1,136 @@
-<p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
-<form [formGroup]="form" novalidate (ngSubmit)="esporta(queryConfig)">
-<p-accordion class="ui-header-p-accordion" >
-  <p-accordionTab class="ui-header-p-accordion" header="{{queryConfig.queryCode}} - {{queryConfig.queryName}}" [selected]="true">
-    <div class="ui-g" *ngIf="queryConfig.cond0Name">
-      <div class="ui-g-3">
-        <label>{{'Nome'|i18n}}</label>
+<div class="spinner" *ngIf="showSpinner">
+  <p-progressSpinner></p-progressSpinner>
+</div>
+<p-toast></p-toast>
+<form [formGroup]="form" novalidate (ngSubmit)="esporta(queryConfig)" role="form">
+  <app-progress-bar [showValue]="showValueProgressBar" aria-label="show progress bar, please wait!"></app-progress-bar>
+  <div class="card " *ngIf="!showValueProgressBar">
+    <p-accordion class="ui-header-p-accordion">
+      <div class="row" *ngIf="queryConfig.cond0Name">
+        <div class="col-3">
+          <label>{{'Nome'|i18n}}</label>
+        </div>
+        <div class="col-4">
+          <label>{{'Istruzioni'|i18n}}</label>
+        </div>
+        <div class="col-5">
+          <label>{{'Condizioni'|i18n}}</label>
+        </div>
       </div>
-      <div class="ui-g-4">
-        <label>{{'Istruzioni'|i18n}}</label>
-      </div>
-      <div class="ui-g-5">
-        <label>{{'Condizioni'|i18n}}</label>
-      </div>
-    </div>
 
-
-    <div class="ui-g" *ngIf="queryConfig.cond0Name">
-      <div class="ui-g-3">
-      {{queryConfig.cond0Name}}
-     </div>
-      <div class="ui-g-4">
-        {{queryConfig.cond0Comm}}
+      <div class="row mt-1" *ngIf="queryConfig.cond0Name">
+        <div class="col-3">
+          {{queryConfig.cond0Name}}
+        </div>
+        <div class="col-4">
+          {{queryConfig.cond0Comm}}
+        </div>
+        <div class="col-5">
+          <input id="cond0Info" formControlName="cond0Info" [class.validLabel]="form.get('cond0Info').valid"
+            class="form-control" />
+        </div>
       </div>
-      <div class="ui-g-5">
-        <input pInputText id="cond0Info" formControlName="cond0Info" class="form-control" required [(ngModel)]="queryConfig.cond0Info"/>
+      <div class="row" *ngIf="queryConfig.cond1Name">
+        <div class="col-3">
+          {{queryConfig.cond1Name}}
+        </div>
+        <div class="col-4">
+          {{queryConfig.cond1Comm}}
+        </div>
+        <div class="col-5">
+          <input id="cond1Info" formControlName="cond1Info" class="form-control"
+            [class.validLabel]="form.get('cond1Info').valid" />
+        </div>
       </div>
-    </div>
-    <div class="ui-g" *ngIf="queryConfig.cond1Name">
-      <div class="ui-g-3">
-      {{queryConfig.cond1Name}}
-     </div>
-      <div class="ui-g-4">
-        {{queryConfig.cond1Comm}}
+      <div class="row" *ngIf="queryConfig.cond2Name">
+        <div class="col-3">
+          {{queryConfig.cond2Name}}
+        </div>
+        <div class="col-4">
+          {{queryConfig.cond2Comm}}
+        </div>
+        <div class="col-5">
+          <input id="cond2Info" formControlName="cond2Info" class="form-control"
+            [class.validLabel]="form.get('cond2Info').valid" />
+        </div>
       </div>
-      <div class="ui-g-5">
-        <input pInputText id="cond1Info" formControlName="cond1Info" class="form-control" required [(ngModel)]="queryConfig.cond1Info"/>
+      <div class="row" *ngIf="queryConfig.cond3Name">
+        <div class="col-3">
+          {{queryConfig.cond3Name}}
+        </div>
+        <div class="col-4">
+          {{queryConfig.cond3Comm}}
+        </div>
+        <div class="col-5">
+          <input id="cond3Info" formControlName="cond3Info" class="form-control"
+            [class.validLabel]="form.get('cond3Info').valid" />
+        </div>
       </div>
-    </div>
-    <div class="ui-g" *ngIf="queryConfig.cond2Name">
-      <div class="ui-g-3">
-      {{queryConfig.cond2Name}}
-     </div>
-      <div class="ui-g-4">
-        {{queryConfig.cond2Comm}}
+      <div class="row" *ngIf="queryConfig.cond4Name">
+        <div class="col-3">
+          {{queryConfig.cond4Name}}
+        </div>
+        <div class="col-4">
+          {{queryConfig.cond4Comm}}
+        </div>
+        <div class="col-5">
+          <input id="cond4Info" formControlName="cond4Info" class="form-control"
+            [class.validLabel]="form.get('cond4Info').valid" />
+        </div>
       </div>
-      <div class="ui-g-5">
-        <input pInputText id="cond2Info" formControlName="cond2Info" class="form-control" required [(ngModel)]="queryConfig.cond2Info"/>
+      <div class="row" *ngIf="queryConfig.cond5Name">
+        <div class="col-3">
+          {{queryConfig.cond5Name}}
+        </div>
+        <div class="col-4">
+          {{queryConfig.cond5Comm}}
+        </div>
+        <div class="col-5">
+          <input id="cond5Info" formControlName="cond5Info" class="form-control"
+            [class.validLabel]="form.get('cond5Info').valid" />
+        </div>
       </div>
-    </div>
-    <div class="ui-g" *ngIf="queryConfig.cond3Name">
-      <div class="ui-g-3">
-      {{queryConfig.cond3Name}}
-     </div>
-      <div class="ui-g-4">
-        {{queryConfig.cond3Comm}}
+      <div class="row" *ngIf="queryConfig.cond6Name">
+        <div class="col-3">
+          {{queryConfig.cond6Name}}
+        </div>
+        <div class="col-4">
+          {{queryConfig.cond6Comm}}
+        </div>
+        <div class="col-5">
+          <input id="cond6Info" formControlName="cond6Info" class="form-control"
+            [class.validLabel]="form.get('cond6Info').valid" />
+        </div>
       </div>
-      <div class="ui-g-5">
-        <input pInputText id="cond3Info" formControlName="cond3Info" class="form-control" required [(ngModel)]="queryConfig.cond3Info"/>
+      <div class="row" *ngIf="queryConfig.cond7Name">
+        <div class="col-3">
+          {{queryConfig.cond7Name}}
+        </div>
+        <div class="col-4">
+          {{queryConfig.cond7Comm}}
+        </div>
+        <div class="col-5">
+          <input id="cond7Info" formControlName="cond7Info" class="form-control"
+            [class.validLabel]="form.get('cond7Info').valid" />
+        </div>
       </div>
-    </div>
-    <div class="ui-g" *ngIf="queryConfig.cond4Name">
-      <div class="ui-g-3">
-      {{queryConfig.cond4Name}}
-     </div>
-      <div class="ui-g-4">
-        {{queryConfig.cond4Comm}}
-      </div>
-      <div class="ui-g-5">
-        <input pInputText id="cond4Info" formControlName="cond4Info" class="form-control" required [(ngModel)]="queryConfig.cond4Info"/>
-      </div>
-    </div>
-    <div class="ui-g" *ngIf="queryConfig.cond5Name">
-      <div class="ui-g-3">
-      {{queryConfig.cond5Name}}
-     </div>
-      <div class="ui-g-4">
-        {{queryConfig.cond5Comm}}
-      </div>
-      <div class="ui-g-5">
-        <input pInputText id="cond5Info" formControlName="cond5Info" class="form-control" required [(ngModel)]="queryConfig.cond5Info"/>
-      </div>
-    </div>
-    <div class="ui-g" *ngIf="queryConfig.cond6Name">
-      <div class="ui-g-3">
-      {{queryConfig.cond6Name}}
-     </div>
-      <div class="ui-g-4">
-        {{queryConfig.cond6Comm}}
-      </div>
-      <div class="ui-g-5">
-        <input pInputText id="cond6Info" formControlName="cond6Info" class="form-control" required [(ngModel)]="queryConfig.cond6Info"/>
-      </div>
-    </div>
-    <div class="ui-g" *ngIf="queryConfig.cond7Name">
-      <div class="ui-g-3">
-      {{queryConfig.cond7Name}}
-     </div>
-      <div class="ui-g-4">
-        {{queryConfig.cond7Comm}}
-      </div>
-      <div class="ui-g-5">
-        <input pInputText id="cond7Info" formControlName="cond7Info" class="form-control" required [(ngModel)]="queryConfig.cond7Info"/>
-      </div>
-    </div>
-    <div class="ui-g" *ngIf="queryConfig.cond8Name">
-      <div class="ui-g-3">
-      {{queryConfig.cond8Name}}
-     </div>
-      <div class="ui-g-4">
-        {{queryConfig.cond8Comm}}
-      </div>
-      <div class="ui-g-5">
-        <input pInputText id="cond8Info" formControlName="cond8Info" class="form-control" required [(ngModel)]="queryConfig.cond8Info"/>
-      </div>
-    </div>
-  </p-accordionTab>
-</p-accordion>
-<p-footer>
-  <div class="ui-dialog-buttonpanel ui-helper-clearfix">
-    <button type="button" (click)="showPreview(queryConfig)" pButton icon="fa fa-eye" label="{{'Preview'|i18n}}" style="float: right;"></button>
-    <button  *ngIf="queryConfig.queryType=='E'" type="submit" pButton icon="fa fa-download" label="{{'Export'|i18n}}" [disabled]="!form.valid" style="float: right;"></button>
-    <button  *ngIf="queryConfig.queryType!='E'" type="submit" pButton icon="fa fa-download" label="{{'Run'|i18n}}" [disabled]="!form.valid" style="float: right;"></button>
+    </p-accordion>
   </div>
-</p-footer>
-</form>
-<div *ngIf="error" class="alert alert-danger">{{error}}</div>
-<!-- <div *ngIf="success" class="alert alert-success">Query eseguita con successo!</div> -->
+  <p-footer>
+    <div class="ui-dialog-buttonpanel ui-helper-clearfix" *ngIf="!showValueProgressBar">
+      <button type="button" (click)="showPreview(queryConfig)" pButton icon="fa fa-eye" label="{{'Preview'|i18n}}"
+        style="float: right;" attr.aria-label="{{'Preview'|i18n}}" role="button"></button>
+      <button *ngIf="queryConfig.queryType=='E'" type="submit" pButton icon="fa fa-download" label="{{'Export'|i18n}}"
+        [disabled]="!form.valid" style="float: right;" attr.aria-label="{{'Export'|i18n}}" role="button"></button>
+      <button *ngIf="queryConfig.queryType=='A'" type="submit" pButton icon="fa fa-download" label="{{'Run'|i18n}}"
+        [disabled]="!form.valid" style="float: right;" attr.aria-label="{{'Run'|i18n}}" role="button"></button>
+    </div>
+  </p-footer>
+  <div *ngIf="error" class="alert alert-danger" aria-label="alert error">{{error}}</div>
 
-<p-dialog header="{{'Query Config Preview'|i18n}}" [style]="{'white-space': 'pre-wrap'}" width="900" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+</form>
+
+<p-dialog header="{{'Query Config Preview'|i18n}}" [style]="{'white-space': 'pre-wrap'}" width="900" role="dialog"
+  [(visible)]="displayDialog" [closable]="true" closeIcon="fa fa-close" [modal]="true" attr.aria-label="{{'Query Config Preview'|i18n}}">
   <p>{{this.queryPreview}}</p>
 </p-dialog>

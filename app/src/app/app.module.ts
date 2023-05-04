@@ -19,7 +19,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 
-import {AuthInterceptor} from './api/auth-interceptor';
+import {AuthInterceptor} from './commons/model/auth-interceptor';
 
 import {I18nModule} from './i18n/i18n.module';
 
@@ -42,11 +42,11 @@ const GZOOM_PATH = '/gzoom/control/box';
     FormsModule,
     HttpClientModule,
     // ng-bootstrap
-    NgbModule.forRoot(),
+    NgbModule,
     // application modules
     // > libraries
     CommonsModule.forRoot({
-      application: { name: 'GZoom2', version: '2.7.1'}
+      application: { name: 'GZoom2', version: '2.9.5'}
       // , i18n: { rootPath: ROOT_PATH }
     }),
     ApiModule.forRoot({ rootPath: ROOT_PATH, gzoomPath: GZOOM_PATH }),

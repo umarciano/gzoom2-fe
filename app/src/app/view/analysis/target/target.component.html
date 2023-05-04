@@ -1,0 +1,135 @@
+<div class="containerRow" *ngIf="header==true">
+    <div><app-button-slide-menu [items]="itemsButtonSlideMenu" [disabled]="disButtSliMenu" style="width: 80%;">
+        </app-button-slide-menu></div>
+    <div id="title_header" class="item" attr.aria-label="{{analysisDesc}}">
+        <h3><em>{{analysisDesc}}</em></h3>
+    </div>
+    <div *ngIf="true">
+        <div id="gauge" class="containerRow" *ngIf="mainScore == 'GAUGE'">
+
+            <div class="containerColumn" *ngIf="!!scoreEtch1 && gaugeConfig1.gaugeValue != null"
+                aria-valuemax="{{gaugeConfig1.gaugeMax}}" aria-valuemin="{{gaugeConfig1.gaugeMin}}"
+                aria-valuenow="{{gaugeConfig1.gaugeValue}}">
+                <div>
+                    <h6><i>{{scoreEtch1}}</i></h6>
+                </div>
+                <div>
+                    <app-gauge [gaugeConfig]="gaugeConfig1"></app-gauge>
+                </div>
+            </div>
+
+            <div class="containerColumn" *ngIf="!!scoreEtch2 && gaugeConfig2.gaugeValue != null"
+                aria-valuemax="{{gaugeConfig2.gaugeMax}}" aria-valuemin="{{gaugeConfig2.gaugeMin}}"
+                aria-valuenow="{{gaugeConfig2.gaugeValue}}">
+                <div>
+                    <h6><i>{{scoreEtch2}}</i></h6>
+                </div>
+                <div>
+                    <app-gauge [gaugeConfig]="gaugeConfig2"></app-gauge>
+                </div>
+            </div>
+
+            <div class="containerColumn" *ngIf="!!scoreEtch3 && gaugeConfig3.gaugeValue != null"
+                aria-valuemax="{{gaugeConfig3.gaugeMax}}" aria-valuemin="{{gaugeConfig3.gaugeMin}}"
+                aria-valuenow="{{gaugeConfig3.gaugeValue}}">
+                <div>
+                    <h6><i>{{scoreEtch3}}</i></h6>
+                </div>
+                <div>
+                    <app-gauge [gaugeConfig]="gaugeConfig3"></app-gauge>
+                </div>
+            </div>
+
+            <div class="containerColumn" *ngIf="!!scoreEtch4 && gaugeConfig4.gaugeValue != null"
+                aria-valuemax="{{gaugeConfig4.gaugeMax}}" aria-valuemin="{{gaugeConfig4.gaugeMin}}"
+                aria-valuenow="{{gaugeConfig4.gaugeValue}}">
+                <div>
+                    <h6><i>{{scoreEtch4}}</i></h6>
+                </div>
+                <div>
+                    <app-gauge [gaugeConfig]="gaugeConfig4"></app-gauge>
+                </div>
+            </div>
+
+        </div>
+        <div class="containerRow" *ngIf="mainScore == 'EMOTICON'">
+            <div class="containerRow" *ngIf="!!scoreEtch1">
+                <app-emoticon-card [emoticonCard]="emoticonCardConf1"></app-emoticon-card>
+            </div>
+            <div class="containerRow" *ngIf="!!scoreEtch2">
+                <app-emoticon-card [emoticonCard]="emoticonCardConf2"></app-emoticon-card>
+            </div>
+            <div class="containerRow" *ngIf="!!scoreEtch3">
+                <app-emoticon-card [emoticonCard]="emoticonCardConf3"></app-emoticon-card>
+            </div>
+            <div class="containerRow" *ngIf="!!scoreEtch4">
+                <app-emoticon-card [emoticonCard]="emoticonCardConf4"></app-emoticon-card>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div *ngIf="nameDetail == null && nameKPI == null">
+    <p-breadcrumb [model]="items" [home]="home" (onItemClick)="onItemClick($event)"></p-breadcrumb>
+</div>
+<div>
+    <p-tabView *ngIf="!!nameDetail || !!nameKPI">
+        <p-tabPanel header="{{nameDetail}}" *ngIf="!!nameDetail">
+
+            <p-breadcrumb [model]="items" [home]="home" (onItemClick)="onItemClick($event)"></p-breadcrumb>
+            <br>
+
+            <div *ngIf="detailScore == 'GAUGE_LIST' || detailScore == 'EMOTICON_LIST'" id="table" class="cardTable">
+
+                <app-table [isAction]="true" [headArray]="headArray" [gridArray]="gridArray" [formShape]="form"
+                    (clickLinkEvent)="routingDetail($event)"></app-table>
+
+            </div>
+
+            <div class="containerRadar" *ngIf="detailScore == 'CHART'">
+                <div id="half" class="cardTable">
+
+                    <app-table [isAction]="true" [headArray]="headArray" [gridArray]="gridArray" [formShape]="form"
+                        (clickLinkEvent)="routingDetail($event)"></app-table>
+
+                </div>
+                <div id="radar" style="min-height: 5px;">
+                    <p-card>
+                        <div class="container-chart-choices">
+                            <div style="width: 100%;">
+                                <p-dropdown [autoWidth]="false" [style]="{'width':'100%'}" [options]="chartItems"
+                                    optionLabel="name" (onChange)="setChartType()" [(ngModel)]="selectedChart">
+
+                                </p-dropdown>
+                            </div>
+                            <div style="width: 100%;">
+                                <app-radio-button [items]="radioButtonChart.items"
+                                    [selecItem]="radioButtonChart.selectedItem"
+                                    (itemChanges)="radButSelectItem($event)">
+
+                                </app-radio-button>
+                            </div>
+                        </div> <br>
+                        <app-chart [chartConfig]="chartConfig" *ngIf="detailScore == 'CHART' "></app-chart>
+                    </p-card>
+
+                </div>
+
+
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="{{nameKPI}}" *ngIf="!!nameKPI">
+            <p-breadcrumb [model]="items" [home]="home" (onItemClick)="onItemClick($event)"></p-breadcrumb>
+            <br>
+            <div class="cardTable" *ngIf="gridArrayKPI.length != 0">
+                <app-table [isAction]="true" [headArray]="headArrayKPI" [gridArray]="gridArrayKPI"
+                    [formShape]="formKPI"></app-table>
+            </div>
+            <div *ngIf="gridArrayKPI.length == 0">
+                <h5>{{noKPI}}</h5>
+            </div>
+        </p-tabPanel>
+
+    </p-tabView>
+</div>

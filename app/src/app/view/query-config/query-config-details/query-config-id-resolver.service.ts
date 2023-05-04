@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 
 
-import { LockoutService } from '../../../commons/lockout.service';
+import { LockoutService } from '../../../commons/service/lockout.service';
 import { QueryConfig } from '../query-config/query-config';
-import { QueryConfigService } from '../../../api/query-config.service';
+import { QueryConfigService } from '../../../api/service/query-config.service';
 
 /**
  * Retrieves the menus to be shown or locks the user out if something wrong happens.
@@ -22,13 +22,22 @@ export class QueryConfigIdResolver implements Resolve<void | QueryConfig> {
     console.log('resolve query cofig');
     const id = route.paramMap.get('id');
     console.log('resolver param id = ' + id);
-    return this.queryConfigService
-      .getQueryConfig(id)
-      .toPromise()
-      .then(queryConfig => { console.log("resolver id "+queryConfig); return queryConfig; })
-      .catch(err => { // TODO serve il lockout?
-        console.error('Cannot retrieve query config', err);
-        this.lockoutService.lockout();
-      });
+
+    const queryConfigService$ = this.queryConfigService.getQueryConfig(id);
+    return lastValueFrom(queryConfigService$).then(queryConfig => { console.log("resolver id "+queryConfig); return queryConfig; })
+    .catch(err => { 
+      console.error('Cannot retrieve query config', err);
+      this.lockoutService.lockout();
+    });
+
+
+    // return this.queryConfigService
+    //   .getQueryConfig(id)
+    //   .toPromise()
+    //   .then(queryConfig => { console.log("resolver id "+queryConfig); return queryConfig; })
+    //   .catch(err => { // TODO serve il lockout?
+    //     console.error('Cannot retrieve query config', err);
+    //     this.lockoutService.lockout();
+    //   });
   }
 }

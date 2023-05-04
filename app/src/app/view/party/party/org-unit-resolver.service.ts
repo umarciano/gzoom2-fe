@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 
 
-import { LockoutService } from '../../../commons/lockout.service';
-import { PartyService } from '../../../api/party.service';
+import { LockoutService } from '../../../commons/service/lockout.service';
+import { PartyService } from '../../../api/service/party.service';
 import { Party } from './party';
 
 /**
@@ -19,15 +19,23 @@ export class OrgUnitResolver implements Resolve<void | Party[]> {
     private readonly lockoutService: LockoutService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | Party[]> {
-    const parentTypeId = route.parent.params.parentTypeId;
+    const parentTypeId = route.parent.params.context;
     console.log('resolve orgUnits parentTypeId=' + parentTypeId);
-    return this.partyService
-      .orgUnits(parentTypeId, null, null)
-      .toPromise()
-      .then(orgUnits => { return orgUnits; })
-      .catch(err => {
-        console.error('Cannot retrieve party', err);
-        this.lockoutService.lockout();
-      });
+
+    const partyService$ = this.partyService.orgUnits(parentTypeId, null, null, 'Company');
+    return lastValueFrom(partyService$).then(orgUnits => { return orgUnits; })
+    .catch(err => {
+      console.error('Cannot retrieve party', err);
+      this.lockoutService.lockout();
+    });
+
+    // return this.partyService
+    //   .orgUnits(parentTypeId, null, null, 'Company')
+    //   .toPromise()
+    //   .then(orgUnits => { return orgUnits; })
+    //   .catch(err => {
+    //     console.error('Cannot retrieve party', err);
+    //     this.lockoutService.lockout();
+    //   });
   }
 }

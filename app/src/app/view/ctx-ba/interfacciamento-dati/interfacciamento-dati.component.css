@@ -1,0 +1,9 @@
+.btn-error{
+    /* background-color: red !important; */
+    color: red;
+}
+
+.p-button{
+    color: red !important;
+    border-color:  red !important;
+}

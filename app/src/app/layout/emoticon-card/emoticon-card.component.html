@@ -1,0 +1,15 @@
+<div class="emoticonCard"
+    [style.background-color]="(iconId == 'EMOT_GREEN')? green: (iconId == 'EMOT_RED')? red : orange" role="img">
+
+    
+    <div class="text" attr.aria-label="{{'Percentage accomplished'|i18n}}">
+        {{text}} <br *ngIf="!!text">
+        <span style="font-weight:bold; font-size: 20px;">{{value}}</span>
+    </div>
+
+    <div style="width: 12px;"></div>
+
+    <img *ngIf="iconId == 'EMOT_GREEN'" src="../../../assets/images/emoticonCard/smiling.svg" attr.aria-label="{{'Emoticon happy'|i18n}}">
+    <img *ngIf="iconId == 'EMOT_YELLOW'" src="../../../assets/images/emoticonCard/neutral.svg"   attr.aria-label="{{'Emoticon normal'|i18n}}" >
+    <img *ngIf="iconId == 'EMOT_RED'" src="../../../assets/images/emoticonCard/sad.svg"   attr.aria-label="{{'Emoticon sad'|i18n}}">
+</div>

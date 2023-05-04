@@ -7,6 +7,7 @@ export class Party {
     public partyNameLang?: string,
     public firstName?: string,
     public lastName?: string,
+    public externalId?: string,
     public partyParentRole?: PartyParentRole) { }
 }
 

@@ -6,15 +6,16 @@ import {  FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { SelectItem } from '../../../commons/selectitem';
+import { SelectItem } from '../../../commons/model/selectitem';
 import { I18NService } from '../../../i18n/i18n.service';
 
 
 import { Report } from '../report';
-import { ReportService } from '../../../api/report.service';
+
 
 import { HttpClient } from '@angular/common/http';
-import 'rxjs/Rx';
+import { ApiClientService } from 'app/commons/service/client.service';
+import { ReportService } from 'app/api/service/report.service';
 
 /** Convert from WorkEffortType[] to SelectItem[] */
 function reportSelectItems(report: Report[]): SelectItem[] {
@@ -43,12 +44,15 @@ export class ReportPrintComponent implements OnInit {
   selectedReport: Report;
   contentIdContentName: String;
 
+  languages: string[] = [];
+
   form: FormGroup;
 
   constructor(private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly i18nService: I18NService,
     private readonly reportService: ReportService,
+    private readonly client: ApiClientService,
     private fb: FormBuilder, http: HttpClient) {}
 
   ngOnInit() {
@@ -70,6 +74,14 @@ export class ReportPrintComponent implements OnInit {
 
     });
 
+
+    this.client.get("/profile/i18n/languages").pipe(map(
+      json => json.results as string[]
+     )).subscribe(data=>{
+      this.languages = data;
+        console.log("languages available report "+data);
+     });
+
     // Form Validator
     this.form = this.fb.group({
       'reportContentId': new FormControl('')
@@ -84,6 +96,14 @@ export class ReportPrintComponent implements OnInit {
     if (this.selectedReport) {
         this.router.navigate([this.selectedReport.reportContentId, this.selectedReport.resourceName, this.selectedReport.workEffortTypeId, this.selectedReport.analysis], { relativeTo: this.route });
     }
+  }
+
+  secondaryLang(): boolean {
+    if(this.languages.length > 1 && this.languages[1].indexOf(this.i18nService.getLang()) >= 0) {
+      return true;
+    }
+
+    return false;
   }
 
 }

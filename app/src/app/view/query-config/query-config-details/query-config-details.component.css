@@ -1,0 +1,26 @@
+.spinner{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  background-color: whitesmoke;
+  opacity: 80%;
+}
+
+.validLabel{
+  border-left: 5px solid #42A948 !important;
+}
+
+.ui-header-p-accordion{
+  margin-left:2em; margin-right:2em; margin-top:1em; margin-bottom:1em
+}
+
+
+.alert-danger{
+  width: max-content;
+}

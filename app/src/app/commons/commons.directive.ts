@@ -1,5 +1,5 @@
 import { Directive, Input, ElementRef, AfterContentInit } from '@angular/core';
-import { ApplicationConfig } from './config';
+import { ApplicationConfig } from './model/config';
 
 import * as $ from 'jquery';
 import * as _ from 'lodash';

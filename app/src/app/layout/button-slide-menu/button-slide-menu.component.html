@@ -1,0 +1,4 @@
+<div>
+    <button type="button" role="button" pButton pRipple icon="pi pi-ellipsis-h" (click)="menu.toggle($event)" [disabled]="disabled"></button>
+    <p-slideMenu #menu [appendTo]="'body'" [viewportHeight]="heightSlideMenu" [popup]="true" [model]="items" role="listitem" attr.aria-label="{{'Select item of menu'|i18n}}"></p-slideMenu>
+</div>

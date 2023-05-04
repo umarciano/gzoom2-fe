@@ -104,22 +104,30 @@ $commons-sizes: (
 /* Font icons                                                                 */
 /*----------------------------------------------------------------------------*/
 .fa-close::before {
-  content: "\f00d"; 
-}
-
-.pi-times:before {
   content: "\f00d";
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
 }
 
-.ui-datepicker-next::before {
+// .fa-bars::before {
+//   color: map-get($app-colors, text-color);
+// }
+
+// .pi-times:before {
+//   content: "\f00d";
+//   font-family: 'Font Awesome 5 Free';
+//   font-weight: 900;
+// }
+
+.p-datepicker {max-width: 30em; max-height: 30em;}
+.p-datepicker table td{ max-width: 1em; max-height: 1em; }
+.p-datepicker table td > span { max-width: 1em; max-height: 1em; }
+
+.p-datepicker-next::before {
   content: "\f054";
   font-family: 'Font Awesome 5 Free';
   font-weight: 900;
 }
 
-.ui-datepicker-prev::before {
+.p-datepicker-prev::before {
   content: "\f053";
   font-family: 'Font Awesome 5 Free';
   font-weight: 900;

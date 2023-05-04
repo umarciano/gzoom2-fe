@@ -1,6 +1,7 @@
+<!--
 <nav id="sidebar" class="sidebar sidebar-brand">
 
-  <ngb-tabset>
+  <ngb-tabset id="tabSet" [activeId]="defaultTabActive">
     <ngb-tab *ngFor="let r of roots | async">
       <ng-template ngbTabTitle>
         <span ngbTooltip="{{r.label|i18n}}" placement="right" container="body">
@@ -11,8 +12,8 @@
         <ul class="list-group">
           <div *ngFor="let c of r.children">
             <div [ngSwitch]="menuType(c)">
-              <app-leaf-menu *ngSwitchCase="'leaf'" [menu]="c"></app-leaf-menu>
-              <app-folder-menu *ngSwitchCase="'folder'" [menu]="c"></app-folder-menu>
+              <app-leaf-menu *ngSwitchCase="'leaf'" [menu]="c" [tabId]="r.id"></app-leaf-menu>
+              <app-folder-menu *ngSwitchCase="'folder'" [menu]="c" [tabId]="r.id"></app-folder-menu>
               <span *ngSwitchDefault></span>
             </div>
           </div>
@@ -21,4 +22,28 @@
     </ngb-tab>
   </ngb-tabset>
 
+</nav>
+-->
+<nav id="sidebar" class="sidebar sidebar-brand" attr.aria-label="{{'Menù laterale'|i18n}}" >
+<ul ngbNav #nav="ngbNav" id="tabSet" [(activeId)]="defaultTabActive" class="nav-tabs nav-pills" >
+  <li *ngFor="let r of roots | async" [ngbNavItem]="r" >
+    <a attr.aria-label="{{r.label|i18n}}" role="link" ngbNavLink>
+      <span  ngbTooltip="{{r.label|i18n}}" placement="right" container="body" >
+        <i class="fa" [ngClass]="r.classes"></i>
+      </span>
+    </a>
+    <ng-template ngbNavContent>
+      <ul class="list-group">
+        <div *ngFor="let c of r.children">
+          <div [ngSwitch]="menuType(c)" >
+            <app-leaf-menu *ngSwitchCase="'leaf'" [menu]="c" [tabId]="r.id"></app-leaf-menu>
+            <app-folder-menu *ngSwitchCase="'folder'" [menu]="c" [tabId]="r.id"></app-folder-menu>
+            <span *ngSwitchDefault></span>
+          </div>
+        </div>
+      </ul>
+    </ng-template>
+  </li>
+</ul>
+<div [ngbNavOutlet]="nav"></div>
 </nav>

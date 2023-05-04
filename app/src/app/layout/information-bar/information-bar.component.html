@@ -1,0 +1,15 @@
+<div>
+    <p-card class="flex-shrink-3" [style]="{scale:'0.8'}">
+      <ng-template pTemplate="header">
+        <div class="card-line-header"></div>
+      </ng-template>
+      <ng-template pTemplate="body">
+        <div class="row" style="display: flex; flex-direction:row; flex-wrap: wrap; justify-content: space-around; padding: 1em 1em; ">
+          <div *ngFor="let item of bodyBarArray"  class="col" style="flex-shrink: 3; padding:  0 3em 1em 3em; width: 3em;">
+            <h5 class="first" role="heading" >{{item.head|i18n}} </h5>
+            <h6 class="first" role="heading">{{item.label}} </h6>
+          </div>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>

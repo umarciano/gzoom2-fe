@@ -1,250 +1,134 @@
-import { Component, OnInit } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { DecimalPipe } from '@angular/common';
-import { ActivatedRoute, Router, Params } from '@angular/router';
-import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
-
-import { Observable ,  Subject } from 'rxjs';
-import { first, map, merge, switchMap } from 'rxjs/operators';
-
-import { ConfirmDialogModule, ConfirmationService, SpinnerModule, TooltipModule } from 'primeng/primeng';
-
-import * as moment from 'moment';
-
-import {dtoToDateTime} from '../../../api/utils';
-
-import { SelectItem } from '../../../commons/selectitem';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { FormGroup } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { map, mergeWith, switchMap } from 'rxjs/operators';
 import { I18NService } from '../../../i18n/i18n.service';
-import { Message } from '../../../commons/message';
-import { Timesheet } from './timesheet';
-import { TimesheetService } from '../../../api/timesheet.service';
+import { Timesheet } from '../../../api/model/timesheet';
+import { TimesheetService } from '../../../api/service/timesheet.service';
+import { AuthService, UserProfile } from 'app/commons/service/auth.service';
+import { UserPreferenceService } from 'app/api/service/user-preference.service';
 
-import { Party } from '../../party/party/party';
-import { PartyService } from '../../../api/party.service';
-
-import { Uom } from '../../uom/uom/uom';
-import { UomService } from '../../../api/uom.service';
-
-/** Convert from Party[] to SelectItem[] */
-function party2SelectItems(party: Party[]): SelectItem[] {
-    return party.map((p:Party) => {
-      return {label: p.partyName, value: p.partyId};
-    });
-}
 
 @Component({
   selector: 'app-timesheet',
   templateUrl: './timesheet.component.html',
   styleUrls: ['./timesheet.component.css']
 })
-export class TimesheetComponent implements OnInit {
+export class TimesheetComponent implements OnInit, OnChanges {
   _reload: Subject<void>;
-  /** Default partyId in Select*/
-  defaultParty: Party;
-  displayDialog: boolean;
-  /** Error message from be*/
-  error = '';
+  user: UserProfile;
   form: FormGroup;
-  /** Info message in Toast*/
-  msgs: Message[] = [];
   timesheets: Timesheet[];
-  /** whether create or update */
-  newTimesheet: boolean;
-  /** Timesheet to save*/
-  timesheet: Timesheet = new PrimeTimesheet();
-  /** Selected timesheet in Dialog*/
-  selectedTimesheet: Timesheet;
-  /** Selected PartyIdd in Select*/
-  selectedPartyId: string;
-  /** List of Party in Select */
-  partySelectItem: SelectItem[] = [];
-  /** uom per formattazione */
-  formatNumber: String;
-  uom: Uom;
-  patternRegExp: String;
-  /** Lista utilizzata per ricerca autocomplete party**/
-  filteredActivitiesParty: any[] = [];
+  timesheetCalendar: boolean = false; //True -> attivo il timesheet-calendar-component altrimenti attivo il timesheet-table-component
+  context: string;
+  organizationSelected = 'Company';
+  isAdmin: boolean = false;
+  params: any = { managePlan: "N", showReference: "N", timeentryMapFormat: "DMY", weNoAssigned: "N", weExplAssLevel: 1, hasRateTypeList: "N", rateTtypeList: "STANDARD", hoursPercentage: "H", showComments: "N", glFisclTypeEnumId: "" };
 
   constructor(
     private readonly timesheetService: TimesheetService,
-    private readonly partyService: PartyService,
-    private readonly uomService: UomService,
-    private readonly confirmationService: ConfirmationService,
+    private readonly authSrv: AuthService,
     private readonly route: ActivatedRoute,
-    private readonly router: Router,
     public readonly i18nService: I18NService,
-    private fb: FormBuilder) {
+    private readonly userPreferenceService: UserPreferenceService) {
 
+    this.user = authSrv.userProfile();
     this._reload = new Subject<void>();
   }
 
   ngOnInit() {
 
-    this.form = this.fb.group({
-      'partyId': new FormControl('', Validators.required),
-      'fromDate': new FormControl('', Validators.required),
-      'thruDate': new FormControl('', Validators.required),
-      'contractHours': new FormControl(''),
-      'actualHours': new FormControl('')
+    this.collapseSidebar();
+
+    this.route.paramMap.subscribe(paramMap => {
+      this.context = paramMap.get('context')
     });
 
-     /**Carico il mio uom */
-     this.route.paramMap
-     .pipe(switchMap((params) => { return this.uomService.uom("OTH_100"); }))     
-     .subscribe((data) => { 
-       this.uom = data;
-       this.formatNumber = this.uomService.formatNumber(data); 
-       this.patternRegExp = this.uomService.patternRegExp(data);
-       console.log('decimalScale'+ this.uom.decimalScale);
-     });
+    this.timesheetService.isAdmin(this.context).subscribe(
+      data => {
+        this.isAdmin = data;
+      }
+    );
 
-    this.route.data.pipe(
-      map((data: { timesheets: Timesheet[] }) => data.timesheets)
-    ).subscribe(data => this.timesheets = data);
+    this.userPreferenceService.getUserPreference('ORGANIZATION_PARTY').subscribe(
+      data => {
+        this.organizationSelected = data.userPrefValue;
+      }
+    );
 
-   
-    const reloadedParty = this._reload.pipe(switchMap(() => this.partyService.partys('CTX_PR')));
-    const reloadedTimesheets = this._reload.pipe(switchMap(() => this.timesheetService.timesheets()));
-
-    const partyObs = this.route.data.pipe(
-      map((data: { partys: Party[] }) => data.partys),
-      merge(reloadedParty),
-      map(party2SelectItems)
-    ).subscribe((data) => {
-      this.partySelectItem = data;
-      this.partySelectItem.push({label: this.i18nService.translate('Select Party'), value:null});
+    this.route.paramMap.subscribe(paramMap => {
+      this.context = paramMap.get('context')
     });
 
-    const timesheetsObs = this.route.data.pipe(
-      map((data: { timesheets: Timesheet[] }) => data.timesheets),
-      merge(reloadedTimesheets)
-    ).subscribe((data) => {
-      this.timesheets = data;
-    });
-  }
+    const reloadedParams = this._reload.pipe(switchMap(() => this.timesheetService.params(this.context)));
 
-  confirm() {
-    this.confirmationService.confirm({
-      message: this.i18nService.translate('Do you want to delete this record?'),
-      header: this.i18nService.translate('Delete Confirmation'),
-      icon: 'fa fa-question-circle',
-      accept: () => {
-        this.displayDialog = false;
-        this._delete();
-      },
-      reject: () => {
-          this.timesheet = null;
-          this.displayDialog = false;
-        }
-    });
-  }
+    const paramsObs = this.route.data.pipe(
+      map((data: { params: any[] }) => data),
+      mergeWith(reloadedParams)
+    );
 
-  onRowSelect(data: Timesheet) {
-    this.router.navigate([data.timesheetId], { relativeTo: this.route });
-  }
 
-  save() {
-    this.timesheet.partyId = this.selectedPartyId;
-    if (this.newTimesheet) {
-      this.timesheetService
-        .createTimesheet(this.timesheet)
-        .then(() => {
-          this.timesheet = null;
-          this.displayDialog = false;
-          this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Created'), detail:this.i18nService.translate('Record created')}];
-          this._reload.next();
-        })
-        .catch((error) => {
-          console.log('error' , error.message);
-          this.error = this.i18nService.translate(error.message) || error;
-        });
-    } else {
-      this.timesheetService
-        .updateTimesheet(this.selectedTimesheet.timesheetId, this.timesheet)
-        .then(data => {
-          this.timesheet = null;
-          this.displayDialog = false;
-          this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Updated'), detail:this.i18nService.translate('Record updated')}];
-          this._reload.next();
-        })
-        .catch((error) => {
-          console.log('error' , error.message);
-          this.error = this.i18nService.translate(error.message) || error;
-        });
-    }
-  }
-
-  showDialogToAdd() {
-    this.error = '';
-    this.newTimesheet = true;
-    this.timesheet = new PrimeTimesheet();
-    this.displayDialog = true; 
-    this.selectedPartyId = null;  
-  }
-
-  selectTimesheet(data: Timesheet) {
-    this.error = '';
-    this.selectedTimesheet = data;
-    
-    console.log(" this.selectedTimesheet.fromDate " + this.selectedTimesheet.fromDate);
-    if(this.selectedTimesheet.fromDate)this.selectedTimesheet.fromDate=moment(this.selectedTimesheet.fromDate).toDate();
-    console.log(" this.selectedTimesheet.fromDate " + this.selectedTimesheet.fromDate);
-    if(data.fromDate) this.selectedTimesheet.fromDate=dtoToDateTime(data.fromDate);
-    console.log(" this.selectedTimesheet.fromDate " + this.selectedTimesheet.fromDate);
-    // if(this.selectedTimesheet.fromDate)this.selectedTimesheet.fromDate=moment(this.selectedTimesheet.fromDate).toDate();
-    if(this.selectedTimesheet.thruDate) this.selectedTimesheet.thruDate=dtoToDateTime(data.fromDate);
-
-    this.newTimesheet = false;
-    this.timesheet = this._cloneTimesheet(data);
-    this.selectedPartyId = data.partyId;    
-    this.displayDialog = true;
-  }
-/*
-  filterActivitiesParty(event) {
-    this.filteredActivitiesParty = [];
-    for(let i = 0; i < this.partySelectItem.length; i++) {      
-        let record = this.partySelectItem[i];
-        if(record.label.toLowerCase().indexOf(event.query.toLowerCase()) >= 0) {
-            this.filteredActivitiesParty.push(record.label);
-        }
-    }
-  }
-
-    
-  onSelect(valueSelected) {
-    this.filteredActivitiesParty = [];
-     for(let i = 0; i < this.partySelectItem.length; i++) {
-         let record = this.partySelectItem[i];
-         if(record.label.toLowerCase().indexOf(valueSelected.toLowerCase()) >= 0) {
-            this.selectedPartyId = record.value;
+    paramsObs.subscribe((data) => {
+      let paramsTemp = data["params"][0].params.split(";");
+      paramsTemp.forEach(element => {
+        if (element.split("=")[0] != "") {
+          switch (element.split("=")[0]) {
+            case 'managePlan':
+              this.params.managePlan = element.split("=")[1].split("'")[1];
+              break;
+            case 'showReference':
+              this.params.showReference = element.split("=")[1].split("'")[1];
+              break;
+            case 'timeentryMapFormat':
+              this.params.timeentryMapFormat = element.split("=")[1].split("'")[1];
+              break;
+            case 'weNoAssigned':
+              this.params.weNoAssigned = element.split("=")[1].split("'")[1];
+              break;
+            case 'weExplAssLevel':
+              this.params.weExplAssLevel = element.split("=")[1].split("'")[0];
+              break;
+            case 'hasRateTypeList':
+              this.params.hasRateTypeList = element.split("=")[1].split("'")[1];
+              break;
+            case 'rateTtypeList':
+              this.params.rateTtypeList = element.split("=")[1].split("'")[1];
+              break;
+            case 'hoursPercentage':
+              this.params.hoursPercentage = element.split("=")[1].split("'")[1];
+              break;
+            case 'showComments':
+              this.params.showComments = element.split("=")[1].split("'")[1];
+              break;
           }
-     }
-  }*/
+          this.params.glFisclTypeEnumId = data['params'][0].workEffortTypePeriod.glFiscalTypeEnumId;
+        }
+      });
+    });
 
-  _cloneTimesheet(t: Timesheet): Timesheet {
-    let timesheet = new PrimeTimesheet();
-    for(let prop in timesheet) {
-      timesheet[prop] = t[prop];
+    if (this.params.timeentryMapFormat == "DMY") {
+      this.timesheetCalendar = false;
+    } else if (this.params.timeentryMapFormat == "DDM") {
+      this.timesheetCalendar = true;
     }
-    return timesheet;
   }
 
-  _delete() {
-    this.timesheetService
-    .deleteTimesheet(this.selectedTimesheet.timesheetId)
-    .then(data => {
-      this.timesheet = null;
-      this.msgs = [{severity:this.i18nService.translate('info'), summary:this.i18nService.translate('Confirmed'), detail:this.i18nService.translate('Record deleted')}];
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes && changes["timesheets"]) {
       this._reload.next();
-    })
-    .catch((error) => {
-      console.log('error' , error.message);
-      this.error = this.i18nService.translate(error.message) || error;
-    });
+    }
+  }
+
+  collapseSidebar() {
+    const dom: any = document.querySelector('body');
+    const menu: any = document.querySelector('#sidebar');
+    dom.classList.add('push-right');
+    menu.classList.add('collapse');
   }
 }
 
 class PrimeTimesheet implements Timesheet {
-  constructor(public partyId?: string, public partyName?: string, public timesheetId?: string, public fromDate?: Date ,
-              public thruDate?: Date, public contractHours?: number, public actualHours?: number) {}
+  constructor(public partyId?: string, public partyName?: string, public timesheetId?: string, public fromDate?: Date,
+    public thruDate?: Date, public contractHours?: number, public actualHours?: number) { }
 }

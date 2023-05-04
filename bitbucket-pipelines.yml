@@ -1,18 +1,18 @@
-image: node:12-slim
+image: node:12.22.12-buster-slim
 
 pipelines:
   branches:
     master:
       - step:
           name: Building angular frontend
+          cache:
+            - node
           script:
-            - apt update && apt install -y wget bzip2 curl
-            - wget https://nodejs.org/dist/v12.14.1/node-v12.14.1-linux-x64.tar.gz -O /opt/node.tgz
-            - tar -xzf /opt/node.tgz -C /opt
-            - /opt/node-v12.14.1-linux-x64/bin/npm install -g @angular/cli
-            - cd app && /opt/node-v12.14.1-linux-x64/bin/npm install
-            - ng build --base-href /gzoom2/ --prod
-            - cp package.json dist/ && tar -czf gzoom2-frontend.tgz dist/ 
-            - curl -u${mvn_artifactory_user}:${mvn_artifactory_password} https://${mvn_artifactory_host}/artifactory/api/npm/maps-js/auth/jfrog > /root/.npmrc
+            - apt-get update && apt-get install -y curl
+            - npm install -g @angular/cli@13.3.9
+            - cd app && npm install
+            - ng build --base-href /gzoom2/ --configuration production
+            - cp package.json dist/ && tar -czf gzoom2-frontend.tgz -C dist . 
+            - curl -u${mvn_artifactory_user}:${mvn_artifactory_password} https://${mvn_artifactory_host}/artifactory/api/npm/${publish_repo}/auth/jfrog > /root/.npmrc
             - npm publish gzoom2-frontend.tgz --registry https://${mvn_artifactory_host}/artifactory/api/npm/${publish_repo}/
 

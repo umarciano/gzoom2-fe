@@ -1,7 +1,9 @@
-<a (click)="toggleSidebar()" [routerLink]="link"
+<a (click)="toggleSidebar()"
+  role="link"
+  [routerLink]="link"
   routerLinkActive="active"
-  class="list-group-item leaf-menu">
-  <span class="menu-icon"><i class="fa" [ngClass]="classes"></i></span>
-  &nbsp;
-  {{menu.label|i18n}}
+  class="list-group-item leaf-menu"
+  attr.aria-label="{{leaf.label|i18n}}">
+  <span class="menu-icon" ><i class="fa" [ngClass]="classes"></i></span>
+  {{leaf.label|i18n}}
 </a>

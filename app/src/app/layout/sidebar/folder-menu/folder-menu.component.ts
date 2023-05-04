@@ -6,8 +6,8 @@ import {
   Input
 } from '@angular/core';
 
-import { LeafMenu } from '../../../api/dto';
-import { FolderMenu } from '../../../api/dto';
+import { LeafMenu } from '../../../commons/model/dto';
+import { FolderMenu } from '../../../commons/model/dto';
 
 const OPEN_ICON = 'fa-folder-open';
 const CLOSE_ICON = 'fa-folder';
@@ -19,6 +19,8 @@ const CLOSE_ICON = 'fa-folder';
 })
 export class FolderMenuComponent implements OnInit, OnChanges {
   @Input() menu: FolderMenu;
+  @Input() context: FolderMenu;
+  @Input('tabId') tabId: string;
   classes: string[];
   expanded = true;
 

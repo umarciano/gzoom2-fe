@@ -1,0 +1,24 @@
+<p-toast></p-toast>
+<p-card>
+  <ng-template pTemplate="header">
+    <app-toolbar-data-table [gridArray]="gridArray" [buttonBack]="true" [buttonNew]="true" [buttonExport]="true"
+      (buttonNewEvent)="openNewDetail()" [isEditing]="newUomRatingScale"></app-toolbar-data-table>
+  </ng-template>
+  <ng-template pTemplate="body"> <app-table [isAction]="true" [headArray]="headArray" [gridArray]="gridArray"
+      (buttonEditEvent)="onRowDetailEditInit($event)" (buttonDeleteRowEvent)="deleteDetailUomRow($event)"
+      (buttonEditSaveEvent)="onRowDetailEditSave($event)" (buttonEditCancelEvent)="onRowDetailEditCancel()"
+      (shareDescriptorTable)="shareDescriptorTable($event)" [formShape]="form" [typeDropdownInputArray]=""
+      [itemsButtonSlideMenu]="" [isNewItem]="newUomRatingScale" [editingKeyId]="editingKeyId"
+      [flag]="flag"></app-table></ng-template>
+</p-card>
+
+
+<p-confirmDialog #cd [style]="{width: '450px'}">
+  <ng-template pTemplate="header" icon="pi pi-times-circle">
+    <h3>{{'Attention'|i18n}}</h3>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button type="button" pButton icon="pi pi-times-circle" label="No" (click)="cd.reject()"></button>
+    <button type="button" pButton icon="pi pi-check" label="Yes" (click)="cd.accept()"></button>
+  </ng-template>
+</p-confirmDialog>

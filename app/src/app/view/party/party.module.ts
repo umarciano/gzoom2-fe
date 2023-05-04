@@ -2,14 +2,17 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AccordionModule } from 'primeng/primeng';     //accordion and accordion tab
-import { DropdownModule } from 'primeng/primeng';
-import { DialogModule } from 'primeng/primeng';
-import { DataTableModule, SharedModule } from 'primeng/primeng';
-import { ButtonModule } from 'primeng/primeng';
-import { ConfirmDialogModule, ConfirmationService, SpinnerModule, CalendarModule } from 'primeng/primeng';
-import { GrowlModule } from 'primeng/primeng';
-import { TooltipModule } from 'primeng/primeng';
+import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
+import { TreeTableModule } from 'primeng/treetable';
+import { DropdownModule } from 'primeng/dropdown';
+import { DialogModule } from 'primeng/dialog';
+import { SharedModule,ConfirmationService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
+import { SpinnerModule } from 'primeng/spinner';
+import { CalendarModule } from 'primeng/calendar';
 
 import { CommonsModule } from '../../commons/commons.module';
 import { ApiModule } from '../../api/api.module';
@@ -29,16 +32,16 @@ import { PartyComponent } from './party/party.component';
     ApiModule,
     LayoutModule,
     AccordionModule,
-    DataTableModule,
     DialogModule,
     SharedModule,
     ButtonModule,
     ConfirmDialogModule,
     SpinnerModule,
     CalendarModule,
-    GrowlModule,
+    ToastModule,
     DropdownModule,
-    TooltipModule
+    TooltipModule,
+    TreeTableModule
   ],
   declarations: [
     PartyComponent

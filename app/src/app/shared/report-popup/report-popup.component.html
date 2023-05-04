@@ -1,0 +1,103 @@
+<p-dialog closeIcon="fa fa-close" header="{{'Print'|i18n}}" width="900" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" >
+
+  <div class="report-print">
+    <div *ngIf="reports && reports.length <= 0">
+      {{'Non ci sono stampe da visualizzare'|i18n}}
+    </div>
+
+    <div *ngIf="reports && reports.length > 0">
+        <div class="ui-grid-row" style="margin-bottom: 1em" >
+          <div class="ui-grid-col-3">
+            <label for="reportContentId">{{'Select Print'|i18n}}*</label>
+          </div>
+          <div class="ui-grid-col-4">
+            <div *ngFor="let report of reports">
+                <p-radioButton name="reportContentId" value="{{report.reportContentId}}_{{report.contentName}}_{{report.workEffortTypeId}}" label="{{secondaryLang()?report.etchLang:report.reportName}}" [(ngModel)]="contentIdContentName" (onClick)="onRowSelect(report)"></p-radioButton>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="outputFormats" class="ui-grid-row" style="margin-bottom: 1em">
+          <div class="ui-grid-col-3">
+            <label for="outputFormat">{{'Seleziona il formato'|i18n}}*</label>
+          </div>
+          <div class="ui-grid-col-4">
+            <div *ngFor="let output of outputFormats">
+                <p-radioButton  name="outputFormat" value="{{output.mimeTypeId}}" label="{{output.description}}" [(ngModel)]="outputFormat.mimeTypeId" ></p-radioButton>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="langType==('BILING' || 'REPORT')" class="ui-grid-row" style="margin-bottom: 1em;">
+          <div class="ui-grid-col-3">
+            <label for="languageSelected">{{'Seleziona la lingua'|i18n}}</label>
+          </div>
+          <div class="ui-grid-col-4">
+            <p-dropdown class="form-control" appendTo="body" filter="true"
+            [options]="languagesSelectItem"
+            [(ngModel)]="languageSelected"
+            [autoWidth]="false" [style]="{'width':'100%'}">
+            </p-dropdown>
+         </div>
+        </div>
+        <form [formGroup]="form" >
+        <div *ngFor="let param of params">
+          <div [hidden]="!param.display" class="ui-grid-row m-b-xs" *ngIf="param.paramType == 'DATE'">
+            <div class="ui-grid-col-3">
+              <label class="no-m-b" for="{{param.paramName}}">
+                <label *ngIf="param.label">{{param.label|i18n}}</label>
+                <label *ngIf="!param.label">{{param.paramName|i18n}}</label>
+                <label *ngIf="param.mandatory">*</label>
+              </label>
+            </div>
+            <div class="ui-grid-col-4" *ngIf="param.mandatory">
+              <p-calendar  [defaultDate]="monitoringDate"  required appendTo="body" class="form-control form-control-report" styleClass="calendar-icon" formControlName="{{param.paramName}}" [locale]="i18nService.getCalendarLocale()" [(ngModel)]="monitoringDate" [dateFormat]="i18nService.getFormat('date-short-pcalendar')" name="{{param.paramName}}" [showIcon]="true" icon="fa fa-calendar"></p-calendar>
+            </div>
+            <div class="ui-grid-col-4" *ngIf="!param.mandatory">
+              <p-calendar class="form-control form-control-report"  [defaultDate]="monitoringDate" appendTo="body" styleClass="calendar-icon" formControlName="{{param.paramName}}" [locale]="i18nService.getCalendarLocale()" [(ngModel)]="monitoringDate" [dateFormat]="i18nService.getFormat('date-short-pcalendar')" name="{{param.paramName}}" [showIcon]="true" icon="fa fa-calendar"></p-calendar>
+            </div>
+            <div class="ui-grid-col-5" *ngIf="param.mandatory">
+              <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls[param.paramName].valid && form.controls[param.paramName].dirty">
+                <i class="fa fa-times"></i>
+                {{param.paramName|i18n}} {{'is required'|i18n}}
+              </div>
+            </div>
+          </div>
+
+          <div [hidden]="!param.display" class="ui-grid-row m-b-xs" *ngIf="param.paramType == 'LIST' && param.paramName == 'customTimePeriod'">
+            <div class="ui-grid-col-3">
+              <label class="no-m-b" for="{{param.paramName}}">
+                <label *ngIf="param.label">{{param.label|i18n}}</label>
+                <label *ngIf="!param.label">{{param.paramName|i18n}}</label>
+                <label *ngIf="param.mandatory">*</label>
+              </label>
+            </div>
+            <div class="ui-grid-col-4" *ngIf="param.mandatory">
+                <p-dropdown required class="form-control" appendTo="body" filter="true"
+                 (onChange)="onChangeAll($event.value, param.paramName)"
+                 [options]="paramsSelectItem[param.paramName+'SelectItem']"
+                 formControlName="{{param.paramName}}"
+                  [(ngModel)]="paramsValue[param.paramName]"
+                  [autoWidth]="false" [style]="{'width':'100%'}">
+                </p-dropdown>
+            </div>
+            <div class="ui-grid-col-4" *ngIf="!param.mandatory">
+                <p-dropdown class="form-control" appendTo="body" filter="true" (onChange)="onChangeAll($event.value, param.paramName)" [options]="paramsSelectItem[param.paramName+'SelectItem']" formControlName="{{param.paramName}}"  [(ngModel)]="paramsValue[param.paramName]"  [autoWidth]="false" [style]="{'width':'100%'}">
+                </p-dropdown>
+            </div>
+            <div class="ui-grid-col-5" *ngIf="param.mandatory">
+              <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls[param.paramName].valid&amp;&amp;form.controls[param.paramName].dirty">
+                <i class="fa fa-times"></i>
+                {{param.paramName|i18n}} {{'is required'|i18n}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <p-footer>
+          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" (click)="print()" pButton icon="fa fa-print" label="{{'Stampa'|i18n}}" [disabled]="!form.valid"></button>
+          </div>
+        </p-footer>
+     </form>
+    </div>
+  </div>
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+</p-dialog>

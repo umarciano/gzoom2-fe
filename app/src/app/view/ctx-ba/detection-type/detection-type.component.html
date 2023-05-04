@@ -1,0 +1,33 @@
+<!-- Disappearing Messages -->
+<p-toast></p-toast>
+
+<!-- Messages Error -->
+<p-messages [(value)]="messagesError" [enableService]="false"></p-messages>
+
+<p-card>
+  <ng-template pTemplate="header">
+    <app-toolbar-data-table (buttonNewEvent)="openNew()" (deleteEvent)="deleteRowSelected()"
+      (saveEvent)="saveAllElement()" [buttonDelete]="buttonDelete" [buttonBack]="buttonBack" [buttonNew]="buttonNew"
+      [dataTable]="dataTable" [buttonSave]="buttonSave"></app-toolbar-data-table>
+  </ng-template>
+  <ng-template pTemplate="body">
+    <app-table-editing-cell [selectedOn]="true" [isAction]="true" [headArray]="headArray" [gridArray]="gridArray"
+      [editingCell]="true" [editingKeyId]="editingKeyId" [scrollHeight]="'60vh'"
+      (notifyInputChanges)="notifyInputChanges($event)" (shareSelectionItem)="shareSelectionItem($event)"
+      (shareDescriptorTable)="shareDescriptorTable($event)"></app-table-editing-cell>
+  </ng-template>
+
+</p-card>
+
+<!-- ###################CONFIRM DELETE #################### -->
+<p-confirmDialog #cd [style]="{width: '450px'}">
+  <ng-template pTemplate="header" icon="pi pi-times-circle">
+    <h3>{{'Attention'|i18n}}</h3>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button type="button" pButton icon="pi pi-times-circle" label="{{'No'|i18n}}" (click)="cd.reject()"
+      aria-label="select no"></button>
+    <button type="button" pButton icon="pi pi-check" label="{{'Yes'|i18n}}" (click)="cd.accept()"
+      aria-label="select yes"></button>
+  </ng-template>
+</p-confirmDialog>

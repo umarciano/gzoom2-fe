@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Input, forwardRef, Renderer, Provider, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, forwardRef, Provider, Renderer2 } from '@angular/core';
 import { DefaultValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator } from '@angular/forms';
 
 const CUSTOM_VALUE_ACCESSOR = {
@@ -45,5 +45,5 @@ export class NumberDecimalAccessor  {
     }
     this.onChange(value);
   }*/
-    
+
 }

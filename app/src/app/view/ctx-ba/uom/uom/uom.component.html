@@ -1,0 +1,31 @@
+<p-toast></p-toast>
+
+<p-card>
+  <ng-template pTemplate="header">
+    <app-toolbar-data-table [gridArray]="gridArray" [buttonBack]="false" [buttonNew]="true" [buttonExport]="true"
+      (buttonNewEvent)="openNew()" [isEditing]="newUom" [dataTable]="dataTable"></app-toolbar-data-table>
+  </ng-template>
+  
+  <ng-template pTemplate="body" >
+    <app-table [isAction]="true" [headArray]="headArray" [gridArray]="gridArray" [filterArray]="filterArray"
+      (buttonEditEvent)="onRowEditInit($event)" (buttonDeleteRowEvent)="deleteUomRow($event)" [sortField]="'id'"
+      (buttonEditSaveEvent)="onRowEditSave($event)" (buttonEditCancelEvent)="onRowEditCancel($event)"
+      (buttonShareRiRowEvent)="updateRiRow($event)" (shareDescriptorTable)="shareDescriptorTable($event)"
+      [formShape]="form" [typeDropdownInputArray]="uomTypeIds" [itemsButtonSlideMenu]="itemsButtonSlideMenu"
+      [isNewItem]="newUom" [editingKeyId]="editingKeyId" [flag]="flag"></app-table>
+  </ng-template>
+
+</p-card>
+
+<!-- ###################CONFIRM DELETE #################### -->
+
+<p-confirmDialog #cd [style]="{width: '450px'}">
+  <ng-template pTemplate="header" icon="pi pi-times-circle">
+    <h3>{{'Attention'|i18n}}</h3>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button type="button" pButton icon="pi pi-times-circle" label="No" (click)="cd.reject()"
+      aria-label="select no"></button>
+    <button type="button" pButton icon="pi pi-check" label="Yes" (click)="cd.accept()" aria-label="select yes"></button>
+  </ng-template>
+</p-confirmDialog>

@@ -6,8 +6,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 
-import { AuthService } from '../../commons/auth.service';
-import { ApiConfig } from '../../api/api-config';
+import { AuthService } from '../../commons/service/auth.service';
+import { ApiConfig } from '../../commons/model/api-config';
 import { Node } from '../../view/node/node';
 import { UserPreference } from '../../shared/user-preference';
 
@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
   private readonly loginUrl: string;
 
   node: Node;
+  loading_login: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,7 +51,15 @@ export class LoginComponent implements OnInit {
     this.route.data.pipe(
       map((data: { theme: UserPreference }) => data.theme),
     ).subscribe((data) => {
-      window['switchStyle'](data.userPrefValue);
+      if(data == undefined){
+        this.loading_login = true;
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }else{
+        this.loading_login = false;
+        window['switchStyle'](data.userPrefValue);
+      }
     });
     // if already logged in then skip this state
     if (this.authService.isLoggedIn()) {

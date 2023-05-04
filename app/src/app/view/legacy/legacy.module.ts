@@ -5,8 +5,14 @@ import { ApiModule } from '../../api/api.module';
 import { SharedModule } from '../../shared/shared.module';
 import { LegacyRoutingModule } from './legacy-routing.module';
 import { LegacyComponent } from './legacy.component';
-
+import {DialogModule} from 'primeng/dialog';
 import { I18nModule } from 'app/i18n/i18n.module';
+import {ButtonModule} from 'primeng/button';
+import { ReportpopupComponent } from 'app/shared/report-popup/report-popup.component';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   imports: [
@@ -15,8 +21,15 @@ import { I18nModule } from 'app/i18n/i18n.module';
     ApiModule,
     SharedModule,
     LegacyRoutingModule,
-    I18nModule
+    DialogModule,
+    I18nModule,
+    ButtonModule,
+    RadioButtonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CalendarModule,
+    DropdownModule
   ],
-  declarations: [LegacyComponent]
+  declarations: [LegacyComponent, ReportpopupComponent]
 })
 export class LegacyModule { }

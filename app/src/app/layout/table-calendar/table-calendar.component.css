@@ -1,0 +1,80 @@
+.clickLink:hover{
+    cursor:pointer;
+}
+
+.container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.doubleRow{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+#zeroPadding{
+    padding: 0px 0px;
+}
+
+.elementDoubleRow {
+    padding: 10px;    
+}
+
+#firstElDoubleRow {   
+    border-bottom: 1px solid grey;
+}
+
+.checkBoxTableCellHeader{
+    padding-top: 45% !important;
+    padding-bottom: 50% !important;
+}
+
+.checkBoxTableCell{
+    padding-top: 47% !important;
+    padding-bottom: 50% !important;
+}
+
+.multipleRow {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#rowMultipleEl {
+    height: 5em;
+    padding: 10px;
+    border-bottom: 1px solid rgb(165, 164, 164);
+    display: flex;
+    align-items: center;
+}
+
+.header-title{
+    font-family: 'Roboto', sans-serif;
+}
+
+.header-title-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.header-title-label{
+    display: flex;
+    justify-content: center;
+    font-size: small;
+}
+
+.body-row{
+    font-family: 'Roboto', sans-serif;
+    font-size: small;
+}
+
+.emptyRow{
+    font-size: small;
+    padding: 10px;
+    text-align: center;
+}

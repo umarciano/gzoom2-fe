@@ -1,0 +1,22 @@
+<div>
+    <p-toolbar styleClass="p-mb-4" role="toolbar">
+        <ng-template pTemplate="left">
+            <button pButton *ngIf="buttonBack" pRipple editingRowKeys id="btn_new" [disabled]="isEditing"
+                label="{{'Back'|i18n}}" icon="pi pi-arrow-left" class="p-button-raised p-mr-2" (click)="back()"
+                attr.aria-label="{{'Back'|i18n}}" role="button"></button>
+            <button pButton *ngIf="buttonNew" pRipple editingRowKeys id="btn_new" [disabled]="isEditing"
+                label="{{'New'|i18n}}" icon="pi pi-plus" class="p-button-raised p-mr-2" (click)="openNewRow()"
+                attr.aria-label="{{'New'|i18n}}" role="button"></button>
+            <button pButton *ngIf="buttonDelete" pRipple editingRowKeys id="btn_new" [disabled]="isEditing"
+                label="{{'Delete'|i18n}}" icon="pi pi-trash" class="p-button-raised p-mr-2" (click)="deleteRow()"
+                attr.aria-label="{{'Delete'|i18n}}" role="button"></button>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <button pButton class="p-button-raised" *ngIf="buttonSave" pRipple label="{{'Save'|i18n}}" (click)="save()"
+                icon="pi pi-save" attr.aria-label="{{'Save'|i18n}}" role="button"></button>
+            <button pButton class="p-button-raised" *ngIf="buttonExport" pRipple label="{{'Export'|i18n}}"
+                (click)="exportExcel()" icon="pi pi-upload" attr.aria-label="{{'Export'|i18n}}" role="button"></button>
+        </ng-template>
+    </p-toolbar>
+</div>

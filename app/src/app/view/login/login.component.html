@@ -1,5 +1,9 @@
-<div class="login">
-  <img alt="Gzoom Logo" class="img-fluid" src="/rest/node/logo/Company/LOGO_LOGIN" >
+<div *ngIf="loading_login" class="login d-flex justify-content-center" >
+  <p-progressSpinner [style]="{top:'50vh', width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
+</div>
+
+<div *ngIf="!loading_login" class="login" role="figure">
+  <img alt="Gzoom Logo" class="img-fluid" aria-label="logo" src="/rest/node/logo/Company/LOGO_LOGIN">
   <h2 class="m-t-lg">{{node?.noteData.noteInfo}}</h2>
 
 
@@ -9,34 +13,45 @@
       <label class="form-control-label" for="username">{{'Username'|i18n}}</label>
       <div class="input-group addon-md">
         <span class="input-group-addon addon-md"><i class="fa fa-user"></i></span>
-        <input type="text" class="form-control" name="username" [(ngModel)]="model.username" #username="ngModel" required />
+        <input type="text" class="form-control" name="username" [(ngModel)]="model.username" #username="ngModel" aria-label="insert username"
+          required />
       </div>
-      <span *ngIf="username.dirty &amp;&amp; !username.valid" class="form-text">
-          {{'Username is required'|i18n}}
-        </span>
+      <span *ngIf="username.dirty &amp;&amp; !username.valid" class="form-text" aria-label="username is required">
+        {{'Username is required'|i18n}}
+      </span>
     </div>
 
     <div class="form-group" [ngClass]="{ 'has-error': password.dirty &amp;&amp; !password.valid }">
       <label class="form-control-label" for="password">{{'Password'|i18n}}</label>
       <div class="input-group addon-md">
         <span class="input-group-addon addon-md"><i class="fa fa-key"></i></span>
-        <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" required />
+        <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" aria-label="insert password"
+          required />
       </div>
-      <span *ngIf="password.dirty &amp;&amp; !password.valid" class="form-text">
+      <span *ngIf="password.dirty &amp;&amp; !password.valid" class="form-text" aria-label="password is reuqired">
         {{'Password is required'|i18n}}
       </span>
     </div>
 
     <div class="form-group">
-      <button [disabled]="loading || !f.form.valid" class="btn btn-primary">
-          {{'Login'|i18n}}
-          <span *ngIf="loading">
-            &nbsp; <i class="ion ion-load-c fa fa-spin"></i>
-          </span>
-        </button>
+      <button [disabled]="loading || !f.form.valid" class="mt-3 btn btn-primary" role="button">
+        {{'Login'|i18n}}
+        <span *ngIf="loading">
+          &nbsp; <i class="ion ion-load-c fa fa-spin"></i>
+        </span>
+      </button>
     </div>
 
-    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+    <div *ngIf="error" class="alert alert-danger" role="alert">{{error}}</div>
 
   </form>
+
+
+  <!-- Footer -->
+  <div class="focuslayout-footer" role="document">
+    <div class="pull-right">
+      <span appName></span> v. <span appMajorMinorVersion></span>
+    </div>
+  </div>
+
 </div>

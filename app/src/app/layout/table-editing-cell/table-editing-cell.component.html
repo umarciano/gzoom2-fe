@@ -1,0 +1,281 @@
+<p-table #dtec [value]="gridArray" responsiveLayout="scroll" [rowHover]="true" [paginator]="true" [rows]="50"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="{{'Showing {first} to {last} of {totalRecords} entries'|i18n}}" [sortOrder]="1"
+    [rowsPerPageOptions]="[10,25,50]" dataKey="variableGridArray.id" editMode="row" [filterDelay]="0" ariaLabel="Table"
+    [globalFilterFields]="filterArray" role="table" [selection]="selectedItem" [selectionMode]="selectionMode"
+    (selectionChange)="onSelectionChange($event)" [selectAll]="selectAll" [totalRecords]="totalRecords"
+    (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
+    (selectAllChange)="onSelectAllChange($event)" [scrollable]="true" [scrollHeight]="scrollHeight">
+
+    <!--Header of the table-->
+    <ng-template pTemplate="header">
+
+        <!--First header of th table-->
+        <tr class="header-title">
+
+            <!--Empty Cell for Checkbox Style-->
+            <th *ngIf="selectedOn" style="flex: 0 0 5%;"></th>
+
+            <!--Title of specific column-->
+            <th *ngFor="let head of headArray"
+                [ngStyle]="{'display':head.display, 'height':'5em', 'flex': '0 0 '+ head.width}"
+                style="justify-content: center;" pSortableColumn="{{head.fieldName}}"
+                attr.aria-label="{{head.fieldName|i18n}}" role="columnheader">
+                <div class="header-title-container" role="figure">
+
+                    <!--Icon flag for multiple language-->
+                    <app-icon-custom *ngIf="flag && head.flag" [path]="head.pathIconFlag"></app-icon-custom>
+
+                    <!--Name of column-->
+                    <p class="header-title-label" pTooltip="{{head.tooltip}}">{{head.head}}</p>
+
+                    <!--Icon sort-->
+                    <p-sortIcon *ngIf="head.head!='' && head.sortIcon!=false" field="{{head.fieldName}}"></p-sortIcon>
+                </div>
+            </th>
+        </tr>
+
+        <!--Second header of th table-->
+        <tr class="header-filter" [ngStyle]="{'display':headDisplay}">
+
+            <!--Checkbox for select all records-->
+            <th *ngIf="selectedOn" class="d-flex justify-content-center checkBoxTableCellHeader"
+                [ngStyle]="{'flex': '0 0 5%'}"> <p-tableHeaderCheckbox></p-tableHeaderCheckbox> </th>
+
+            <!--Filter-->
+            <th *ngFor="let head of headArray"
+                [ngStyle]="{'display':head.display, 'height':'5em', 'flex': '0 0 '+ head.width}" ariaLabel="Filter"
+                attr.aria-label="{{'Filter'|i18n}}" role="columnheader">
+
+                <!--Dropdown filter with auto-populated array-->
+                <div *ngIf="head.filter == headFilter.dropdownFilter " attr.aria-label="{{'Dropdown filter'|i18n}}"
+                    style="width: 100%;">
+                    <p-columnFilter field="{{head.fieldName}}" [matchMode]="equals" [showMenu]="false">
+                        <ng-template pTemplate="filter" let-filter="filterCallback">
+                            <p-dropdown [options]="typeDropdownFilterArray.get(head.fieldName)"
+                                (onChange)="filter($event.value)" placeholder="{{'Any'|i18n}}" [showClear]="true">
+                                <ng-template let-option pTemplate="item">
+                                    <span>{{option.label}}</span>
+                                </ng-template>
+                            </p-dropdown>
+                        </ng-template>
+                    </p-columnFilter>
+                </div>
+
+                <!--Dropdown filter with custom populated array-->
+                <div *ngIf="head.filter == headFilter.dropdownFilterCustom "
+                    attr.aria-label="{{'Dropdown filter'|i18n}}" style="width: 100%;">
+                    <p-columnFilter field="{{head.fieldName}}" [matchMode]="equals" [showMenu]="false">
+                        <ng-template pTemplate="filter" let-filter="filterCallback">
+                            <p-dropdown appendTo="body" [options]="typeDropdownInputArray.get(head.fieldName)"
+                                (onChange)="filter($event.value)" [showClear]="false">
+                                <ng-template let-option pTemplate="item">
+                                    <span>{{option.label}}</span>
+                                </ng-template>
+                            </p-dropdown>
+                        </ng-template>
+                    </p-columnFilter>
+                </div>
+
+                <!--Dropdown filter with custom populated array whit head.dropdown-->
+                <div *ngIf="head.dropdown" attr.aria-label="{{'Dropdown filter'|i18n}}" style="width: 100%;">
+                    <p-columnFilter field="{{head.fieldName}}" [matchMode]="equals" [showMenu]="false">
+                        <ng-template pTemplate="filter" let-filter="filterCallback">
+                            <p-dropdown appendTo="body" optionValue="label" [options]="head.dropdown"
+                                (onChange)="filter($event.value)" [showClear]="true" placeholder="{{'Any'|i18n}}">
+                                <ng-template let-option pTemplate="item">
+                                    <span>{{option.label}}</span>
+                                </ng-template>
+                            </p-dropdown>
+                        </ng-template>
+                    </p-columnFilter>
+                </div>
+
+                <!--Text filter-->
+                <div *ngIf="head.filter == headFilter.textFilter " attr.aria-label="{{'Text Filter'|i18n}}"
+                    ariaLabel="text filter" style="width: 100%;">
+                    <p-columnFilter type="text" field="{{head.fieldName}}" placeholder="{{'Search'|i18n}}"
+                        [matchMode]="'contains'">
+                    </p-columnFilter>
+                </div>
+
+                <!--Pop-up filter-->
+                <div class="d-flex justify-content-center" *ngIf="head.filter == headFilter.popUpFilter "
+                    attr.aria-label="{{'Pop Up Filter'|i18n}}" ariaLabel="popup filter" style="width: 100%;">
+                    <p-button icon="pi pi-filter" (click)="op.toggle($event)"></p-button>
+
+                    <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '300px'}">
+                        <ng-template pTemplate>
+                            <p-columnFilter type="text" field="{{head.fieldName}}" placeholder="{{'Search'|i18n}}">
+                            </p-columnFilter>
+                        </ng-template>
+                    </p-overlayPanel>
+                </div>
+
+                <!--Global text search filter-->
+                <div *ngIf="head.filter == headFilter.globalFilter" attr.aria-label="{{'Search everywhere'|i18n}}"
+                    ariaLabel="global filter">
+                    <span class="p-input-icon-left  p-ml-auto">
+                        <input style="height: 3em; margin-left: 0.5em; margin-right: 0.5em;" pInputText type="text"
+                            placeholder="{{'Search everywhere'|i18n}}"
+                            (input)="dt.filterGlobal($event.target.value, 'contains');" />
+                    </span>
+                </div>
+
+                <!--Empty cell-->
+                <div *ngIf="head.filter == headFilter.null " attr.aria-label="{{'Empty cell'|i18n}}"> </div>
+            </th>
+        </tr>
+    </ng-template>
+
+    <!--Body of the table-->
+    <ng-template pTemplate="body" let-item let-riRow="rowIndex" let-editing="editing">
+
+        <tr class="body-row" [pRowToggler]="item" style="min-height: 4rem;" [pEditableRow]="item">
+
+            <!--Checkbox to select a single record-->
+            <td *ngIf="selectedOn" class="d-flex justify-content-center checkBoxTableCell" style="flex: 0 0 5%;">
+                <p-tableCheckbox [value]="item" attr.aria-label="{{'Checkbox'|i18n}}" role="checkbox"></p-tableCheckbox>
+            </td>
+
+            <!--The cell type changes based on what is set in the headArray-->
+            <td *ngFor="let head of headArray" (dblclick)="dblclickRow(item)"
+                [ngStyle]="{'display':head.display, 'flex': '0 0 '+ head.width, 'width': head.width, 'justify-content': head.content}"
+                role="cell" style="text-overflow: ellipsis; overflow: hidden;" [pEditableColumn]="head.fieldName"
+                pEditableColumnField="{{head.fieldName}}">
+
+                <div *ngIf="head.actionInput == actionInput.null ">
+
+                    <!--Output cell for text value-->
+                    <div *ngIf="head.actionOutput == actionOutput.outputLabelData"
+                        style="margin-left: 0.5em; margin-right: 0.5em;" attr.aria-label="{{'Record of column'|i18n}}">
+                        <label title="{{item[head.fieldName]}}">
+                            {{item[head.fieldName]}}
+                        </label>
+                    </div>
+
+                    <!--Output cell for numeric value-->
+                    <div *ngIf="head.actionOutput == actionOutput.outputLabelNumber && item[head.fieldName] != null && item[head.fieldName] != undefined "
+                        style="margin-left: 0.5em; margin-right: 0.5em; " attr.aria-label="{{'Record of column'|i18n}}">
+                        {{item[head.fieldName].toString().replace(".", ",")}}
+                    </div>
+
+                    <!--Cell that show if the specific row is editable or not editable-->
+                    <div *ngIf="head.actionOutput == actionOutput.icon"
+                        style="text-align: center; justify-content: center; display: flex;">
+                        <i class="{{item.variableGridArray.icon.icon}}"></i>
+                    </div>
+
+                    <div *ngIf="head.actionOutput == actionOutput.actionDetails  && item.variableGridArray.buttonDetails"
+                        role="button">
+                        <button type="button" pButton pRipple (click)="onClickButtonDetails(item)"
+                            class="p-button-text p-button-rounded p-button-plain" icon="pi pi-angle-right"></button>
+                    </div>
+
+                </div>
+
+                <div *ngIf="head.actionInput != actionInput.null " style="width: 100%;">
+                    <p-cellEditor>
+                        <!--Input-->
+                        <ng-template pTemplate="input">
+                            <!--Dropdown input column-->
+                            <div *ngIf="head.actionInput == actionInput.dropdownData && head.dropdown"
+                                style="margin-left: 0.5em; margin-right: 0.5em;">
+                                <p-dropdown *ngIf="item.variableGridArray.dropdownData" appendTo="body" [filter]="true"
+                                    editable="true" optionLabel="label" optionValue="label" [options]="head.dropdown"
+                                    [(ngModel)]="item[head.fieldName]" placeholder="{{'Select'|i18n}}"
+                                    [required]="head.required" [showClear]="head.dropdownClear"
+                                    (ngModelChange)="onTimeChange(item.variableGridArray.id)"
+                                    (onChange)="dropdownInputChanges(item.variableGridArray.id, riRow)"
+                                    attr.aria-label="{{'Select this record'|i18n}}"></p-dropdown>
+                                <div *ngIf="!item.variableGridArray.dropdownData" style=" margin-right: 0.5em;"
+                                    attr.aria-label="{{'Record of column'|i18n}}">
+                                    {{item[head.fieldName]}}</div>
+                            </div>
+
+                            <!--Dropdown input-->
+                            <div *ngIf="head.actionInput == actionInput.dropdownData && !head.dropdown"
+                                style="margin-left: 0.5em; margin-right: 0.5em;">
+                                <p-dropdown *ngIf="item.variableGridArray.dropdownData" appendTo="body" [filter]="true"
+                                    editable="true" [options]="typeDropdownInputArray" [(ngModel)]="itemDropdown[riRow]"
+                                    placeholder="{{'Select'|i18n}}"
+                                    (ngModelChange)="onTimeChange(item.variableGridArray.id)"
+                                    (onChange)="dropdownInputChanges(item.variableGridArray.id, riRow)"
+                                    attr.aria-label="{{'Select this record'|i18n}}"></p-dropdown>
+                                <div *ngIf="!item.variableGridArray.dropdownData" style=" margin-right: 0.5em;"
+                                    attr.aria-label="{{'Record of column'|i18n}}">
+                                    {{item[head.fieldName]}}</div>
+                            </div>
+
+                            <!--Label text input-->
+                            <div *ngIf="(head.actionInput == actionInput.inputLabeldata && item.variableGridArray.inputLabeldata) || (item.variableGridArray.inputNew && head.actionInput == actionInput.outputData)"
+                                style="margin-left: 0.5em; margin-right: 0.5em;" class="d-flex ">
+                                <input pInputText type="text" style="width: 100%;" [(ngModel)]="item[head.fieldName]"
+                                    (ngModelChange)="onTimeChange(item.variableGridArray.id)"
+                                    attr.aria-label="{{'Input data here'|i18n}}" [required]="head.required">
+                                <div *ngIf="!item.variableGridArray.inputLabeldata" style=" margin-right: 0.5em;"
+                                    attr.aria-label="{{'Record of column'|i18n}}">
+                                    {{item[head.fieldName]}}</div>
+                            </div>
+
+                            <!--Label number input-->
+                            <div *ngIf="head.actionInput == actionInput.inputLabelNumber && item.variableGridArray.inputLabelNumber"
+                                style="margin-left: 0.5em; margin-right: 0.5em; text-align: center;"
+                                class="d-flex justify-content-center">
+                                <p-inputNumber pInputNumber [(ngModel)]="item[head.fieldName]" style="width: 100%;"
+                                    (ngModelChange)="onTimeChange(item.variableGridArray.id)"
+                                    (onInput)="onTimeChange(item.variableGridArray.id)" type="number" size="2"
+                                    pInputMask="9*" [required]="head.required"
+                                    attr.aria-label="{{'Input data here'|i18n}}"></p-inputNumber>
+                            </div>
+
+                            <!--Notes input-->
+                            <div *ngIf="head.actionInput == actionInput.inputNotes && item.variableGridArray.inputNotes"
+                                class="d-flex justify-content-center w-full">
+                                <textarea
+                                    style="margin-left: 0.5em;margin-top: 0.5em;margin-bottom: 0.5em; margin-right: 0.5em; width: 35vw;"
+                                    pInputTextarea autoResize="autoResize" [(ngModel)]="item[head.fieldName]"
+                                    (ngModelChange)="onTimeChange(riRow)"
+                                    attr.aria-label="{{'Input data here'|i18n}}"></textarea>
+                            </div>
+
+                            <!--To show an uneditable value when the row goes into editing mode-->
+                            <div *ngIf="head.actionInput == actionInput.outputData && item.variableGridArray.outputData"
+                                style="margin-left: 0.5em; margin-right: 0.5em;"
+                                attr.aria-label="{{'Record of column'|i18n}}">
+                                {{item[head.fieldName]}}
+                            </div>
+                        </ng-template>
+
+                        <!--Output-->
+                        <ng-template pTemplate="output">
+                            <!--Output cell for text value-->
+                            <div *ngIf="head.actionOutput == actionOutput.outputLabelData"
+                                style="margin-left: 0.5em; margin-right: 0.5em;"
+                                attr.aria-label="{{'Record of column'|i18n}}">
+                                <label title="{{item[head.fieldName]}}">
+                                    {{item[head.fieldName]}}
+                                </label>
+                            </div>
+
+                            <!--Output cell for numeric value-->
+                            <div *ngIf="head.actionOutput == actionOutput.outputLabelNumber && item[head.fieldName] != null && item[head.fieldName] != undefined "
+                                style="margin-left: 0.5em; margin-right: 0.5em; "
+                                attr.aria-label="{{'Record of column'|i18n}}">
+                                {{item[head.fieldName].toString().replace(".", ",")}}
+                            </div>
+
+                            <!--Output cell for big text value-->
+                            <div *ngIf="head.actionOutput == actionOutput.outputNotes"
+                                style="margin-left: 0.5em; margin-right: 0.5em; text-align: center;"
+                                attr.aria-label="{{'Record of column'|i18n}}">
+                                {{item[head.fieldName]}}
+                            </div>
+
+                        </ng-template>
+                    </p-cellEditor>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

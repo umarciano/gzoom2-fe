@@ -1,19 +1,32 @@
+<app-change-password></app-change-password>
+
 <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 
 <div class="pos-f-t fixed-top header">
-  <nav class="navbar navbar-expand-sm">
-    <div class="sidebar-brand">
-      <a href="javascript:void(0)" class="navbar-toggleable-sm" (click)="toggleSidebar()">
+  <nav class="navbar navbar-expand-sm" aria-label="navbar" role="navigation">
+    <div class="sidebar-brand-navbar ">
+      <a href="javascript:void(0)" class="navbar-toggleable-sm" (click)="toggleSidebar()" attr.aria-label="{{'Click for open menù'|i18n}}">
         <i class="fas fa-bars" style="font-size: 1.2em;"></i>
         <span class="navbar-toggler-icon"></span>
       </a>
-      <a class="navbar-brand" routerLink="/c">
-        <img alt="Gzoom Logo" class="img-fluid" src="/rest/node/logo/Company/LOGO" >
-      </a>
+      <!-- <a class="navbar-brand"  routerLink="/c">
+        <img alt="Gzoom Logo" class="img-fluid" src='/rest/node/logo/{{organizationSelected}}/LOGO' >
+      </a> -->
+    </div>
+    <div class="navbar-brand curve"  routerLink="/c" attr.aria-label="{{'Logo'|i18n}}"  role="img">
+      <img alt="Gzoom Logo" class="img-fluid" src='/rest/node/logo/{{organizationSelected}}/LOGO' >
     </div>
 
-    <div class="navbar-title">
+    <div class="navbar-title" style="padding-left: 9.2em;" attr.aria-label="{{'Title'|i18n}}" >
       <h5>{{node?.noteData.noteInfo}}</h5>
+      <p *ngIf="organizationType=='Y'">
+        <p-dropdown [autoWidth]="false" [style]="{'width':'100%'}" attr.aria-label="{{'Change organization'|i18n}}" 
+        [options] = "organizationSelectItem"
+        (onChange)= "setOrganization()"
+        [(ngModel)] = "organizationSelected">
+
+        </p-dropdown>
+      </p>
     </div>
     <div class="navbar-collapse justify-content-end" id="collapsibleNavbar">
       <ul class="navbar-nav">
@@ -23,9 +36,9 @@
               <i class="fa fa-user"></i> &nbsp; {{user|fullname}} <b class="caret"></b>
             </a>
             <div ngbDropdownMenu>
-              <a class="dropdown-item" (click)="changeThemeDialog()"><i class="fa fa-fw fa-user"></i> {{'Tema'|i18n}}</a>
-              <a class="dropdown-item" (click)="changePasswordDialog()"><i class="fa fa-fw fa-key"></i> {{'Change password'|i18n}}</a>
-              <a class="dropdown-item" (click)="logout()"><i class="fa fa-fw fa-power-off"></i> {{'Logout'|i18n}}</a>
+              <a class="dropdown-item" (click)="changeThemeDialog()" attr.aria-label="{{'Change theme'|i18n}}" role="link"><i class="fa fa-fw fa-user"></i> {{'Tema'|i18n}} </a>
+              <a class="dropdown-item" *ngIf="allowChangePassword" (click)="changePasswordDialog()"  attr.aria-label="{{'Change password'|i18n}}" role="link" ><i class="fa fa-fw fa-key"></i> {{'Change Password'|i18n}}</a>
+              <a class="dropdown-item" (click)="logout()"  attr.aria-label="{{'Logout'|i18n}}" role="link" ><i class="fa fa-fw fa-power-off"></i> {{'Logout'|i18n}}</a>
             </div>
           </div>
         </li>
@@ -36,10 +49,10 @@
         </li>
         <li class="nav-item">
           <div class="nav-item dropdown" [autoClose]="'outside'" ngbDropdown placement="bottom-right">
-            <a href="javascript:void(0)" class="nav-link dropdown-toggle" ngbDropdownToggle>
+            <a href="javascript:void(0)" class="nav-link dropdown-toggle" attr.aria-label="{{'Informations'|i18n}}" role="link" ngbDropdownToggle>
               <i class="fa fa-info"></i> &nbsp; {{'Info'|i18n}}
             </a>
-            <div ngbDropdownMenu>
+            <div ngbDropdownMenu style="left: -10rem;">
               <a class="dropdown-item">
                 <div>
                   <span appName></span>&nbsp;<span appVersion></span> <span>/{{restVersions}}</span>
@@ -52,16 +65,23 @@
           </div>
         </li>
         <li *ngIf="langType==('BILING' || 'REPORT')" class="nav-item">
-          <div class="nav-item dropdown" [autoClose]="'outside'" ngbDropdown placement="bottom-right">
+          <div class="nav-item dropdown" [autoClose]="'outside'" ngbDropdown placement="bottom-left">
             <a href="javascript:void(0)" class="nav-link dropdown-toggle" ngbDropdownToggle>
-              <i class="fa fa-globe" aria-hidden="true"></i>
+              <i class="fa fa-globe" ></i>
             </a>
-            <div ngbDropdownMenu>
+            <div ngbDropdownMenu style="left: -7rem;">
                 <div *ngFor="let l of languages">
-                  <a class="dropdown-item" (click)="changeLang(l)"><span>{{l|i18n}}</span>
+                  <a class="dropdown-item" (click)="changeLang(l)" attr.aria-label="{{'Change language'|i18n}}" ><span>{{l|i18n}}</span>
                 </a>
                 </div>
               </div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <div class="nav-item" placement="bottom-right" (click)="openHelp()" attr.aria-label="{{'Help'|i18n}}">
+            <a href="javascript:void(0)" class="nav-link" title="help">
+              <i class="fa fa-question"></i>
+            </a>
           </div>
         </li>
       </ul>
@@ -69,70 +89,52 @@
   </nav>
 </div>
 
-
-<p-dialog header="{{'Change password'|i18n}}" width="900" [(visible)]="displayChangePassword" [responsive]="true" showEffect="fade" [modal]="true">
-  <form [formGroup]="form" novalidate (ngSubmit)="changePassword()">
-    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px" *ngIf="user">
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-3">
-          <label for="currentPassword">{{'Current Password'|i18n}}*:</label>
-        </div>
-        <div class="ui-grid-col-4">
-          <input pPassword type="password" [(ngModel)]="currentPassword" formControlName="currentPassword"/>
-        </div>
-        <div class="ui-grid-col-5">
-          <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['currentPassword'].valid&amp;&amp;form.controls['currentPassword'].dirty">
-            <i class="fa fa-times"></i>
-            {{'Current Password is required'|i18n}}
-          </div>
-        </div>
-      </div>
-      <div class="ui-grid-row">
-          <div class="ui-grid-col-3">
-            <label for="newPassword">{{'New Password'|i18n}}*:</label>
-          </div>
-          <div class="ui-grid-col-4">
-            <input pPassword type="password" [(ngModel)]="newPassword" formControlName="newPassword" />
-          </div>
-          <div class="ui-grid-col-5">
-            <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['newPassword'].valid&amp;&amp;form.controls['newPassword'].dirty">
-              <i class="fa fa-times"></i>
-              {{'New Password is required'|i18n}}
-            </div>
-          </div>
-        </div>
-      <div class="ui-grid-row">
-          <div class="ui-grid-col-3">
-            <label for="newPasswordVerify">{{'Verify new Password'|i18n}}*:</label>
-          </div>
-          <div class="ui-grid-col-4">
-            <input pPassword type="password" [(ngModel)]="newPasswordVerify" formControlName="newPasswordVerify" validateEqual="newPassword"/>
-          </div>
-          <div class="ui-grid-col-5">
-            <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['newPasswordVerify'].valid&amp;&amp;form.controls['newPasswordVerify'].dirty">
-              <i class="fa fa-times"></i>
-              {{'Verify new Password is incorrect'|i18n}}
-            </div>
-          </div>
-        </div>
-  </div>
-    <p-footer>
-      <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <button type="submit" pButton icon="fa fa-check" label="{{'Save'|i18n}}" [disabled]="!form.valid"></button>
-      </div>
-    </p-footer>
+<p-dialog header="{{'Change theme'|i18n}}" width="900" [(visible)]="displayChangeTheme" showEffect="fade" closeIcon="fa fa-close" [modal]="true" attr.aria-label="{{'Change theme'|i18n}}" role="dialog" >
+  <form role="form">
+    <ul class="list-unstyled mb-0" >
+      <li>
+        <a style="color: black !important;" class="dropdown-item d-flex align-items-center gap-2 py-2" href="#" (click)="saveChangeTheme(THEME_GREEN)" attr.aria-label="{{'Select old green theme'|i18n}}" >
+          <span class="d-inline-block rounded-circle p-2" style="background-color: #B6C5B5"></span>
+          {{'Green'|i18n}}
+        </a>
+      </li>
+      <li>
+        <a style="color: black !important;" class="dropdown-item d-flex align-items-center gap-2 py-2" href="#" (click)="saveChangeTheme(THEME_BLUE)" attr.aria-label="{{'Select old blue theme'|i18n}}" >
+          <span class="d-inline-block rounded-circle p-2" style="background-color: #86abde;"></span>
+          {{'Blue'|i18n}}
+        </a>
+      </li>
+      <li>
+        <a style="color: black !important;" class="dropdown-item d-flex align-items-center gap-2 py-2" href="#" (click)="saveChangeTheme(THEME_VIOLET)" attr.aria-label="{{'Select old violet theme'|i18n}}" >
+          <span class="d-inline-block rounded-circle p-2" style="background-color: #d0b4de;"></span>
+          {{'Violet'|i18n}}
+        </a>
+      </li>
+      <li>
+        <a style="color: black !important;" class="dropdown-item d-flex align-items-center gap-2 py-2" href="#" (click)="saveChangeTheme(THEME_BLUE_LIGHT)" attr.aria-label="{{'Select blue light theme'|i18n}}" >
+          <span class="d-inline-block rounded-circle p-2" style="background-color: #3880ff;"></span>
+          {{'Blue Light'|i18n}}
+        </a>
+      </li>
+      <li>
+        <a style="color: black !important;" class="dropdown-item d-flex align-items-center gap-2 py-2" href="#" (click)="saveChangeTheme(THEME_GREEN_LIGHT)" attr.aria-label="{{'Select green light theme'|i18n}}" >
+          <span class="d-inline-block rounded-circle p-2" style="background-color: #2dd36f;"></span>
+          {{'Green Light'|i18n}}
+        </a>
+      </li>
+      <li>
+        <a style="color: black !important;" class="dropdown-item d-flex align-items-center gap-2 py-2" href="#" (click)="saveChangeTheme(THEME_VIOLET_LIGHT)" attr.aria-label="{{'Select violet light theme'|i18n}}" >
+          <span class="d-inline-block rounded-circle p-2" style="background-color: #c93d82;"></span>
+          {{'Violet Light'|i18n}}
+        </a>
+      </li>
+      <li>
+        <a style="color: black !important;" class="dropdown-item d-flex align-items-center gap-2 py-2" href="#" (click)="saveChangeTheme(THEME_HIGH_CONTRAST)" attr.aria-label="{{'Select hight contrast theme'|i18n}}" >
+          <span class="d-inline-block rounded-circle p-2" style="background-color: #000;"></span>
+          {{'High Contrast'|i18n}}
+        </a>
+      </li>
+    </ul>
   </form>
-
-  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
-</p-dialog>
-
-<p-dialog header="{{'Change theme'|i18n}}" width="900" [(visible)]="displayChangeTheme" [responsive]="true" showEffect="fade" [modal]="true" >
-  <form [formGroup]="form" novalidate >
-    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px" *ngIf="user">
-      <div class="ui-grid-col-4"><button type="button" style="background-color: #B6C5B5" class="btn btn-green" (click)="saveChangeTheme(THEME_GREEN)">{{'Green'|i18n}}</button></div>
-      <div class="ui-grid-col-4"><button type="button" style="background-color: #86abde" class="btn btn-blue" (click)="saveChangeTheme(THEME_BLUE)">{{'Blue'|i18n}}</button></div>
-      <div class="ui-grid-col-4"><button type="button" style="background-color: #d0b4de" class="btn btn-violet" (click)="saveChangeTheme(THEME_VIOLET)">{{'Violet'|i18n}}</button> </div>
-    </div>
-  </form>
-  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  <div *ngIf="error" class="alert alert-danger" role="alert">{{error}}</div>
 </p-dialog>

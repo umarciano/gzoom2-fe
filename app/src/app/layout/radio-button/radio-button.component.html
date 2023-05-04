@@ -1,0 +1,11 @@
+<div class="container-radio-button">
+    <ng-content></ng-content>
+    <div *ngFor="let item of items" style="display:flex; align-items: center;">
+
+        <p-radioButton [inputId]="item.key" name="item" [value]="item" [(ngModel)]="selectedItem"
+            (ngModelChange)="itemChangesFun(item)"></p-radioButton>
+        <label [for]="item.key" class="label-radio-button">{{ item.name }}</label>
+    </div>
+
+</div>
+

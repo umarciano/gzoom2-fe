@@ -1,61 +1,48 @@
-<p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
-<form [formGroup]="form" >
-
-  <div class="ui-grid-row" style="margin-bottom: 1em">
-    <div class="ui-grid-col-3">
-      <label for="workEffortTypeId">{{'Tipologia'|i18n}}*</label>
+ <form [formGroup]="form" *ngIf="form && selectedReport">
+  <div class="row" style="margin-bottom: 1em">
+    <div class="col-3">
+      <label for="workEffortTypeId">{{'WorkEffortTypology'|i18n}}*</label>
     </div>
-    <!--<div class="ui-grid-col-4" *ngIf="!selectedReport.analysis">
-       Se sono in un analisi mostra la lista altrimento il radio button
-      <p-dataTable [value]="workEffortTypes" [(selection)]="workEffortType" (onRowSelect)="onRowSelectWorkEffortType($event.data)" dataKey="workEffortTypeId">
-        <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
-        <p-column field="workEffortTypeId">
-          <ng-template let-workEffortType="rowData" pTemplate="body">
-            <span pTooltip="{{workEffortType.workEffortTypeId}}">{{workEffortType.workEffortTypeName}} </span>
-          </ng-template>
-        </p-column>
-      </p-dataTable>
-    </div>-->
-    <div class="ui-grid-col-4" *ngIf="!selectedReport.analysis">
-      <div *ngFor="let wt of workEffortTypes">
-          <p-radioButton formControlName="workEffortTypeId" name="workEffortTypeId" value="{{wt.workEffortTypeId}}" label="{{wt.workEffortTypeName}}" [(ngModel)]="workEffortType.workEffortTypeId" (onClick)="onRowSelectWorkEffortType(wt)" ></p-radioButton>
+    <div class="col-4" *ngIf="!selectedReport.analysis">
+      <div *ngFor="let wt of workEffortTypes" attr.aria-label="{{'Select WorkEffort'|i18n}}">
+          <p-radioButton formControlName="workEffortTypeId" name="workEffortTypeId" value="{{wt.workEffortTypeId}}" label="{{wt.workEffortTypeName}}" [(ngModel)]="workEffortType.workEffortTypeId" (onClick)="onRowSelectWorkEffortType(wt)" role="radiogroup" ></p-radioButton>
       </div>
     </div>
-    <div class="ui-grid-col-4" *ngIf="selectedReport.analysis">
-        <p-dropdown appendTo="body" formControlName="workEffortTypeId" filter="true" [options]="workEffortTypeSelectItem"  [(ngModel)]="workEffortType.workEffortTypeId"  [autoWidth]="false" [style]="{'width':'100%'}">
+    <div class="col-4" *ngIf="selectedReport.analysis" attr.aria-label="{{'Select workEffortTypeId'|i18n}}">
+        <p-dropdown appendTo="body" formControlName="workEffortTypeId" filter="true" [options]="workEffortTypeSelectItem"  [(ngModel)]="workEffortType.workEffortTypeId"  [autoWidth]="false" [style]="{'width':'100%'}" >
         </p-dropdown>
     </div>
-    <div class="ui-grid-col-5">
-      <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['workEffortTypeId'].valid&amp;&amp;form.controls['workEffortTypeId'].dirty">
+    <div class="col-5">
+      <div class="p-message p-messages-error p-corner-all" *ngIf="!form.controls['workEffortTypeId'].valid&amp;&amp;form.controls['workEffortTypeId'].dirty" attr.aria-label="{{'Error'|i18n}}" >
         <i class="fa fa-times"></i>
         {{'Work Effort Type Id is required'|i18n}}
       </div>
     </div>
   </div>
 
-  <div class="ui-grid-row" style="margin-bottom: 1em">
-    <div class="ui-grid-col-3">
-      <label for="outputFormat">{{'Seleziona il formato'|i18n}}*</label>
+  <div class="row" style="margin-bottom: 1em">
+    <div class="col-3">
+      <label for="outputFormat">{{'Select Type Print'|i18n}}*</label>
     </div>
-    <div class="ui-grid-col-4">
-      <div *ngFor="let output of outputFormats">
-          <p-radioButton formControlName="outputFormat"  name="outputFormat" value="{{output.mimeTypeId}}" label="{{output.description}}" [(ngModel)]="outputFormat.mimeTypeId" ></p-radioButton>
+    <div class="col-4">
+      <div *ngFor="let output of outputFormats" attr.aria-label="{{'Select format'|i18n}}" >
+          <p-radioButton formControlName="outputFormat"  name="outputFormat" value="{{output.mimeTypeId}}" label="{{output.description}}" [(ngModel)]="outputFormat.mimeTypeId" role="radiogroup" ></p-radioButton>
       </div>
     </div>
-    <div class="ui-grid-col-5">
-        <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls['outputFormat'].valid&amp;&amp;form.controls['outputFormat'].dirty">
+    <div class="col-5">
+        <div class="p-message p-messages-error p-corner-all" *ngIf="!form.controls['outputFormat'].valid&amp;&amp;form.controls['outputFormat'].dirty" attr.aria-label="{{'Error'|i18n}}" >
           <i class="fa fa-times"></i>
           {{'output Format is required'|i18n}}
         </div>
     </div>
   </div>
 
-  <div *ngIf="langType==('BILING' || 'REPORT')" class="ui-grid-row" style="margin-bottom: 1em;">
-    <div class="ui-grid-col-3">
+  <div *ngIf="langType=='BILING' || langType=='REPORT'" class="row" style="margin-bottom: 1em;">
+    <div class="col-3">
       <label for="languageSelected">{{'Seleziona la lingua'|i18n}}</label>
     </div>
-    <div class="ui-grid-col-4">
-      <p-dropdown class="form-control" appendTo="body" formControlName="langControlName" filter="true"
+    <div class="col-4" attr.aria-label="{{'Change language'|i18n}}">
+      <p-dropdown class="form-control" appendTo="body" formControlName="birtControlName" filter="true"
       [options]="languagesSelectItem"
       [(ngModel)]="languageSelected"
       [autoWidth]="false" [style]="{'width':'100%'}">
@@ -63,142 +50,143 @@
    </div>
   </div>
 
-
   <div *ngFor="let param of params">
 
-    <div [hidden]="!param.display" class="ui-grid-row m-b-xs" *ngIf="param.paramType == 'MULTILIST'">
-      <div class="ui-grid-col-3">
+    <div [hidden]="!param.display" class="row mb-2" *ngIf="param.paramType == 'MULTILIST'">
+      <div class="col-3">
         <label class="no-m-b" for="{{param.paramName}}">
           <label *ngIf="param.label">{{param.label|i18n}}</label>
           <label *ngIf="!param.label">{{param.paramName|i18n}}</label>
           <label *ngIf="param.mandatory">*</label>
         </label>
       </div>
-      <div class="ui-grid-col-4" *ngIf="param.mandatory">
-        <p-multiSelect required class="form-control" appendTo="body" filter="true"
+      <div class="col-4" attr.aria-label="{{'Select WorkEffort'|i18n}}">
+        <p-multiSelect class="form-control"
+         [class.validLabel]="param.mandatory && form.get(param.paramName).valid"
+         appendTo="body" filter="true"
          (onChange)="onChangeAll($event.value, param.paramName)"
          [defaultLabel]="this.i18nService.translate('Select WorkEffort')"
          [options]="paramsSelectItem[param.paramName+'SelectItem']"
-         formControlName="{{param.paramName}}"
-          [(ngModel)]="paramsValue[param.paramName]"
-          [style]="{'width':'100%'}">
+         [formControl]="form.get(param.paramName)"
+          [style]="{'width':'100%'}" >
         </p-multiSelect>
       </div>
-      <div class="ui-grid-col-4" *ngIf="!param.mandatory">
-        <p-multiSelect class="form-control" appendTo="body" filter="true"
+
+      <div class="col-5" *ngIf="param.mandatory">
+        <div class="p-message p-messages-error p-corner-all" *ngIf="!form.controls[param.paramName].valid&amp;&amp;form.controls[param.paramName].dirty" attr.aria-label="{{'Error'|i18n}}" >
+          <i class="fa fa-times"></i>
+          {{param.paramName|i18n}} {{'is required'|i18n}}
+        </div>
+      </div>
+    </div>
+
+    <div [hidden]="!param.display" class="row mb-2" *ngIf="param.paramType == 'LIST' && param.display">
+      <div class="col-3">
+        <label class="no-m-b" for="{{param.paramName}}">
+          <label *ngIf="param.label">{{param.label|i18n}}</label>
+          <label *ngIf="!param.label">{{param.paramName|i18n}}</label>
+          <label *ngIf="param.mandatory">*</label>
+        </label>
+      </div>
+
+      <div class="col-4" attr.aria-label="{{'Select item'|i18n}}" >
+        <!-- la classe class.validLabel serve per far uscire la lebl verde che mostra che il dato mandatory è stato selezionato.
+        è stata introdotta perchè prima questa funzionalità veniva gestita attraverso "required" che però creava problemi
+        con i validator del form (quindi è stato eliminato required ed è stata aggiunta questa classe) -->
+
+        <p-dropdown
+          [class.validLabel]="param.mandatory && form.get(param.paramName).valid"
+          class="form-control"
+          appendTo="body"
+          filter="true"
           (onChange)="onChangeAll($event.value, param.paramName)"
           [options]="paramsSelectItem[param.paramName+'SelectItem']"
-          [defaultLabel]="this.i18nService.translate('Select WorkEffort')"
+          dataKey="value"
+          [formControl]="form.get(param.paramName)"
+          [autoWidth]="false" [style]="{'width':'100%'}">
+          </p-dropdown>
+      </div>
+
+      <div class="col-5" *ngIf="param.mandatory" >
+        <div class="p-message p-messages-error p-corner-all" *ngIf="!form.controls[param.paramName].valid&amp;&amp;form.controls[param.paramName].dirty" attr.aria-label="{{'Error'|i18n}}">
+          <i class="fa fa-times"></i>
+          {{param.paramName|i18n}} {{'is required'|i18n}}
+        </div>
+      </div>
+    </div>
+
+    <div [hidden]="!param.display" class="row mb-2" *ngIf="param.paramType == 'DATE'">
+      <div class="col-3">
+        <label class="no-m-b" for="{{param.paramName}}">
+          <label *ngIf="param.label">{{param.label|i18n}}</label>
+          <label *ngIf="!param.label">{{param.paramName|i18n}}</label>
+          <label *ngIf="param.mandatory">*</label>
+        </label>
+      </div>
+      <div class="col-4" attr.aria-label="{{'Select Date'|i18n}}" >
+          <p-calendar
+          [required]="param.mandatory"
+          appendTo="body"
+          class="form-control form-control-report"
+          styleClass="calendar-icon"
           formControlName="{{param.paramName}}"
-          [(ngModel)]="paramsValue[param.paramName]"
-          [style]="{'width':'100%'}">
-        </p-multiSelect>
+          [locale]="i18nService.getCalendarLocale()"
+          [dateFormat]="i18nService.getFormat('date-short-pcalendar')"
+          name="{{param.paramName}}"
+          [showIcon]="true" icon="fa fa-calendar"></p-calendar>
       </div>
-      <div class="ui-grid-col-5" *ngIf="param.mandatory">
-        <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls[param.paramName].valid&amp;&amp;form.controls[param.paramName].dirty">
+
+      <div class="col-5" *ngIf="param.mandatory">
+        <div class="p-message p-messages-error p-corner-all" *ngIf="!form.controls[param.paramName].valid&amp;&amp;form.controls[param.paramName].dirty" attr.aria-label="{{'Error'|i18n}}">
           <i class="fa fa-times"></i>
           {{param.paramName|i18n}} {{'is required'|i18n}}
         </div>
       </div>
     </div>
 
-    <div [hidden]="!param.display" class="ui-grid-row m-b-xs" *ngIf="param.paramType == 'LIST'">
-      <div class="ui-grid-col-3">
+    <div [hidden]="!param.display" class="row mb-2" *ngIf="param.paramType == 'BOOLEAN'">
+      <div class="col-3">
         <label class="no-m-b" for="{{param.paramName}}">
           <label *ngIf="param.label">{{param.label|i18n}}</label>
           <label *ngIf="!param.label">{{param.paramName|i18n}}</label>
-          <label *ngIf="param.mandatory">*</label>
         </label>
       </div>
-      <div class="ui-grid-col-4" *ngIf="param.mandatory">
-          <p-dropdown required class="form-control" appendTo="body" filter="true"
-           (onChange)="onChangeAll($event.value, param.paramName)"
-           [options]="paramsSelectItem[param.paramName+'SelectItem']"
-           formControlName="{{param.paramName}}"
-            [(ngModel)]="paramsValue[param.paramName]"
-            [autoWidth]="false" [style]="{'width':'100%'}">
-          </p-dropdown>
-      </div>
-      <div class="ui-grid-col-4" *ngIf="!param.mandatory">
-          <p-dropdown class="form-control" appendTo="body" filter="true" (onChange)="onChangeAll($event.value, param.paramName)" [options]="paramsSelectItem[param.paramName+'SelectItem']" formControlName="{{param.paramName}}"  [(ngModel)]="paramsValue[param.paramName]"  [autoWidth]="false" [style]="{'width':'100%'}">
-          </p-dropdown>
-      </div>
-      <div class="ui-grid-col-5" *ngIf="param.mandatory">
-        <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls[param.paramName].valid&amp;&amp;form.controls[param.paramName].dirty">
-          <i class="fa fa-times"></i>
-          {{param.paramName|i18n}} {{'is required'|i18n}}
-        </div>
+      <div class="col-4" attr.aria-label="{{'Select YES or NO'|i18n}}">
+          <p-toggleButton onLabel="{{'SI'|i18n}}" offLabel="{{'NO'|i18n}}" formControlName="{{param.paramName}}" role="button" defa></p-toggleButton>
       </div>
     </div>
 
-    <div [hidden]="!param.display" class="ui-grid-row m-b-xs" *ngIf="param.paramType == 'DATE'">
-      <div class="ui-grid-col-3">
+    <div [hidden]="!param.display" class="row mb-2" *ngIf="param.paramType == 'INPUT'">
+      <div class="col-3">
         <label class="no-m-b" for="{{param.paramName}}">
           <label *ngIf="param.label">{{param.label|i18n}}</label>
           <label *ngIf="!param.label">{{param.paramName|i18n}}</label>
-          <label *ngIf="param.mandatory">*</label>
         </label>
       </div>
-      <div class="ui-grid-col-4" *ngIf="param.mandatory">
-          <p-calendar required class="form-control form-control-report" styleClass="calendar-icon" formControlName="{{param.paramName}}" [locale]="i18nService.getCalendarLocale()" [(ngModel)]="paramsValue[param.paramName]" [dateFormat]="i18nService.getFormat('date-short-pcalendar')" name="{{param.paramName}}" [showIcon]="true" icon="fa fa-calendar"></p-calendar>
-      </div>
-      <div class="ui-grid-col-4" *ngIf="!param.mandatory">
-        <p-calendar class="form-control form-control-report" styleClass="calendar-icon" formControlName="{{param.paramName}}" [locale]="i18nService.getCalendarLocale()" [(ngModel)]="paramsValue[param.paramName]" [dateFormat]="i18nService.getFormat('date-short-pcalendar')" name="{{param.paramName}}" [showIcon]="true" icon="fa fa-calendar"></p-calendar>
-      </div>
-      <div class="ui-grid-col-5" *ngIf="param.mandatory">
-        <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!form.controls[param.paramName].valid&amp;&amp;form.controls[param.paramName].dirty">
-          <i class="fa fa-times"></i>
-          {{param.paramName|i18n}} {{'is required'|i18n}}
-        </div>
+      <div class="col-4" attr.aria-label="{{'Text area'|i18n}}">
+          <input class="form-control" formControlName="{{param.paramName}}" />
       </div>
     </div>
 
-    <div [hidden]="!param.display" class="ui-grid-row m-b-xs" *ngIf="param.paramType == 'BOOLEAN'">
-      <div class="ui-grid-col-3">
+    <div [hidden]="!param.display" class="row mb-2" *ngIf="param.paramType == 'TEXTAREA'">
+      <div class="col-3">
         <label class="no-m-b" for="{{param.paramName}}">
           <label *ngIf="param.label">{{param.label|i18n}}</label>
           <label *ngIf="!param.label">{{param.paramName|i18n}}</label>
         </label>
       </div>
-      <div class="ui-grid-col-4">
-          <p-toggleButton onLabel="{{'SI'|i18n}}" offLabel="{{'NO'|i18n}}" formControlName="{{param.paramName}}" [(ngModel)]="paramsValue[param.paramName]" defa></p-toggleButton>
-      </div>
-    </div>
-
-    <div [hidden]="!param.display" class="ui-grid-row m-b-xs" *ngIf="param.paramType == 'INPUT'">
-      <div class="ui-grid-col-3">
-        <label class="no-m-b" for="{{param.paramName}}">
-          <label *ngIf="param.label">{{param.label|i18n}}</label>
-          <label *ngIf="!param.label">{{param.paramName|i18n}}</label>
-        </label>
-      </div>
-      <div class="ui-grid-col-4">
-          <input class="form-control" formControlName="{{param.paramName}}" [(ngModel)]="paramsValue[param.paramName]" />
-      </div>
-    </div>
-
-    <div [hidden]="!param.display" class="ui-grid-row m-b-xs" *ngIf="param.paramType == 'TEXTAREA'">
-      <div class="ui-grid-col-3">
-        <label class="no-m-b" for="{{param.paramName}}">
-          <label *ngIf="param.label">{{param.label|i18n}}</label>
-          <label *ngIf="!param.label">{{param.paramName|i18n}}</label>
-        </label>
-      </div>
-      <div class="ui-grid-col-4">
-          <textarea [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize" class="form-control" formControlName="{{param.paramName}}" [(ngModel)]="paramsValue[param.paramName]"></textarea>
+      <div class="col-4" attr.aria-label="{{'Text area'|i18n}}">
+          <textarea [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize" class="form-control" formControlName="{{param.paramName}}" role="textbox"></textarea>
       </div>
     </div>
   </div>
 
 
   <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" (click)="print()" pButton icon="fa fa-print" label="{{'Print'|i18n}}" [disabled]="!form.valid"></button>
-      <button type="button" (click)="mail()" pButton icon="fa fa-envelope" label="{{'Mail'|i18n}}" [disabled]="!form.valid" [hidden]="hiddenMail"></button>
-      <!--<button type="button" (click)="mail()" pButton icon="fa-envelope" label="{{'Mail'|i18n}}" [disabled]="!form.valid" ></button>-->
+    <div class="p-dialog-buttonpane p-helper-clearfix">
+      <button type="button" (click)="print()" pButton icon="fa fa-print" label="{{'Print'|i18n}}" [disabled]="!form.valid" attr.aria-label="{{'Print'|i18n}}" role="button"></button>
+      <button type="button" (click)="mail()" pButton icon="fa fa-envelope" label="{{'Mail'|i18n}}" [disabled]="!form.valid" [hidden]="hiddenMail" attr.aria-label="{{'Mail'|i18n}}" role="button"></button>
     </div>
   </p-footer>
-
 </form>
-
 <div *ngIf="error" class="alert alert-danger">{{error}}</div>

@@ -1,5 +1,5 @@
 <div class="nested-menu">
-  <a class="list-group-item" (click)="toggleExpanded()">
+  <a class="list-group-item" (click)="toggleExpanded()" role="link" attr.aria-label="{{menu.label|i18n}}">
     <span class="menu-icon">
       <i class="fa" [ngClass]="classes"></i>
     </span>
@@ -8,10 +8,10 @@
   </a>
   <li class="nested" [ngClass]="{'expand': expanded}">
     <ul class="submenu p-l-md">
-      <div *ngFor="let c of menu.children">
+    <div *ngFor="let c of menu.children">
         <div [ngSwitch]="menuType(c)">
-          <app-leaf-menu *ngSwitchCase="'leaf'" [menu]="c"></app-leaf-menu>
-          <app-folder-menu *ngSwitchCase="'folder'" [menu]="c"></app-folder-menu>
+          <app-leaf-menu *ngSwitchCase="'leaf'" [menu]="menu" [leaf]="c" [context]="context" [tabId]="tabId"></app-leaf-menu>
+          <app-folder-menu *ngSwitchCase="'folder'" [menu]="c" [context]="menu" [tabId]="tabId"></app-folder-menu>
           <span *ngSwitchDefault></span>
         </div>
       </div>

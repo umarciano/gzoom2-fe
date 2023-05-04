@@ -1,0 +1,21 @@
+.emoticonCard {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+
+    border-radius: 20px; 
+    padding: 10px;
+    margin: 2.5px;
+
+}
+
+.text {
+    text-align: center;
+    color: white;
+    min-width: 50px;
+}
+
+img {
+    width: 60px;
+}

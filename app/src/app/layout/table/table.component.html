@@ -1,0 +1,338 @@
+<p-table #dt [value]="gridArray" responsiveLayout="scroll" [rowHover]="true" [paginator]="true" [rows]="10"
+    [showCurrentPageReport]="true" [totalRecords]="gridArray.length" sortField="sortField"
+    currentPageReportTemplate="{{'Showing {first} to {last} of {totalRecords} entries'|i18n}}" [sortOrder]="1"
+     [rowsPerPageOptions]="[10,25,50]" [selectionMode]="selectionMode" (onRowSelect)="onRowSelect($event)"
+    (onRowUnselect)="onRowUnselect($event)" dataKey="id" editMode="row" [filterDelay]="0" ariaLabel="Table"
+    [globalFilterFields]="filterArray" role="table" [selection]="selectedItem"
+    (selectionChange)="onSelectionChange($event)" [selectAll]="selectAll" (selectAllChange)="onSelectAllChange($event)">
+
+
+    <!-- Header of the table -->
+    <ng-template pTemplate="header">
+
+        <!--First header of th table-->
+        <tr class="header-title">
+
+            <!--Empty Cell for Checkbox Style-->
+            <th *ngIf="selectedOn" style="width: 3rem"></th>
+
+            <!--Title of specific column-->
+            <th *ngFor="let head of headArray" [ngStyle]="{'display':head.display, 'height':'5em', 'width':head.width}"
+                pSortableColumn="{{head.fieldName}}" attr.aria-label="{{head.fieldName|i18n}}" role="columnheader">
+                <div class="header-title-container" role="figure">
+
+                    <!--Icon flag for multiple language-->
+                    <app-icon-custom *ngIf="flag && head.flag" [path]="head.pathIconFlag"></app-icon-custom>
+
+                    <!--Name of column-->
+                    <p class="header-title-label" pTooltip="{{head.tooltip}}">{{head.head}}</p>
+
+                    <!--Icon sort-->
+                    <p-sortIcon *ngIf="head.head!=''  && !!head.sortIcon" field="{{head.fieldName}}"></p-sortIcon>
+                </div>
+            </th>
+        </tr>
+
+        <!--Second header of th table-->
+        <tr class="header-filter" [ngStyle]="{'display':headDisplay}">
+
+            <!--Checkbox for select all records-->
+            <th *ngIf="selectedOn" class="d-flex justify-content-center checkBoxTableCellHeader"
+                style="width: 3rem; height: 4rem;"> <p-tableHeaderCheckbox></p-tableHeaderCheckbox> </th>
+
+            <!--Filter-->
+            <th *ngFor="let head of headArray" [ngStyle]="{'display':head.display, 'height':'5em'}" ariaLabel="Filter"
+                attr.aria-label="{{'Filter'|i18n}}" role="columnheader">
+
+                <!--Dropdown filter with auto-populated array-->
+                <div *ngIf="head.filter == headFilter.dropdownFilter " attr.aria-label="{{'Dropdown filter'|i18n}}">
+                    <p-columnFilter field="{{head.fieldName}}" [matchMode]="equals" [showMenu]="false">
+                        <ng-template pTemplate="filter" let-filter="filterCallback">
+                            <p-dropdown [options]="typeDropdownFilterArray.get(head.fieldName)"
+                                (onChange)="filter($event.value)" placeholder="{{'Any'|i18n}}" [showClear]="true">
+                                <ng-template let-option pTemplate="item">
+                                    <span>{{option.label}}</span>
+                                </ng-template>
+                            </p-dropdown>
+                        </ng-template>
+                    </p-columnFilter>
+                </div>
+
+                <!--Dropdown filter with custom populated array-->
+                <div *ngIf="head.filter == headFilter.dropdownFilterCustom " attr.aria-label="{{'Dropdown filter'|i18n}}">
+                    <p-columnFilter field="{{head.fieldName}}" [matchMode]="equals" [showMenu]="false">
+                        <ng-template pTemplate="filter" let-filter="filterCallback">
+                            <p-dropdown appendTo="body" [options]="typeDropdownInputArray.get(head.fieldName)"
+                                (onChange)="filter($event.value)" [showClear]="false">
+                                <ng-template let-option pTemplate="item">
+                                    <span>{{option.label}}</span>
+                                </ng-template>
+                            </p-dropdown>
+                        </ng-template>
+                    </p-columnFilter>
+                </div>
+
+                <!--Text filter-->
+                <div *ngIf="head.filter == headFilter.textFilter " attr.aria-label="{{'Text Filter'|i18n}}"
+                    ariaLabel="text filter">
+                    <p-columnFilter type="text" field="{{head.fieldName}}" placeholder="{{'Search'|i18n}}"
+                        [matchMode]="'contains'">
+                    </p-columnFilter>
+                </div>
+
+                <!--Pop-up filter-->
+                <div *ngIf="head.filter == headFilter.popUpFilter " class="d-flex justify-content-center"
+                    attr.aria-label="{{'Pop Up Filter'|i18n}}" ariaLabel="popup filter">
+                    <p-button icon="pi pi-filter" (click)="op.toggle($event)"></p-button>
+
+                    <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '300px'}">
+                        <ng-template pTemplate>
+                            <p-columnFilter type="text" field="{{head.fieldName}}" placeholder="{{'Search'|i18n}}">
+                            </p-columnFilter>
+                        </ng-template>
+                    </p-overlayPanel>
+                </div>
+
+                <!--Global text search filter-->
+                <div *ngIf="head.filter == headFilter.globalFilter" attr.aria-label="{{'Search everywhere'|i18n}}"
+                    ariaLabel="global filter">
+                    <span class="p-input-icon-left  p-ml-auto">
+                        <input style="height: 3em; margin-left: 0.5em; margin-right: 0.5em;" pInputText type="text"
+                            placeholder="{{'Search everywhere'|i18n}}"
+                            (input)="dt.filterGlobal($event.target.value, 'contains');" />
+                    </span>
+                </div>
+
+                <!--Empty cell-->
+                <div *ngIf="head.filter == headFilter.null "> </div>
+            </th>
+        </tr>
+    </ng-template>
+
+    <!--Body of the table-->
+    <ng-template pTemplate="body" let-item let-riRow="rowIndex" let-editing="editing" let-expanded="expanded">
+
+        <tr class="body-row" [formGroup]="form" [pSelectableRow]="item" [pRowToggler]="item" [pEditableRow]="item"
+            [ngStyle]="{'height':'5em'}" (dblclick)="dblclickRow(item)">
+
+            <!--Checkbox to select a single record-->
+            <td *ngIf="selectedOn" class="d-flex justify-content-center checkBoxTableCell"
+                style="width: 3rem; height: 4rem;"><p-tableCheckbox [value]="item"></p-tableCheckbox></td>
+
+            <!--The cell type changes based on what is set in the headArray-->
+            <td *ngFor="let head of headArray" [ngStyle]="{'display':head.display}" role="cell">
+
+                <!--Type of Input e Output-->
+                <div *ngIf="head.actionInput!='actionEditing' && head.actionInput!='actionDetails' ">
+                    <p-cellEditor>
+
+                        <!--Input-->
+                        <ng-template pTemplate="input">
+
+                            <!--Dropdown input-->
+                            <div *ngIf="head.actionInput == actionInput.dropdownData"
+                                style="margin-left: 0.5em; margin-right: 0.5em;">
+                                <p-dropdown editable="true" [options]="typeDropdownInputArray"
+                                    formControlName="{{head.fieldName}}" placeholder="Select a data"
+                                    attr.aria-label="{{'Select this record'|i18n}}"></p-dropdown>
+                            </div>
+
+                            <!--Label text input-->
+                            <div *ngIf="head.actionInput == actionInput.inputLabeldata"
+                                style="margin-left: 0.5em; margin-right: 0.5em;">
+                                <input pInputText type="text" style="max-width: max-content;"
+                                    formControlName="{{head.fieldName}}" attr.aria-label="{{'Input data here'|i18n}}">
+                            </div>
+
+                            <!--Label number input-->
+                            <div *ngIf="head.actionInput == actionInput.inputLabelNumber"
+                                style="margin-left: 0.5em; margin-right: 0.5em;">
+                                <p-inputNumber pInputNumber type="number" size="2" pInputMask="9*"
+                                    formControlName="{{head.fieldName}}"
+                                    attr.aria-label="{{'Input data here'|i18n}}"></p-inputNumber>
+                            </div>
+
+                            <!--Notes input-->
+                            <div *ngIf="head.actionInput == actionInput.inputNotes" class="d-flex justify-content-center">
+                                <textarea rows="5" cols="30" pInputTextarea autoResize="autoResize"
+                                    formControlName="{{head.fieldName}}"
+                                    attr.aria-label="{{'Input data here'|i18n}}"></textarea>
+                            </div>
+
+                            <!--To show an uneditable value when the row goes into editing mode-->
+                            <div *ngIf="head.actionInput == actionInput.outputData" (click)="onClick(clickFrameToGo)"
+                                style="margin-left: 0.5em; margin-right: 0.5em;"
+                                attr.aria-label="{{'Record of column'|i18n}}">
+                                {{item[head.fieldName]}}
+                            </div>
+                        </ng-template>
+
+                        <!--Output-->
+                        <ng-template pTemplate="output">
+
+                            <!--Output clickable cell with link value-->
+                            <div *ngIf="head.actionOutput == actionOutput.outputClickLabelData"
+                                style="margin-left: 0.5em; margin-right: 0.5em;"
+                                attr.aria-label="{{'Record of column'|i18n}}">
+                                <a class="clickLink" (click)="clickLinkRowEvent(item)" role="link">
+                                    {{item[head.fieldName]}}</a>
+                            </div>
+
+                            <!--Output clickable cell with no link value-->
+                            <div *ngIf="head.actionOutput == actionOutput.outputLabelData" (click)="onClick(clickFrameToGo)"
+                                style="margin-left: 0.5em; margin-right: 0.5em;"
+                                attr.aria-label="{{'Record of column'|i18n}}">
+                                {{item[head.fieldName]}}
+                            </div>
+
+                            <!--Output cell for numeric value-->
+                            <div *ngIf="head.actionOutput == actionOutput.outputLabelNumber && item[head.fieldName] != null && item[head.fieldName] != undefined "
+                                style="margin-left: 0.5em; margin-right: 0.5em; text-align: center;"
+                                attr.aria-label="{{'Record of column'|i18n}}">
+                                {{item[head.fieldName].toString().replace(".", ",")}}
+                            </div>
+
+                        </ng-template>
+                    </p-cellEditor>
+                </div>
+
+                <!--Buttons for editing rows-->
+                <div *ngIf="head.actionInput == actionInput.actionEditing" style="text-align:center;">
+
+                    <!--Button for editing specific row-->
+                    <button *ngIf="!editing" (click)="clickEditEvent(item.id,riRow)" pButton pRipple type="button"
+                        role="button" [disabled]="editNow" pInitEditableRow icon="pi pi-pencil"
+                        attr.aria-label="{{'Edit element'|i18n}}" class="p-button-rounded p-button-text "></button>
+
+                    <!--Button for delete specific row-->
+                    <button *ngIf="!editing" (click)="clickDeleteRowEvent(item.id,riRow)" pButton pRipple type="button"
+                        role="button" [disabled]="editNow" pRemoveEditableRow icon="pi pi-trash"
+                        attr.aria-label="{{'Remove element'|i18n}}" class="p-button-rounded p-button-text"></button>
+
+                    <!--Button for save to save the changes of specific row-->
+                    <button *ngIf="editing" (click)="clickEditSaveEvent()" pButton pRipple type="button"
+                        pSaveEditableRow icon="pi pi-check" attr.aria-label="{{'Save edit item'|i18n}}" role="button"
+                        tabindex="0" class="p-button-rounded p-button-text p-button-success p-mr-2"
+                        aria-live="assertive"></button>
+
+                    <!--Button for save to cancel the changes of specific row-->
+                    <button *ngIf="editing" (click)="clickEditCancelEvent(item.id,riRow)" pButton pRipple role="button"
+                        tabindex="0" type="button" pCancelEditableRow icon="pi pi-times-circle"
+                        attr.aria-label="{{'Delete edit item'|i18n}}"
+                        class="p-button-rounded p-button-text p-button-danger " aria-live="off"></button>
+                </div>
+
+                <!--Button for open details menu of a specific row-->
+                <div (click)="clickShareRiRowEvent(item.id,riRow)" attr.aria-label="{{'Open details action row'|i18n}}"
+                    *ngIf="head.actionInput == actionInput.actionDetails && item.buttonDetails" style="text-align: center;"
+                    role="button">
+                    <app-button-slide-menu [items]="itemsButtonSlideMenu">
+                    </app-button-slide-menu>
+                </div>
+
+                <!--Cell gauge-->
+                <div *ngIf="head.actionOutput== actionOutput.actionGauge && item[head.fieldName].amount!=null " role="img"
+                    style="text-align: center;" attr.aria-label="{{'Gauge'|i18n}}">
+                    <app-gauge [gaugeConfig]="head.gaugeConfig" [value]="item[head.fieldName].amount"></app-gauge>
+                </div>
+
+                <!-- 
+                <div *ngIf="head.actionOutput=='actionImage'" role="img" style="text-align: center;" class="container"
+                    attr.aria-label="{{'Image'|i18n}}">
+
+                    <div *ngIf="item[head.fieldName].amount!=null" style="width: 50%;">
+                        <h5><i>{{item[head.fieldName].amount.toString().replace(".", ",")}}</i> </h5>
+                    </div>
+                    <div *ngIf="!!item[head.fieldName].linkImg">
+                        <img [src]="item[head.fieldName].linkImg" />
+                    </div>
+                </div>
+            -->
+
+                <!--Cell that shows a number and if it has American encoding with a period it replaces it with a comma-->
+                <div *ngIf="head.actionOutput == actionOutput.actionAmount" role="img" style="text-align: center;" class="container"
+                    attr.aria-label="{{'Record of column'|i18n}}">
+                    <div *ngIf="item[head.fieldName].amount!=null">
+                        <h6>{{item[head.fieldName].amount.toString().replace(".", ",")}}</h6>
+                    </div>
+                </div>
+
+                <!--Cell for show an emoticon card-->
+                <div *ngIf="head.actionOutput == actionOutput.actionEmoticonCard" role="img" style="text-align: center;"
+                    class="container" attr.aria-label="{{'Emoticon'|i18n}}">
+                    <div *ngIf="item[head.fieldName].amount!=null && !!item[head.fieldName].linkImg">
+                        <app-emoticon-card [amount]="item[head.fieldName].amount"
+                            [id]="item[head.fieldName].linkImg"></app-emoticon-card>
+                    </div>
+                </div>
+
+                <!--Single cell divided into two subcells for String type-->
+                <div *ngIf="head.actionOutput == actionOutput.actionDoubleRowString" class="doubleRow" 
+                    attr.aria-label="{{'Double cell'|i18n}}">
+                    <div class="elementDoubleRow" attr.aria-label="{{'First element of double cell'|i18n}}"
+                        id="firstElDoubleRow">{{item[head.fieldName].first}}</div>
+                    <div class="elementDoubleRow" attr.aria-label="{{'Second element of double cell'|i18n}}">
+                        {{item[head.fieldName].second}}</div>
+                </div>
+
+                <!--Single cell divided into two subcells for Number type-->
+                <div *ngIf="head.actionOutput == actionOutput.actionDoubleRowNumber" class="doubleRow"
+                    attr.aria-label="{{'Double cell'|i18n}}">
+                    <div class="elementDoubleRow" id="firstElDoubleRow"
+                        attr.aria-label="{{'First element of double cell'|i18n}}">
+                        {{item[head.fieldName].first.toString().replace(".", ",")}}</div>
+                    <div class="elementDoubleRow" attr.aria-label="{{'Second element of double cell'|i18n}}">
+                        {{item[head.fieldName].second.toString().replace(".", ",")}}
+                    </div>
+                </div>
+
+                <!--Single cell divided into multiple subcells for String type-->
+                <div *ngIf="head.actionOutput == actionOutput.actionMultipleRowString" class="multipleRow"
+                    attr.aria-label="{{'Multiple cell'|i18n}}">
+                    <div *ngFor="let etch of item[head.fieldName]" id="rowMultipleEl">
+                        {{etch}}
+                    </div>
+                </div>
+
+                <!--Single cell divided into multiple subcells for Number type-->
+                <div *ngIf="head.actionOutput == actionOutput.actionMultipleRowNumber" class="multipleRow"
+                    attr.aria-label="{{'Multiple cell'|i18n}}">
+                    <div *ngFor="let value of item[head.fieldName]" id="rowMultipleEl" style="justify-content: right;">
+                        <ng-container *ngIf="!!value">{{value.toString().replace(".", ",")}}</ng-container>
+                    </div>
+                </div>
+
+                <!--Cell that show if the specific row is editable or not editable-->
+                <div *ngIf="head.actionOutput == actionOutput.isEditable" style="text-align: center;" >
+                    <div *ngIf="item[head.fieldName] == '1'">
+                        <i class="pi pi-pencil"></i>
+                    </div>
+                    <div *ngIf="item[head.fieldName] == '0'">
+                        <i class="pi pi-ban"></i>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+
+    <!--Message that appears when the table is empty-->
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="20" role="cell">
+                <p class="emptyRow">{{'There is no data to display'|i18n}}</p>
+            </td>
+        </tr>
+    </ng-template>
+
+    <!--Row expansion management-->
+    <ng-template pTemplate="rowexpansion" *ngIf="rowExpand">
+        <tr>
+            <td colspan="7" role="cell">
+                <div class="p-3" attr.aria-label="{{'Click for details'|i18n}}">
+                    <router-outlet></router-outlet>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+
+</p-table>

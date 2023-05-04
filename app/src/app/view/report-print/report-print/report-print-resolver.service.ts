@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 
 
-import { LockoutService } from '../../../commons/lockout.service';
-import { ReportService } from '../../../api/report.service';
+import { LockoutService } from '../../../commons/service/lockout.service';
 import { Report } from '../report';
 
 import { DatePipe } from '@angular/common';
+import { ReportService } from 'app/api/service/report.service';
 /**
  * Retrieves the menus to be shown or locks the user out if something wrong happens.
  */
@@ -20,15 +20,23 @@ export class ReportPrintResolver implements Resolve<void | Report[]> {
     private readonly lockoutService: LockoutService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | Report[]> {
-    var parentTypeId = route.params.parentTypeId;
+    var parentTypeId = route.params.context;
     console.log('resolve reports');
-    return this.reportService
-      .reports(parentTypeId)
-      .toPromise()
-      .then(reports => { return reports; })
-      .catch(err => {
-        console.error('Cannot retrieve report', err);
-        this.lockoutService.lockout();
-      });
+
+    const reportService$ = this.reportService.reports(parentTypeId);
+    return lastValueFrom(reportService$).then(reports => { return reports; })
+    .catch(err => {
+      console.error('Cannot retrieve report', err);
+      this.lockoutService.lockout();
+    });
+
+    // return this.reportService
+    //   .reports(parentTypeId)
+    //   .toPromise()
+    //   .then(reports => { return reports; })
+    //   .catch(err => {
+    //     console.error('Cannot retrieve report', err);
+    //     this.lockoutService.lockout();
+    //   });
   }
 }

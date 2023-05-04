@@ -6,8 +6,9 @@ export class QueryConfig {
     public queryName?: string,
     public queryComm?: string,
     public queryType?: string,
-    public queryCTX?: string,
+    public queryCtx?: string,
     public queryPublic?: string,
+    public exportMimeType?: string,
     public queryInfo?: string,
     public cond0Name?: string,
     public cond0Comm?: string,
@@ -32,10 +33,7 @@ export class QueryConfig {
     public cond6Info?: string,
     public cond7Name?: string,
     public cond7Comm?: string,
-    public cond7Info?: string,
-    public cond8Name?: string,
-    public cond8Comm?: string,
-    public cond8Info?: string
+    public cond7Info?: string
     )
    {}
 }

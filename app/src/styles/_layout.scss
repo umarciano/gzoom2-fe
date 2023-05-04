@@ -7,41 +7,41 @@ body.bodylayout {
   background-color: map-get($app-colors, background-cl);
   color: map-get($app-colors, default-cl);
 
-  .ui-widget,
-  .ui-widget .ui-widget,
-  .ui-widget input,
-  .ui-widget select,
-  .ui-widget textarea,
-  .ui-widget button {
+  .p-component,
+  .p-component .p-component,
+  .p-component input,
+  .p-component select,
+  .p-component textarea,
+  .p-component button {
     font-family: "Trebuchet MS";
     font-size: 0.75rem;
   }
 
-  .ui-widget-content {
+  .p-component-content {
     color: map-get($app-colors, default-cl);
 
-    .ui-editable-column {
+    .p-editable-column {
       color: map-get($app-colors, active-cl);
     }
   }
 
-  .ui-widget-header {
+  .p-component-header {
     border: none;
   }
 
-  .ui-state-default {
+  .p-state-default {
     // border: none;
     background: map-get($app-colors, default-bg);
     color: map-get($app-colors, default-cl);
   }
 
-  .ui-state-active {
+  .p-state-active {
     // border: none;
     background: map-get($app-colors, default-bg);
     color: map-get($app-colors, default-cl);
   }
 
-  .ui-state-highlight {
+  .p-highlight {
     background: map-get($app-colors, title-bg);
   }
 
@@ -49,7 +49,10 @@ body.bodylayout {
     color: map-get($app-colors, default-cl);
   }
 
-  input, button, select, textarea {
+  input,
+  button,
+  select,
+  textarea {
     line-height: initial;
   }
 
@@ -57,14 +60,14 @@ body.bodylayout {
   .btn-primary:focus,
   .btn-primary:hover,
   .btn-primary:active {
-    background: map-get($app-colors, navbar-fg);
+    background: map-get($app-colors, color-60);
     color: map-get($app-colors, active-cl);
     border: none;
   }
 
   .btn-primary:not(:disabled):not(.disabled):active,
   .btn-primary:not(:disabled):not(.disabled).active,
-  .show > .btn-primary.dropdown-toggle {
+  .show>.btn-primary.dropdown-toggle {
     background: map-get($app-colors, navbar-fg);
     color: map-get($app-colors, active-cl);
     border: none;
@@ -86,6 +89,7 @@ body.bodylayout {
   /* Valid / Invalid                                                            */
   /*----------------------------------------------------------------------------*/
   .form-control {
+    height: auto;
     background: map-get($app-colors, default-bg);
   }
 
@@ -93,71 +97,123 @@ body.bodylayout {
     background: map-get($app-colors, default-bg);
   }
 
-  input.ng-valid[required], input.ng-valid.required {
-    border-left: 5px solid #42A948; /* green */
+  input.ng-valid[required],
+  input.ng-valid.required {
+    border-left: 5px solid #42A948;
+    /* green */
   }
 
-  p-autocomplete.ng-valid[required], p-autocomplete.ng-valid.required {
-    border-left: 5px solid #42A948; /* green */
+  p-autocomplete.ng-valid[required],
+  p-autocomplete.ng-valid.required {
+    border-left: 5px solid #42A948;
+    /* green */
   }
 
-  p-calendar.ng-valid[required], p-calendar.ng-valid.required {
-    border-left: 5px solid #42A948; /* green */
+  p-calendar.ng-valid[required],
+  p-calendar.ng-valid.required {
+    border-left: 5px solid #42A948;
+    /* green */
   }
 
-  p-dropdown.ng-valid[required] > .ui-dropdown, p-dropdown.ng-valid.required > .ui-dropdown {
-    border-left: 5px solid #42A948; /* green */
+  p-dropdown.ng-valid[required]>.p-dropdown,
+  p-dropdown.ng-valid.required>.p-dropdown {
+    border-left: 5px solid #42A948;
+    /* green */
   }
 
-  p-spinner.ng-valid[required] > .ui-spinner > .ui-inputtext, p-spinner.ng-valid.required > .ui-spinner > .ui-inputtext {
-    border-left: 5px solid #42A948; /* green */
+  p-spinner.ng-valid[required]>.p-spinner>.p-inputtext,
+  p-spinner.ng-valid.required>.p-spinner>.p-inputtext {
+    border-left: 5px solid #42A948;
+    /* green */
+  }
+
+  p-inputNumber.ng-valid[required]>.p-inputnumber>.p-inputtext,
+  p-inputNumber.ng-valid.required>.p-inputnumber>.p-inputtext {
+    border-left: 5px solid #42A948;
+    /* green */
   }
 
   input.ng-invalid {
-    border-left: 5px solid #a94442; /* red */
+    border-left: 5px solid #a94442;
+    /* red */
   }
 
-  p-dropdown.ng-dirty.ng-invalid > .ui-dropdown {
-    border-left: 5px solid #a94442; /* red */
+
+  p-inputNumber.ng-dirty.ng-invalid>.p-inputnumber>.p-inputtext {
+    border-left: 5px solid #a94442;
+    /* red */
+  }
+
+  p-inputNumber.ng-invalid>.p-inputnumber>.p-inputtext {
+    border-left: 5px solid #a94442;
+    /* red */
+  }
+
+  p-inputNumber.ng-invalid:hover>.p-inputnumber>.p-inputtext {
+    border-left: 5px solid black;
+    /* black */
+  }
+
+  p-dropdown.ng-dirty.ng-invalid>.p-dropdown {
+    border-left: 5px solid #a94442;
+    /* red */
     border-bottom: 1px solid rgb(214, 214, 214);
   }
 
-  p-dropdown.ng-invalid > .ui-dropdown {
-    border-left: 5px solid #a94442; /* red */
+  p-dropdown.ng-invalid>.p-dropdown {
+    border-left: 5px solid #a94442;
+    /* red */
     border-bottom: 1px solid rgb(214, 214, 214);
   }
 
-  p-spinner.ng-invalid > .ui-spinner > .ui-inputtext {
-    border-left: 5px solid #a94442; /* red */
+  p-spinner.ng-invalid>.p-spinner>.p-inputtext {
+    border-left: 5px solid #a94442;
+    /* red */
   }
 
   p-autocomplete.ng-invalid {
-    border-left: 5px solid #a94442; /* red */
+    border-left: 5px solid #a94442;
+    /* red */
   }
 
   p-dropdown .fa-caret-down::before {
     content: "\f13a";
   }
 
-  p-multiselect .ui-state-default {
+  .p-multiselect.p-component {
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+  }
+
+  p-multiselect .p-state-default {
     border: none;
   }
 
-  .ui-multiselect-panel {
-    max-width: 50em;
+  p-multiselect.p-element.p-inputwrapper.form-control {
+    padding: 0;
   }
-  .ui-dropdown-panel {
+
+  .p-multiselect-panel {
     max-width: 50em;
   }
 
-  p-dropdown .ui-dropdown,
-  p-dropdown .ui-state-default,
-  p-dropdown .ui-dropdown-label {
+  .p-dropdown-panel {
+    max-width: 50em;
+  }
+
+  p-dropdown .p-dropdown,
+  p-dropdown .p-state-default,
+  p-dropdown .p-dropdown-label {
     background-color: map-get($app-colors, background-cl);
-    border: none;
+    // border: none;
   }
 
-  p-calendar .ui-state-default {
+  p-dropdown span {
+    font-size: 1em !important;
+  }
+
+  p-calendar .p-state-default {
     border: none;
   }
 
@@ -166,30 +222,40 @@ body.bodylayout {
   /*----------------------------------------------------------------------------*/
   .dropdown-label {
     background: map-get($app-colors, title-bg);
-    color:  map-get($app-colors, gray);
+    color: map-get($app-colors, gray);
   }
 
   .dropdown-menu {
-    .ui-widget-content {
+    .p-component-content {
       background: map-get($app-colors, navbar-bg);
     }
 
     background: map-get($app-colors, navbar-bg);
-    color: map-get($app-colors, default-cl);
+    color: map-get($app-colors, text-color) !important;
   }
 
-  .dropdown-menu:not(.ui-state-highlight):hover {
-    background: map-get($app-colors, navbar-bg);
+  .dropdown-item {
+    color: map-get($app-colors, text-color) !important;
   }
 
-  .dropdown-item:not(.ui-state-highlight):active {
+  .dropdown-item:hover {
+    color: map-get($app-colors, color-black) !important;
+  }
+
+  .dropdown-menu:not(.p-highlight):hover {
     background: map-get($app-colors, navbar-bg);
+    color: map-get($app-colors, color-black) !important;
+
+  }
+
+  .dropdown-item:not(.p-highlight):active {
+    background: map-get($app-colors, color-white);
   }
 
   .dropdown-panel {
     max-width: 50em;
 
-    .dropdown-menu:not(.ui-state-highlight):hover {
+    .dropdown-menu:not(.p-highlight):hover {
       border: none;
       background: map-get($app-colors, title-bg);
       color: map-get($app-colors, default-cl);
@@ -202,52 +268,75 @@ body.bodylayout {
     background: map-get($app-colors, background-cl);
   }
 
+  .p-speeddial {
+    position: relative;
+
+  }
+
+  .p-speeddial-button.p-button.p-button-icon-only {
+    width: 3em;
+    height: 3em;
+  }
+
+  .p-speeddial-action {
+    background-color: map-get($app-colors, default-cl);
+  }
+
 
   /*----------------------------------------------------------------------------*/
-   /* radiobutton                                                               */
-   /*----------------------------------------------------------------------------*/
-   .ui-radiobutton-label {
-    color:  map-get($app-colors, default-cl);
+  /* radiobutton                                                               */
+  /*----------------------------------------------------------------------------*/
+  .p-radiobutton-label {
+    color: map-get($app-colors, default-cl);
     font-family: "Trebuchet MS";
     font-size: 0.75rem;
     margin-bottom: 0rem
   }
-  p-radiobutton .ui-label-active {
+
+  p-radiobutton .p-label-active {
     font-weight: bold;
     font-size: 0.85rem;
   }
-  .ui-radiobutton .ui-radiobutton-box.ui-state-active {
+
+  .p-radiobutton .p-radiobutton-box {
     border: 1px solid map-get($app-colors, navbar-bg);
+  }
+
+  .p-radiobutton .p-radiobutton-box.p-highlight {
     background-color: map-get($app-colors, navbar-bg);
   }
 
+  .p-togglebutton.p-button.p-highlight {
+    border: none;
+  }
+
   /*----------------------------------------------------------------------------*/
-   /* inputswitch                                                               */
-   /*----------------------------------------------------------------------------*/
-  .ui-inputswitch {
+  /* inputswitch                                                               */
+  /*----------------------------------------------------------------------------*/
+  .p-inputswitch {
     background-color: map-get($app-colors, navbar-bg);
   }
 
-  .ui-inputswitch .ui-inputswitch-on,
-  .ui-inputswitch .ui-inputswitch-off {
-    color:  map-get($app-colors, default-cl);
+  .p-inputswitch .p-inputswitch-on,
+  .p-inputswitch .p-inputswitch-off {
+    color: map-get($app-colors, default-cl);
   }
 
   /*----------------------------------------------------------------------------*/
-   /* toggleButton                                                               */
-   /*----------------------------------------------------------------------------*/
+  /* toggleButton                                                               */
+  /*----------------------------------------------------------------------------*/
 
-  .ui-togglebutton:not(.ui-state-disabled).ui-state-active,
-  .ui-togglebutton:not(.ui-state-disabled):not(.ui-state-active):hover {
-    color:  map-get($app-colors, default-cl);
-    background-color:  map-get($app-colors, navbar-bg);
+  .p-togglebutton:not(.p-disabled),
+  .p-togglebutton:not(.p-disabled):hover {
+    color: map-get($app-colors, item-sidebar-active-cl);
+    background-color: map-get($app-colors, navbar-bg);
   }
 
   /*----------------------------------------------------------------------------*/
   /* Autocomplete                                                               */
   /*----------------------------------------------------------------------------*/
 
-  .ui-autocomplete-panel {
+  .p-autocomplete-panel {
     max-width: 50em;
   }
 
@@ -262,7 +351,7 @@ body.bodylayout {
     content: "\f13a";
   }
 
-  .ui-fluid .ui-autocomplete .ui-autocomplete-dropdown.ui-button {
+  .p-fluid .p-autocomplete .p-autocomplete-dropdown.p-button {
     width: 1em;
   }
 
@@ -270,19 +359,19 @@ body.bodylayout {
   /* Sortable                                                                   */
   /*----------------------------------------------------------------------------*/
   .fa-sort-desc:before,
-  .fa-sort-down:before{
-    content:"\f0dd"
+  .fa-sort-down:before {
+    content: "\f0dd"
   }
 
   .fa-sort-asc:before,
-  .fa-sort-up:before{
-    content:"\f0de"
+  .fa-sort-up:before {
+    content: "\f0de"
   }
 
   /*----------------------------------------------------------------------------*/
   /* Calendar                                                                     */
   /*----------------------------------------------------------------------------*/
-  .calendar-icon .ui-button.ui-state-default span {
+  .calendar-icon .p-button.p-state-default span {
     font-weight: 400;
   }
 
@@ -295,10 +384,20 @@ body.bodylayout {
   }
 
   p-calendar span {
-    padding-right: 0.5em;
+    padding-right: 0.2em;
   }
+
   p-calendar.ng-invalid {
-    border-left: 5px solid #a94442; /* red */
+    border-left: 5px solid #a94442;
+    /* red */
+  }
+
+  button.p-element.p-ripple.p-datepicker-trigger.p-button {
+    border: none;
+    background: transparent;
+    flex-basis: content;
+    margin: 0;
+    margin-left: 0.75em;
   }
 
   p-autocomplete.form-control {
@@ -310,40 +409,58 @@ body.bodylayout {
   }
 
   p-dialog {
-    .ui-widget-header {
+    .p-component-header {
       background: map-get($app-colors, title-bg);
       color: map-get($app-colors, default-cl);
     }
+  }
+
+  .p-accordion .p-accordion-header .p-accordion-header-link {
+    background: map-get($app-colors, title-bg) !important;
+    color: map-get($app-colors, default-cl) !important;
   }
 
   input.form-control {
     padding: 0em;
   }
 
+  button.p-datepicker-prev::before {
+    content: none !important;
+  }
+
+  button.p-datepicker-next::before {
+    content: none !important;
+  }
+
   /*----------------------------------------------------------------------------*/
   /* Button                                                                     */
   /*----------------------------------------------------------------------------*/
-  .ui-button.ui-state-default {
+  .p-button {
     font-weight: bold;
     font-size: 1em;
-    color:map-get($app-colors, button-cl);
+    border: 1px solid map-get($app-colors, title-bd-cl);
+    background: map-get($app-colors, alt-cl);
+    color: map-get($app-colors, default-cl);
+    margin: 0.5em;
   }
 
-  .ui-button:focus,
-  .ui-button:enabled:hover{
-    background: map-get($app-colors, default-bg);
-    color:map-get($app-colors, active-cl);
+  
+  .p-button:enabled:hover {
+    background: map-get($app-colors, color-60);
+    color: white;
   }
 
-  .ui-button:enabled:active {
-    background: map-get($app-colors, default-bg);
-    color:map-get($app-colors, active-cl);
+  .p-button:enabled:active {
+    background: map-get($app-colors, color-90);
+    color: white;
   }
 
-  p-footer .ui-button-text {
-    border: 1px solid map-get($app-colors, grey);
+  p-footer .p-button-text {
+    border: 1px solid map-get($app-colors, title-bd-cl);
     border-radius: 5px;
   }
+
+
 
   /*----------------------------------------------------------------------------*/
   /* Filtro Generale su DataTable                                                            */
@@ -353,7 +470,7 @@ body.bodylayout {
     color: map-get($app-colors, default-cl);
 
     input {
-      border:  1px solid map-get($app-colors, title-bd-cl);
+      border: 1px solid map-get($app-colors, title-bd-cl);
       background: map-get($app-colors, title-bg);
     }
   }
@@ -363,20 +480,44 @@ body.bodylayout {
   /* Datatable                                                            */
   /*----------------------------------------------------------------------------*/
 
-  .ui-datatable .ui-datatable-data > tr > td {
-    padding: .5em;
+  .p-datatable .p-datatable-table .p-datatable-thead>tr>th {
+    border: 1px solid map-get($app-colors, title-bd-cl);
+    background: map-get($app-colors, color-5);
+    color: map-get($app-colors, default-cl) !important;
   }
 
-  .ui-datatable {
-    .ui-datatable .ui-datatable-thead>tr>th,
-    .ui-datatable .ui-datatable-tfoot>tr>td,
-    .ui-datatable .ui-datatable-data>tr>td {
-      padding: 0em 0.5em;
+  .p-datatable .p-datatable-table .p-datatable-tbody>tr>th {
+    border: 1px solid map-get($app-colors, title-bd-cl);
+  }
+
+  .p-datatable .p-datatable-table .p-datatable-tbody>tr>th {
+    .p-button {
+      border: none;
+      background: none;
+      color: map-get($app-colors, default-cl) !important;
+    }
+  }
+
+  .p-datatable-responsive-scroll>.p-datatable-wrapper {
+    border-radius: 7px;
+
+  }
+
+  .p-datatable .p-paginator-bottom {
+    border-width: 0 0px 0px 0px;
+  }
+
+  .p-datatable .p-datatable-table {
+
+    .p-datatable-thead>tr>th,
+    .p-datatable-tfoot>tr>td,
+    .p-datatable-tbody>tr>td {
+      padding: 0em 0em;
+      border: 0px solid map-get($app-colors, title-bd-cl);
+      border-top: 0px solid map-get($app-colors, title-bd-cl);
+      border-bottom: 0px solid map-get($app-colors, title-bd-cl);
     }
 
-    .ui-button.ui-state-default {
-      font-size: 1em;
-    }
 
     tr:nth-child(even) {
       background: map-get($app-colors, alt-cl);
@@ -386,89 +527,189 @@ body.bodylayout {
       text-align: center;
     }
 
-    thead.ui-datatable-thead {
-      .ui-state-default {
-        border:  1px solid map-get($app-colors, title-bd-cl);
-        background: map-get($app-colors, title-bg);
-        color: map-get($app-colors, default-cl);
-      }
+    thead.p-datatable-thead {
 
-
-      .ui-dropdown {
-        .ui-dropdown-label {
+      .p-dropdown {
+        .p-dropdown-label {
           background: map-get($app-colors, title-bg);
         }
       }
 
-
-      .ui-state-active {
+      .p-state-active {
         background: map-get($app-colors, title-bg);
-        color: map-get($app-colors, active-cl);
+        color: map-get($app-colors, active-cl) !important;
       }
 
-      .ui-sortable-column:not(.ui-state-active):hover {
+      .p-sortable-column {
+        text-align: center;
+      }
+
+      .p-sortable-column:not(.p-state-active):hover {
         background: map-get($app-colors, title-bg);
         color: map-get($app-colors, active-cl);
       }
 
       .col-button {
-        .ui-state-default {
+        .p-state-default {
           border: none;
           font-size: 1em;
           height: 20px;
         }
 
-        .ui-state-default:hover {
+        .p-state-default:hover {
           color: map-get($app-colors, active-cl);
         }
 
-        .ui-state-default:disabled {
+        .p-state-default:disabled {
           color: map-get($app-colors, disabled);
         }
       }
     }
 
-    .ui-datatable-tfoot .ui-state-default {
-      border:  1px solid map-get($app-colors, title-bd-cl);
+    .p-datatable .p-datatable-table thead.p-datatable-thead .p-sortable-column {
+      background: map-get($app-colors, color-40);
+    }
+
+    .p-datatable-tfoot .p-state-default {
+      border: 1px solid map-get($app-colors, title-bd-cl);
       background: map-get($app-colors, title-bg);
       color: map-get($app-colors, default-cl);
     }
   }
 
-  .ui-accordion .ui-accordion-header.ui-state-active {
+  .p-accordion .p-accordion-header.p-state-active {
     background-color: map-get($app-colors, navbar-bg);
   }
 
   .rowSelected {
     background-color: map-get($app-colors, navbar-bg);
   }
+
+  .p-datatable .p-sortable-column.p-highlight:hover .p-sortable-column-icon {
+    color: map-get($app-colors, overlay);
+  }
+
+  .p-datatable .p-sortable-column.p-highlight .p-sortable-column-icon {
+    color: map-get($app-colors, color-90);
+  }
+
   /*----------------------------------------------------------------------------*/
   /* Datatable   class - datatable-list                                        */
   /*----------------------------------------------------------------------------*/
   .datatable-list {
 
-    .ui-datatable .ui-datatable-thead>tr>th,
-    .ui-datatable .ui-datatable-tfoot>tr>td,
-    .ui-datatable .ui-datatable-data>tr>td {
+    .p-datatable-table .p-datatable-table-thead>tr>th,
+    .p-datatable-table .p-datatable-table-tfoot>tr>td,
+    .p-datatable-table .p-datatable-table-tbody>tr>td {
       padding: 0em 0em;
     }
-    .ui-button.ui-state-default {
+
+    .p-button {
       font-size: 1em;
     }
-    .ui-widget-header {
+
+    .p-component-header {
       visibility: collapse;
     }
   }
+
+  /*----------------------------------------------------------------------------*/
+  /* Table                                                                   */
+  /*----------------------------------------------------------------------------*/
+
+  .p-datatable-table {
+    width: 50%;
+    table-layout: auto
+  }
+
+  .p-datatable.p-component.p-datatable-responsive-scroll {
+    overflow-y: hidden;
+    max-height: 10em;
+  }
+
+  .p-datatable-table .p-column-filter-row p-columnfilterformelement {
+    width: 100%;
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+
+  .p-datatable-table .p-column-filter-row .p-column-filter-menu-button {
+    margin-right: 0;
+  }
+
+
+  .ng-trigger.ng-trigger-overlayAnimation.p-column-filter-overlay.p-component.p-fluid.ng-star-inserted {
+    background-color: map-get($app-colors, navbar-hl);
+  }
+
+  .p-column-filter-menu-button:hover {
+    color: map-get($app-colors, navbar-bg);
+  }
+
+  .p-column-filter-row-item.p-highlight.ng-star-inserted {
+    background-color: map-get($app-colors, navbar-bg);
+    color: map-get($app-colors, active-cl);
+  }
+
+  .p-paginator-bottom.p-paginator.p-component.ng-star-inserted {
+    background-color: map-get($app-colors, navbar-hl);
+    padding: 5px;
+  }
+
+  .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: map-get($app-colors, navbar-bg);
+    border-radius: 100%;
+  }
+
+  .p-paginator .p-paginator-pages .p-paginator-page:not(.p-highlight):hover{
+    border-radius: 100%;
+  }
+
+  .p-toolbar {
+    background: map-get($app-colors, color-20);
+    padding: 10px;
+    border-radius: 10px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px
+  }
+
+  .p-datatable .p-datatable-header .ng-star-inserted {
+    text-align: right;
+  }
+
+  .p-datatable .p-datatable-tbody>tr.p-highlight {
+    color: map-get($app-colors, color-grey-90);
+    background: map-get($app-colors, color-40);
+  }
+
+  /*----------------------------------------------------------------------------*/
+  /* Dialog new uom                                                             */
+  /*----------------------------------------------------------------------------*/
+
+
+  .input-text-diplay-new-uom {
+    width: 30em;
+    ;
+  }
+
+
 
   /*----------------------------------------------------------------------------*/
   /* Sidebar                                                                    */
   /*----------------------------------------------------------------------------*/
 
   .navbar-nav a.nav-link {
-    color: map-get($app-colors, default-cl);
+    color: map-get($app-colors, text-color);
+  }
+
+  .navbar-title {
+    color: map-get($app-colors, text-color);
+    z-index: 1;
+    margin-top: 0.5rem;
   }
 
   .sidebar {
+
 
     /* search bar (same color of navigation bar) */
     .search {
@@ -489,11 +730,12 @@ body.bodylayout {
 
     .nav-tabs a.nav-link {
       /*color: darken(map-get($sidebar-colors, tab-cl), 20%);*/
-      color: map-get($app-colors, navbar-fg);
+      color: map-get($app-colors, text-color);
     }
 
     .nav-item {
       display: contents;
+      color: map-get($app-colors, text-color);
     }
 
     .nav-tabs .nav-item.show .nav-link,
@@ -502,9 +744,7 @@ body.bodylayout {
     .nav-tabs .nav-link.active:hover {
       color: map-get($app-colors, active-cl);
       background-color: map-get($sidebar-colors, tab-sel-bg);
-      border-color: map-get($sidebar-colors, tab-border)
-                    map-get($sidebar-colors, tab-border)
-                    map-get($sidebar-colors, tab-sel-bg);
+      border-color: map-get($sidebar-colors, tab-border) map-get($sidebar-colors, tab-border) map-get($sidebar-colors, tab-sel-bg);
     }
 
     .nav-tabs .nav-link:focus,
@@ -515,7 +755,7 @@ body.bodylayout {
     }
 
 
-    .nav-item span{
+    .nav-item span {
       font-size: 1.2em;
     }
 
@@ -533,14 +773,21 @@ body.bodylayout {
       a:not([href]):not([tabindex]) {
         color: map-get($app-colors, default-cl);
       }
+
+      a:not([href]):not([tabindex]):hover {
+        //color: map-get($app-colors, item-sidebar-active-cl);
+        color: #ffffff;
+      }
+
       a:hover {
         background-color: darken(map-get($app-colors, navbar-bg), 5%);
-        color: map-get($app-colors, active-cl);
+        // color: map-get($app-colors, item-sidebar-active-cl);
+        color: #ffffff;
       }
 
       a.active {
         background-color: darken(map-get($app-colors, navbar-bg), 5%);
-        color: map-get($app-colors, active-cl);
+        color: map-get($app-colors, text-color);
       }
     }
 
@@ -588,7 +835,7 @@ body.bodylayout {
         .panel-body {
           .list-group-item {
             border-radius: 0;
-            background-color:map-get($app-colors, navbar-bg);
+            background-color: map-get($app-colors, navbar-bg);
             border: 0 solid transparent;
 
             a {
@@ -601,7 +848,7 @@ body.bodylayout {
           }
 
           .list-group-item:hover {
-            background-color:  darken(map-get($app-colors, navbar-bg), 5%);
+            background-color: darken(map-get($app-colors, navbar-bg), 5%);
           }
         }
       }
@@ -616,15 +863,16 @@ body.bodylayout {
       .nested {
         list-style-type: none;
 
-        & > ul.submenu {
+        &>ul.submenu {
           display: none;
           height: 0;
         }
 
-        &.expand > ul.submenu {
+        &.expand>ul.submenu {
           display: block;
           list-style-type: none;
           height: auto;
+
           li {
             a {
               display: block;
@@ -641,51 +889,65 @@ body.bodylayout {
   /* Toast                                                                      */
   /*----------------------------------------------------------------------------*/
 
-  p-growl div.ui-growl {
-      position: fixed;
-      top: 100px;
-      right: 20px;
-      width: 20em;
+  p-toast div.p-toast {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    width: 20em;
 
-      .ui-state-highlight {
-        background-color: map-get($app-colors, background-cl);
-        color: map-get($app-colors, default-cl);
-      }
+    .p-highlight {
+      background-color: map-get($app-colors, navbar-bg);
+      color: map-get($app-colors, default-cl);
+    }
   }
 
   /*----------------------------------------------------------------------------*/
   /* Dialog                                                                     */
   /*----------------------------------------------------------------------------*/
-  .ui-dialog {
-    background-color: map-get($app-colors, background-cl);
+  .p-dialog {
+    background: map-get($app-colors, alt-cl);
 
-    .ui-widget-content {
-      background-color: map-get($app-colors, background-cl);
+    .p-component-content {
+      background: map-get($app-colors, background-cl);
     }
 
-    p-footer {
+    .p-footer {
       font-size: 1.3em;
     }
 
-    .ui-dialog-titlebar-icon:hover {
-      border: none;
-      background-color: map-get($app-colors, alt-cl);
-      color: map-get($app-colors, default-cl);
-    }
   }
+
 }
 
 .tooltip-inner {
-  background : map-get($app-colors, default-cl);
+  background: map-get($app-colors, default-cl);
   color: map-get($app-colors, background-cl);
 }
 
 
- /*----------------------------------------------------------------------------*/
- /* Sidebar                                                                   */
- /*---------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* Sidebar                                                                   */
+/*---------------------------------------------------------------------------*/
+.sidebar-brand-navbar {
+  z-index: 2;
+
+  .navbar-toggleable-sm {
+    margin-left: 1em;
+  }
+
+
+}
+
 .sidebar-brand {
   width: $sidebar-width;
+
+  .navbar-toggleable-sm {
+    margin-left: 1em;
+  }
+
+
 }
 
 .sidebar {
@@ -710,7 +972,36 @@ body.bodylayout {
   transition: all 0.2s ease-in-out;
 }
 
+.curve {
+  z-index: 0;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
 
+.curve::before {
+  content: '';
+  position: absolute;
+  border-radius: 24% 0%;
+  width: 350px;
+  height: 160%;
+  transform: translate(-18.75%, -18.5%);
+  background-color: #ffffff;
+  z-index: -1;
+  left: 0%;
+}
+
+.curve::after {
+  content: '';
+  position: absolute;
+  border-radius: 100% 0% 0% 0%;
+  width: 190px;
+  height: 150%;
+  background-color: map-get($app-colors, navbar-bg);
+  transform: translate(80%, -15%);
+  z-index: -1;
+  height: 100.5px;
+}
 
 .topnav {
   border-radius: 0;
@@ -797,19 +1088,23 @@ body.bodylayout {
 .header .navbar {
   height: $header-height;
   background: map-get($app-colors, navbar-bg) !important;
+
 }
 
 .navbar-brand {
   height: $header-height;
+  width: 130px;
+
+
   img {
-    height: 100%;
+    max-width: 130px;
+    max-height: 60px;
   }
 }
 
-
- /*----------------------------------------------------------------------------*/
- /*Focus                                                                       */
- /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*Focus                                                                       */
+/*----------------------------------------------------------------------------*/
 
 .focuslayout {
   position: absolute;
@@ -823,8 +1118,10 @@ body.bodylayout {
   background-size: cover;
   color: map-get($app-colors, default-cl);
 
-  > .container, > .container-fluid,
-  > .container > .row, > .container-fluid > .row {
+  >.container,
+  >.container-fluid,
+  >.container>.row,
+  >.container-fluid>.row {
     height: 100%;
   }
 
@@ -832,12 +1129,13 @@ body.bodylayout {
     position: relative;
     text-align: center;
     margin: 0;
-    background-color: map-get($app-colors, navbar-bg);
+    background-color: map-get($app-colors, color-40);
     padding: 10% 3%;
     border: 1px solid map-get($app-colors, grey);
     border-radius: 5px;
 
-    input, span {
+    input,
+    span {
       color: map-get($app-colors, grey);
       background-color: map-get($app-colors, background-cl);
     }
@@ -870,7 +1168,195 @@ body.bodylayout {
   }
 }
 
-
 .legacy-container {
   background-color: map-get($app-colors, background-cl);
+}
+
+
+p-breadcrumb {
+  font-size: 0.8em;
+  margin: 0;
+
+  a:hover,
+  span:hover {
+    color: dimgrey;
+    text-decoration: none;
+  }
+
+  li {
+    list-style: none;
+    float: left;
+    margin: 5px;
+  }
+
+  li:last-child {
+    margin-right: 20px;
+  }
+
+  li::after {
+    content: "";
+    color: darkgrey;
+  }
+
+  li:last-child::after {
+    content: "";
+  }
+}
+
+.pi-chevron-right:before {
+  color: darkgrey !important;
+}
+
+
+.p-breadcrumb {
+  padding: 0 2em !important;
+  border: 0px !important;
+  background-color: map-get($app-colors, background-cl) !important;
+}
+
+.report-print {
+  padding: 0 2em !important;
+}
+
+
+.p-message.p-message-info {
+
+  border-width: 0.5em;
+  border-radius: 1em;
+}
+
+.p-slidemenu .p-menuitem-link {
+  height: 3em;
+}
+
+.p-tabview .p-tabview-panels {
+  background: map-get($app-colors, color-grey-15) !important;
+  border: 0px !important;
+  /*background-color: rgb(0, 64, 128);*/
+  border-color: #00264d !important;
+  border-radius: 0px 10px 10px 10px !important;
+
+
+  -webkit-box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+  -moz-box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+  -o-box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+  box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+}
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background: map-get($app-colors, color-40) !important;
+  border-color: transparent;
+  color: white !important;
+}
+
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  background: map-get($app-colors, color-20) !important;
+  color: white !important;
+}
+
+.p-card {
+  border-radius: 10px !important;
+
+  -webkit-box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+  -moz-box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+  -o-box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+  box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+}
+
+.cardTable {
+  overflow: hidden;
+  perspective: 1px;
+  border-radius: 7px;
+
+  -webkit-box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+  -moz-box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+  -o-box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+  box-shadow: 0px 0px 29px -4px map-get($app-colors, color-grey-30) !important;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  background: map-get($app-colors, navbar-bg) !important;
+}
+
+.p-dropdown:not(.p-disabled).p-focus {
+  box-shadow: 0 0 0 0.2rem map-get($app-colors, color-20) !important;
+  border-color: map-get($app-colors, color-30) !important;
+}
+
+body.bodylayout .p-datatable.p-component.p-datatable-responsive-scroll {
+  max-height: 100%;
+}
+
+// id first card of target component
+// the id of second card of target component is radar
+#half {
+  width: 49.5%;
+}
+
+@media(max-width: 1400px) {
+
+  .navbar-brand img {
+    scale: 0.9;
+  }
+
+  .navbar-title h5 {
+    font-size: 0.8em;
+  }
+
+  .navbar-nav {
+    font-size: 0.8em;
+  }
+
+  .fa-bars {
+    margin-top: 2rem;
+  }
+
+}
+
+
+.card-line-header {
+  background-color: map-get($app-colors, navbar-bg);
+  height: 2em;
+}
+
+@media(max-width: 800px) {
+  .navbar-collapse .navbar-nav {
+    display: none;
+  }
+
+  #radar {
+    display: none;
+  }
+
+  #half {
+    width: 100%;
+  }
+
+  .p-datatable .p-paginator {
+    flex-wrap: unset;
+  }
+
+  .fa-bars {
+    margin-top: 0rem;
+  }
+
+
+
+  .curve::after {
+    display: none;
+  }
+
+  .curve::before {
+    width: 50vw;
+    border-radius: 0% 0%;
+  }
+
+  .navbar-brand {
+    padding-top: 0rem !important;
+  }
+
+  .navbar-title h5 {
+    margin-left: 4em;
+  }
+
 }

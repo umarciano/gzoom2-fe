@@ -13,7 +13,7 @@ import {
   I18NDateTimePipe,
   I18NTimestampPipe
 } from './i18n.pipe';
-import { ModuleWithProviders } from '@angular/compiler/src/core';
+import { ModuleWithProviders } from '@angular/core';
 
 @NgModule({
   imports: [
@@ -38,7 +38,7 @@ import { ModuleWithProviders } from '@angular/compiler/src/core';
   ]
 })
 export class I18nModule {
-  static forRoot(config: I18NConfig): ModuleWithProviders {
+  static forRoot(config: I18NConfig): ModuleWithProviders<I18nModule> {
     return {
       ngModule: I18nModule,
       providers: [

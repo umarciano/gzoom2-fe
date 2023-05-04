@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Permissions } from '../api/dto';
+import { Permissions } from '../commons/model/dto';
 import * as _ from 'lodash';
 
 /**

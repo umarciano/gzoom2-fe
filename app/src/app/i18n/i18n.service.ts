@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import 'moment-timezone';
 
-import { isBlank, format, isString } from '../commons/commons';
+import { isBlank, format, isString } from '../commons/model/commons';
 
 interface Localizations {
   language?: string;
@@ -29,21 +29,36 @@ export class I18NConfig {
  * @return A function that loads the localization data
  */
 export function load(http: HttpClient, config: I18NConfig, i18nService: I18NService): () => Promise<boolean> {
-  return () => http
-    .get(`${config.rootPath}/profile/i18n`)
-    .toPromise()
-    .then(json => {
-      console.log(" json " + json);
+  return () => {
+    const http$ = http.get(`${config.rootPath}/profile/i18n`);
+    return lastValueFrom(http$).then(json => {
       config.localizations = json as Localizations;
       i18nService.init(config.localizations);
       return true;
     })
-    .catch(err => {
-      console.error('No way to get the localization data', err);
-      config.localizations = { translations: {}, formats: {}, calendarLocale: {} };
-      i18nService.init(config.localizations);
-      return true;
-    });
+      .catch(err => {
+        console.error('No way to get the localization data', err);
+        config.localizations = { translations: {}, formats: {}, calendarLocale: {} };
+        i18nService.init(config.localizations);
+        return true;
+      });
+  }
+
+
+  // http
+  //   .get(`${config.rootPath}/profile/i18n`)
+  //   .toPromise()
+  //   .then(json => {
+  //     config.localizations = json as Localizations;
+  //     i18nService.init(config.localizations);
+  //     return true;
+  //   })
+  //   .catch(err => {
+  //     console.error('No way to get the localization data', err);
+  //     config.localizations = { translations: {}, formats: {}, calendarLocale: {} };
+  //     i18nService.init(config.localizations);
+  //     return true;
+  //   });
 }
 
 const NEW_LINES_RE = /\s*(\r\n|\n|\r)\s*/gm;
@@ -65,7 +80,7 @@ export class I18NService {
     return matches ? matches[1] : text;
   }
 
-  constructor(private config: I18NConfig, private http: HttpClient) {}
+  constructor(private config: I18NConfig, private http: HttpClient) { }
 
   init(localizations: Localizations) {
     this._lang = localizations.language;
@@ -172,35 +187,47 @@ export class I18NService {
   }
 
   changeLang(user: string): Promise<void> {
-    return this.http
-    .get(`${this.config.rootPath}/profile/i18n/${user}/`)
-    .toPromise()
-    .then(json => {
-      console.log('changeLang json ' + json);
+
+    const http$ = this.http.get(`${this.config.rootPath}/profile/i18n/${user}/`);
+    return lastValueFrom(http$).then(json => {
       this.config.localizations = json as Localizations;
       this.init(this.config.localizations);
 
     })
-    .catch(err => {
-      console.error('No way to get the localization data', err);
-      this.config.localizations = { translations: {}, formats: {}, calendarLocale: {} };
-      this.init(this.config.localizations);
-    });
+      .catch(err => {
+        console.error('No way to get the localization data', err);
+        this.config.localizations = { translations: {}, formats: {}, calendarLocale: {} };
+        this.init(this.config.localizations);
+      });
+
+    // return this.http
+    // .get(`${this.config.rootPath}/profile/i18n/${user}/`)
+    // .toPromise()
+    // .then(json => {
+    //   this.config.localizations = json as Localizations;
+    //   this.init(this.config.localizations);
+
+    // })
+    // .catch(err => {
+    //   console.error('No way to get the localization data', err);
+    //   this.config.localizations = { translations: {}, formats: {}, calendarLocale: {} };
+    //   this.init(this.config.localizations);
+    // });
   }
 
   getLanguageType() {
     return this._langType;
   }
 
-  retrieveLanguages(){
+  retrieveLanguages() {
     return this.http.get(`${this.config.rootPath}/profile/i18n/languages`).pipe(
       map(json => json as string[])
     );
   }
 
-  retrieveLanguageType(){
+  retrieveLanguageType() {
     return this.http.get(`${this.config.rootPath}/profile/i18n/language-type`).pipe(
-      map(json => json as string )
+      map(json => json as string)
     );
   }
 

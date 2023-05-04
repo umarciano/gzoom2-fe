@@ -2,12 +2,12 @@ import { NgModule, ModuleWithProviders, Injectable, APP_INITIALIZER } from '@ang
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
-import { AuthService, AuthServiceConfig } from './auth.service';
-import { AuthGuard } from './guard.service';
-import { LockoutService, LockoutConfig } from './lockout.service';
-import { ApplicationConfig } from './config';
+import { AuthService, AuthServiceConfig } from './service/auth.service';
+import { AuthGuard } from './service/guard.service';
+import { LockoutService, LockoutConfig } from './service/lockout.service';
+import { ApplicationConfig } from './model/config';
 import { FullnamePipe, AsIdPipe, AsClassPipe } from './commons.pipe';
-import { EnumerationService } from './enumeration.service';
+import { EnumerationService } from '../api/service/enumeration.service';
 
 import {
   ApplicationVersionDirective,
@@ -56,7 +56,7 @@ export class CommonsModule {
   * @param  {CommonsConfig} config Module configuration
   * @return {ModuleWithProviders} The module with the providers
   */
-  static forRoot(config: CommonsConfig): ModuleWithProviders {
+  static forRoot(config: CommonsConfig): ModuleWithProviders<CommonsModule> {
     return {
       ngModule: CommonsModule,
       providers: [

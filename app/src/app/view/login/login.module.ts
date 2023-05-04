@@ -11,6 +11,7 @@ import { NodeService } from '../../shared/node.service';
 import { LoginComponent } from './login.component';
 
 import { I18nModule } from 'app/i18n/i18n.module';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { I18nModule } from 'app/i18n/i18n.module';
     ApiModule,
     LayoutModule,
     LoginRoutingModule,
-    I18nModule
+    I18nModule,
+    ProgressSpinnerModule
   ],
   providers: [    
     NodeResolver,

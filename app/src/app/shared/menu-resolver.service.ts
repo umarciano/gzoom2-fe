@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 
 
-import { LockoutService } from '../commons/lockout.service';
-import { MenuService } from '../api/menu.service';
-import { RootMenu } from '../api/dto';
+import { LockoutService } from '../commons/service/lockout.service';
+import { MenuService } from '../commons/service/menu.service';
+import { RootMenu } from '../commons/model/dto';
 
 /**
  * Retrieves the menus to be shown or locks the user out if something wrong happens.
@@ -19,13 +19,20 @@ export class MenuResolver implements Resolve<void | RootMenu> {
     private readonly lockoutService: LockoutService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | RootMenu> {
-    return this.menuService
-      .menu()
-      .toPromise()
-      .then(root => { return root; })
+
+    const menuService$ = this.menuService.menu();
+    return lastValueFrom(menuService$).then(root => { return root; })
       .catch(err => {
         console.error('Cannot retrieve menu', err);
         this.lockoutService.lockout();
       });
+    // return this.menuService
+    //   .menu()
+    //   .toPromise()
+    //   .then(root => { return root; })
+    //   .catch(err => {
+    //     console.error('Cannot retrieve menu', err);
+    //     this.lockoutService.lockout();
+    //   });
   }
 }

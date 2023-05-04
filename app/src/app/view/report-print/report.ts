@@ -28,13 +28,17 @@ export class Report {
     public parentTypeId?: string,
     public outputFormat?: string,
     public workEffortTypeId?: string,
+    public defaultOrganizationUnitId?: string,
     public outputFormats?: ReportType[],
     public params?: Params[],
     public paramsValue?: {},
-    public analysis? : boolean,
+    public analysis?: boolean,
+    public description?: string,
+    public descriptionLang?: string,
+    public etchLang?: string,
     public resourceName?: string,
-    public langLocale?: string,
-    public useFilter? : boolean) {}
+    public birtLocale?: string,
+    public useFilter?: boolean) {}
 }
 
 

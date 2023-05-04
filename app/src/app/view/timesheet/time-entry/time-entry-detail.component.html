@@ -1,75 +1,35 @@
-<h3 class="first">{{'GP_MENU_00335'|i18n}}</h3>
-<h4 class="first">{{timesheet.partyName}}  {{timesheet.thruDate | date:i18nService.getFormat('date-MMMM-YYYY')}}
- 
-</h4>
+<p-toast></p-toast>
 
-<p-growl [life]=10000 [sticky]="false" [value]="msgs"></p-growl>
+<!-- Messages Error -->
+<p-messages [(value)]="messagesError" [enableService]="false"></p-messages>
 
-<div class="global-filter" style="padding:4px 10px;border-bottom: 0 none">
-  <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-  <input #gb type="text" pInputText size="50" placeholder="{{'Global Filter'|i18n}}">
-</div>
+<app-information-bar [bodyBarArray]="bodyBarArray"></app-information-bar>
+<p-card>
+  <ng-template pTemplate="header">
+    <app-toolbar-data-table [gridArray]="gridArray" (buttonNewEvent)="openNew()" (deleteEvent)="deleteRowSelected()"
+      (saveEvent)="saveAllElement()" [buttonDelete]="buttonDelete" [buttonBack]="true" [buttonNew]="buttonNew"
+      [buttonExport]="false" [dataTable]="dataTable" [buttonSave]="buttonSave"></app-toolbar-data-table>
+  </ng-template>
+  <ng-template pTemplate="body">
+    <app-table-editing-cell [isNewItem]="newTimeEntry" [selectedOn]="selectedOn" [isAction]="true"
+      [headArray]="headArray" [gridArray]="gridArray" [editingCell]="true" [formShape]="range"
+      [editingKeyId]="editingKeyId" [typeDropdownInputArray]="workEffortsName" [headDisplay]="'none'"
+      [scrollHeight]="'400px'" (selectedItemDropdown)="selectedItemDropdown($event)"
+      (shareDescriptorTable)="shareDescriptorTable($event)" (notifyInputChanges)="notifyInputChanges($event)"
+      (shareSelectionItem)="shareSelectionItem($event)"></app-table-editing-cell>
+  </ng-template>
+</p-card>
 
-<form (ngSubmit)="saveTimeEntry()">
-  <p-dataTable [editable]="true" [(value)]="timeEntries" scrollable="true" sortMode="multiple" [responsive]="true"
-    [globalFilter]="gb" [responsive]="true" dataKey="timeEntryId" #dt exportFilename="timeEntries">
-    <p-column datakey="workEffortId" field="description" header="{{'Title, work effort'|i18n}}*" [sortable]="true" [style]="{'width':'80%'}"
-        [filter]="true" filterMatchMode="contains" filterPlaceholder="{{'Search...'|i18n}}">
-        <!-- field="description"  cambia la description ma non l'id 
-		<ng-template pTemplate="filter" let-col>
-          <p-dropdown appendTo="body" [autoWidth]="false" [options]="workEffortSelectItem" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode);" styleClass="ui-column-filter"></p-dropdown>
-        </ng-template> -->
-        <!-- <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="body">
-          <div>
-            <p-dropdown name="workEffortId_o_{{ri}}" appendTo="body" [(ngModel)]="row[col.field]" [options]="workEffortSelectItem" [autoWidth]="false" [style]="{'width':'100%'}" required="true"></p-dropdown>
-          </div>
-        </ng-template> -->
-        <!-- (onDropdownClick) = "onDropdownClick($event)" -->          
-        <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="body">
-          <p-autoComplete name="workEffortId_o_{{ri}}" [(ngModel)]="row[col.field]" [suggestions]="filteredActivities" 
-           (onSelect)="onSelect($event, ri)" (completeMethod)="filterActivities($event)"
-            [minLength]="1" placeholder="Inizia a scrivere..." [dropdown]="true" appendTo="body" [style]="{'width':'95%'}" [inputStyle]="{'width':'95%'}">
-            <ng-template let-record pTemplate="item">
-                <div class="ui-helper-clearfix">
-                  <div>{{record}}</div>
-                </div>
-            </ng-template>
-          </p-autoComplete>
-        </ng-template>
-        <ng-template pTemplate="footer" >
-          <span>{{'Totals'|i18n}}</span>
-        </ng-template>
-      </p-column>
-      <p-column [filter]="true" filterPlaceholder="{{'Search...'|i18n}}" filterMatchMode="contains" field="percentage" header="{{'Percentage'|i18n}}" [sortable]="true" [editable]="true" styleClass="text-align-right">
-        <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="body">
-            <span>{{row[col.field] |number:formatNumber}}</span>
-        </ng-template>
-        <ng-template let-ri="rowIndex" let-col let-row="rowData" pTemplate="editor">            
-            <input type="number" numberDecimal="{{patternRegExp}}"
-                 name="percentage_o_{{ri}}"
-                 class="ui-inputtext ui-widget ui-state-default ui-corner-all"
-                 [(ngModel)]="row[col.field]"
-                 />
-        </ng-template>
-        <ng-template pTemplate="footer">
-          <span>{{totalPercentage |number:formatNumber}}</span>
-        </ng-template> 
-      </p-column>
-      <p-column [style]="{'width':'10%'}" styleClass="col-button">
-        <ng-template pTemplate="header">
-            <button placement="top" ngbTooltip="{{'Add'|i18n}}" container="body" type="button" pButton icon="fa fa-plus" (click)="addRow()"></button>
-            <button placement="top" ngbTooltip="{{'Salva'|i18n}}" container="body" type="submit" pButton icon="fa fa-check"></button>
-            <button placement="top" ngbTooltip="{{'Export'|i18n}}" container="body" type="button" pButton icon="far fa-file" (click)="dt.exportCSV()" ></button>
-        </ng-template>
-        <ng-template let-timeEntry="rowData" pTemplate="body">
-          <button placement="top" ngbTooltip="{{'Delete'|i18n}}" container="body" type="button" pButton icon="fa fa-trash-alt" (click)="confirmDeleteTimeEntry(timeEntry)"></button>
-        </ng-template>
-      </p-column>
-      
-      
-  </p-dataTable>
-</form>
 
-<p-confirmDialog header="{{'Confirmation'|i18n}}" acceptLabel="{{'Yes'|i18n}}" rejectLabel="{{'No'|i18n}}"></p-confirmDialog>
+<!-- ###################CONFIRM DELETE #################### -->
 
-<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<p-confirmDialog #cd [style]="{width: '450px'}">
+  <ng-template pTemplate="header" icon="pi pi-times-circle">
+    <h3>{{'Attention'|i18n}}</h3>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button type="button" pButton icon="pi pi-times-circle" label="No" (click)="cd.reject()"
+      aria-label="select no"></button>
+    <button type="button" pButton icon="pi pi-check" label="Yes" (click)="cd.accept()" aria-label="select yes"></button>
+  </ng-template>
+</p-confirmDialog>

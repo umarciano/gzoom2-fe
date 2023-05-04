@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { URLSearchParams } from '@angular/http';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ApiClientService } from '../api/client.service';
+import { ApiClientService } from '../commons/service/client.service';
 
 import { Node } from '../view/node/node';
 
@@ -22,7 +21,6 @@ export class NodeService {
   }*/
 
   node(nodeId: string):  Observable<Node> {
-    console.log('search node with ' + nodeId);
     return this.client
       .get(`node/configuration/${nodeId}`)
       .pipe(
@@ -30,13 +28,17 @@ export class NodeService {
       );
   }
 
-  
+
   nodeLegacyVersions(): Observable<void | string> {
     return this.client.get(`node/version/legacy`);
   }
 
   nodeRestVersions(): Observable<void | string> {
     return this.client.get(`node/version/rest`);
+  }
+
+  nodeXmlRcpUrl(): Observable<string> {
+    return this.client.get(`node/configuration/xmlrcpurl`);
   }
 
 }

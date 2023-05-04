@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 
 
-import { LockoutService } from '../../../commons/lockout.service';
-import { WorkEffortService } from '../../../api/work-effort.service';
+import { LockoutService } from '../../../commons/service/lockout.service';
+import { WorkEffortService } from '../../../api/service/work-effort.service';
 import { WorkEffort } from './work-effort';
 
 @Injectable()
@@ -19,14 +19,22 @@ export class WorkEffortResolverService {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void | WorkEffort[]> {
     var parentTypeId = route.parent.params.parentTypeId;
     console.log('resolve workEffort parentTypeId='+parentTypeId);
-    return this.workEffortService
-      .workEfforts(parentTypeId, '_NA_', true)
-      .toPromise()
-      .then(workEfforts => { return workEfforts; })
-      .catch(err => { 
-        console.error('Cannot retrieve workEffort', err);
-        this.lockoutService.lockout();
-      });
+
+    const workEffortService$ = this.workEffortService.workEfforts(parentTypeId, '_NA_', true);
+    return lastValueFrom(workEffortService$).then(workEfforts => { return workEfforts; })
+    .catch(err => { 
+      console.error('Cannot retrieve workEffort', err);
+      this.lockoutService.lockout();
+    });
+
+    // return this.workEffortService
+    //   .workEfforts(parentTypeId, '_NA_', true)
+    //   .toPromise()
+    //   .then(workEfforts => { return workEfforts; })
+    //   .catch(err => { 
+    //     console.error('Cannot retrieve workEffort', err);
+    //     this.lockoutService.lockout();
+    //   });
   }
 
 }

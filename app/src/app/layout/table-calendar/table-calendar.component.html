@@ -1,0 +1,142 @@
+<p-table #dt [value]="gridArray" responsiveLayout="scroll" [rowHover]="true" [paginator]="true" [rows]="10"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="{{'Showing {first} to {last} of {totalRecords} entries'|i18n}}" [sortOrder]="1"
+    [rowsPerPageOptions]="[10,25,50]" [selectionMode]="selectionMode" (onRowSelect)="onRowSelect($event)"
+    (onRowUnselect)="onRowUnselect($event)" dataKey="id" editMode="row" [filterDelay]="0" ariaLabel="Table"
+    [globalFilterFields]="filterArray" role="table">
+
+    <ng-template pTemplate="header">
+        <tr class="header-title">
+            <th *ngFor="let head of headArray" [ngStyle]="{'display':head.display, 'height':'5em', 'width':head.width, 'background-color': head.colorHeader}"
+                 role="columnheader">
+                <div class="header-title-container">
+                    <p style="margin-top: 0.5em;">{{head.head}}</p>
+                    <!-- <p *ngIf="!!head.subHead" style="margin-top: auto;">{{head.subHead}}</p> -->
+                </div>
+                <div  class="header-title-label" >
+                    <p *ngIf="!!head.subHead" >{{head.subHead}}</p>
+                </div>
+            </th>
+        </tr>
+
+    </ng-template>
+
+
+    <ng-template pTemplate="body" let-item let-riRow="rowIndex" let-editing="editing" let-expanded="expanded">
+
+        <tr [formGroup]="form" [pSelectableRow]="item" [pRowToggler]="item" [pEditableRow]="item"
+            [ngStyle]="{'height':'5em'}">
+            <td *ngFor="let head of headArray" [ngStyle]="{'display':head.display}" role="cell">
+
+                <div *ngIf="head.actionInput!='actionEditing' && head.actionInput!='actionDetails' ">
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+
+                            <div *ngIf="head.actionInput=='dropdownData'"
+                                style="margin-left: 0.5em; margin-right: 0.5em;">
+                                <p-dropdown editable="true" [options]="typeDropdownInputArray"
+                                    formControlName="{{head.fieldName}}" placeholder="Select a data"
+                                    attr.aria-label="select {{head.fieldName|i18n}}"></p-dropdown>
+                            </div>
+
+                            <div *ngIf="head.actionInput=='inputLabeldata'"
+                                style="margin-left: 0.5em; margin-right: 0.5em;">
+                                <input pInputText type="text" style="max-width: 15ch;"
+                                    formControlName="{{head.fieldName}}" attr.aria-label="input data">
+                            </div>
+
+                            <div *ngIf="head.actionInput=='inputLabelNumber'"
+                                style="margin-left: 0.5em; margin-right: 0.5em;">
+                                <input pInputText type="text" style="max-width: 6ch;"
+                                    formControlName="{{head.fieldName}}" attr.aria-label="input data">
+                            </div>
+                        </ng-template>
+
+                        <ng-template pTemplate="output">
+                            <div *ngIf="head.actionOutput=='outputClickLabelData'"
+                                style="margin-left: 0.5em; margin-right: 0.5em;">
+                                <a class="clickLink" (click)="clickLinkRowEvent(item)">
+                                    {{item.value[head.fieldName]}}</a>
+                            </div>
+                            <div *ngIf="head.actionOutput=='outputLabelData'" (click)="onClick(clickFrameToGo)"
+                                style="margin-left: 0.5em; margin-right: 0.5em;" attr.aria-label="input data">
+                                {{item.value[head.fieldName]}}
+                            </div>
+                            <div *ngIf="head.actionOutput=='outputLabelNumber' && item.value[head.fieldName] != null && item.value[head.fieldName] != undefined "
+                                style="margin-left: 0.5em; margin-right: 0.5em; text-align: right;">
+                                {{item.value[head.fieldName].toString().replace(".", ",")}}
+                            </div>
+
+                        </ng-template>
+                    </p-cellEditor>
+                </div>
+
+                <div *ngIf="head.actionInput=='actionEditing'" style="text-align:center;">
+                    <button *ngIf="!editing" (click)="clickEditEvent(item.id,riRow)" pButton pRipple type="button"
+                        role="button" [disabled]="editNow" pInitEditableRow icon="pi pi-pencil"
+                        aria-label="edit element" class="p-button-rounded p-button-text "></button>
+                    <button *ngIf="!editing" (click)="clickDeleteRowEvent(item.id,riRow)" pButton pRipple type="button"
+                        role="button" [disabled]="editNow" pRemoveEditableRow icon="pi pi-trash"
+                        aria-label="remove element" class="p-button-rounded p-button-text"></button>
+                    <button *ngIf="editing" (click)="clickEditSaveEvent()" pButton pRipple type="button"
+                        pSaveEditableRow icon="pi pi-check" aria-label="save edit element" role="button" tabindex="0"
+                        class="p-button-rounded p-button-text p-button-success p-mr-2" aria-live="assertive"></button>
+                    <button *ngIf="editing" (click)="clickEditCancelEvent(item.id,riRow)" pButton pRipple role="button"
+                        tabindex="0" type="button" pCancelEditableRow icon="pi pi-times-circle"
+                        aria-label="delete edit element" class="p-button-rounded p-button-text p-button-danger "
+                        aria-live="off"></button>
+                </div>
+
+                <div (click)="clickShareRiRowEvent(item.id,riRow)"
+                    *ngIf="head.actionInput=='actionDetails' && item.buttonDetails" style="text-align: center;">
+                    <app-button-slide-menu [items]="itemsButtonSlideMenu">
+                    </app-button-slide-menu>
+                </div>
+
+                <div *ngIf="head.actionOutput=='actionGauge' && item.value[head.fieldName].amount!=null "
+                    style="text-align: center;" attr.aria-label="chart">
+                    <app-gauge [gaugeConfig]="head.gaugeConfig" [value]="item.value[head.fieldName].amount"></app-gauge>
+                </div>
+                <div *ngIf="head.actionOutput=='actionImage'" style="text-align: center;" class="container">
+
+                    <div *ngIf="item.value[head.fieldName].amount!=null" style="width: 50%;">
+                        <h5><i>{{item.value[head.fieldName].amount.toString().replace(".", ",")}}</i> </h5>
+                    </div>
+                    <div *ngIf="!!item.value[head.fieldName].linkImg">
+                        <img [src]="item.value[head.fieldName].linkImg" />
+                    </div>
+
+                </div>
+                <div *ngIf="head.actionOutput=='actionEmoticonCard'" style="text-align: center;" class="container"
+                    aria-label="Emoticon">
+                    <div *ngIf="item.value[head.fieldName].amount!=null && !!item.value[head.fieldName].linkImg">
+                        <app-emoticon-card [amount]="item.value[head.fieldName].amount"
+                            [id]="item.value[head.fieldName].linkImg"></app-emoticon-card>
+                    </div>
+                </div>
+                <div *ngIf="head.actionOutput=='actionDoubleRowString'" class="doubleRow">
+                    <div class="elementDoubleRow" id="firstElDoubleRow">{{item.value[head.fieldName].first}}</div>
+                    <div class="elementDoubleRow">{{item.value[head.fieldName].second}}</div>
+                </div>
+                <div *ngIf="head.actionOutput=='actionDoubleRowNumber'" class="doubleRow">
+                    <div class="elementDoubleRow" id="firstElDoubleRow">
+                        {{item.value[head.fieldName].first.toString().replace(".", ",")}}</div>
+                    <div class="elementDoubleRow">{{item.value[head.fieldName].second.toString().replace(".", ",")}}
+                    </div>
+                </div>
+
+            </td>
+
+        </tr>
+
+    </ng-template>
+    <!-- <ng-template pTemplate="rowexpansion" *ngIf="rowExpand">
+        <tr>
+            <td colspan="7">
+                <div class="p-3">
+                    <router-outlet></router-outlet>
+                </div>
+            </td>
+        </tr>
+    </ng-template> -->
+</p-table>

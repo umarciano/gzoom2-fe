@@ -5,8 +5,7 @@ import {
   SimpleChanges,
   Input
 } from '@angular/core';
-
-import { LeafMenu } from '../../../api/dto';
+import { FolderMenu, LeafMenu } from '../../../commons/model/dto';
 import { MenuService } from '../../../shared/menu.service';
 
 const DEF_ICON = 'fa-angle-right';
@@ -17,11 +16,15 @@ const DEF_ICON = 'fa-angle-right';
   styleUrls: ['./leaf-menu.component.scss']
 })
 export class LeafMenuComponent implements OnInit, OnChanges {
-  @Input() menu: LeafMenu;
+  @Input() menu: FolderMenu;
+  @Input() leaf: LeafMenu;
+  @Input() context: FolderMenu;
+  @Input('tabId') tabId: string;
+
   classes: string[];
   link: string[];
 
-  constructor(private readonly menuService: MenuService) { }
+  constructor(private readonly menuService: MenuService ) { }
 
   ngOnInit() {
     this.init();
@@ -32,6 +35,8 @@ export class LeafMenuComponent implements OnInit, OnChanges {
   }
 
   toggleSidebar() {
+    window.sessionStorage.setItem('tabId', this.tabId); //I save tabId for use it when the page is reloded
+
     const dom: any = document.querySelector('body');
     const menu: any = document.querySelector('#sidebar');
     if (menu.classList.contains('collapse')) {
@@ -43,8 +48,8 @@ export class LeafMenuComponent implements OnInit, OnChanges {
   }
 
   private init() {
-    this.classes = this.classesOf(this.menu);
-    this.link = this.menuService.stateFor(this.menu);
+    this.classes = this.classesOf(this.leaf);
+    this.link = this.menuService.stateFor(this.context,this.menu,this.leaf);
   }
 
   private classesOf(m) {

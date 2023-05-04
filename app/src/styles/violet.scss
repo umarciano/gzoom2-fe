@@ -20,7 +20,10 @@ $app-colors: (
   default-bg: transparent,
   default-cl: gray,
   active-cl:#232323,
+  item-sidebar-active-cl: #232323,
   title-bg:  #DFCCFF,
+  text-color: gray,
+  text-contrast: grey,
   title-bd-cl: #cccccc,
   light: white,
   disabled: #cccccc,
@@ -28,8 +31,36 @@ $app-colors: (
   navbar-hl: #FFF,
   navbar-fg: #999,
   navbar-bg: #d0b4de,
-  overlay: rgba(0, 0, 0, 0.6)
+  toolbar-bg: #d0b4de,
+  overlay: rgba(0, 0, 0, 0.6),
+
+  color-primary: #111,
+  color-black: #000,
+  color-white: #fff,
+  color-grey-10: #f5f5f0,
+  color-grey-15: #f6f9fc,
+  color-grey-20: #eee,
+  color-grey-30: #ddd,
+  color-grey-40: #a5abb0,
+  color-grey-50: #5a6772,
+  color-grey-60: #444e57,
+  color-grey-80: #30373d,
+  color-grey-90: #1c2024,
+
+  color-5: #E6E6EE,
+  color-10: #D8D6E3,
+  color-20: #CCC6D8,
+  color-30: #C1B5CC,
+  color-40: #B9A5C0,
+  color-50: #B196B4,
+  color-60: #A886A5,
+  color-70: #94758A,
+  color-80: #7F6471,
+  color-90: #6A5359,
+  color-95: #554243,
 );
+
+
 
 $sidebar-colors: (
   tab-fg: white,

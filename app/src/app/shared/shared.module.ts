@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { CommonsModule } from '../commons/commons.module';
 import { ApiModule } from '../api/api.module';
 
+import { ReportPopupService } from './report-popup/report-popup.service';
 import { AuthorizationService } from './authorization.service';
 import { MenuService } from './menu.service';
 import { NodeService } from './node.service';
@@ -16,7 +17,10 @@ import { VisualThemeNAResolver } from './visual-theme-na-resolver.service';
 import { SafeResPipe } from './safe-res.pipe';
 import { SafeIdentifierGuard } from './safe-identifier.guard';
 import { DownloadActivityService } from './report-download/download-activity.service';
+import { ChangePasswordService } from './change-password/change-password.service';
 import { LocalizationResolver } from './localization-resolver.service';
+import { CustomTimePeriodService } from 'app/commons/service/custom-time-period.service';
+import { ReportService } from 'app/api/service/report.service';
 
 @NgModule({
   imports: [
@@ -34,7 +38,7 @@ export class SharedModule {
    *
    * @return {ModuleWithProviders} The module with the providers
    */
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<SharedModule> {
     return {
       ngModule: SharedModule,
       providers: [
@@ -48,8 +52,12 @@ export class SharedModule {
         VisualThemeNAResolver,
         VisualThemeResolver,
         LoaderService,
+        ReportPopupService,
+        ReportService,
         SafeIdentifierGuard,
         DownloadActivityService,
+        ChangePasswordService,
+        CustomTimePeriodService
       ]
     };
   }

@@ -1,0 +1,112 @@
+.containerRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.containerColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.item {
+    /*margin: 20px;*/
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+
+}
+
+#title_header {
+    width: 80%;
+    padding: 30px;
+}
+
+#gauge,
+#indicator {
+    width: 10%;
+
+}
+#table{
+    overflow: hidden;
+    perspective: 1px;
+    border-radius: 10px;
+}
+
+
+
+.containerRadar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+#radar {
+    width: 49.5%;
+}
+
+@media (max-width: 800px) {
+    .containerRadar  {
+        display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+    }
+    #radar {
+        display: flex;
+        width: 100%;
+        
+    }
+
+    .p-element {
+        width: 100%;
+
+    }
+  }
+
+
+
+
+.p-tabview .p-tabview-panels{
+    background: #f2f7fb/* #00264d */;
+    border:0px;
+    /*background-color: rgb(0, 64, 128);*/
+    border-color: #00264d;
+    border-radius: 0px 10px 10px 10px;
+}
+
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+    background: white;
+    border-color: transparent;
+    color: #00264d;
+}
+
+.p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
+    background: white;
+    color: #00264d;
+}
+.p-tabview .p-tabview-nav li .p-tabview-nav-link{
+    background: #00264d;
+    color: white;
+}
+
+@media(max-width: 1000px){
+
+    .p-datatable .p-paginator{
+        flex-wrap: unset;
+      }
+}
+
+.container-chart-choices {
+    display: flex; 
+    flex-direction: column-reverse; 
+    gap: 7px; 
+    justify-content: center;
+
+}

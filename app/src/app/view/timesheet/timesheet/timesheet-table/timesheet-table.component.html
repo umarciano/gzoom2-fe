@@ -1,0 +1,31 @@
+<p-toast></p-toast>
+
+<p-card>
+  <ng-template pTemplate="header"> <app-toolbar-data-table [gridArray]="gridArray" (deleteEvent)="deleteRowSelected()"
+      [buttonDelete]="buttonDelete" [buttonBack]="false" [buttonNew]="false" [buttonExport]="true"
+      [dataTable]="dataTable"></app-toolbar-data-table></ng-template>
+
+  <ng-template pTemplate="body">
+    <div *ngIf="loading" class="d-flex justify-content-center">
+      <p-progressSpinner  [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
+    </div>
+    <app-table-editing-cell *ngIf="!loading" [headArray]="headArray" [gridArray]="gridArray"
+      [selectedOn]="isAdmin" (shareDescriptorTable)="shareDescriptorTable($event)"
+      (shareSelectionItem)="shareSelectionItem($event)"  [typeDropdownInputArray]="typeDropdownFilterArray"
+      (clickButtonDetailsEvent)="goToTimeEntry($event)" ></app-table-editing-cell></ng-template>
+
+</p-card>
+
+
+<!-- ###################CONFIRM DELETE #################### -->
+
+<p-confirmDialog #cd [style]="{width: '450px'}">
+  <ng-template pTemplate="header" icon="pi pi-times-circle">
+    <h3>{{'Attention'|i18n}}</h3>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button type="button" pButton icon="pi pi-times-circle" label="No" (click)="cd.reject()"
+      aria-label="select no"></button>
+    <button type="button" pButton icon="pi pi-check" label="Yes" (click)="cd.accept()" aria-label="select yes"></button>
+  </ng-template>
+</p-confirmDialog>

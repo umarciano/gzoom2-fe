@@ -1,42 +1,41 @@
+import { TableModule } from 'primeng/table';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { AccordionModule } from 'primeng/primeng';     //accordion and accordion tab
-import { DropdownModule, AutoCompleteModule } from 'primeng/primeng';
-import { DialogModule } from 'primeng/primeng';
-import { DataTableModule, SharedModule } from 'primeng/primeng';
-import { ButtonModule } from 'primeng/primeng';
-import { ConfirmDialogModule, ConfirmationService, SpinnerModule, CalendarModule } from 'primeng/primeng';
-import { GrowlModule } from 'primeng/primeng';
-import { TooltipModule } from 'primeng/primeng';
-
+import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
+import { DropdownModule } from 'primeng/dropdown';
+import { DialogModule } from 'primeng/dialog';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { SharedModule, ConfirmationService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
+import { SpinnerModule } from 'primeng/spinner';
+import { CardModule } from 'primeng/card';
+import { CalendarModule } from 'primeng/calendar';
 import { CommonsModule } from '../../commons/commons.module';
 import { ApiModule } from '../../api/api.module';
 import { LayoutModule } from '../../layout/layout.module';
-
 import { TimesheetRoutingModule } from './timesheet-routing.module';
-import { TimesheetComponent } from './timesheet/timesheet.component';
-import { TimesheetService } from '../../api/timesheet.service';
-import { Timesheet } from './timesheet/timesheet';
+import { TimesheetComponent } from '../timesheet/timesheet/timesheet.component';
+import { TimesheetService } from '../../api/service/timesheet.service';
+import { Timesheet } from '../../api/model/timesheet';
 import { TimesheetResolver } from './timesheet/timesheet-resolver.service';
-import { WorkEffortResolver } from './time-entry/work-effort-resolver.service';
-import { TimeEntryDetailComponent } from './time-entry/time-entry-detail.component';
-import { TimeEntry } from './time-entry/time_entry';
-import { TimeEntryResolver } from './time-entry/time-entry-resolver.service';
-
-import {Party} from '../party/party/party';
-import { PartyService } from '../../api/party.service';
+import { TimesheetTableResolver } from './timesheet/timesheet-table/timesheet-table-resolver.service';
+import { TimeEntryDetailComponent } from '../timesheet/time-entry/time-entry-detail.component';
+import { TimeEntryResolver } from '../timesheet/time-entry/time-entry-resolver.service';
+import { PartyService } from '../../api/service/party.service';
 import { PartyResolver } from '../party/party/party-resolver.service';
-
-import { UomService } from '../../api/uom.service';
-import { UomResolver } from '../uom/uom/uom-resolver.service';
-
-import { NumberDecimalDirective } from './../../commons/number.directive';
-import { NumberDecimalAccessor } from './../../commons/number.accessor';
-
+import { UomService } from '../../api/service/uom.service';
+import { UomResolver } from '../ctx-ba/uom/uom/uom-resolver.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { I18nModule } from 'app/i18n/i18n.module';
+import { TimesheetTableComponent } from '../timesheet/timesheet/timesheet-table/timesheet-table.component'
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { CanDeactivateGuard } from 'app/shared/can-deactivate.guard';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 
 
 @NgModule({
@@ -49,25 +48,28 @@ import { I18nModule } from 'app/i18n/i18n.module';
     ApiModule,
     LayoutModule,
     AccordionModule,
-    DataTableModule,
+    TableModule,
     DialogModule,
     SharedModule,
     ButtonModule,
     ConfirmDialogModule,
     SpinnerModule,
     CalendarModule,
-    GrowlModule,
+    ToastModule,
     DropdownModule,
     AutoCompleteModule,
     TooltipModule,
     TimesheetRoutingModule,
-    I18nModule
+    I18nModule,
+    CardModule,
+    ProgressSpinnerModule,
+    MessageModule,
+    MessagesModule,
   ],
   declarations: [
     TimesheetComponent,
     TimeEntryDetailComponent,
-    NumberDecimalDirective,
-    NumberDecimalAccessor
+    TimesheetTableComponent
   ],
   providers: [
     TimesheetService,
@@ -75,10 +77,11 @@ import { I18nModule } from 'app/i18n/i18n.module';
     UomService,
     TimesheetResolver,
     TimeEntryResolver,
+    TimesheetTableResolver,
     PartyResolver,
     UomResolver,
-    WorkEffortResolver,
-    ConfirmationService
+    ConfirmationService,
+    CanDeactivateGuard
   ]
 })
 export class TimesheetModule { }

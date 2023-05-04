@@ -1,0 +1,77 @@
+/*----------------------------------------------------------------------------*/
+/* Inspinia colors                                                            */
+/*----------------------------------------------------------------------------*/
+
+$inspinia-colors: (
+  primary: #535953
+);
+
+//86abde
+//B6DAFF 
+//EDFBFF
+/*----------------------------------------------------------------------------*/
+/* Other colors                                                               */
+/*----------------------------------------------------------------------------*/
+
+$app-colors: (
+  background-cl: #FFF /*#e1e7e9*/,
+  background-alt: #f2f7fb,
+  alt-cl: #f4f5f8,
+  default-bg: transparent,
+  default-cl: #232323,
+  active-cl: #232323,
+  item-sidebar-active-cl: #232323,
+  text-color: #232323,
+  text-contrast: #000,
+  title-bg:  #FFF,
+  title-bd-cl: #cccccc,
+  light: white,
+  disabled: #cccccc,
+  error: #ED5565,
+  navbar-hl: #FFF,
+  navbar-fg: #FFF,
+  navbar-bg:#22c55e,
+  toolbar-bg: #f4f4f4,
+  color-900: #535953,
+  color-600: #828c82,
+  color-400: #B6C5B5,
+
+  color-primary: #111,
+  color-black: #000,
+  color-white: #fff,
+  color-grey-10: #f5f5f0,
+  color-grey-15: #f6f9fc,
+  color-grey-20: #eee,
+  color-grey-30: #ddd,
+  color-grey-40: #a5abb0,
+  color-grey-50: #5a6772,
+  color-grey-60: #444e57,
+  color-grey-80: #30373d,
+  color-grey-90: #1c2024,
+
+  color-5: #EDF7D0,
+  color-10: #9DDE90,
+  color-20: #72D374,
+  color-30: #54C86C,
+  color-40: #37BC6C,
+  color-50: #3DCF58,
+  color-60: #22c55e,
+  color-70: #16a34a,
+  color-80: #15803d,
+  color-90: #166534,
+  color-95: #14532d,
+
+  /* navbar-bg: #28ba62, */
+  overlay: rgba(0, 0, 0, 0.6)
+);
+
+$sidebar-colors: (
+  tab-fg: white,
+  tab-cl: #232323,
+  tab-bg: map-get($app-colors, navbar-bg),
+  tab-sel-bg:  #f4f5f8,
+  tab-border: lighten(map-get($app-colors, navbar-bg), 30%)
+);
+
+
+@import "default";
