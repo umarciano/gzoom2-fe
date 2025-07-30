@@ -22,7 +22,7 @@ export class FolderMenuComponent implements OnInit, OnChanges {
   @Input() context: FolderMenu;
   @Input('tabId') tabId: string;
   classes: string[];
-  expanded = true;
+  expanded = false;
 
   constructor() { }
 

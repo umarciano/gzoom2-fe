@@ -199,8 +199,15 @@ export class HeaderComponent implements OnInit {
   }
 
   toggleSidebar() {
+
     const dom: any = document.querySelector('body');
-    const menu: any = document.querySelector('#sidebar');
+    const menu: any = document.getElementById('sidebar');
+
+    if (!menu || !dom) {
+      console.error('Elementi non trovati!');
+      return;
+  }
+
     if (menu.classList.contains('collapse')) {
       dom.classList.remove('push-right');
     } else {

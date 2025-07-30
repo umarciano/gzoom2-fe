@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
       map((data: { theme: UserPreference }) => data.theme),
     ).subscribe((data) => {
       if(data == undefined){
-        this.loading_login = true;
+        this.loading_login = false;
         setTimeout(() => {
           window.location.reload();
         }, 2000);
