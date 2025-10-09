@@ -42,6 +42,9 @@ export class HeaderComponent implements OnInit {
   restVersions: String;
   displayChangePassword = false;
   displayChangeTheme = false;
+  displayUserInfo = false;
+  userDetails: any = {};
+  partyRoleData: any = {};
   error = '';
   langType: string;
   organizationType: string;
@@ -331,4 +334,51 @@ export class HeaderComponent implements OnInit {
       };
     });
   }
+
+  userInfoDialog() {
+    if (!this.user?.username) {
+      this.setDefaultUserDetails();
+      this.displayUserInfo = true;
+      return;
+    }
+    
+    // Inizializza con loading
+    this.userDetails = { 
+      employeeId: 'Loading...', 
+      fiscalCode: 'Loading...', 
+      positionType: 'Loading...' 
+    };
+    
+    // Chiama l'API dedicata per recuperare le informazioni complete dell'utente
+    this.client.get(`/user-info/${this.user.username}`).subscribe(
+      (userInfo: any) => {
+        // Aggiorna i dati per il display
+        this.userDetails = {
+          employeeId: userInfo.matricola || userInfo.userLoginId || 'N/A',
+          fiscalCode: userInfo.fiscalCode || 'N/A',
+          positionType: userInfo.positionType || 'N/A'
+        };
+        
+        // Store completo per eventuali usi futuri
+        this.partyRoleData = userInfo;
+      },
+      (error) => {
+        console.error('Error loading user info:', error);
+        // Fallback ai dati di default
+        this.setDefaultUserDetails();
+      }
+    );
+    
+    this.displayUserInfo = true;
+  }
+  
+  setDefaultUserDetails() {
+    this.userDetails = {
+      employeeId: this.user?.username || 'N/A',
+      fiscalCode: 'N/A',
+      positionType: 'N/A'
+    };
+    this.partyRoleData = {};
+  }
+
 }
