@@ -381,4 +381,72 @@ export class HeaderComponent implements OnInit {
     this.partyRoleData = {};
   }
 
+  /**
+   * Scarica il PDF della procedura di ricorso
+   * Usa HttpClient con token di autenticazione esplicito
+   */
+  downloadProceduraRicorso() {
+    const downloadUrl = `${this.apiConfig.rootPath}/procedura-ricorso/download`;
+    
+    console.log('Inizio download procedura ricorso...');
+    console.log('URL download:', downloadUrl);
+    
+    // Ottieni il token manualmente
+    const token = this.authSrv.token();
+    
+    if (!token) {
+      console.error('Token non trovato, utente non autenticato');
+      alert('Errore: devi essere autenticato per scaricare il PDF.');
+      return;
+    }
+    
+    console.log('Token trovato, avvio download con autenticazione...');
+    
+    // Crea headers con token esplicito
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    
+    // Usa HttpClient con headers espliciti
+    this.http.get(downloadUrl, {
+      headers: headers,
+      responseType: 'blob',
+      observe: 'response'
+    }).subscribe({
+      next: (response) => {
+        console.log('Download completato, creazione blob...');
+        
+        // Crea blob dal response body
+        const blob = new Blob([response.body], { type: 'application/pdf' });
+        
+        // Crea URL temporaneo per il blob
+        const url = window.URL.createObjectURL(blob);
+        
+        // Crea link temporaneo e simula click
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'documentazione_procedura_ricorso.pdf';
+        document.body.appendChild(link);
+        link.click();
+        
+        // Cleanup
+        setTimeout(() => {
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+          console.log('Download procedura ricorso completato');
+        }, 100);
+      },
+      error: (error) => {
+        console.error('Errore durante il download del PDF:', error);
+        if (error.status === 401 || error.status === 403) {
+          alert('Errore di autenticazione. Effettua nuovamente il login.');
+        } else if (error.status === 404) {
+          alert('File PDF non trovato sul server.');
+        } else {
+          alert('Errore durante il download del PDF: ' + error.message);
+        }
+      }
+    });
+  }
+
 }

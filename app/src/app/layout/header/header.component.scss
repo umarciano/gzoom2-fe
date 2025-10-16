@@ -1,0 +1,15 @@
+// Stili per il componente header
+
+// Cursore pointer per le voci del dropdown
+.dropdown-item {
+  cursor: pointer;
+  
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+// Assicura che anche le icone abbiano il cursore pointer
+.dropdown-item i {
+  cursor: pointer;
+}
