@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Location } from '@angular/common';
 import * as FileSaver from 'file-saver';
-import { log } from 'util';
 @Component({
   selector: 'app-toolbar-data-table',
   templateUrl: './toolbar-data-table.component.html',

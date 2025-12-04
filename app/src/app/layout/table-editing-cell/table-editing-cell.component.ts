@@ -3,7 +3,6 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { FormArray, FormBuilder } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { HeadFilter, ActionInput, ActionOutput } from './table-editing-cell-configuration';
-import { log } from 'console';
 
 
 @Component({

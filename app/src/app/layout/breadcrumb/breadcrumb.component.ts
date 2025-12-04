@@ -5,7 +5,6 @@ import { MenuItem } from 'primeng/api';
 import { I18NService } from '../../i18n/i18n.service';
 import { FolderMenu } from '../../commons/model/dto';
 import { Observable } from 'rxjs';
-import { element } from 'protractor';
 import { Breadcrumb } from 'primeng/breadcrumb';
 
 // Funzione di rimozione doppie stringhe in Breadcrumbs
