@@ -1088,7 +1088,16 @@ body.bodylayout {
 .header .navbar {
   height: $header-height;
   background: map-get($app-colors, navbar-bg) !important;
+  /* Allow dropdown menus to overflow the fixed header instead of being clipped */
+  overflow: visible;
+  z-index: 1050;
 
+}
+
+/* Increase left padding on the dropdown toggle (username) to match the
+   temporary browser fix and prevent visual clipping. */
+.header .navbar .nav-link.dropdown-toggle {
+  padding-left: 4rem;
 }
 
 .navbar-brand {
