@@ -6,6 +6,7 @@ import { ViewRoutingModule } from './view-routing.module';
 
 import { ReportDownloadComponent } from '../shared/report-download/report-download.component';
 import { ChangePasswordComponent } from '../shared/change-password/change-password.component';
+import { SsoCallbackComponent } from './sso-callback/sso-callback.component';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { ChangePasswordComponent } from '../shared/change-password/change-passwo
     ViewRoutingModule
   ],
   declarations: [
+    SsoCallbackComponent
   ],
   exports: [
   ],

@@ -10,6 +10,7 @@ import { NodeResolver } from '../shared/node-resolver.service';
 import { FocusComponent } from '../layout/focus/focus.component';
 import { ContentComponent } from '../layout/content/content.component';
 import { LocalizationResolver } from 'app/shared/localization-resolver.service';
+import { SsoCallbackComponent } from './sso-callback/sso-callback.component';
 
 const routes: Routes = [
   {
@@ -19,7 +20,8 @@ const routes: Routes = [
      node: NodeResolver
     },
     children: [
-      { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) }
+      { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
+      { path: 'sso-callback', component: SsoCallbackComponent }
     ]
   },
   {
