@@ -2,6 +2,10 @@
 # =============================================================================
 # GZOOM2-FE - Avvio produzione (172.20.128.11)
 #
+# ng serve gira su localhost:4200 (non esposto direttamente).
+# Apache httpd fa da reverse proxy: porta 80 -> localhost:4200
+# (stesso setup di collaudo con "sudo service httpd start").
+#
 # Usa il ng locale (node_modules/.bin/ng) per evitare conflitti
 # con versioni globali di Angular CLI installate sul server.
 #
@@ -28,10 +32,11 @@ if [ ! -f "$NG" ]; then
     exit 1
 fi
 
+# Host localhost: esposto solo ad Apache httpd che fa da reverse proxy
 nohup "$NG" serve \
     -ec=true \
     --proxy-config proxy.config.json \
-    --host 0.0.0.0 \
+    --host localhost \
     --port 4200 \
     &> $HOME/logs/gzoom2-app.out &
 
