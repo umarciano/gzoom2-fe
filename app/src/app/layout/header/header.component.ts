@@ -382,13 +382,13 @@ export class HeaderComponent implements OnInit {
   }
 
   /**
-   * Scarica il PDF della procedura di ricorso
+   * Scarica il PDF della procedura di conciliazione
    * Usa HttpClient con token di autenticazione esplicito
    */
   downloadProceduraRicorso() {
     const downloadUrl = `${this.apiConfig.rootPath}/procedura-ricorso/download`;
     
-    console.log('Inizio download procedura ricorso...');
+    console.log('Inizio download procedura conciliazione...');
     console.log('URL download:', downloadUrl);
     
     // Ottieni il token manualmente
@@ -425,7 +425,7 @@ export class HeaderComponent implements OnInit {
         // Crea link temporaneo e simula click
         const link = document.createElement('a');
         link.href = url;
-        link.download = 'documentazione_procedura_ricorso.pdf';
+        link.download = 'documentazione_procedura_conciliazione.pdf';
         document.body.appendChild(link);
         link.click();
         
@@ -433,7 +433,7 @@ export class HeaderComponent implements OnInit {
         setTimeout(() => {
           document.body.removeChild(link);
           window.URL.revokeObjectURL(url);
-          console.log('Download procedura ricorso completato');
+          console.log('Download procedura di conciliazione completato');
         }, 100);
       },
       error: (error) => {
