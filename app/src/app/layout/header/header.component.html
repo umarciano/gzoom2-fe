@@ -31,14 +31,14 @@
     <div class="navbar-collapse justify-content-end" id="collapsibleNavbar" style="margin-right: 40px;">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <div class="nav-item dropdown" ngbDropdown placement="bottom-right">
+          <div class="nav-item dropdown user-dropdown" ngbDropdown placement="bottom-right">
             <a href="javascript:void(0)" class="nav-link dropdown-toggle" ngbDropdownToggle>
               <i class="fa fa-user"></i> &nbsp; {{user|fullname}} <b class="caret"></b>
             </a>
-            <div ngbDropdownMenu>
+            <div ngbDropdownMenu class="user-dropdown-menu">
               <a class="dropdown-item" (click)="userInfoDialog()" attr.aria-label="{{'User information'|i18n}}" role="link"><i class="fa fa-fw fa-id-card"></i> {{'Informazioni Utente'|i18n}} </a>
               <a class="dropdown-item" (click)="changeThemeDialog()" attr.aria-label="{{'Change theme'|i18n}}" role="link"><i class="fa fa-fw fa-user"></i> {{'Tema'|i18n}} </a>
-              <a class="dropdown-item" (click)="downloadProceduraRicorso()" attr.aria-label="Scarica Procedura di Conciliazione" role="link"><i class="fa fa-fw fa-file-pdf"></i> Scarica Procedura di Conciliazione</a>
+              <a class="dropdown-item" (click)="downloadProceduraRicorso()" attr.aria-label="Scarica Procedura Conciliazione" role="link"><i class="fa fa-fw fa-file-pdf"></i> Scarica Procedura Conciliazione</a>
               <a class="dropdown-item" *ngIf="allowChangePassword" (click)="changePasswordDialog()"  attr.aria-label="{{'Change password'|i18n}}" role="link" ><i class="fa fa-fw fa-key"></i> {{'Change Password'|i18n}}</a>
               <a class="dropdown-item" (click)="logout()"  attr.aria-label="{{'Logout'|i18n}}" role="link" ><i class="fa fa-fw fa-power-off"></i> {{'Logout'|i18n}}</a>
             </div>

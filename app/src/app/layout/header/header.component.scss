@@ -13,3 +13,15 @@
 .dropdown-item i {
   cursor: pointer;
 }
+
+// Menu utente: larghezza fissa e ancoraggio al bordo destro della navbar
+// In questo modo il menu è sempre visibile indipendentemente dalla lunghezza del nome dell'utente
+.user-dropdown {
+  position: static;
+}
+
+.user-dropdown-menu {
+  min-width: 16rem;
+  right: 0 !important;
+  left: auto !important;
+}
