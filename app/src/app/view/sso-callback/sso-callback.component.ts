@@ -79,7 +79,7 @@ export class SsoCallbackComponent implements OnInit {
             
             // Redirect alla dashboard
             console.log('SSO Callback - Redirecting to dashboard');
-            this.router.navigate(['/']);
+            this.router.navigate(['/c/dashboard']);
           } else {
             this.error = 'Invalid response from server';
             this.loading = false;
