@@ -40,6 +40,7 @@
               <a class="dropdown-item" (click)="changeThemeDialog()" attr.aria-label="{{'Change theme'|i18n}}" role="link"><i class="fa fa-fw fa-user"></i> {{'Tema'|i18n}} </a>
               <a class="dropdown-item" (click)="downloadProceduraRicorso()" attr.aria-label="Scarica Procedura Conciliazione" role="link"><i class="fa fa-fw fa-file-pdf"></i> Scarica Procedura Conciliazione</a>
               <a class="dropdown-item" *ngIf="allowChangePassword" (click)="changePasswordDialog()"  attr.aria-label="{{'Change password'|i18n}}" role="link" ><i class="fa fa-fw fa-key"></i> {{'Change Password'|i18n}}</a>
+              <a class="dropdown-item" *ngIf="isAdmin" (click)="emailSystemDialog()" role="link"><i class="fa fa-fw fa-envelope"></i> Sistema Invio E-mail</a>
               <a class="dropdown-item" (click)="logout()"  attr.aria-label="{{'Logout'|i18n}}" role="link" ><i class="fa fa-fw fa-power-off"></i> {{'Logout'|i18n}}</a>
             </div>
           </div>
@@ -198,3 +199,420 @@
   </div>
   <div *ngIf="error" class="alert alert-danger" role="alert">{{error}}</div>
 </p-dialog>
+
+<!-- SVG sprite per il modal email -->
+<svg class="gz-em-sprite" aria-hidden="true"><defs>
+  <symbol id="gz-i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5a2 2 0 1 1 4 0 7 7 0 0 1 4 6v3a4 4 0 0 0 2 3H4a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/></symbol>
+  <symbol id="gz-i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="gz-i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m10 14 11-11M21 3l-6.5 18a.55.55 0 0 1-1 0L10 14l-7-3.5a.55.55 0 0 1 0-1L21 3"/></symbol>
+  <symbol id="gz-i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37.998.608 2.29.108 2.572-1.065Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="gz-i-history" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="gz-i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></symbol>
+  <symbol id="gz-i-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+  <symbol id="gz-i-chevron-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="gz-i-chevron-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="gz-i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="gz-i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="gz-i-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5Z"/></symbol>
+  <symbol id="gz-i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></symbol>
+  <symbol id="gz-i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="gz-i-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><path d="M17 21v-8H7v8M7 3v5h8"/></symbol>
+</defs></svg>
+
+<!-- Sistema Invio E-mail — modal custom -->
+<div class="gz-em-overlay" *ngIf="displayEmailSystem" (click)="onEmailOverlayClick($event)">
+  <div class="gz-em-modal" role="dialog" aria-modal="true" aria-label="Sistema Invio E-mail" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="gz-em-header">
+      <div class="gz-em-header-left">
+        <div class="gz-em-icon-badge">
+          <svg class="gz-em-icon gz-em-icon-lg"><use href="#gz-i-bell"/></svg>
+        </div>
+        <div>
+          <div class="gz-em-title">Sistema Invio E-mail</div>
+          <div class="gz-em-subtitle">Invio, regole e storico delle e-mail di sistema</div>
+        </div>
+      </div>
+      <button class="gz-em-btn-icon" (click)="displayEmailSystem=false" title="Chiudi" aria-label="Chiudi">
+        <svg class="gz-em-icon"><use href="#gz-i-x"/></svg>
+      </button>
+    </div>
+
+    <!-- Tab bar -->
+    <div class="gz-em-tab-bar">
+      <a class="gz-em-tab" [class.active]="activeTab==='invio'" (click)="setEmailTab('invio')">
+        <svg class="gz-em-icon"><use href="#gz-i-send"/></svg>Invio Mail
+      </a>
+      <a class="gz-em-tab" [class.active]="activeTab==='regole'" (click)="setEmailTab('regole')">
+        <svg class="gz-em-icon"><use href="#gz-i-settings"/></svg>Regole di Invio
+      </a>
+      <a class="gz-em-tab" [class.active]="activeTab==='storico'" (click)="setEmailTab('storico')">
+        <svg class="gz-em-icon"><use href="#gz-i-history"/></svg>Storico Mail
+      </a>
+    </div>
+
+    <!-- Body -->
+    <div class="gz-em-body">
+
+      <!-- ===== TAB: INVIO MAIL ===== -->
+      <ng-container *ngIf="activeTab==='invio'">
+
+        <div class="gz-em-alert">
+          <svg class="gz-em-icon" style="margin-top:1px"><use href="#gz-i-info"/></svg>
+          <div>Seleziona una regola configurata per inviare la notifica corrispondente. Per modificarne il contenuto in modo permanente, usa il tab <strong>Regole di Invio</strong>.</div>
+        </div>
+
+        <div class="gz-em-section-label">1. Seleziona la tipologia di mail</div>
+        <select class="gz-em-select" [(ngModel)]="selectedInvioRuleId">
+          <option value="" *ngIf="customRules.length === 0" disabled>— Nessuna regola disponibile — creane una nel tab Regole di Invio —</option>
+          <option *ngFor="let r of customRules" [value]="r.ruleId">{{r.name}}</option>
+        </select>
+
+        <!-- Parametri da specificare prima dell'invio -->
+        <div class="gz-em-required-param">
+          <span class="gz-em-required-param-label">
+            <svg class="gz-em-icon gz-em-icon-sm" style="color:#6a1b9a"><use href="#gz-i-info"/></svg>
+            Parametri da specificare prima dell'invio
+          </span>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <label style="font-size:12px;color:#4a1170;min-width:140px">
+              Data scadenza <span style="color:#c0392b">*</span>
+            </label>
+            <input type="date" class="gz-em-input" style="width:180px" [(ngModel)]="invioDataScadenza" required/>
+            <span style="font-size:11px;color:#6b6a64">
+              Sostituirà <code class="gz-em-ph-token" style="font-size:11px">{{'{{'}}data_scadenza{{'}}'}}</code>
+            </span>
+          </div>
+        </div>
+
+        <ng-container *ngIf="getInvioRule()">
+          <div class="gz-em-section-label" style="margin-top:16px">2. Anteprima e parametri di invio</div>
+
+          <div class="gz-em-field-row">
+            <div class="gz-em-field-group">
+              <div class="gz-em-field-label">Tipologia performance</div>
+              <div style="padding:7px 0">
+                <span [class]="'gz-em-badge ' + tipoBadgeClass(getInvioRule().workEffortTypeId)">{{tipologiaLabel(getInvioRule().workEffortTypeId)}}</span>
+              </div>
+            </div>
+            <div class="gz-em-field-group">
+              <div class="gz-em-field-label">Stato scheda</div>
+              <div style="padding:7px 0">
+                <span class="gz-em-badge gray">{{statoLabel(getInvioRule().statusId)}}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="gz-em-field-row">
+            <div class="gz-em-field-group">
+              <div class="gz-em-field-label">Destinatario</div>
+              <div style="font-size:13px;padding:7px 0">{{destinatarioLabel(getInvioRule().recipientRoleTypeId)}}</div>
+            </div>
+            <div class="gz-em-field-group">
+              <div class="gz-em-field-label">Unità operative</div>
+              <div style="font-size:13px;padding:7px 0">{{invioRuleUoDisplay(getInvioRule())}}</div>
+            </div>
+          </div>
+
+          <div class="gz-em-field-group" style="margin-top:8px">
+            <div class="gz-em-field-label" style="margin-bottom:6px">
+              Anteprima messaggio <span class="gz-em-badge gray" style="margin-left:4px">sola lettura</span>
+            </div>
+            <div class="gz-em-preview-box">
+              <div class="meta">Da: noreply@gzoom.it · A: {{destinatarioLabel(getInvioRule().recipientRoleTypeId) | lowercase}}</div>
+              <div class="subj">{{getInvioRule().subject}}</div>
+              <div>Gentile <span class="gz-em-ph-token">{{'{{'}}nome_destinatario{{'}}'}}</span>,<br><br>
+                risultano <span class="gz-em-ph-token">{{'{{'}}num_schede{{'}}'}}</span> schede nello stato
+                "<span class="gz-em-ph-token">{{statoLabel(getInvioRule().statusId)}}</span>"
+                per il ciclo di valutazione performance <span class="gz-em-ph-token">{{'{{'}}anno_valutazione{{'}}'}}</span>.<br><br>
+                Ti invitiamo a completare le operazioni necessarie entro il
+                <span class="gz-em-ph-token runtime">{{formatDataScadenza()}}</span>.<br><br>
+                Accedi al portale: <span class="gz-em-ph-token">{{'{{'}}link_piattaforma{{'}}'}}</span><br><br>
+                Cordiali saluti,<br>UOC Pianificazione e Controllo di Gestione
+              </div>
+            </div>
+          </div>
+
+          <div class="gz-em-counter-bar">
+            <span style="color:#6b6a64;display:flex;align-items:center;gap:6px">
+              <svg class="gz-em-icon gz-em-icon-sm"><use href="#gz-i-users"/></svg>
+              UO destinatarie: <strong style="color:#1a1915;margin-left:3px">{{invioRuleUoDisplay(getInvioRule())}}</strong>
+            </span>
+            <button class="gz-em-btn" style="padding:5px 10px;font-size:12px">
+              <svg class="gz-em-icon gz-em-icon-sm"><use href="#gz-i-eye"/></svg>Vedi elenco
+            </button>
+          </div>
+        </ng-container>
+
+      </ng-container>
+
+      <!-- ===== TAB: REGOLE DI INVIO ===== -->
+      <ng-container *ngIf="activeTab==='regole'">
+
+        <div class="gz-em-section-title">
+          <svg class="gz-em-icon"><use href="#gz-i-list"/></svg>
+          Regole esistenti <span class="gz-em-badge gray" style="margin-left:4px">{{emailRules.length + customRules.length}}</span>
+        </div>
+
+        <!-- Regole automatiche (evento-triggered, non modificabili) -->
+        <div *ngFor="let rule of emailRules" class="gz-em-rule-card">
+          <div class="gz-em-rule-card-top">
+            <div style="flex:1">
+              <div class="gz-em-rule-card-name">{{rule.description}}</div>
+              <div class="gz-em-rule-card-meta">
+                <span class="gz-em-badge gray" style="font-size:9px">AUTOMATICA</span>
+                <span>·</span>
+                <span>Attiva: <strong>{{rule.enabled ? 'Sì' : 'No'}}</strong></span>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;flex-shrink:0">
+              <label class="gz-em-toggle" title="Attiva/disattiva regola automatica">
+                <input type="checkbox" [checked]="rule.enabled" (change)="toggleEmailRule(rule.ruleId, !rule.enabled)"/>
+                <span class="gz-em-slider"></span>
+              </label>
+              <button class="gz-em-btn-icon" disabled title="Modifica (regola automatica)">
+                <svg class="gz-em-icon gz-em-icon-sm"><use href="#gz-i-edit"/></svg>
+              </button>
+              <button class="gz-em-btn-icon" disabled title="Elimina (regola automatica)">
+                <svg class="gz-em-icon gz-em-icon-sm"><use href="#gz-i-trash"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Regole personalizzate (modificabili) -->
+        <div *ngFor="let rule of customRules"
+             class="gz-em-rule-card gz-em-rule-card-custom"
+             [class.gz-em-rule-card-editing]="editingRuleId===rule.ruleId">
+          <div class="gz-em-rule-card-top">
+            <div style="flex:1">
+              <div class="gz-em-rule-card-name">
+                {{rule.name}}
+                <span class="gz-em-badge gray" style="font-size:9px;margin-left:4px">PERSONALIZZATA</span>
+              </div>
+              <div class="gz-em-rule-card-meta">
+                <span class="gz-em-badge" [class]="'gz-em-badge ' + (rule.workEffortTypeId==='CTX_EP' ? 'blue' : 'amber')">{{tipologiaLabel(rule.workEffortTypeId)}}</span>
+                <span>·</span><span>{{destinatarioLabel(rule.recipientRoleTypeId)}}</span>
+                <span>·</span><span>{{rule.uo?.length ? rule.uo.join(', ') : 'Tutte le UO'}}</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;flex-shrink:0">
+              <button class="gz-em-btn-icon" (click)="editCustomRule(rule)" title="Modifica">
+                <svg class="gz-em-icon gz-em-icon-sm"><use href="#gz-i-edit"/></svg>
+              </button>
+              <button class="gz-em-btn-icon" (click)="deleteCustomRule(rule.ruleId)" title="Elimina">
+                <svg class="gz-em-icon gz-em-icon-sm"><use href="#gz-i-trash"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <hr class="gz-em-divider" style="margin:20px 0"/>
+
+        <!-- Form Crea / Modifica regola -->
+        <div class="gz-em-section-title">
+          <svg class="gz-em-icon"><use href="#gz-i-{{editingRuleId!==null ? 'edit' : 'plus'}}"/></svg>
+          {{editingRuleId!==null ? 'Modifica regola' : 'Crea nuova regola'}}
+        </div>
+
+        <div class="gz-em-field-row full">
+          <div class="gz-em-field-group">
+            <div class="gz-em-field-label">Nome regola <span class="gz-em-req">*</span></div>
+            <input class="gz-em-input" type="text" [(ngModel)]="nrfName" placeholder="es. Sollecito schede da visionare"/>
+          </div>
+        </div>
+
+        <div class="gz-em-field-row">
+          <div class="gz-em-field-group">
+            <div class="gz-em-field-label">Tipologia performance <span class="gz-em-req">*</span></div>
+            <select class="gz-em-select" [(ngModel)]="nrfTipologia" (ngModelChange)="onNrfTipologiaChange()">
+              <option *ngFor="let t of configTipologie" [value]="t.id">{{t.description}}</option>
+            </select>
+          </div>
+          <div class="gz-em-field-group">
+            <div class="gz-em-field-label">Stato scheda <span class="gz-em-req">*</span></div>
+            <select class="gz-em-select" [(ngModel)]="nrfStato">
+              <option *ngFor="let s of nrfStatiOptions()" [value]="s.id">{{s.description}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="gz-em-field-row">
+          <div class="gz-em-field-group">
+            <div class="gz-em-field-label">Destinatario email <span class="gz-em-req">*</span></div>
+            <select class="gz-em-select" [(ngModel)]="nrfDestinatario">
+              <option *ngFor="let d of nrfDestinatariOptions()" [value]="d.id">{{d.label}}</option>
+            </select>
+          </div>
+          <div class="gz-em-field-group">
+            <div class="gz-em-field-label">Unità operative <span style="color:#6b6a64">(opzionale, multipla)</span></div>
+            <select class="gz-em-select" [(ngModel)]="nrfUOPicker" (ngModelChange)="addNrfUO($event)">
+              <option value="">— aggiungi unità operativa —</option>
+              <option *ngFor="let u of nrfAvailableUO()" [value]="u.id">{{u.name}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div *ngIf="nrfUO.length>0" class="gz-em-field-group" style="margin-bottom:14px">
+          <div class="gz-em-field-label">UO selezionate</div>
+          <div class="gz-em-chip-group">
+            <div *ngFor="let uo of nrfUO" class="gz-em-chip gz-em-chip-selected">
+              <span>{{uoName(uo)}}</span>
+              <button class="gz-em-chip-x" (click)="removeNrfUO(uo)" [attr.aria-label]="'Rimuovi ' + uoName(uo)">×</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="gz-em-section-label">Contenuto e-mail</div>
+
+        <div class="gz-em-field-row full">
+          <div class="gz-em-field-group">
+            <div class="gz-em-field-label">Oggetto <span class="gz-em-req">*</span></div>
+            <input class="gz-em-input" type="text" [(ngModel)]="nrfSubject"/>
+          </div>
+        </div>
+
+        <div class="gz-em-field-row full">
+          <div class="gz-em-field-group">
+            <div class="gz-em-field-label">Corpo del messaggio <span class="gz-em-req">*</span></div>
+            <textarea class="gz-em-textarea" id="gz-em-body-ta" rows="6" [(ngModel)]="nrfBody"></textarea>
+          </div>
+        </div>
+
+        <div class="gz-em-field-label" style="margin-bottom:6px">Placeholder disponibili <span style="color:#6b6a64">(clicca per inserire)</span></div>
+
+        <div style="font-size:11px;color:#6b6a64;margin-bottom:4px;display:flex;align-items:center;gap:6px">
+          <span class="gz-em-ph-legend gz-em-ph-legend-db"></span> recuperati dal sistema al momento dell'invio
+        </div>
+        <div class="gz-em-chip-group" style="margin-bottom:8px">
+          <div *ngFor="let ph of ['{{nome_destinatario}}','{{anno_valutazione}}','{{num_schede}}','{{link_piattaforma}}','{{uo_destinatario}}','{{nome_valutatore}}']"
+               class="gz-em-chip gz-em-ph-chip-db" (click)="nrfInsertPlaceholder(ph)">{{ph}}</div>
+        </div>
+
+        <div style="font-size:11px;color:#6b6a64;margin-bottom:4px;display:flex;align-items:center;gap:6px">
+          <span class="gz-em-ph-legend gz-em-ph-legend-runtime"></span> richiesti all'amministratore prima dell'invio
+        </div>
+        <div class="gz-em-chip-group" style="margin-bottom:14px">
+          <div *ngFor="let ph of ['{{data_scadenza}}','{{note_amministratore}}']"
+               class="gz-em-chip gz-em-ph-chip-runtime" (click)="nrfInsertPlaceholder(ph)">{{ph}}</div>
+        </div>
+
+        <div class="gz-em-alert gz-em-alert-warning" style="font-size:12px;margin-bottom:14px">
+          <svg class="gz-em-icon" style="margin-top:1px;color:#854f0b"><use href="#gz-i-info"/></svg>
+          <div>
+            I placeholder in <span class="gz-em-ph-legend gz-em-ph-legend-db" style="display:inline-block;vertical-align:middle"></span> sono risolti dal sistema, quelli in <span class="gz-em-ph-legend gz-em-ph-legend-runtime" style="display:inline-block;vertical-align:middle"></span> vengono richiesti all'invio.
+          </div>
+        </div>
+
+        <div class="gz-em-field-label" style="margin-bottom:6px">Anteprima messaggio</div>
+        <div class="gz-em-preview-box">
+          <div class="subj" [innerHTML]="nrfPreviewHtml('Oggetto: ' + nrfSubject)"></div>
+          <div [innerHTML]="nrfPreviewHtml(nrfBody)"></div>
+        </div>
+
+      </ng-container>
+
+      <!-- ===== TAB: STORICO MAIL ===== -->
+      <ng-container *ngIf="activeTab==='storico'">
+
+        <div class="gz-em-log-filter-bar">
+          <input class="gz-em-input" type="text" placeholder="Cerca destinatario o oggetto…"
+            style="flex:1;min-width:140px" [(ngModel)]="emailLogFilter" (ngModelChange)="emailLogPage=0"/>
+          <select class="gz-em-select" style="flex:0 0 150px" [(ngModel)]="emailLogTypeFilter" (ngModelChange)="emailLogPage=0">
+            <option value="">Tutte le notifiche</option>
+            <option *ngFor="let r of emailRules" [value]="r.ruleId">{{r.description}}</option>
+          </select>
+          <select class="gz-em-select" style="flex:0 0 120px" [(ngModel)]="emailLogStatusFilter" (ngModelChange)="emailLogPage=0">
+            <option value="">Tutti gli stati</option>
+            <option value="SENT">Inviata</option>
+            <option value="ERROR">Fallita</option>
+          </select>
+        </div>
+
+        <div *ngIf="emailLogLoading" style="text-align:center;padding:20px;color:#6b6a64">Caricamento...</div>
+
+        <ng-container *ngIf="!emailLogLoading">
+          <div class="gz-em-log-header">
+            <span>Data/ora</span><span>Destinatario</span><span>Notifica</span><span>Stato</span>
+          </div>
+
+          <div *ngFor="let log of emailLogPaged()" class="gz-em-log-row">
+            <span class="gz-em-log-date">
+              {{log.sentAt | date:'dd/MM'}}<br>{{log.sentAt | date:'HH:mm'}}
+            </span>
+            <span>
+              {{log.recipientEmail}}
+              <div *ngIf="log.status==='ERROR'" class="gz-em-log-fail-detail">
+                <svg class="gz-em-icon gz-em-icon-sm"><use href="#gz-i-info"/></svg>
+                <div><strong>Causa:</strong> {{log.errorMessage || 'Errore invio'}}</div>
+              </div>
+            </span>
+            <span style="color:#6b6a64;font-size:11px">{{log.ruleId}}</span>
+            <span>
+              <span class="gz-em-badge" [class.green]="log.status==='SENT'" [class.red]="log.status!=='SENT'">
+                {{log.status==='SENT' ? 'Inviata' : 'Fallita'}}
+              </span>
+            </span>
+          </div>
+
+          <div *ngIf="filteredEmailLog().length===0" style="text-align:center;padding:20px;color:#6b6a64">
+            Nessun invio registrato
+          </div>
+
+          <div class="gz-em-pagination" *ngIf="filteredEmailLog().length>0">
+            <span class="gz-em-pag-count">
+              {{emailLogPaged().length}} di {{filteredEmailLog().length}} risultati
+            </span>
+            <div class="gz-em-pag-pages">
+              <button class="gz-em-btn" (click)="emailLogPage=emailLogPage-1" [disabled]="emailLogPage===0">
+                <svg class="gz-em-icon gz-em-icon-sm"><use href="#gz-i-chevron-l"/></svg>
+              </button>
+              <button *ngFor="let p of emailLogPageRange()" class="gz-em-btn"
+                [class.primary]="p===emailLogPage" (click)="emailLogPage=p">{{p+1}}</button>
+              <button class="gz-em-btn" (click)="emailLogPage=emailLogPage+1"
+                [disabled]="emailLogPage>=emailLogTotalPages()-1">
+                <svg class="gz-em-icon gz-em-icon-sm"><use href="#gz-i-chevron-r"/></svg>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+
+      </ng-container>
+
+    </div><!-- /gz-em-body -->
+
+    <!-- Footer -->
+    <div class="gz-em-footer">
+      <div class="gz-em-footer-info">
+        <ng-container *ngIf="activeTab==='storico'">
+          <svg class="gz-em-icon gz-em-icon-sm"><use href="#gz-i-history"/></svg>
+          {{emailLogTotal}} invii totali nel sistema
+        </ng-container>
+        <ng-container *ngIf="activeTab==='regole'">
+          <svg class="gz-em-icon gz-em-icon-sm"><use href="#gz-i-info"/></svg>
+          Le modifiche alle regole vengono applicate ai prossimi invii
+        </ng-container>
+        <ng-container *ngIf="activeTab==='invio'">
+          <svg class="gz-em-icon gz-em-icon-sm"><use href="#gz-i-users"/></svg>
+          {{getInvioRule().count}} destinatari · pronto all'invio
+        </ng-container>
+      </div>
+      <div class="gz-em-footer-actions">
+        <button class="gz-em-btn" (click)="activeTab==='regole' ? resetRuleForm() : (displayEmailSystem=false)">
+          <ng-container *ngIf="activeTab==='invio'">Annulla</ng-container>
+          <ng-container *ngIf="activeTab==='regole'">Annulla</ng-container>
+          <ng-container *ngIf="activeTab==='storico'">Chiudi</ng-container>
+        </button>
+        <button *ngIf="activeTab==='invio'" class="gz-em-btn primary" disabled>
+          <svg class="gz-em-icon gz-em-icon-sm"><use href="#gz-i-send"/></svg>Invia mail
+        </button>
+        <button *ngIf="activeTab==='regole'" class="gz-em-btn primary" (click)="saveCustomRule()" [disabled]="!nrfName.trim()">
+          <svg class="gz-em-icon gz-em-icon-sm"><use href="#gz-i-save"/></svg>
+          {{editingRuleId!==null ? 'Salva modifiche' : 'Salva regola'}}
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

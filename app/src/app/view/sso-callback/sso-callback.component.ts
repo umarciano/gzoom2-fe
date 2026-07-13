@@ -31,7 +31,7 @@ export class SsoCallbackComponent implements OnInit {
     private http: HttpClient,
     private apiConfig: ApiConfig
   ) {
-    // NOTA: In sviluppo, Spring Boot gira su porta 8081, Angular su 4200
+    // NOTA: In sviluppo, Spring Boot gira su porta 8081, Angular su 4201
     // quindi dobbiamo usare l'URL assoluto invece del path relativo
     const isDevMode = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     if (isDevMode) {
