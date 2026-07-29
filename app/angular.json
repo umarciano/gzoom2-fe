@@ -97,6 +97,15 @@
                 }
               ]
             },
+            "dev-fast": {
+              "sourceMap": false,
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ]
+            },
             "production": {
               "baseHref": "/gzoom2/",
               "budgets": [
@@ -137,6 +146,9 @@
           "configurations": {
             "dev": {
               "browserTarget": "gzoom2:build:dev"
+            },
+            "dev-fast": {
+              "browserTarget": "gzoom2:build:dev-fast"
             },
             "production": {
               "browserTarget": "gzoom2:build:production"

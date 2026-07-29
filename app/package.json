@@ -16,6 +16,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.json --configuration=dev",
+    "start:fast": "ng serve --proxy-config proxy.config.json --configuration=dev-fast",
     "mock": "ng serve --proxy-config proxy.config.mock.json --configuration=dev",
     "build": "ng build --aot -prod",
     "test": "ng test",
