@@ -93,6 +93,11 @@ const REFURBISHED_PAGES = {
   'GP_MENU_00562': ['CTX_OR/timesheet'],
   'GP_MENU_00563': ['CTX_PR/timesheet'],
 
+  // CONSUNTIVAZIONE (Portale Referente, CTX_BS). La foglia SQL GP_MENU_00571 ha link
+  // '/consuntCtxBs' (token di gating -> permesso CONSUNT_CTX_BS_VIEW, chiave CONSUNTCTXBS);
+  // qui la mappiamo alla route nativa (come analysis: GP_MENU_00550 -> CTX_BS/analysis).
+  'GP_MENU_00571': ['CTX_BS/consuntivazione'],
+
   
 
   

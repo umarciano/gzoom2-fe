@@ -44,6 +44,7 @@ const routes: Routes = [
       { path: ':context/queryconfig/:id', loadChildren: () => import('./query-config/query-config.module').then(m => m.QueryConfigModule), data: { breadcrumb: ':context/Esecutore-Query'} },
       { path: ':context/analysis', loadChildren: () => import('./analysis/analysis.module').then( m => m.AnalysisModule), data: { breadcrumb: ':context/Analysis'}},
       { path: ':context/timesheet', loadChildren: () => import('./timesheet/timesheet.module').then( m => m.TimesheetModule), data: { breadcrumb: ':context/TimeSheet'}},
+      { path: ':context/consuntivazione', loadChildren: () => import('./consuntivazione/consuntivazione.module').then( m => m.ConsuntivazioneModule), data: { breadcrumb: ':context/Consuntivazione'}},
       { path: '', pathMatch: 'full', redirectTo: '/c/dashboard' }
     ]
   }

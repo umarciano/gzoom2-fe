@@ -1,0 +1,92 @@
+<p-toast></p-toast>
+
+<div class="head">
+  <div>
+    <h4>I miei indicatori da consuntivare</h4>
+    <div class="sub">Espandi un indicatore per vedere le UO; clicca una UO per inserire i valori.</div>
+  </div>
+  <button pButton type="button" label="Salva tutti" icon="pi pi-save" (click)="salvaTutti()"></button>
+</div>
+
+<div class="tabs" *ngIf="!loading">
+  <button class="tab" [class.active]="filtro==='TUTTI'" (click)="filtro='TUTTI'">Tutti ({{ nTutti }})</button>
+  <button class="tab" [class.active]="filtro==='DA_COMPLETARE'" (click)="filtro='DA_COMPLETARE'">Da completare ({{ nDaCompletare }})</button>
+  <button class="tab" [class.active]="filtro==='COMPLETATI'" (click)="filtro='COMPLETATI'">Completati ({{ nCompletati }})</button>
+  <span style="margin-left:auto;"></span>
+  <button class="tab" (click)="espandiTutti()"><i class="fa fa-angle-double-down" style="margin-right:.4rem;"></i>Espandi tutti</button>
+  <button class="tab" (click)="riduciTutti()"><i class="fa fa-angle-double-up" style="margin-right:.4rem;"></i>Riduci tutti</button>
+</div>
+
+<div *ngIf="loading">Caricamento…</div>
+
+<div class="box" *ngIf="!loading">
+
+  <ng-container *ngFor="let ind of filtered">
+    <!-- INDICATORE -->
+    <div class="ind-head" (click)="ind.expanded = !ind.expanded">
+      <button class="chev"><i class="fa" [ngClass]="ind.expanded ? 'fa-chevron-down' : 'fa-chevron-right'"></i></button>
+      <i class="fa fa-circle sem" [ngClass]="statoInd(ind)"></i>
+      <span class="cod">{{ ind.codice }}</span>
+      <span class="nome">– {{ ind.nome }}</span>
+      <span class="right">
+        <span class="uo-count">{{ ind.uo.length }} UO</span>
+        <span class="stato" [ngClass]="statoInd(ind)">{{ statoLabel(statoInd(ind)) }}</span>
+      </span>
+    </div>
+
+    <!-- UO dell'indicatore -->
+    <div class="uo-wrap" *ngIf="ind.expanded">
+      <ng-container *ngFor="let u of ind.uo">
+        <div class="uo-head" (click)="u.expanded = !u.expanded">
+          <button class="chev"><i class="fa" [ngClass]="u.expanded ? 'fa-chevron-down' : 'fa-chevron-right'"></i></button>
+          <i class="fa fa-circle sem" [ngClass]="statoUo(u)"></i>
+          <span class="bld"><i class="fa fa-hospital-o" style="margin-right:.35rem;"></i>{{ u.uo }}</span>
+          <span class="right stato" [ngClass]="statoUo(u)">
+            <span *ngIf="risultato(u) as ris" style="margin-right:.6rem; color:#2b6cff; font-weight:700;">{{ ris }}</span>
+            {{ statoLabel(statoUo(u)) }}
+          </span>
+        </div>
+
+        <!-- DETTAGLIO UO (Tipo / Valori / Fonte / Periodo) solo dopo clic -->
+        <div class="uo-detail" *ngIf="u.expanded">
+          <div class="row-flex">
+            <span class="badge" [ngClass]="tipoClass(u.tipo)">{{ tipoBadge(u.tipo) }}</span>
+            <span class="tipo-sub">{{ tipoSub(u.tipo) }}</span>
+          </div>
+
+          <div class="row-flex">
+            <!-- Sì/No -->
+            <div class="seg" *ngIf="u.tipo === 'SI_NO'">
+              <button [class.on-si]="u.params[0].value==='SI'" (click)="setSino(u,'SI')">Sì</button>
+              <button [class.on-no]="u.params[0].value==='NO'" (click)="setSino(u,'NO')">No</button>
+            </div>
+            <!-- num/den o valore -->
+            <ng-container *ngIf="u.tipo !== 'SI_NO'">
+              <div>
+                <div class="param" *ngFor="let p of u.params">
+                  <span class="lbl">{{ p.etichetta }}<em *ngIf="ruoloLabel(u, p) as rl" style="color:#9aa0a6;"> · {{ rl }}</em></span>
+                  <input type="number" pInputText [(ngModel)]="p.value" placeholder="—"/>
+                </div>
+              </div>
+              <div class="risultato" *ngIf="risultato(u) as ris">
+                <div class="lab">Risultato</div><div class="num">{{ ris }}</div>
+              </div>
+            </ng-container>
+          </div>
+
+          <div class="meta">
+            <div><b>Area:</b> {{ u.area || '—' }}</div>
+            <div><b>Descrizione:</b> {{ u.descrizione || '—' }}</div>
+            <div><b>Peso:</b> {{ u.peso }} &nbsp;·&nbsp; <b>Fonte:</b> {{ u.fonte || '—' }} &nbsp;·&nbsp; <b>Periodo:</b> {{ u.anno || '—' }}</div>
+          </div>
+
+          <div>
+            <button pButton type="button" label="Salva" icon="pi pi-save" class="p-button-sm" [disabled]="u.salvataggio" (click)="salvaUo(u)"></button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <div *ngIf="filtered.length === 0" style="color:#9aa0a6; padding:1rem;">Nessun indicatore in questa vista.</div>
+</div>
