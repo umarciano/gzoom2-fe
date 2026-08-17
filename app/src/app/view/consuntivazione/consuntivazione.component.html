@@ -75,6 +75,7 @@
           </div>
 
           <div class="meta">
+            <div><b>Indicatore:</b> <span class="cod">{{ ind.codice }}</span><span *ngIf="ind.nome"> – {{ ind.nome }}</span></div>
             <div><b>Area:</b> {{ u.area || '—' }}</div>
             <div><b>Descrizione:</b> {{ u.descrizione || '—' }}</div>
             <div><b>Peso:</b> {{ u.peso }} &nbsp;·&nbsp; <b>Fonte:</b> {{ u.fonte || '—' }} &nbsp;·&nbsp; <b>Periodo:</b> {{ u.anno || '—' }}</div>

@@ -2,9 +2,10 @@
 // Shape restituito da ConsuntivazioneService.albero() (oggi mock, poi endpoint BE
 // GET consuntivazione/albero) e trasformato in PrimeNG TreeNode dal componente.
 
-// 'A/B*100' = rapporto (ΣA/ΣB×100); '(A-B)/B*100' = variazione %; 'SUM(A)' = somma conteggi (ΣA);
+// 'A/B*100' = percentuale (ΣA/ΣB×100, fasce in %); 'A/B' = rapporto assoluto (ΣA/ΣB SENZA ×100,
+// fasce in unita' naturale, es. ore/FTE); '(A-B)/B*100' = variazione %; 'SUM(A)' = somma conteggi (ΣA);
 // 'SI_NO' = esito; 'DIRETTO' (o null/altro) = valore singolo.
-export type TipoIndicatore = 'A/B*100' | '(A-B)/B*100' | 'SUM(A)' | 'SI_NO' | 'DIRETTO';
+export type TipoIndicatore = 'A/B*100' | 'A/B' | '(A-B)/B*100' | 'SUM(A)' | 'SI_NO' | 'DIRETTO';
 
 // Definizione di un parametro da inserire (per gli indicatori num/den).
 // ruolo: 'A' = numeratore, 'B' = denominatore. etichetta = formula "parlante".

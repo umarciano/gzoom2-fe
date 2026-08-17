@@ -176,6 +176,7 @@ export class ConsuntivazioneComponent implements OnInit {
     switch (t) {
       case 'SI_NO': return 'Sì / No';
       case 'A/B*100': return 'Percentuale';
+      case 'A/B': return 'Rapporto';
       case '(A-B)/B*100': return 'Variazione %';
       case 'SUM(A)': return 'Conteggio';
       default: return 'Valore';
@@ -186,13 +187,14 @@ export class ConsuntivazioneComponent implements OnInit {
     switch (t) {
       case 'SI_NO': return 'Esito';
       case 'A/B*100': return 'Numeratore / Denominatore';
+      case 'A/B': return 'Numeratore / Denominatore (rapporto, senza ×100)';
       case '(A-B)/B*100': return 'Variazione: (valore anno − base) / base × 100';
       case 'SUM(A)': return 'Somma dei conteggi';
       default: return '';
     }
   }
   ruoloLabel(u: UoRow, p: ParametroRiga): string {
-    if (u.tipo === 'A/B*100') return p.ruolo === 'A' ? 'numeratore' : (p.ruolo === 'B' ? 'denominatore' : '');
+    if (u.tipo === 'A/B*100' || u.tipo === 'A/B') return p.ruolo === 'A' ? 'numeratore' : (p.ruolo === 'B' ? 'denominatore' : '');
     if (u.tipo === '(A-B)/B*100') return p.ruolo === 'A' ? 'valore anno' : (p.ruolo === 'B' ? 'base (anno prec.)' : '');
     return '';
   }
@@ -222,10 +224,14 @@ export class ConsuntivazioneComponent implements OnInit {
   private actualNumerico(u: UoRow): number | null {
     if (u.tipo === 'SI_NO') { const v = u.params[0].value; return v === 'SI' ? 100 : (v === 'NO' ? 0 : null); }
     if (!u.params.length || !u.params.every(p => this.compilato(p))) return null;
-    if (u.tipo === 'A/B*100' || u.tipo === '(A-B)/B*100') {
+    if (u.tipo === 'A/B*100' || u.tipo === '(A-B)/B*100' || u.tipo === 'A/B') {
       const a = this.sumRole(u, 'A'); const b = this.sumRole(u, 'B');
       if (a === null || b === null || Number(b) === 0) return null;
-      const val = u.tipo === 'A/B*100' ? (a / b * 100) : ((a - b) / b * 100);
+      // A/B*100 = percentuale; (A-B)/B*100 = variazione %; A/B = rapporto assoluto (NIENTE ×100,
+      // il valore va confrontato con fasce in unita' naturale, es. ore/FTE ~180).
+      const val = u.tipo === 'A/B*100' ? (a / b * 100)
+                : u.tipo === '(A-B)/B*100' ? ((a - b) / b * 100)
+                : (a / b);
       return Math.round(val * 100) / 100;
     }
     if (u.tipo === 'SUM(A)') return u.params.reduce((s, p) => s + Number(p.value), 0);
