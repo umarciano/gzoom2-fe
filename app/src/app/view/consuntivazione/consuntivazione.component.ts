@@ -259,7 +259,7 @@ export class ConsuntivazioneComponent implements OnInit {
     u.salvataggio = true;
     this.service.salvaValori(movimenti).subscribe({
       next: () => { u.salvataggio = false;
-        this.messages.add({ severity: 'success', summary: `${u.codice} · ${u.uo}`, detail: `Salvati ${movimenti.length} movimenti` }); },
+        this.messages.add({ severity: 'success', summary: `${u.codice} · ${u.uo}`, detail: 'Consuntivo salvato' }); },
       error: (e) => { u.salvataggio = false; console.error(e);
         this.messages.add({ severity: 'error', summary: `${u.codice} · ${u.uo}`, detail: 'Errore nel salvataggio' }); }
     });
@@ -273,7 +273,7 @@ export class ConsuntivazioneComponent implements OnInit {
       return;
     }
     this.service.salvaValori(movimenti).subscribe({
-      next: () => this.messages.add({ severity: 'success', summary: 'Salva tutti', detail: `Salvati ${movimenti.length} movimenti` }),
+      next: () => this.messages.add({ severity: 'success', summary: 'Salva tutti', detail: 'Consuntivi salvati' }),
       error: (e) => { console.error(e); this.messages.add({ severity: 'error', summary: 'Salva tutti', detail: 'Errore nel salvataggio' }); }
     });
   }
