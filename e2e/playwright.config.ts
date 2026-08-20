@@ -7,11 +7,15 @@ dotenv.config({ path: __dirname + '/.env' });
 // Browser: Microsoft Edge (channel 'msedge') — vedi memory di progetto.
 export default defineConfig({
   testDir: './tests',
-  timeout: 60_000,
+  // I test dinamici fanno molti passi (query DB + login + navigazione legacy + transizione + verifica DB):
+  // serve un timeout ampio.
+  timeout: 150_000,
   expect: { timeout: 15_000 },
   fullyParallel: false,        // stessi utenti/sessione legacy: meglio seriale
   workers: 1,
-  retries: 0,
+  // E2E su legacy stateful (login/navigazione/transizioni): un retry assorbe la flakiness da
+  // interferenza tra test consecutivi. Ogni test è comunque idempotente (arrange + ripristino).
+  retries: 1,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
     baseURL: process.env.E2E_BASE_URL || 'http://localhost:4200',

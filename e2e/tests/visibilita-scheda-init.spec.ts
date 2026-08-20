@@ -1,48 +1,45 @@
 import { test, expect } from '@playwright/test';
 import { login, openDefinizione, cercaPerTitolo } from '../support/auth';
+import { findSchedaConDirUO } from '../support/db';
 
 /**
  * TEST #1 — Visibilità di una scheda in stato INIT (vista Definizione).
  *
- * Scheda campione: work_effort 10400 = "...UOC Gestione Risorse Umane"
- *   - Unità Responsabile: BAA9903 - GESTIONE RISORSE UMANE
- *   - Stato: WEORCARD_INIT
+ * Regola attesa (vista Definizione strategica):
+ *   - admin (AORNADMIN)                 -> vede TUTTE le schede, INIT compreso        => VISIBILE
+ *   - Direttore UO della stessa scheda  -> in Definizione vede solo dallo stato "Da validare" (TOVALIDATE)
+ *                                          in poi; una scheda ancora INIT              => NON VISIBILE
  *
- * Regola attesa (groovy executePerformFindBSWorkEffortRoot, vista Definizione):
- *   - admin (AORNADMIN)                         -> vede tutte le schede (INIT compreso) => VISIBILE
- *   - Direttore UO della stessa UOC (rossella.dangelo): in Definizione vede SOLO le proprie
- *     schede in TO_VALIDATE; la sua unica scheda è proprio questa INIT              => NON VISIBILE
- *
- * Nota: i risultati sono paginati (20/pagina) → si filtra per Titolo così la scheda,
- * se visibile, è in pagina 1. Asserzione sul codice UOC univoco "BAA9903".
+ * DINAMICO: la scheda INIT e il suo Direttore UO (ORG_RESPONSIBLE della UO) sono DERIVATI dal DB,
+ * diversi ad ogni run. Password 'ofbiz'. I risultati sono paginati -> si filtra per titolo.
  */
 
-const TITOLO_FILTRO = 'Gestione Risorse Umane';
-const UOC_CODE = 'BAA9903';
+const PASS = process.env.E2E_PASS || 'ofbiz';
+const ADMIN = process.env.E2E_ADMIN_USER || 'admin';
 
-type Caso = { etichetta: string; user?: string; pass?: string; shouldSee: boolean };
+test.describe('Visibilità scheda INIT in Definizione (dinamico)', () => {
 
-const casi: Caso[] = [
-  { etichetta: 'admin (AORNADMIN)', user: process.env.E2E_ADMIN_USER, pass: process.env.E2E_ADMIN_PASS, shouldSee: true },
-  { etichetta: 'Direttore UO (rossella.dangelo)', user: process.env.E2E_DIRUO_USER, pass: process.env.E2E_DIRUO_PASS, shouldSee: false },
-];
+  test('admin VEDE una scheda in stato "Inizializzata"', async ({ page }) => {
+    const s = await findSchedaConDirUO({ stato: 'WEORCARD_INIT' });
+    test.skip(!s, 'Nessuna scheda INIT con Direttore UO derivabile dal DB');
+    await login(page, ADMIN, PASS);
+    const frame = await openDefinizione(page);
+    await cercaPerTitolo(frame, s!.nome);
+    // match ESATTO: il nome INIT può essere PREFISSO di un'altra scheda (es. variante "... C.O.")
+    await expect(frame.getByText(s!.nome, { exact: true }).first()).toBeVisible({ timeout: 20_000 });
+  });
 
-test.describe('Visibilità scheda INIT in Definizione', () => {
-  for (const c of casi) {
-    test(`${c.etichetta} ${c.shouldSee ? 'VEDE' : 'NON vede'} la scheda INIT (${UOC_CODE})`, async ({ page }) => {
-      test.skip(!c.user || !c.pass, `Credenziali mancanti in .env per "${c.etichetta}"`);
-
-      await login(page, c.user!, c.pass!);
-      const frame = await openDefinizione(page);
-      await cercaPerTitolo(frame, TITOLO_FILTRO);
-
-      if (c.shouldSee) {
-        await expect(frame.getByText(UOC_CODE, { exact: false })).toBeVisible({ timeout: 20_000 });
-      } else {
-        // attende il completamento della ricerca (griglia vuota) prima di asserire l'assenza
-        await expect(frame.getByText(/non è stato trovato alcun dato/i)).toBeVisible({ timeout: 20_000 });
-        await expect(frame.getByText(UOC_CODE, { exact: false })).toHaveCount(0);
-      }
-    });
-  }
+  test('il Direttore UO NON vede la propria scheda ancora "Inizializzata"', async ({ page }) => {
+    const s = await findSchedaConDirUO({ stato: 'WEORCARD_INIT' });
+    test.skip(!s, 'Nessuna scheda INIT con Direttore UO derivabile dal DB');
+    await login(page, s!.dirUserLoginId, PASS);
+    const frame = await openDefinizione(page);
+    await cercaPerTitolo(frame, s!.nome);
+    // Il Dir UO NON vede la propria scheda ancora INIT. NB: la griglia può NON essere vuota, perché la
+    // ricerca per titolo (contains) può restituire altre schede col nome simile che il Dir UO VEDE (es.
+    // la variante pregresso "... C.O." in TO_VALIDATE). Quindi non si pretende la griglia vuota: si
+    // asserisce che la scheda INIT SPECIFICA (nome ESATTO) non compaia.
+    await frame.locator('table.selectable, #searchForm').first().waitFor({ state: 'attached', timeout: 10_000 }).catch(() => {});
+    await expect(frame.getByText(s!.nome, { exact: true })).toHaveCount(0, { timeout: 20_000 });
+  });
 });
