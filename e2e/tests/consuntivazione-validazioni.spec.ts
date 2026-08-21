@@ -65,10 +65,9 @@ test.describe('Consuntivazione: validazioni salvataggio (B2/B6)', () => {
   });
 
   test('RIFIUTA un valore NEGATIVO su un indicatore del proprio albero', async ({ page }) => {
-    // ATTENZIONE: se il BE NON applica il controllo B6 (validazione presente nel sorgente gzoom2-be ma
-    // non ancora committata/deployata su :8081), questo POST SALVEREBBE davvero il valore. Skip di default
-    // per non scrivere dati; abilitare con E2E_BE_VALIDAZIONI=1 dopo il rebuild del BE con le validazioni.
-    test.skip(!process.env.E2E_BE_VALIDAZIONI, 'Richiede gzoom2-be ricompilato con le validazioni B6 attive (E2E_BE_VALIDAZIONI=1)');
+    // PREREQUISITO: il BE deve applicare il controllo B6 (ConsuntivazioneService.salvaValori). Se il
+    // controllo NON fosse attivo sul BE in esecuzione, questo POST SALVEREBBE il valore -> assicurarsi
+    // che gzoom2-be sia buildato con le validazioni.
     await login(page, ADMIN, PASS);
     const ctx = await apriPortaleECattura(page);
     const pair = coppiaValida(ctx.albero);
@@ -81,8 +80,7 @@ test.describe('Consuntivazione: validazioni salvataggio (B2/B6)', () => {
   });
 
   test('RIFIUTA un valore != 0/100 su un indicatore SI/NO', async ({ page }) => {
-    // Stessa cautela del test precedente: senza il controllo B6 attivo sul BE, il POST SALVEREBBE 50.
-    test.skip(!process.env.E2E_BE_VALIDAZIONI, 'Richiede gzoom2-be ricompilato con le validazioni B6 attive (E2E_BE_VALIDAZIONI=1)');
+    // Stessa dipendenza del test precedente: richiede il controllo B6 attivo sul BE.
     await login(page, ADMIN, PASS);
     const ctx = await apriPortaleECattura(page);
     const ind = ctx.albero.find((i) => i.tipo && /SI[_\s]?NO/i.test(String(i.tipo)));
