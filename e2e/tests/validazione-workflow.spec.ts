@@ -73,6 +73,11 @@ test.describe('Workflow validazione CTX_BS (dinamico da DB)', () => {
       await btn(frame, BTN_PARZIALE).click();
       await expect.poll(() => getStatoScheda(p!.scheda.workEffortId),
         { timeout: 20_000, message: 'stato non passato a VALPART' }).toBe('WEORCARD_VALPART');
+      // (D) firma+data: dopo la validazione l'app torna alla lista e la scheda VALPART esce dalla
+      // Definizione del Dir UO; riapro il dettaglio per id e verifico la firma (letta da WorkEffortStatus).
+      await apriSchedaDaGriglia(page, frame, p!.scheda.nome, p!.scheda.workEffortId);
+      await expect(frame.getByText('F.to Direttore di UO il', { exact: false }).first())
+        .toBeVisible({ timeout: 15_000 });
     } finally {
       await setStatoScheda(p!.scheda.workEffortId, p!.statoOriginale);
     }
@@ -89,6 +94,10 @@ test.describe('Workflow validazione CTX_BS (dinamico da DB)', () => {
       await btn(frame, BTN_VISIONE).click();
       await expect.poll(() => getStatoScheda(p!.scheda.workEffortId),
         { timeout: 20_000, message: 'stato non passato a REVIEWED' }).toBe('WEORCARD_REVIEWED');
+      // (D) presa visione: riapro il dettaglio per id e verifico la label "Presa visione del Direttore di UO il <data>"
+      await apriSchedaDaGriglia(page, frame, p!.scheda.nome, p!.scheda.workEffortId);
+      await expect(frame.getByText('Presa visione del Direttore di UO il', { exact: false }).first())
+        .toBeVisible({ timeout: 15_000 });
     } finally {
       await setStatoScheda(p!.scheda.workEffortId, p!.statoOriginale);
     }
@@ -107,6 +116,10 @@ test.describe('Workflow validazione CTX_BS (dinamico da DB)', () => {
       await btn(frame, BTN_COMPLETA).click();
       await expect.poll(() => getStatoScheda(p!.scheda.workEffortId),
         { timeout: 20_000, message: 'stato non passato a VALIDATED' }).toBe('WEORCARD_VALIDATED');
+      // (D) firma+data: riapro il dettaglio per id e verifico "F.to Direttore Sanitario/Amministrativo il <data>"
+      await apriSchedaDaGriglia(page, frame, p!.scheda.nome, p!.scheda.workEffortId);
+      await expect(frame.getByText('F.to Direttore Sanitario/Amministrativo il', { exact: false }).first())
+        .toBeVisible({ timeout: 15_000 });
     } finally {
       await setStatoScheda(p!.scheda.workEffortId, p!.statoOriginale);
     }

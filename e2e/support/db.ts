@@ -86,6 +86,24 @@ export async function findScheda(f: FiltroScheda = {}): Promise<SchedaBs | null>
   });
 }
 
+/** Una scheda CTX_BS a caso di una UO DIVERSA da quella indicata (per i test di scoping visibilità). */
+export async function findSchedaAltraUO(orgUnitIdEscluso: string, f: FiltroScheda = {}): Promise<SchedaBs | null> {
+  return withDb(async (c) => {
+    const params: any[] = [];
+    const w = clausole(f, params);
+    params.push(orgUnitIdEscluso);
+    w.push(`we.org_unit_id <> $${params.length} AND we.org_unit_id IS NOT NULL`);
+    const sql = `
+      SELECT we.work_effort_id, we.work_effort_name, we.current_status_id, we.org_unit_id,
+             EXTRACT(YEAR FROM we.estimated_completion_date)::int AS anno
+      FROM work_effort we
+      WHERE ${w.join(' AND ')}
+      ORDER BY random() LIMIT 1`;
+    const r = await c.query(sql, params);
+    return r.rowCount ? mapScheda(r.rows[0]) : null;
+  });
+}
+
 /**
  * Una scheda CTX_BS a caso INSIEME al suo Direttore UO (l'ORG_RESPONSIBLE della UO, nel gruppo
  * STRATPERF_DIR_UO). Attore derivato dalla scheda -> diverso ad ogni run. null se non esiste.

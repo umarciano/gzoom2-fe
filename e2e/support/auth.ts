@@ -135,7 +135,9 @@ export async function openDefinizione(page: Page): Promise<FrameLocator> {
  * Selettori verificati sul DOM dell'iframe (searchForm + toolbar "Ricerca").
  */
 export async function cercaPerTitolo(frame: FrameLocator, titolo: string): Promise<void> {
-  const campo = frame.locator('#WorkEffortRootViewSearchForm_workEffortName_fld0_value');
+  // Il campo Titolo ha id diverso a seconda della vista: Definizione = WorkEffortRootViewSearchForm_...,
+  // Interrogazione = WorkEffortRootInqyViewSearchForm_... . Selettore generico per suffisso.
+  const campo = frame.locator('input[id$="_workEffortName_fld0_value"]').first();
   if (!(await campo.isVisible().catch(() => false))) {
     // prova ad espandere il pannello "Filtri Principali" (in alcune viste è collassato)
     await frame.getByText('Filtri Principali', { exact: false }).first().click({ timeout: 3_000 }).catch(() => {});
@@ -158,7 +160,7 @@ export async function openInterrogazione(page: Page): Promise<FrameLocator> {
     await frame.locator('#searchForm').waitFor({ state: 'attached', timeout: 6_000 });
   });
   // il campo titolo può richiedere l'espansione dei filtri: attesa tollerante (non blocca la vista)
-  await frame.locator('#WorkEffortRootViewSearchForm_workEffortName_fld0_value')
+  await frame.locator('input[id$="_workEffortName_fld0_value"]').first()
     .waitFor({ state: 'visible', timeout: 8_000 }).catch(() => {});
   return frame;
 }
@@ -179,10 +181,16 @@ export async function apriSchedaDaGriglia(page: Page, frame: FrameLocator, testo
   void testo; // il titolo serve solo alla ricerca a monte (cercaPerTitolo); qui si apre per workEffortId
   // Frame legacy GIUSTO: quello che ha ajaxUpdateAreas E la lista (#searchForm/table.selectable), non un
   // frame annidato che eredita la funzione ma non il DOM della lista.
+  // Ricerca del frame con RETRY: subito dopo una transizione (validazione) il frame legacy si sta
+  // ricaricando e ajaxUpdateAreas/#searchForm possono non essere ancora pronti -> si riprova fino a 15s.
   let legacy: any = null;
-  for (const f of page.frames()) {
-    if (await f.evaluate(() => typeof (window as any).ajaxUpdateAreas === 'function'
-      && !!document.querySelector('#searchForm, table.selectable')).catch(() => false)) { legacy = f; break; }
+  const deadline = Date.now() + 15_000;
+  while (!legacy && Date.now() < deadline) {
+    for (const f of page.frames()) {
+      if (await f.evaluate(() => typeof (window as any).ajaxUpdateAreas === 'function'
+        && !!document.querySelector('#searchForm, table.selectable')).catch(() => false)) { legacy = f; break; }
+    }
+    if (!legacy) await page.waitForTimeout(500);
   }
   if (!legacy) throw new Error('Frame legacy con ajaxUpdateAreas non trovato per aprire la scheda');
   await legacy.evaluate((weId: string) => {
