@@ -49,14 +49,20 @@ export class LegacyComponent implements OnInit {
 
     window.onmessage = s => {
       console.log('INTERNAL IFRAME EVENT: s.data ', s.data);
+      if (!s || !s.data || typeof s.data !== 'object') {
+        return;
+      }
       if (s.data.event === 'login') {
         this.lockout.lockout();
       } else if (s.data.event === 'print') {
         console.log('print ', s.data.printParams);
         this.reportPopupService.openPopup(s.data.printParams);
-        // this.displayDialog = true;
       } else if (s.data.event === 'resize') {
         this.resizeIframe(iframe);
+      } else if (s.data.event === 'legacyImportStarted') {
+        this.showLoader();
+      } else if (s.data.event === 'legacyImportCompleted' || s.data.event === 'legacyImportError') {
+        this.hideLoader();
       } else {
         this.resizeIframe(iframe);
       }
