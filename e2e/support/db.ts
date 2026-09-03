@@ -32,6 +32,7 @@ export interface SchedaBs {
   statoCorrente: string;
   orgUnitId: string;
   anno: number | null;
+  sourceReferenceId: string;   // codice scheda (es. 2026_OB_STG_BAA9904) — univoco, mostrato in griglia
 }
 export interface SchedaConDir extends SchedaBs {
   /**
@@ -68,6 +69,7 @@ function mapScheda(row: any): SchedaBs {
     statoCorrente: row.current_status_id,
     orgUnitId: row.org_unit_id,
     anno: row.anno,
+    sourceReferenceId: row.source_reference_id ?? '',
   };
 }
 
@@ -169,6 +171,37 @@ export async function findUtenteInGruppi(groups: string[]): Promise<string | nul
       ORDER BY random() LIMIT 1`;
     const r = await c.query(sql, [groups]);
     return r.rowCount ? r.rows[0].user_login_id : null;
+  });
+}
+
+/**
+ * TUTTE le schede CTX_BS 2026 col loro Direttore UO, per le batterie di visibilità (giro completo,
+ * non a campione). Direttore = ORG_RESPONSIBLE della UO (QUALUNQUE ruolo, dopo il fix visibilità: non
+ * solo DIRETTORE_UOC) presente in STRATPERF_DIR_UO. ESCLUSI i Dir Sanitario/Amministrativo (vedono
+ * TUTTE le schede, non scopati) per non falsare i test "vede solo la propria".
+ */
+export async function listSchedeConDirUO2026(): Promise<SchedaConDir[]> {
+  return withDb(async (c) => {
+    const sql = `
+      SELECT DISTINCT we.work_effort_id, we.work_effort_name, we.current_status_id, we.org_unit_id,
+             we.source_reference_id,
+             EXTRACT(YEAR FROM we.estimated_completion_date)::int AS anno,
+             ul.user_login_id AS dir_user
+      FROM work_effort we
+      JOIN party_relationship pr ON pr.party_id_from = we.org_unit_id
+        AND pr.party_relationship_type_id = 'ORG_RESPONSIBLE'
+        AND (pr.thru_date IS NULL OR pr.thru_date > now())          -- QUALUNQUE role_type_id_to
+      JOIN user_login ul ON ul.party_id = pr.party_id_to
+      JOIN user_login_security_group g ON g.user_login_id = ul.user_login_id
+        AND g.group_id = 'STRATPERF_DIR_UO' AND (g.thru_date IS NULL OR g.thru_date > now())
+      WHERE we.work_effort_type_id = 'CTX_BS' AND we.work_effort_parent_id = we.work_effort_id
+        AND we.source_reference_id LIKE '2026\\_%'
+        AND ul.user_login_id NOT IN (
+          SELECT user_login_id FROM user_login_security_group
+          WHERE group_id IN ('STRATPERF_DIR_SAN','STRATPERF_DIR_AMM') AND (thru_date IS NULL OR thru_date > now()))
+      ORDER BY we.work_effort_name`;
+    const r = await c.query(sql);
+    return r.rows.map((row) => ({ ...mapScheda(row), dirUserLoginId: row.dir_user }));
   });
 }
 

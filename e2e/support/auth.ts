@@ -213,6 +213,41 @@ export async function apriSchedaDaGriglia(page: Page, frame: FrameLocator, testo
 }
 
 /**
+ * Cerca un testo (es. codice scheda `2026_OB_STG_...`) in TUTTI i frame della pagina, con polling.
+ * La griglia legacy (Definizione/Interrogazione) sta in un frame ANNIDATO: `frameLocator('iframe')`
+ * di primo livello NON la vede; i risultati arrivano in AJAX dopo la ricerca. Ritorna true appena trovato.
+ * Per l'asserzione di ASSENZA usare un timeout breve (es. 6000): se non compare, ritorna false.
+ */
+export async function testoInQualcheFrame(page: Page, testo: string, timeoutMs = 15_000): Promise<boolean> {
+  const deadline = Date.now() + timeoutMs;
+  do {
+    for (const f of page.frames()) {
+      const t = await f.evaluate(() => document.body?.innerText || '').catch(() => '');
+      if (t.includes(testo)) return true;
+    }
+    await page.waitForTimeout(500);
+  } while (Date.now() < deadline);
+  return false;
+}
+
+/** Lancia la ricerca legacy SENZA filtri (nessun titolo): la griglia torna tutte le schede a cui
+ *  l'utente e' scopato dal backend. Usata per verificare che un Direttore veda SOLO le proprie UO. */
+export async function cercaSenzaFiltri(frame: FrameLocator): Promise<void> {
+  await frame.locator('li.search.action-menu-item').first().click({ timeout: 8_000 }).catch(() => {});
+}
+
+/** Concatena l'innerText di TUTTI i frame (la griglia legacy e' annidata). Attende `waitMs` per far
+ *  arrivare i risultati AJAX. Utile per asserire presenza/assenza di piu' codici in un colpo solo. */
+export async function leggiTestoFrames(page: Page, waitMs = 2_500): Promise<string> {
+  await page.waitForTimeout(waitMs);
+  let out = '';
+  for (const f of page.frames()) {
+    out += '\n' + (await f.evaluate(() => document.body?.innerText || '').catch(() => ''));
+  }
+  return out;
+}
+
+/**
  * Performance Strategica → Consultazione → "Consuntivazione indicatori" (portale referente Angular).
  * Naviga via menu per href stabile (/c/CTX_BS/consuntivazione).
  */
