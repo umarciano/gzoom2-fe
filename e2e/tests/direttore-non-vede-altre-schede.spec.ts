@@ -10,7 +10,7 @@
  * Requisiti: stack attivo (FE :4200, legacy :8080, BE :8081) + DB.
  */
 import { test, expect } from '@playwright/test';
-import { login, openInterrogazione, cercaSenzaFiltri, leggiTestoFrames, apriSchedaDaGriglia } from '../support/auth';
+import { login, openInterrogazione, cercaSenzaFiltri, leggiTestoFrames, apriSchedaDaGriglia, testoInQualcheFrame } from '../support/auth';
 import { listSchedeConDirUO2026 } from '../support/db';
 
 /** Nome UO dal titolo scheda: "Obiettivo Performance Strategica UOC <nome>" -> "<nome>". */
@@ -41,9 +41,10 @@ test('Un Direttore UO in Interrogazione (ricerca a vuoto) vede SOLO le proprie U
       await login(page, d.dirUserLoginId, PASS);
       const frame = await openInterrogazione(page);
       await cercaSenzaFiltri(frame);                  // ricerca SENZA titolo/filtri
-      const txt = await leggiTestoFrames(page);       // testo di tutti i frame (griglia annidata)
-
-      const vedeLaPropria = txt.includes(d.sourceReferenceId);
+      // Anti-flake: polling fino a 15s finché la griglia mostra la PROPRIA scheda (= caricata), invece di
+      // un'attesa fissa che a volte legge prima del render AJAX.
+      const vedeLaPropria = await testoInQualcheFrame(page, d.sourceReferenceId, 15_000);
+      const txt = await leggiTestoFrames(page, 0);    // griglia già caricata: lettura immediata dei frame
       const trapelate = altrui.filter((c) => txt.includes(c));
 
       if (!vedeLaPropria) problemi.push(`${d.dirUserLoginId} → NON vede la PROPRIA ${d.sourceReferenceId} con ricerca a vuoto`);
