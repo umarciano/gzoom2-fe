@@ -10,6 +10,7 @@ interface ParametroRiga {
 }
 interface UoRow {
   uo: string; peso: number; workEffortId: string; glAccountId: string; anno?: number;
+  statoScheda?: string; consuntivabileParzialmente: boolean;
   tipo: TipoIndicatore; fonte?: string; area?: string; descrizione?: string; codice: string;
   params: ParametroRiga[]; expanded: boolean; salvataggio?: boolean;
 }
@@ -121,6 +122,7 @@ export class ConsuntivazioneComponent implements OnInit {
       area: ind.area, descrizione: ind.descrizione, expanded: false,
       uo: (ind.uo || []).map(u => ({
         uo: u.uo, peso: u.peso, workEffortId: u.workEffortId, glAccountId: ind.glAccountId, anno: u.anno,
+        statoScheda: u.statoScheda, consuntivabileParzialmente: ind.consuntivabileParzialmente === true,
         tipo: ind.tipo, fonte: ind.fonte, area: ind.area, descrizione: ind.descrizione, codice: ind.codice,
         params: this.buildParams(ind, u), expanded: false
       }))
@@ -246,7 +248,10 @@ export class ConsuntivazioneComponent implements OnInit {
       if (p.parId && this.compilato(p)) out.push({ ...base, glFiscalTypeId: p.parId, transValue: Number(p.value) });
     });
     const act = this.actualNumerico(u);
-    if (act !== null) out.push({ ...base, glFiscalTypeId: 'ACTUAL', transValue: act });
+    const fiscalType = u.statoScheda === 'WEORCARD_TOACC_INT' ? 'ACTUAL_INT' : 'ACTUAL';
+    if (act !== null && (fiscalType === 'ACTUAL' || u.consuntivabileParzialmente)) {
+      out.push({ ...base, glFiscalTypeId: fiscalType, transValue: act });
+    }
     return out;
   }
 

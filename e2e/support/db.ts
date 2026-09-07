@@ -220,3 +220,125 @@ export async function setStatoScheda(workEffortId: string, stato: string): Promi
       [stato, workEffortId]);
   });
 }
+
+// ============================================================================
+// Helper per il test del doppio ciclo di consuntivazione (CTX_BS)
+// ============================================================================
+
+export interface IndicatoreMisura {
+  workEffortMeasureId: string;
+  glAccountId: string;
+  accountCode: string;
+  consuntivabileParzialmente: 'Y' | 'N';
+}
+
+/** Restituisce le misure/indicatori attivi di una scheda CTX_BS, con il flag flag Y/N. */
+export async function getIndicatoriDiScheda(workEffortId: string): Promise<IndicatoreMisura[]> {
+  return withDb(async (c) => {
+    const r = await c.query(
+      `SELECT wem.work_effort_measure_id, wem.gl_account_id,
+              ga.account_code, COALESCE(ga.consuntivabile_parzialmente,'N') AS flag
+       FROM work_effort_measure wem
+       JOIN gl_account ga ON ga.gl_account_id = wem.gl_account_id
+       WHERE wem.work_effort_id = $1
+         AND (wem.thru_date IS NULL OR wem.thru_date > now())
+       ORDER BY ga.account_code`,
+      [workEffortId]);
+    return r.rows.map((row) => ({
+      workEffortMeasureId: row.work_effort_measure_id,
+      glAccountId: row.gl_account_id,
+      accountCode: row.account_code,
+      consuntivabileParzialmente: row.flag as 'Y' | 'N',
+    }));
+  });
+}
+
+/** Imposta il flag consuntivabileParzialmente su un indicatore (Y o N). Ritorna il valore precedente. */
+export async function setFlagIndicatore(glAccountId: string, flag: 'Y' | 'N'): Promise<'Y' | 'N'> {
+  return withDb(async (c) => {
+    const before = await c.query(
+      "SELECT COALESCE(consuntivabile_parzialmente,'N') AS f FROM gl_account WHERE gl_account_id = $1",
+      [glAccountId]);
+    const prev = (before.rowCount ? before.rows[0].f : 'N') as 'Y' | 'N';
+    await c.query(
+      'UPDATE gl_account SET consuntivabile_parzialmente = $1, last_updated_stamp = now() WHERE gl_account_id = $2',
+      [flag, glAccountId]);
+    return prev;
+  });
+}
+
+/**
+ * Verifica se esiste un movimento SCOREKPI per una misura + fiscal type.
+ * Ritorna l'amount se presente, null se no.
+ */
+export async function getScoreKpi(workEffortMeasureId: string, glFiscalTypeId: 'ACTUAL' | 'ACTUAL_INT'): Promise<number | null> {
+  return withDb(async (c) => {
+    const r = await c.query(
+      `SELECT ate.amount
+       FROM acctg_trans at
+       JOIN acctg_trans_entry ate ON ate.acctg_trans_id = at.acctg_trans_id
+       WHERE at.voucher_ref = $1
+         AND at.gl_fiscal_type_id = $2
+         AND ate.gl_account_id = 'SCOREKPI'
+       ORDER BY at.transaction_date DESC
+       LIMIT 1`,
+      [workEffortMeasureId, glFiscalTypeId]);
+    return r.rowCount ? Number(r.rows[0].amount) : null;
+  });
+}
+
+/** Rimuove i movimenti SCOREKPI+ACTUAL* di una misura (cleanup post-test). */
+export async function clearMovimentiMisura(workEffortMeasureId: string): Promise<void> {
+  await withDb(async (c) => {
+    // Delete degli AcctgTransEntry poi delle AcctgTrans linkate via voucher_ref
+    await c.query(
+      `DELETE FROM acctg_trans_entry
+       WHERE acctg_trans_id IN (
+           SELECT acctg_trans_id FROM acctg_trans
+           WHERE voucher_ref = $1 AND gl_fiscal_type_id IN ('ACTUAL','ACTUAL_INT')
+       )`,
+      [workEffortMeasureId]);
+    await c.query(
+      "DELETE FROM acctg_trans WHERE voucher_ref = $1 AND gl_fiscal_type_id IN ('ACTUAL','ACTUAL_INT')",
+      [workEffortMeasureId]);
+  });
+}
+
+/**
+ * Trova una scheda CTX_BS con almeno N indicatori attivi, insieme al Direttore UO
+ * responsabile. Usata dal test del doppio ciclo.
+ */
+export async function findSchedaConAlmenoNIndicatori(minCount: number): Promise<SchedaConDir | null> {
+  return withDb(async (c) => {
+    const sql = `
+      WITH s AS (
+        SELECT we.work_effort_id, we.work_effort_name, we.source_reference_id, we.org_unit_id,
+               we.current_status_id,
+               EXTRACT(YEAR FROM we.estimated_completion_date)::int AS anno,
+               COUNT(wem.work_effort_measure_id) AS ind_count
+        FROM work_effort we
+        JOIN work_effort_measure wem ON wem.work_effort_id = we.work_effort_id
+          AND (wem.thru_date IS NULL OR wem.thru_date > now())
+        WHERE we.work_effort_type_id = 'CTX_BS'
+        GROUP BY we.work_effort_id, we.work_effort_name, we.source_reference_id, we.org_unit_id,
+                 we.current_status_id, we.estimated_completion_date
+        HAVING COUNT(wem.work_effort_measure_id) >= $1
+      )
+      SELECT s.*,
+             (SELECT ul.user_login_id FROM user_login ul WHERE ul.party_id = r.party_id LIMIT 1) AS dir_user
+      FROM s
+      LEFT JOIN LATERAL (
+        SELECT wp.party_id
+        FROM work_effort_party_assign wp
+        WHERE wp.work_effort_id = s.work_effort_id AND wp.role_type_id = 'WEM_PERF_IN_CHARGE'
+          AND (wp.thru_date IS NULL OR wp.thru_date > now())
+        LIMIT 1
+      ) r ON true
+      WHERE r.party_id IS NOT NULL
+      ORDER BY random()
+      LIMIT 1`;
+    const rows = await c.query(sql, [minCount]);
+    if (!rows.rowCount || !rows.rows[0].dir_user) return null;
+    return { ...mapScheda(rows.rows[0]), dirUserLoginId: rows.rows[0].dir_user };
+  });
+}

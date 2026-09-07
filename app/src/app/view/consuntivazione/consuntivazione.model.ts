@@ -39,6 +39,7 @@ export interface IndicatoreConsuntivo {
   fonte?: string;       // gl_account.source
   area?: string;        // gl_resource_type.description
   descrizione?: string; // gl_account.description (estesa)
+  consuntivabileParzialmente?: boolean;
   parametri: ParametroDef[]; // definizione input (num/den); vuoto per SI_NO / DIRETTO
   uo: UoConsuntivo[];        // UO/schede dove l'indicatore e' assegnato
 }
