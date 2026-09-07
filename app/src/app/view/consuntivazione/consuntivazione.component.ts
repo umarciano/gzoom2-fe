@@ -12,6 +12,9 @@ interface UoRow {
   uo: string; peso: number; workEffortId: string; glAccountId: string; anno?: number;
   tipo: TipoIndicatore; fonte?: string; area?: string; descrizione?: string; codice: string;
   params: ParametroRiga[]; expanded: boolean; salvataggio?: boolean;
+  commento?: string;         // testo commento gia' presente (admin/Dir + referenti), read-back
+  nota?: string;             // nota che il referente sta scrivendo (da appendere)
+  salvataggioNota?: boolean; // flag "salvataggio nota in corso"
 }
 interface IndRow {
   codice: string; nome: string; glAccountId: string; tipo: TipoIndicatore; fonte?: string; area?: string; descrizione?: string;
@@ -86,6 +89,14 @@ type Stato = 'NON_INIZIATO' | 'INCOMPLETO' | 'COMPLETATO';
     .risultato{ background:#f5f7fa; border-radius:8px; padding:.4rem .9rem; text-align:center; }
     .risultato .lab{ color:#8a919c; font-size:.72rem; } .risultato .num{ color:#2b6cff; font-weight:700; }
     .meta{ color:#5b6472; font-size:.85rem; } .meta b{ color:#3a4a63; }
+
+    /* commento / documento */
+    .commento-box{ border-top:1px solid #eef0f4; padding-top:.7rem; display:flex; flex-direction:column; gap:.5rem; }
+    .commento-box .lbl-sez{ font-weight:600; color:#3a4a63; font-size:.9rem; }
+    .commento-esistente{ white-space:pre-wrap; background:#f7f8fb; border:1px solid #eceff4; border-radius:8px; padding:.5rem .7rem; color:#4a515c; font-size:.86rem; max-height:9rem; overflow:auto; }
+    .commento-box textarea{ width:100%; max-width:46rem; resize:vertical; border:1px solid #d8dee7; border-radius:8px; padding:.5rem .6rem; font-family:inherit; font-size:.9rem; color:#2b3240; }
+    .commento-box textarea:focus{ outline:none; border-color:#8fa4d8; }
+    .commento-actions{ display:flex; gap:.6rem; }
   `]
 })
 export class ConsuntivazioneComponent implements OnInit {
@@ -94,6 +105,7 @@ export class ConsuntivazioneComponent implements OnInit {
   loading = false;
   indicatori: IndRow[] = [];
   filtro: 'TUTTI' | 'DA_COMPLETARE' | 'COMPLETATI' = 'TUTTI';
+  sharepointUrl?: string; // URL "Carica file" (da consuntivazione/config)
 
   constructor(
     private route: ActivatedRoute,
@@ -104,6 +116,10 @@ export class ConsuntivazioneComponent implements OnInit {
   ngOnInit(): void {
     this.context = this.route.snapshot.paramMap.get('context') || 'CTX_BS';
     this.load();
+    this.service.config().subscribe({
+      next: (cfg) => { this.sharepointUrl = cfg && cfg.sharepointUploadUrl; },
+      error: () => { /* config assente: il bottone "Carica file" resta nascosto */ }
+    });
   }
 
   load(): void {
@@ -122,7 +138,8 @@ export class ConsuntivazioneComponent implements OnInit {
       uo: (ind.uo || []).map(u => ({
         uo: u.uo, peso: u.peso, workEffortId: u.workEffortId, glAccountId: ind.glAccountId, anno: u.anno,
         tipo: ind.tipo, fonte: ind.fonte, area: ind.area, descrizione: ind.descrizione, codice: ind.codice,
-        params: this.buildParams(ind, u), expanded: false
+        params: this.buildParams(ind, u), expanded: false,
+        commento: u.commento, nota: ''
       }))
     }));
   }
@@ -262,6 +279,33 @@ export class ConsuntivazioneComponent implements OnInit {
         this.messages.add({ severity: 'success', summary: `${u.codice} · ${u.uo}`, detail: 'Consuntivo salvato' }); },
       error: (e) => { u.salvataggio = false; console.error(e);
         this.messages.add({ severity: 'error', summary: `${u.codice} · ${u.uo}`, detail: 'Errore nel salvataggio' }); }
+    });
+  }
+
+  // ---- commento / documento ----
+  /** Apre lo spazio SharePoint (bottone "Carica file"); il referente carica lì e annota il nome file. */
+  apriSharepoint(): void {
+    if (this.sharepointUrl) { window.open(this.sharepointUrl, '_blank', 'noopener'); }
+  }
+
+  /** Salva (append) la nota del referente sull'indicatore-su-scheda. Non tocca i valori. */
+  salvaNota(u: UoRow): void {
+    const testo = (u.nota || '').trim();
+    if (!testo) {
+      this.messages.add({ severity: 'warn', summary: `${u.codice} · ${u.uo}`, detail: 'Nessuna nota da salvare' });
+      return;
+    }
+    u.salvataggioNota = true;
+    this.service.salvaCommento(u.workEffortId, u.glAccountId, testo).subscribe({
+      next: (res) => {
+        u.salvataggioNota = false;
+        // il BE ritorna il testo completo aggiornato (con l'attribuzione [Referente ... - data]).
+        if (res && res.commento != null) { u.commento = res.commento; }
+        u.nota = '';
+        this.messages.add({ severity: 'success', summary: `${u.codice} · ${u.uo}`, detail: 'Nota salvata' });
+      },
+      error: (e) => { u.salvataggioNota = false; console.error(e);
+        this.messages.add({ severity: 'error', summary: `${u.codice} · ${u.uo}`, detail: 'Errore nel salvataggio della nota' }); }
     });
   }
 

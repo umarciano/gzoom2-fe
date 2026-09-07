@@ -35,4 +35,15 @@ export class ConsuntivazioneService {
   salvaValori(movimenti: MovimentoConsuntivo[]): Observable<any> {
     return this.client.post('consuntivazione/valori', JSON.stringify(movimenti));
   }
+
+  /** Config lato client del portale referente (es. URL SharePoint del bottone "Carica file"). */
+  config(): Observable<{ sharepointUploadUrl?: string }> {
+    return this.client.get('consuntivazione/config');
+  }
+
+  /** Salva (append) la nota del referente su un indicatore-su-scheda. */
+  salvaCommento(workEffortId: string, glAccountId: string, testo: string): Observable<any> {
+    return this.client.post('consuntivazione/commento',
+      JSON.stringify({ workEffortId, glAccountId, testo }));
+  }
 }

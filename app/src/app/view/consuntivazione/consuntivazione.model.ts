@@ -28,6 +28,9 @@ export interface UoConsuntivo {
   valoreActual?: number; // ACTUAL gia' inserito (read-back)
   punteggio?: number;    // punteggio gia' calcolato (null in v1)
   valoriParametri?: { [parId: string]: number }; // valori PAR_* gia' salvati (read-back)
+  commento?: string;     // work_effort_measure.comments (nota indicatore-su-scheda, read-back)
+  nota?: string;         // solo-FE: testo che il referente sta scrivendo (da appendere)
+  salvataggioNota?: boolean; // solo-FE: flag "salvataggio nota in corso"
 }
 
 // Un indicatore di cui il referente e' in carico (WEM_IND_IN_CHARGE della sua UOC).

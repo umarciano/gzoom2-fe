@@ -84,6 +84,21 @@
           <div>
             <button pButton type="button" label="Salva" icon="pi pi-save" class="p-button-sm" [disabled]="u.salvataggio" (click)="salvaUo(u)"></button>
           </div>
+
+          <!-- COMMENTO / DOCUMENTO (indipendente dai valori) -->
+          <div class="commento-box">
+            <div class="lbl-sez">Commento indicatore</div>
+            <div class="commento-esistente" *ngIf="u.commento && u.commento.trim()">{{ u.commento }}</div>
+            <textarea [(ngModel)]="u.nota" rows="3"
+                      placeholder="Aggiungi una nota (es. «caricato file relazione.docx»). Verrà accodata, non sovrascrive le note esistenti."></textarea>
+            <div class="commento-actions">
+              <button pButton type="button" label="Carica file" icon="pi pi-upload"
+                      class="p-button-sm p-button-outlined" *ngIf="sharepointUrl" (click)="apriSharepoint()"></button>
+              <button pButton type="button" label="Salva nota" icon="pi pi-save"
+                      class="p-button-sm p-button-secondary"
+                      [disabled]="u.salvataggioNota || !(u.nota && u.nota.trim())" (click)="salvaNota(u)"></button>
+            </div>
+          </div>
         </div>
       </ng-container>
     </div>
