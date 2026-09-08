@@ -143,7 +143,12 @@ export class ConsuntivazioneComponent implements OnInit {
         params: this.buildParams(ind, u), expanded: false,
         commento: u.commento, nota: ''
       }))
-    }));
+      // Ciclo INTERMEDIO: nascondi le schede in TOACC_INT per gli indicatori NON consuntivabili
+      // parzialmente (non partecipano al giro intermedio, non salvabili -> non vanno mostrati).
+      .filter(u => !(u.statoScheda === 'WEORCARD_TOACC_INT' && !u.consuntivabileParzialmente))
+    }))
+    // Togli gli indicatori rimasti senza alcuna UO visibile.
+    .filter(ind => ind.uo.length > 0);
   }
 
   /** Costruisce i parametri della UO, pre-compilando dai valori gia' salvati (read-back). */
@@ -257,17 +262,25 @@ export class ConsuntivazioneComponent implements OnInit {
     return Number(u.params[0].value); // valore diretto
   }
 
-  /** Movimenti da salvare per la UO: PAR_* (parametri, audit) + ACTUAL (risultato). */
+  /** Movimenti da salvare per la UO. Ciclo INTERMEDIO (scheda TOACC_INT): solo indicatori
+   *  "consuntivabile parzialmente"; parametri -> PAR_*_INT e risultato -> ACTUAL_INT (separati dal
+   *  ciclo finale). Ciclo FINALE (TOACCOUNT): tutti gli indicatori; parametri -> PAR_* e risultato -> ACTUAL. */
   private movimentiDi(u: UoRow): MovimentoConsuntivo[] {
     const base = { workEffortId: u.workEffortId, glAccountId: u.glAccountId };
     const out: MovimentoConsuntivo[] = [];
+    const isIntermedio = u.statoScheda === 'WEORCARD_TOACC_INT';
+    // Nel ciclo intermedio consuntivano SOLO gli indicatori flaggati "consuntivabile parzialmente".
+    if (isIntermedio && !u.consuntivabileParzialmente) { return out; }
+    // Parametri (audit): PAR_*_INT nell'intermedio (separati), PAR_* nel finale.
     u.params.forEach(p => {
-      if (p.parId && this.compilato(p)) out.push({ ...base, glFiscalTypeId: p.parId, transValue: Number(p.value) });
+      if (p.parId && this.compilato(p)) {
+        out.push({ ...base, glFiscalTypeId: isIntermedio ? p.parId + '_INT' : p.parId, transValue: Number(p.value) });
+      }
     });
+    // Risultato: ACTUAL_INT nell'intermedio, ACTUAL nel finale.
     const act = this.actualNumerico(u);
-    const fiscalType = u.statoScheda === 'WEORCARD_TOACC_INT' ? 'ACTUAL_INT' : 'ACTUAL';
-    if (act !== null && (fiscalType === 'ACTUAL' || u.consuntivabileParzialmente)) {
-      out.push({ ...base, glFiscalTypeId: fiscalType, transValue: act });
+    if (act !== null) {
+      out.push({ ...base, glFiscalTypeId: isIntermedio ? 'ACTUAL_INT' : 'ACTUAL', transValue: act });
     }
     return out;
   }
