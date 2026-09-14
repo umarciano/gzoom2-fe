@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 
 import { ConsuntivazioneService, MovimentoConsuntivo } from '../../api/service/consuntivazione.service';
 import { IndicatoreConsuntivo, TipoIndicatore, UoConsuntivo } from './consuntivazione.model';
@@ -91,6 +91,13 @@ type Stato = 'NON_INIZIATO' | 'INCOMPLETO' | 'COMPLETATO';
     .risultato .lab{ color:#8a919c; font-size:.72rem; } .risultato .num{ color:#2b6cff; font-weight:700; }
     .meta{ color:#5b6472; font-size:.85rem; } .meta b{ color:#3a4a63; }
 
+    /* banner "periodo valutato" (ciclo intermedio vs finale) */
+    .periodo-banner{ display:inline-flex; align-items:center; gap:.5rem; border-radius:8px; padding:.4rem .8rem;
+      font-weight:600; font-size:.9rem; align-self:flex-start; }
+    .periodo-banner i{ font-size:.95rem; }
+    .periodo-banner.intermedio{ background:#fff4e0; color:#b5730a; border:1px solid #f2d9a8; }
+    .periodo-banner.finale{ background:#e7edfb; color:#3b5bdb; border:1px solid #cdd8f6; }
+
     /* commento / documento */
     .commento-box{ border-top:1px solid #eef0f4; padding-top:.7rem; display:flex; flex-direction:column; gap:.5rem; }
     .commento-box .lbl-sez{ font-weight:600; color:#3a4a63; font-size:.9rem; }
@@ -108,10 +115,17 @@ export class ConsuntivazioneComponent implements OnInit {
   filtro: 'TUTTI' | 'DA_COMPLETARE' | 'COMPLETATI' = 'TUTTI';
   sharepointUrl?: string; // URL "Carica file" (da consuntivazione/config)
 
+  // Promemoria mostrato al referente prima di salvare gli indicatori Sì/No: dato che l'upload
+  // documentale non e' ancora gestito dall'app (bottone "Carica file" -> SharePoint esterno), non
+  // possiamo garantire l'avvenuto caricamento; questo disclaimer glielo ricorda esplicitamente.
+  private readonly SINO_DISCLAIMER =
+    'Assicurarsi di aver caricato la documentazione prevista prima della validazione/salvataggio.';
+
   constructor(
     private route: ActivatedRoute,
     private service: ConsuntivazioneService,
-    private messages: MessageService
+    private messages: MessageService,
+    private confirm: ConfirmationService
   ) { }
 
   ngOnInit(): void {
@@ -217,6 +231,23 @@ export class ConsuntivazioneComponent implements OnInit {
       default: return '';
     }
   }
+  /** True se la UO e' nel ciclo INTERMEDIO (scheda in "Da consuntivare intermedio"). */
+  isIntermedio(u: UoRow): boolean { return u.statoScheda === 'WEORCARD_TOACC_INT'; }
+
+  /**
+   * Periodo valutato mostrato al referente, in base al ciclo della scheda:
+   *  - INTERMEDIO (WEORCARD_TOACC_INT): consuntivazione semestrale, fino al 30/06;
+   *  - FINALE (WEORCARD_TOACCOUNT e stati successivi): consuntivazione annuale.
+   * L'anno, se disponibile, viene accodato per chiarezza.
+   */
+  periodoValutato(u: UoRow): string {
+    const anno = u.anno ? String(u.anno) : '';
+    if (this.isIntermedio(u)) {
+      return 'Consuntivazione semestrale · fino al 30/06' + (anno ? '/' + anno : '');
+    }
+    return 'Consuntivazione annuale' + (anno ? ' ' + anno : '');
+  }
+
   ruoloLabel(u: UoRow, p: ParametroRiga): string {
     if (u.tipo === 'A/B*100' || u.tipo === 'A/B') return p.ruolo === 'A' ? 'numeratore' : (p.ruolo === 'B' ? 'denominatore' : '');
     if (u.tipo === '(A-B)/B*100') return p.ruolo === 'A' ? 'valore anno' : (p.ruolo === 'B' ? 'base (anno prec.)' : '');
@@ -286,6 +317,22 @@ export class ConsuntivazioneComponent implements OnInit {
   }
 
   salvaUo(u: UoRow): void {
+    // Indicatori Sì/No: prima di salvare, ricorda il caricamento della documentazione (vedi SINO_DISCLAIMER).
+    if (u.tipo === 'SI_NO') {
+      this.confirm.confirm({
+        header: 'Documentazione a supporto',
+        message: this.SINO_DISCLAIMER,
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: 'Ho caricato, salva',
+        rejectLabel: 'Annulla',
+        accept: () => this.doSalvaUo(u)
+      });
+      return;
+    }
+    this.doSalvaUo(u);
+  }
+
+  private doSalvaUo(u: UoRow): void {
     const movimenti = this.movimentiDi(u);
     if (!movimenti.length) {
       this.messages.add({ severity: 'warn', summary: `${u.codice} · ${u.uo}`, detail: 'Nessun valore da salvare' });
@@ -329,11 +376,32 @@ export class ConsuntivazioneComponent implements OnInit {
 
   salvaTutti(): void {
     const movimenti: MovimentoConsuntivo[] = [];
-    this.indicatori.forEach(i => i.uo.forEach(u => this.movimentiDi(u).forEach(m => movimenti.push(m))));
+    let haSiNo = false;
+    this.indicatori.forEach(i => i.uo.forEach(u => {
+      const mov = this.movimentiDi(u);
+      if (mov.length && u.tipo === 'SI_NO') haSiNo = true;
+      mov.forEach(m => movimenti.push(m));
+    }));
     if (!movimenti.length) {
       this.messages.add({ severity: 'warn', summary: 'Salva tutti', detail: 'Nessun valore da salvare' });
       return;
     }
+    // Se tra gli indicatori da salvare c'e' almeno un Sì/No, ricorda il caricamento documentale.
+    if (haSiNo) {
+      this.confirm.confirm({
+        header: 'Documentazione a supporto',
+        message: this.SINO_DISCLAIMER + ' Il salvataggio include indicatori Sì/No.',
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: 'Ho caricato, salva',
+        rejectLabel: 'Annulla',
+        accept: () => this.inviaTutti(movimenti)
+      });
+      return;
+    }
+    this.inviaTutti(movimenti);
+  }
+
+  private inviaTutti(movimenti: MovimentoConsuntivo[]): void {
     this.service.salvaValori(movimenti).subscribe({
       next: () => this.messages.add({ severity: 'success', summary: 'Salva tutti', detail: 'Consuntivi salvati' }),
       error: (e) => { console.error(e); this.messages.add({ severity: 'error', summary: 'Salva tutti', detail: 'Errore nel salvataggio' }); }
