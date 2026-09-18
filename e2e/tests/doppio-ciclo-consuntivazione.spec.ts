@@ -12,7 +12,7 @@ import {
  *
  * FLUSSO:
  *   1. Setup: scheda -> TOVALIDATE, 3 indicatori con flag Y, 2 con flag N.
- *   2. Dir UO -> "Valida parzialmente" -> VALPART.
+ *   2. Dir UO -> "Valida" -> VALPART.
  *   3. Dir San/Amm -> "Valida" -> validaCompletaWorkEffort decide TOACC_INT
  *      (perché almeno un indicatore ha flag Y).
  *   4. Referente (admin per semplicità E2E) salva ACTUAL_INT per i 3 indicatori Y:
@@ -98,13 +98,13 @@ test.describe('Doppio ciclo consuntivazione CTX_BS (E2E, scheda mista 3Y+2N)', (
       // Porta la scheda in TOVALIDATE (stato di partenza).
       await setStatoScheda(scheda!.workEffortId, 'WEORCARD_TOVALIDATE');
 
-      // ---- STEP 1: Dir UO valida parzialmente -> VALPART ----------------------
+      // ---- STEP 1: Dir UO valida -> VALPART ----------------------
       await login(page, scheda!.dirUserLoginId, PASS);
       page.on('dialog', (d) => { d.accept().catch(() => {}); });
       let frame = await openDefinizione(page);
       await cercaPerTitolo(frame, scheda!.nome);
       await apriSchedaDaGriglia(page, frame, scheda!.nome, scheda!.workEffortId);
-      const btnParziale = frame.getByRole('button', { name: 'Valida parzialmente', exact: true });
+      const btnParziale = frame.getByRole('button', { name: 'Valida', exact: true });
       await expect(btnParziale).toBeVisible({ timeout: 20_000 });
       await btnParziale.click();
       await expect.poll(() => getStatoScheda(scheda!.workEffortId),

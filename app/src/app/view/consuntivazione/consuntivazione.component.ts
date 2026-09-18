@@ -7,6 +7,7 @@ import { IndicatoreConsuntivo, TipoIndicatore, UoConsuntivo } from './consuntiva
 
 interface ParametroRiga {
   parId?: string; etichetta: string; ruolo?: string; tipoInput: 'num' | 'sino'; value: any;
+  savedValue?: any; // valore effettivamente salvato (read-back o dopo doSalvaUo); separato da value (in editing)
 }
 interface UoRow {
   uo: string; peso: number; workEffortId: string; glAccountId: string; anno?: number;
@@ -91,11 +92,11 @@ type Stato = 'NON_INIZIATO' | 'INCOMPLETO' | 'COMPLETATO';
     .risultato .lab{ color:#8a919c; font-size:.72rem; } .risultato .num{ color:#2b6cff; font-weight:700; }
     .meta{ color:#5b6472; font-size:.85rem; } .meta b{ color:#3a4a63; }
 
-    /* banner "periodo valutato" (ciclo intermedio vs finale) */
+    /* banner "periodo valutato" (ciclo semestrale vs finale) */
     .periodo-banner{ display:inline-flex; align-items:center; gap:.5rem; border-radius:8px; padding:.4rem .8rem;
       font-weight:600; font-size:.9rem; align-self:flex-start; }
     .periodo-banner i{ font-size:.95rem; }
-    .periodo-banner.intermedio{ background:#fff4e0; color:#b5730a; border:1px solid #f2d9a8; }
+    .periodo-banner.semestrale{ background:#fff4e0; color:#b5730a; border:1px solid #f2d9a8; }
     .periodo-banner.finale{ background:#e7edfb; color:#3b5bdb; border:1px solid #cdd8f6; }
 
     /* commento / documento */
@@ -157,9 +158,9 @@ export class ConsuntivazioneComponent implements OnInit {
         params: this.buildParams(ind, u), expanded: false,
         commento: u.commento, nota: ''
       }))
-      // Ciclo INTERMEDIO: nascondi le schede in TOACC_INT per gli indicatori NON consuntivabili
-      // parzialmente (non partecipano al giro intermedio, non salvabili -> non vanno mostrati).
-      .filter(u => !(u.statoScheda === 'WEORCARD_TOACC_INT' && !u.consuntivabileParzialmente))
+      // Ciclo semestrale (TOACC_INT / ACC_INT): nascondi gli indicatori NON consuntivabili
+      // parzialmente (non partecipano al giro semestrale, non salvabili -> non vanno mostrati).
+      .filter(u => !((u.statoScheda === 'WEORCARD_TOACC_INT' || u.statoScheda === 'WEORCARD_ACC_INT') && !u.consuntivabileParzialmente))
     }))
     // Togli gli indicatori rimasti senza alcuna UO visibile.
     .filter(ind => ind.uo.length > 0);
@@ -170,21 +171,34 @@ export class ConsuntivazioneComponent implements OnInit {
     const vp = u.valoriParametri || {};
     if (ind.tipo === 'SI_NO') {
       const v = u.valoreActual;
-      return [{ etichetta: 'Esito', tipoInput: 'sino', value: v === 100 ? 'SI' : (v === 0 ? 'NO' : null) }];
+      const sinoVal = v === 100 ? 'SI' : (v === 0 ? 'NO' : null);
+      return [{ etichetta: 'Esito', tipoInput: 'sino', value: sinoVal, savedValue: sinoVal }];
     }
     // Qualsiasi tipo con parametri definiti (A/B*100, (A-B)/B*100, SUM(A)): una casella per parametro.
     if (ind.parametri && ind.parametri.length) return ind.parametri
-      .map(p => ({ parId: p.parId, etichetta: p.etichetta, ruolo: p.ruolo, tipoInput: 'num' as const,
-        value: (p.parId && vp[p.parId] != null) ? vp[p.parId] : null }));
+      .map(p => { const v = (p.parId && vp[p.parId] != null) ? vp[p.parId] : null;
+        return { parId: p.parId, etichetta: p.etichetta, ruolo: p.ruolo, tipoInput: 'num' as const,
+          value: v, savedValue: v }; });
     // Valore diretto: una sola casella, pre-compilata dall'ACTUAL.
-    return [{ etichetta: 'Valore', tipoInput: 'num', value: (u.valoreActual != null ? u.valoreActual : null) }];
+    const vDir = u.valoreActual != null ? u.valoreActual : null;
+    return [{ etichetta: 'Valore', tipoInput: 'num', value: vDir, savedValue: vDir }];
   }
 
   // ---- stato / calcoli ----
   private compilato(p: ParametroRiga): boolean { return p.value !== null && p.value !== undefined && p.value !== ''; }
+  // Versione "saved": usata solo per il calcolo dello stato/tab — legge savedValue per evitare
+  // che digitare nel campo sposti l'item tra i tab prima del salvataggio effettivo.
+  private compilatoSalvato(p: ParametroRiga): boolean { const v = p.savedValue; return v !== null && v !== undefined && v !== ''; }
 
   statoUo(u: UoRow): Stato {
-    const c = u.params.filter(p => this.compilato(p)).length;
+    // Se la scheda è nel ciclo completato (ACC_INT o ACCOUNTED), l'indicatore è per definizione
+    // completato: lo stato avanza solo quando tutti i valori del ciclo sono stati salvati.
+    if (u.statoScheda === 'WEORCARD_ACC_INT' || u.statoScheda === 'WEORCARD_ACCOUNTED') {
+      return 'COMPLETATO';
+    }
+    // TOACC_INT / TOACCOUNT: completato in base ai valori effettivamente SALVATI (savedValue),
+    // non al valore in editing live (value) — così digitare nel campo non sposta il tab.
+    const c = u.params.filter(p => this.compilatoSalvato(p)).length;
     if (c === 0) return 'NON_INIZIATO';
     return c < u.params.length ? 'INCOMPLETO' : 'COMPLETATO';
   }
@@ -231,19 +245,33 @@ export class ConsuntivazioneComponent implements OnInit {
       default: return '';
     }
   }
-  /** True se la UO e' nel ciclo INTERMEDIO (scheda in "Da consuntivare intermedio"). */
-  isIntermedio(u: UoRow): boolean { return u.statoScheda === 'WEORCARD_TOACC_INT'; }
+  /** True se la UO e' nel ciclo semestrale (TOACC_INT = in corso; ACC_INT = completato). */
+  isIntermedio(u: UoRow): boolean {
+    return u.statoScheda === 'WEORCARD_TOACC_INT' || u.statoScheda === 'WEORCARD_ACC_INT';
+  }
+
+  /** True se la UO e' in uno stato in cui il referente puo' salvare valori. */
+  canConsuntivare(u: UoRow): boolean {
+    return u.statoScheda === 'WEORCARD_TOACC_INT' || u.statoScheda === 'WEORCARD_TOACCOUNT';
+  }
 
   /**
-   * Periodo valutato mostrato al referente, in base al ciclo della scheda:
-   *  - INTERMEDIO (WEORCARD_TOACC_INT): consuntivazione semestrale, fino al 30/06;
-   *  - FINALE (WEORCARD_TOACCOUNT e stati successivi): consuntivazione annuale.
-   * L'anno, se disponibile, viene accodato per chiarezza.
+   * Periodo valutato mostrato al referente, in base allo stato della scheda:
+   *  - TOACC_INT: consuntivazione semestrale in corso (fino al 30/06)
+   *  - ACC_INT:   consuntivazione semestrale completata (sola lettura)
+   *  - TOACCOUNT: consuntivazione annuale in corso
+   *  - ACCOUNTED: consuntivazione annuale completata (sola lettura)
    */
   periodoValutato(u: UoRow): string {
     const anno = u.anno ? String(u.anno) : '';
-    if (this.isIntermedio(u)) {
+    if (u.statoScheda === 'WEORCARD_TOACC_INT') {
       return 'Consuntivazione semestrale · fino al 30/06' + (anno ? '/' + anno : '');
+    }
+    if (u.statoScheda === 'WEORCARD_ACC_INT') {
+      return 'Consuntivazione semestrale · completata';
+    }
+    if (u.statoScheda === 'WEORCARD_ACCOUNTED') {
+      return 'Consuntivazione annuale · completata' + (anno ? ' ' + anno : '');
     }
     return 'Consuntivazione annuale' + (anno ? ' ' + anno : '');
   }
@@ -293,22 +321,23 @@ export class ConsuntivazioneComponent implements OnInit {
     return Number(u.params[0].value); // valore diretto
   }
 
-  /** Movimenti da salvare per la UO. Ciclo INTERMEDIO (scheda TOACC_INT): solo indicatori
+  /** Movimenti da salvare per la UO. Ciclo semestrale (scheda TOACC_INT): solo indicatori
    *  "consuntivabile parzialmente"; parametri -> PAR_*_INT e risultato -> ACTUAL_INT (separati dal
    *  ciclo finale). Ciclo FINALE (TOACCOUNT): tutti gli indicatori; parametri -> PAR_* e risultato -> ACTUAL. */
   private movimentiDi(u: UoRow): MovimentoConsuntivo[] {
+    if (!this.canConsuntivare(u)) { return []; }
     const base = { workEffortId: u.workEffortId, glAccountId: u.glAccountId };
     const out: MovimentoConsuntivo[] = [];
     const isIntermedio = u.statoScheda === 'WEORCARD_TOACC_INT';
-    // Nel ciclo intermedio consuntivano SOLO gli indicatori flaggati "consuntivabile parzialmente".
+    // Nel ciclo semestrale consuntivano SOLO gli indicatori flaggati "consuntivabile parzialmente".
     if (isIntermedio && !u.consuntivabileParzialmente) { return out; }
-    // Parametri (audit): PAR_*_INT nell'intermedio (separati), PAR_* nel finale.
+    // Parametri (audit): PAR_*_INT nel semestrale (separati), PAR_* nel finale.
     u.params.forEach(p => {
       if (p.parId && this.compilato(p)) {
         out.push({ ...base, glFiscalTypeId: isIntermedio ? p.parId + '_INT' : p.parId, transValue: Number(p.value) });
       }
     });
-    // Risultato: ACTUAL_INT nell'intermedio, ACTUAL nel finale.
+    // Risultato: ACTUAL_INT nel semestrale, ACTUAL nel finale.
     const act = this.actualNumerico(u);
     if (act !== null) {
       out.push({ ...base, glFiscalTypeId: isIntermedio ? 'ACTUAL_INT' : 'ACTUAL', transValue: act });
@@ -340,7 +369,10 @@ export class ConsuntivazioneComponent implements OnInit {
     }
     u.salvataggio = true;
     this.service.salvaValori(movimenti).subscribe({
-      next: () => { u.salvataggio = false;
+      next: () => {
+        u.salvataggio = false;
+        // Allinea savedValue al valore appena persistito: ora lo stato/tab si aggiorna correttamente.
+        u.params.forEach(p => { p.savedValue = p.value; });
         this.messages.add({ severity: 'success', summary: `${u.codice} · ${u.uo}`, detail: 'Consuntivo salvato' }); },
       error: (e) => { u.salvataggio = false; console.error(e);
         this.messages.add({ severity: 'error', summary: `${u.codice} · ${u.uo}`, detail: 'Errore nel salvataggio' }); }

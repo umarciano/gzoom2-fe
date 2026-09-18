@@ -50,8 +50,8 @@
 
         <!-- DETTAGLIO UO (Tipo / Valori / Fonte / Periodo) solo dopo clic -->
         <div class="uo-detail" *ngIf="u.expanded">
-          <!-- PERIODO VALUTATO: chiarisce se e' il ciclo semestrale (intermedio) o annuale (finale) -->
-          <div class="periodo-banner" [ngClass]="isIntermedio(u) ? 'intermedio' : 'finale'">
+          <!-- PERIODO VALUTATO: chiarisce se e' il ciclo semestrale (semestrale) o annuale (finale) -->
+          <div class="periodo-banner" [ngClass]="isIntermedio(u) ? 'semestrale' : 'finale'">
             <i class="fa fa-calendar"></i>{{ periodoValutato(u) }}
           </div>
 
@@ -89,7 +89,7 @@
           </div>
 
           <div>
-            <button pButton type="button" label="Salva" icon="pi pi-save" class="p-button-sm" [disabled]="u.salvataggio" (click)="salvaUo(u)"></button>
+            <button pButton *ngIf="canConsuntivare(u)" type="button" label="Salva" icon="pi pi-save" class="p-button-sm" [disabled]="u.salvataggio" (click)="salvaUo(u)"></button>
           </div>
 
           <!-- COMMENTO / DOCUMENTO (indipendente dai valori) -->

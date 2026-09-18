@@ -1,7 +1,7 @@
 /**
  * BATTERIA VISIBILITÀ #3 — Un Direttore UO NON può MODIFICARE la valutazione (scheda in sola lettura).
  *
- * Il Direttore, aprendo la PROPRIA scheda in Definizione, può solo VALIDARE ("Valida parzialmente"):
+ * Il Direttore, aprendo la PROPRIA scheda in Definizione, può solo VALIDARE ("Valida"):
  * i campi della scheda/valutazione sono in SOLA LETTURA. Segnale robusto (verificato a DOM confrontando
  * direttore vs admin): il direttore NON ha campi editabili del form di gestione scheda
  * `WorkEffortRootViewManagementForm_*` (l'admin sì, incl. `uomRangeScoreId`). Gli unici input editabili

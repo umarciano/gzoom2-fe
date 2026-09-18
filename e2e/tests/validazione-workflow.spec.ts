@@ -17,16 +17,16 @@ import {
  *   - se la scheda non è già nello stato sorgente, ci viene PORTATA (arrange) e poi RIPRISTINATA.
  *
  * Regole (StratPerfRootViewForms.xml + checkDirettoreRole.groovy):
- *   - "Valida parzialmente" -> Dir UO responsabile, TOVALIDATE, NON pregresso, solo Definizione  (=> VALPART)
+ *   - "Valida" -> Dir UO responsabile, TOVALIDATE, NON pregresso, solo Definizione  (=> VALPART)
  *   - "Valida"              -> Dir San/Amm, VALPART, NON pregresso, solo Definizione              (=> VALIDATED)
  *   - "Presa visione"       -> Dir UO responsabile, ACCOUNTED, NON pregresso, solo Definizione    (=> REVIEWED)
  *   - bottoni MAI in Interrogazione; MAI su schede pregresso 2025
  *
- * NB: "Valida" è sottostringa di "Valida parzialmente" -> match SEMPRE esatto per nome accessibile.
+ * NB: "Valida" è sottostringa di "Valida" -> match SEMPRE esatto per nome accessibile.
  */
 
 const PASS = process.env.E2E_PASS || 'ofbiz';
-const BTN_PARZIALE = 'Valida parzialmente';
+const BTN_PARZIALE = 'Valida';
 const BTN_COMPLETA = 'Valida';
 const BTN_VISIONE = 'Presa visione';
 
@@ -62,7 +62,7 @@ async function procuraScheda(statoSorgente: string, pregresso: boolean) {
 
 test.describe('Workflow validazione CTX_BS (dinamico da DB)', () => {
 
-  test('Dir UO: TOVALIDATE → VALPART con "Valida parzialmente"', async ({ page }) => {
+  test('Dir UO: TOVALIDATE → VALPART con "Valida"', async ({ page }) => {
     const p = await procuraDirUO('WEORCARD_TOVALIDATE', false);
     test.skip(!p, 'Nessuna scheda CTX_BS con Dir UO responsabile disponibile');
     autoAcceptDialogs(page);
