@@ -37,6 +37,8 @@ import {CardModule} from 'primeng/card';
 import { InformationBarComponent } from './information-bar/information-bar.component';
 import { RadioButtonComponent } from './radio-button/radio-button.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { TabViewModule } from 'primeng/tabview';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
   imports: [
@@ -68,7 +70,9 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     InputNumberModule,
     InputTextModule,
     CardModule,
-    RadioButtonModule
+    RadioButtonModule,
+    TabViewModule,
+    InputSwitchModule
   ],
   declarations: [
     EqualValidator,

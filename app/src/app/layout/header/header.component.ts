@@ -25,7 +25,7 @@ import { Node } from '../../view/node/node';
 import { ApiClientService } from 'app/commons/service/client.service';
 import { UserLoginValidPartyRole } from 'app/api/model/userLoginValidPartyRole';
 import { MenuService } from 'app/commons/service/menu.service';
-import { Title } from '@angular/platform-browser';
+import { Title, DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 const CHANGE_PASS_ENDPOINT = 'change-password';
 const CHANGE_LANG_ENDPOINT = 'change-language';
@@ -53,6 +53,57 @@ export class HeaderComponent implements OnInit {
   organizationSelected = 'Company';
 
   allowChangePassword: boolean = true;
+  isAdmin: boolean = false;
+  displayEmailSystem: boolean = false;
+  emailRules: any[] = [];
+  emailLog: any[] = [];
+  emailLogTotal: number = 0;
+  emailRulesLoading: boolean = false;
+  emailLogLoading: boolean = false;
+
+  activeTab: string = 'invio';
+  emailLogFilter: string = '';
+  emailLogStatusFilter: string = '';
+  emailLogTypeFilter: string = '';
+  emailLogPage: number = 0;
+  readonly emailLogPageSize: number = 10;
+  selectedInvioRuleId: string = '';
+  invioDataScadenza: string = '';
+
+  // Config dropdown da API
+  configTipologie: {id: string, description: string}[] = [];
+  configStati: {id: string, description: string}[] = [];
+  configUo: {id: string, name: string}[] = [];
+  allStatiMap: {[statusId: string]: string} = {};
+
+  // Form "Crea / Modifica regola"
+  customRules: any[] = [];
+  customRulesLoading: boolean = false;
+  editingRuleId: string | null = null;
+  nrfName: string = '';
+  nrfTipologia: string = 'CTX_EP';
+  nrfStato: string = '';
+  nrfDestinatario: string = 'WEM_EVAL_IN_CHARGE';
+  nrfUO: string[] = [];
+  nrfUOPicker: string = '';
+  nrfSubject: string = '[GZOOM] Schede di valutazione da condividere — ciclo performance {{anno_valutazione}}';
+  nrfBody: string = 'Gentile {{nome_destinatario}},\n\nrisultano {{num_schede}} schede di valutazione ancora nello stato "Valutazione da completare" per il ciclo di valutazione performance {{anno_valutazione}}.\n\nTi invitiamo a completare le operazioni necessarie entro il {{data_scadenza}}, in modo che possano prenderne visione.\n\nAccedi al portale: {{link_piattaforma}}\n\nCordiali saluti,\nUOC Pianificazione e Controllo di Gestione';
+
+  private readonly DESTINATARI_MAP: {[tipologia: string]: {id: string, label: string}[]} = {
+    'CTX_EP': [
+      { id: 'WEM_EVAL_IN_CHARGE', label: 'Valutato' },
+      { id: 'WEM_EVAL_MANAGER',   label: 'Valutatore' },
+    ],
+    'CTX_OR': [
+      { id: 'DIRETTORE_UOC',  label: 'Direttore UOC' },
+      { id: 'DIRETTORE_UOSD', label: 'Direttore UOSD' },
+    ],
+    'CTX_BS': [
+      { id: 'DIRETTORE_UOC',  label: 'Direttore UOC' },
+      { id: 'DIRETTORE_UOSD', label: 'Direttore UOSD' },
+    ],
+  };
+
 
   msgs: Message[] = [];
   languages: String[] = [];
@@ -91,7 +142,8 @@ export class HeaderComponent implements OnInit {
               private authService: AuthService,
               private client: ApiClientService,
               private menuService: MenuService,
-              private titleService: Title
+              private titleService: Title,
+              private sanitizer: DomSanitizer
               ) {
     this.user = authSrv.userProfile();
 
@@ -198,7 +250,12 @@ export class HeaderComponent implements OnInit {
     this.client.get('/api/getEnableChangePassword').subscribe(
       (boolResponse: boolean)  => this.allowChangePassword = boolResponse,
       (err) => console.log(err)
-    )
+    );
+
+    this.client.get('/email/isAdmin').subscribe(
+      (admin: boolean) => this.isAdmin = admin,
+      () => this.isAdmin = false
+    );
   }
 
   toggleSidebar() {
@@ -379,6 +436,315 @@ export class HeaderComponent implements OnInit {
       positionType: 'N/A'
     };
     this.partyRoleData = {};
+  }
+
+  emailSystemDialog() {
+    this.displayEmailSystem = true;
+    this.activeTab = 'invio';
+    this.emailLogPage = 0;
+    this.emailLogFilter = '';
+    this.emailLogStatusFilter = '';
+    this.emailLogTypeFilter = '';
+    this.selectedInvioRuleId = this.customRules[0]?.ruleId || '';
+    // data scadenza default: fine anno corrente
+    const now = new Date();
+    this.invioDataScadenza = `${now.getFullYear()}-12-31`;
+    this.loadEmailRules();
+    this.loadEmailLog();
+    this.loadConfigData();
+    this.loadCustomRules();
+  }
+
+  setEmailTab(tab: string) {
+    this.activeTab = tab;
+  }
+
+  onEmailOverlayClick(event: MouseEvent) {
+    if (event.target === event.currentTarget) {
+      this.displayEmailSystem = false;
+    }
+  }
+
+  filteredEmailLog(): any[] {
+    return this.emailLog.filter(l => {
+      const q = this.emailLogFilter.toLowerCase();
+      const matchFilter = !q || (l.recipientEmail || '').toLowerCase().includes(q) || (l.subject || '').toLowerCase().includes(q);
+      const matchStatus = !this.emailLogStatusFilter || l.status === this.emailLogStatusFilter;
+      const matchType = !this.emailLogTypeFilter || l.ruleId === this.emailLogTypeFilter;
+      return matchFilter && matchStatus && matchType;
+    });
+  }
+
+  emailLogPaged(): any[] {
+    const f = this.filteredEmailLog();
+    const start = this.emailLogPage * this.emailLogPageSize;
+    return f.slice(start, start + this.emailLogPageSize);
+  }
+
+  emailLogTotalPages(): number {
+    return Math.max(1, Math.ceil(this.filteredEmailLog().length / this.emailLogPageSize));
+  }
+
+  emailLogPageRange(): number[] {
+    return Array.from({ length: this.emailLogTotalPages() }, (_, i) => i);
+  }
+
+  getInvioRule(): any {
+    if (!this.selectedInvioRuleId) return null;
+    return this.customRules.find(r => r.ruleId === this.selectedInvioRuleId) || null;
+  }
+
+  formatDataScadenza(): string {
+    if (!this.invioDataScadenza) return '—';
+    const [y, m, d] = this.invioDataScadenza.split('-');
+    return `${d}/${m}/${y}`;
+  }
+
+  // ---- Config da API ----
+  loadConfigData() {
+    this.client.get('/email/rules/config/tipologie').subscribe(
+      (data: any) => {
+        this.configTipologie = data || [];
+        if (this.configTipologie.length > 0 && !this.nrfTipologia) {
+          this.nrfTipologia = this.configTipologie[0].id;
+        }
+      }
+    );
+    this.client.get('/email/rules/config/uo').subscribe(
+      (data: any) => { this.configUo = data || []; }
+    );
+    // Precarica tutti gli stati per tutti i CTX (per label nelle card)
+    ['CTX_EP', 'CTX_OR', 'CTX_BS'].forEach(ctx => {
+      this.client.get(`/email/rules/config/stati?tipologia=${ctx}`).subscribe(
+        (data: any[]) => {
+          (data || []).forEach(s => this.allStatiMap[s.id] = s.description);
+        }
+      );
+    });
+    // Carica stati per la tipologia corrente del form
+    this.loadStatiForTipologia(this.nrfTipologia);
+  }
+
+  loadStatiForTipologia(tipologia: string) {
+    this.client.get(`/email/rules/config/stati?tipologia=${tipologia}`).subscribe(
+      (data: any) => {
+        this.configStati = data || [];
+        if (this.configStati.length > 0) this.nrfStato = this.configStati[0].id;
+      }
+    );
+  }
+
+  loadCustomRules() {
+    this.customRulesLoading = true;
+    this.client.get('/email/rules/custom').subscribe(
+      (result: any) => {
+        this.customRules = result.results || [];
+        this.customRulesLoading = false;
+        if (!this.selectedInvioRuleId && this.customRules.length > 0) {
+          this.selectedInvioRuleId = this.customRules[0].ruleId;
+        }
+      },
+      () => this.customRulesLoading = false
+    );
+  }
+
+  // ---- Helper label ----
+  tipologiaLabel(id: string): string {
+    const t = this.configTipologie.find(x => x.id === id);
+    return t ? t.description : id;
+  }
+
+  statoLabel(id: string): string {
+    return this.allStatiMap[id] || id;
+  }
+
+  destinatarioLabel(id: string): string {
+    for (const opts of Object.values(this.DESTINATARI_MAP)) {
+      const found = opts.find(d => d.id === id);
+      if (found) return found.label;
+    }
+    return id;
+  }
+
+  uoName(partyId: string): string {
+    const u = this.configUo.find(x => x.id === partyId);
+    return u ? u.name : partyId;
+  }
+
+  tipoBadgeClass(typeId: string): string {
+    const map: {[k: string]: string} = { 'CTX_EP': 'blue', 'CTX_OR': 'amber', 'CTX_BS': 'green' };
+    return map[typeId] || 'gray';
+  }
+
+  invioRuleUoDisplay(rule: any): string {
+    if (!rule) return '—';
+    if (!rule.uoList) return 'Tutte le UO';
+    try {
+      const ids: string[] = JSON.parse(rule.uoList);
+      return ids.map((id: string) => this.uoName(id)).join(', ') || 'Tutte le UO';
+    } catch { return 'Tutte le UO'; }
+  }
+
+  // ---- Opzioni dinamiche form ----
+  nrfStatiOptions(): {id: string, description: string}[] {
+    return this.configStati;
+  }
+
+  nrfDestinatariOptions(): {id: string, label: string}[] {
+    return this.DESTINATARI_MAP[this.nrfTipologia] || [];
+  }
+
+  onNrfTipologiaChange() {
+    this.nrfStato = '';
+    const dest = this.nrfDestinatariOptions();
+    this.nrfDestinatario = dest.length > 0 ? dest[0].id : '';
+    this.loadStatiForTipologia(this.nrfTipologia);
+  }
+
+  nrfAvailableUO(): {id: string, name: string}[] {
+    return this.configUo.filter(u => !this.nrfUO.includes(u.id));
+  }
+
+  addNrfUO(id: string) {
+    if (!id) return;
+    if (!this.nrfUO.includes(id)) this.nrfUO = [...this.nrfUO, id];
+    this.nrfUOPicker = '';
+  }
+
+  removeNrfUO(id: string) {
+    this.nrfUO = this.nrfUO.filter(u => u !== id);
+  }
+
+  // ---- Preview live ----
+  private readonly PH_DB: {[k: string]: string} = {
+    '{{nome_destinatario}}': 'Mario Rossi',
+    '{{anno_valutazione}}': '2025',
+    '{{num_schede}}': '3',
+    '{{link_piattaforma}}': 'https://gzoom.../dashboard',
+    '{{uo_destinatario}}': 'UOC Cardiologia',
+    '{{nome_valutatore}}': 'Dr. Bianchi',
+  };
+  private readonly PH_RUNTIME: {[k: string]: string} = {
+    '{{data_scadenza}}': '31/03/2025',
+    '{{note_amministratore}}': 'Si prega di completare al più presto',
+  };
+
+  nrfPreviewHtml(text: string): SafeHtml {
+    const esc = (s: string) => s.replace(/[&<>"']/g, c =>
+      ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c] || c));
+    // escape first, then replace newlines and placeholder tokens
+    let out = esc(text).replace(/\n/g, '<br>');
+    Object.entries(this.PH_DB).forEach(([k, v]) => {
+      out = out.split(esc(k)).join(`<span class="gz-em-ph-token">${esc(v)}</span>`);
+    });
+    Object.entries(this.PH_RUNTIME).forEach(([k, v]) => {
+      out = out.split(esc(k)).join(`<span class="gz-em-ph-token runtime">${esc(v)}</span>`);
+    });
+    return this.sanitizer.bypassSecurityTrustHtml(out);
+  }
+
+  nrfInsertPlaceholder(ph: string) {
+    const ta = document.getElementById('gz-em-body-ta') as HTMLTextAreaElement;
+    if (!ta) { this.nrfBody += ph; return; }
+    const start = ta.selectionStart ?? this.nrfBody.length;
+    const end = ta.selectionEnd ?? start;
+    this.nrfBody = this.nrfBody.slice(0, start) + ph + this.nrfBody.slice(end);
+    setTimeout(() => { ta.focus(); ta.selectionStart = ta.selectionEnd = start + ph.length; }, 0);
+  }
+
+  // ---- CRUD regole custom ----
+  saveCustomRule() {
+    if (!this.nrfName.trim()) return;
+    const payload = {
+      name: this.nrfName.trim(),
+      workEffortTypeId: this.nrfTipologia,
+      statusId: this.nrfStato,
+      recipientRoleTypeId: this.nrfDestinatario,
+      uoList: this.nrfUO.length > 0 ? JSON.stringify(this.nrfUO) : null,
+      subject: this.nrfSubject,
+      bodyTemplate: this.nrfBody,
+      enabled: true,
+    };
+    if (this.editingRuleId !== null) {
+      this.client.put(`/email/rules/custom/${this.editingRuleId}`, payload).subscribe(
+        () => { this.loadCustomRules(); this.resetRuleForm(); },
+        (err) => console.error('Errore salvataggio regola', err)
+      );
+    } else {
+      this.client.post('/email/rules/custom', payload).subscribe(
+        () => { this.loadCustomRules(); this.resetRuleForm(); },
+        (err) => console.error('Errore creazione regola', err)
+      );
+    }
+  }
+
+  editCustomRule(rule: any) {
+    this.editingRuleId = rule.ruleId;
+    this.nrfName = rule.name;
+    this.nrfTipologia = rule.workEffortTypeId;
+    this.nrfDestinatario = rule.recipientRoleTypeId;
+    this.nrfUO = rule.uoList ? JSON.parse(rule.uoList) : [];
+    this.nrfSubject = rule.subject;
+    this.nrfBody = rule.bodyTemplate;
+    // carica gli stati per la tipologia della regola, poi imposta lo stato
+    this.client.get(`/email/rules/config/stati?tipologia=${rule.workEffortTypeId}`).subscribe(
+      (data: any) => {
+        this.configStati = data || [];
+        this.nrfStato = rule.statusId;
+      }
+    );
+  }
+
+  deleteCustomRule(ruleId: string) {
+    this.client.delete(`/email/rules/custom/${ruleId}`).subscribe(
+      () => {
+        if (this.editingRuleId === ruleId) this.resetRuleForm();
+        this.loadCustomRules();
+      },
+      (err) => console.error('Errore eliminazione regola', err)
+    );
+  }
+
+  resetRuleForm() {
+    this.editingRuleId = null;
+    this.nrfName = '';
+    this.nrfTipologia = 'CTX_EP';
+    this.nrfDestinatario = 'WEM_EVAL_IN_CHARGE';
+    this.nrfUO = [];
+    this.nrfUOPicker = '';
+    this.nrfSubject = '[GZOOM] Schede di valutazione da condividere — ciclo performance {{anno_valutazione}}';
+    this.nrfBody = 'Gentile {{nome_destinatario}},\n\nrisultano {{num_schede}} schede di valutazione ancora nello stato "Valutazione da completare" per il ciclo di valutazione performance {{anno_valutazione}}.\n\nTi invitiamo a completare le operazioni necessarie entro il {{data_scadenza}}, in modo che possano prenderne visione.\n\nAccedi al portale: {{link_piattaforma}}\n\nCordiali saluti,\nUOC Pianificazione e Controllo di Gestione';
+    this.loadStatiForTipologia('CTX_EP');
+  }
+
+  loadEmailRules() {
+    this.emailRulesLoading = true;
+    this.client.get('/email/rules').subscribe(
+      (result: any) => {
+        this.emailRules = result.results || [];
+        this.emailRulesLoading = false;
+      },
+      () => this.emailRulesLoading = false
+    );
+  }
+
+  toggleEmailRule(ruleId: string, enabled: boolean) {
+    this.client.post(`/email/rules/${ruleId}/toggle`, { enabled }).subscribe(
+      () => this.loadEmailRules(),
+      (err) => console.error('Errore toggle regola email', err)
+    );
+  }
+
+  loadEmailLog() {
+    this.emailLogLoading = true;
+    this.client.get('/email/log?limit=100').subscribe(
+      (result: any) => {
+        this.emailLog = result.results || [];
+        this.emailLogTotal = result.total || 0;
+        this.emailLogLoading = false;
+      },
+      () => this.emailLogLoading = false
+    );
   }
 
   /**
