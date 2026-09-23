@@ -205,6 +205,83 @@ export async function listSchedeConDirUO2026(): Promise<SchedaConDir[]> {
   });
 }
 
+// ============================================================================
+// Helper per il test delle FIRME a ruolo singolo (Dir. Amministrativo / Sanitario)
+// La firma "Direttore Sanitario/Amministrativo" deve riportare SOLO il ruolo di
+// chi ha firmato: fonte = gruppo di sicurezza del created_by_user_login del record
+// di stato (VALIDATED per la validazione completa, REVIEWED per la presa visione).
+// L'attesa e' DERIVATA dal DB con la STESSA logica embeddata in report BIRT/groovy,
+// cosi' il test non hard-codea utenti/etichette.
+// ============================================================================
+
+export interface SchedaFirmata {
+  workEffortId: string;
+  nome: string;
+  statoCorrente: string;
+  /** login del firmatario dello stato (created_by_user_login). */
+  firmatario: string;
+  /** etichetta ruolo attesa: "Direttore Amministrativo" | "Direttore Sanitario" | generico. */
+  ruoloAtteso: string;
+}
+
+/**
+ * Trova una scheda CTX_BS che ha nel suo storico un record dello stato indicato
+ * (WEORCARD_VALIDATED o WEORCARD_REVIEWED) con firmatario risolvibile, insieme
+ * all'etichetta ruolo ATTESA. `vincoloGruppo`:
+ *   - 'IN'  -> firmatario chiaramente Amm o San (per verificare il ruolo singolo);
+ *   - 'OUT' -> firmatario NON in nessuno dei due gruppi (per verificare il FALLBACK generico);
+ *   - undefined -> qualunque.
+ * ORDER BY random(): diverso ad ogni run. Solo schede in uno degli 8 stati WEORCARD_*
+ * (visibili in Definizione all'admin). Read-only: nessun teardown necessario.
+ */
+export async function findSchedaFirmata(
+  statusId: 'WEORCARD_VALIDATED' | 'WEORCARD_REVIEWED' | 'WEORCARD_VALPART',
+  vincoloGruppo?: 'IN' | 'OUT',
+): Promise<SchedaFirmata | null> {
+  return withDb(async (c) => {
+    const filtroGruppo =
+      vincoloGruppo === 'OUT'
+        ? `AND NOT EXISTS (SELECT 1 FROM user_login_security_group x WHERE x.user_login_id = f.login
+             AND x.group_id IN ('STRATPERF_DIR_AMM','STRATPERF_DIR_SAN') AND (x.thru_date IS NULL OR x.thru_date > now()))`
+        : vincoloGruppo === 'IN'
+        ? `AND EXISTS (SELECT 1 FROM user_login_security_group x WHERE x.user_login_id = f.login
+             AND x.group_id IN ('STRATPERF_DIR_AMM','STRATPERF_DIR_SAN') AND (x.thru_date IS NULL OR x.thru_date > now()))`
+        : '';
+    const sql = `
+      SELECT we.work_effort_id, we.work_effort_name, we.current_status_id, f.login AS firmatario,
+        (SELECT CASE
+            WHEN bool_or(ulsg.group_id='STRATPERF_DIR_AMM') AND bool_or(ulsg.group_id='STRATPERF_DIR_SAN') THEN 'Direttore Sanitario/Amministrativo'
+            WHEN bool_or(ulsg.group_id='STRATPERF_DIR_AMM') THEN 'Direttore Amministrativo'
+            WHEN bool_or(ulsg.group_id='STRATPERF_DIR_SAN') THEN 'Direttore Sanitario'
+            ELSE 'Direttore Sanitario/Amministrativo' END
+          FROM user_login_security_group ulsg
+          WHERE ulsg.user_login_id = f.login AND (ulsg.thru_date IS NULL OR ulsg.thru_date > now())
+        ) AS ruolo_atteso
+      FROM work_effort we
+      JOIN LATERAL (
+        SELECT ws.created_by_user_login AS login
+        FROM work_effort_status ws
+        WHERE ws.work_effort_id = we.work_effort_id AND ws.status_id = $1
+        ORDER BY ws.status_datetime DESC NULLS LAST LIMIT 1
+      ) f ON true
+      WHERE we.work_effort_type_id = 'CTX_BS' AND f.login IS NOT NULL
+        AND we.current_status_id IN ('WEORCARD_INIT','WEORCARD_TOVALIDATE','WEORCARD_VALPART','WEORCARD_VALIDATED',
+                                     'WEORCARD_TOACCOUNT','WEORCARD_ACCOUNTED','WEORCARD_REVIEWED','WEORCARD_CLOSED')
+        ${filtroGruppo}
+      ORDER BY random() LIMIT 1`;
+    const r = await c.query(sql, [statusId]);
+    if (!r.rowCount) return null;
+    const row = r.rows[0];
+    return {
+      workEffortId: row.work_effort_id,
+      nome: row.work_effort_name,
+      statoCorrente: row.current_status_id,
+      firmatario: row.firmatario,
+      ruoloAtteso: row.ruolo_atteso,
+    };
+  });
+}
+
 export async function getStatoScheda(workEffortId: string): Promise<string | null> {
   return withDb(async (c) => {
     const r = await c.query('SELECT current_status_id FROM work_effort WHERE work_effort_id = $1', [workEffortId]);
